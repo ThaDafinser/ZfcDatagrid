@@ -13,13 +13,13 @@ class ExampleController extends AbstractActionController
 
     public function listAction ()
     {
-        $dataGrid = new \ZfcDatagrid\Grid();
-        $dataGrid->setResponse($this->getResponse());
-        
         $dataGrid = $this->getServiceLocator()->get('ZfcDatagrid');
         
+        $queryBuilder = new \Doctrine\ORM\QueryBuilder();
+        //@todo write the query
+        
         $dataGrid->setTitle('Title test');
-        $dataGrid->setDataSource($addressRepository->getAdminQuery2());
+        $dataGrid->setDataSource($queryBuilder);
         
         $col = new \ZfcDatagrid\Column\Standard('id', 'a');
         $dataGrid->addColumn($col);
