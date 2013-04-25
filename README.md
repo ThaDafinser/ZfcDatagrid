@@ -6,7 +6,13 @@ A datagrid for ZF2 where the data input and output can be whatever you want :-)
 Example
 
 ```PHP
+namespace MyModule\Controller;
 
+class ExampleController extends AbstractActionController
+{
+
+    public function listAction ()
+    {
         $dataGrid = new \ZfcDatagrid\Grid();
         $dataGrid->setResponse($this->getResponse());
         
@@ -36,4 +42,6 @@ Example
         $dataGrid->execute();
 
         return $dataGrid->getViewModel();
+  }
+}
 ```
