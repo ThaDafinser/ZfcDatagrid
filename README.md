@@ -6,11 +6,13 @@ A datagrid for ZF2 where the data input and output can be whatever you want :-)
 
 Features
 ===========
-* Datasources: Zend\Sql\Select, Doctrine\ORM\QueryBuilder, plain arrays,...
-* Render/output as: Bootstrap table, jqGrid, tcPDF, PHPExcel, ...
-* Pagination
-* Custom views/templates possible
-* configuration
+* different datasources: Zend\Sql\Select, Doctrine\ORM\QueryBuilder, plain arrays,...
+* differnt output formats: Bootstrap table, jqGrid, tcPDF, PHPExcel, ...
+* pagination (independent of the datasource)
+* different column types and formatters
+* styling the data output by column and/or value
+* custom views/templates possible
+* custom configuration
 * extending the service
 * writing own sources or outputs
 * ...TBD
