@@ -42,6 +42,6 @@ class ExampleController extends AbstractActionController
         $dataGrid->execute();
 
         return $dataGrid->getViewModel();
-  }
+    }
 }
 ```
