@@ -69,10 +69,13 @@ Dependencies
 Required
 --------
 * ZF2
-    * request
-    * response
+    * MVC (model, request, response)
+    * Paginator
+* Twitter Bootstrap (currently only output mode)
 
 Optional
 --------
 * ZF2
     * translator
+* Doctrine2 + DoctrineModule (if used as datasource)
+* 
