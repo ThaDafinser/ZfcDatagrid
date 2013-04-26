@@ -63,3 +63,16 @@ class ExampleController extends AbstractActionController
     }
 }
 ```
+
+Dependencies
+===========
+Required
+--------
+* ZF2
+    * request
+    * response
+
+Optional
+--------
+* ZF2
+    * translator
