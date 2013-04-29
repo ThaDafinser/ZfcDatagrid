@@ -9,15 +9,23 @@ Code will follow...
 
 Features
 ===========
-* different datasources: Zend\Sql\Select, Doctrine\ORM\QueryBuilder, plain arrays,...
-* differnt output formats: Bootstrap table, jqGrid, tcPDF, PHPExcel, ...
-* pagination (independent of the datasource)
-* different column types and formatters
+* different datasources: 
+    * Zend\Sql\Select
+    * Doctrine\ORM\QueryBuilder
+    * [DONE] php arrays
+    * ...
+* output formats: 
+    * [DONE] Bootstrap table
+    * jqGrid
+    * tcPDF
+    * PHPExcel
+    * ...
+* [DONE] pagination
+* [DONE] different column types and formatters
 * styling the data output by column and/or value
 * custom views/templates possible
 * custom configuration
 * extending the service
-* writing own sources or outputs
 * ...TBD
 
 Example
@@ -68,9 +76,12 @@ Dependencies
 ===========
 Required
 --------
+* PHP >= 5.3
+* PHP intl extension
 * ZF2
     * MVC (model, request, response)
     * Paginator
+    * 
 * Twitter Bootstrap (currently only output mode)
 
 Optional
