@@ -1,0 +1,31 @@
+{
+    "name":        "ThaDafinser/ZfcDatagrid",
+    "description": "Zend Framework 2 Module that provides a datagrid for different datasources and output formats",
+    "type":        "library",
+    "license":     "WTFPL",
+    "keywords":    [
+        "ZfcDatagrid",
+        "Datagrid",
+        "Datatable",
+        "module",
+        "zf2",
+        "Zend Framework"
+    ],
+    "authors":     [
+        {
+            "name": "Martin Keckeis",
+            "email": "martin.keckeis1@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php":                                ">=5.3.3",
+        "zendframework/zendframework":           "~2.1"
+    },
+    "autoload": {
+        "psr-0": {
+            "ZfcDatagrid\\": "src/",
+            "ZfcDatagridTest\\": "tests/"
+        }
+    }
+}
