@@ -4,8 +4,12 @@ ZfcDatagrid
 A datagrid for ZF2 where the data input and output can be whatever you want :-)
 
 WORK IN PROGRESS....
-Code will follow...
 
+Next steps
+===========
+* Provide example with Album getting started example
+    * https://github.com/Hounddog/Album
+    * http://zf2.readthedocs.org/en/latest/user-guide/modules.html
 
 Features
 ===========
