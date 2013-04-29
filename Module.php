@@ -32,26 +32,12 @@ class Module implements AutoloaderProviderInterface
             'factories' => array(
                 'zfcDatagrid' => function  (ServiceManager $serviceManager)
                 {
-                    /* @var $router \Zend\Mvc\Router\Http\TreeRouteStack */
-                    // $router = $serviceManager->get('router');
-                    // $routeMatch = $router->match($serviceManager->get('request'));
-                    
                     $dataGrid = new Datagrid();
                     $dataGrid->setRequest($serviceManager->get('request'));
                     $dataGrid->setResponse($serviceManager->get('response'));
                     if ($serviceManager->has('translator') === true) {
                         $dataGrid->setTranslator($serviceManager->get('translator'));
                     }
-                    
-                    // $dataGrid->setRequest($serviceManager->get('request'));
-                    // $dataGrid->setUrlParameter($routeMatch->getParams());
-                    // $dataGrid->setCache($serviceManager->get('cacheFileUser'));
-                    
-                    // $dataGrid->setDatabaseAdapter($serviceManager->get('dbLisp'));
-                    
-                    // if($serviceManager->has('LispDms\Document\Load') === true){
-                    // $dataGrid->setFileLoader($serviceManager->get('LispDms\Document\Load'));
-                    // }
                     
                     return $dataGrid;
                 }
