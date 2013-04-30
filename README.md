@@ -58,6 +58,7 @@ Currently available
 
 TODO  List
 --------
+* filtering
 * datasources: 
     * Zend\Sql\Select
     * Doctrine\ORM\QueryBuilder
@@ -75,6 +76,7 @@ TODO  List
 * styling the data output by column and/or value
     * italic
     * more colors (yellow, green, ...)
+
 
 Examples
 ===========
