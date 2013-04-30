@@ -18,15 +18,17 @@ Features
     * Doctrine\ORM\QueryBuilder
     * [DONE] php arrays
     * ...
+* [DONE] pagination
 * output formats: 
     * [DONE] Bootstrap table
+    * [DONE] plain array
+    * [DONE] console
     * jqGrid
     * tcPDF
     * PHPExcel
     * ...
-* [DONE] pagination
 * [DONE] different column types and formatters
-* styling the data output by column and/or value
+* [DONE] styling the data output by column and/or value
 * custom views/templates possible
 * custom configuration
 * extending the service
