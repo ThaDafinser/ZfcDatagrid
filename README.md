@@ -96,12 +96,13 @@ Required
 * ZF2
     * MVC (model, request, response)
     * Paginator
-    * 
+    * Cache
+    * Session
+    * Translator
 * Twitter Bootstrap (currently only output mode)
 
 Optional
 --------
 * ZF2
-    * translator
 * Doctrine2 + DoctrineModule (if used as datasource)
 * 
