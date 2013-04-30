@@ -25,6 +25,11 @@ Test if it works
     * php index.php show example grid
     * php index.php show example grid --page 2
 
+Screenshots
+--------
+![ScreenShot](https://raw.github.com/ThaDafinser/ZfcDatagrid/master/docs/ZfcDatagrid_bootstrap.jpg)
+![ScreenShot](https://raw.github.com/ThaDafinser/ZfcDatagrid/master/docs/ZfcDatagrid_console.jpg)
+
 Features
 ===========
 
