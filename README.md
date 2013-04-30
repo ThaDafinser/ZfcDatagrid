@@ -5,6 +5,12 @@ A datagrid for ZF2 where the data input and output can be whatever you want :-)
 
 WORK IN PROGRESS....
 
+Installation
+===========
+* Download it (composer or zip)
+* Activate the module in YOUR-PROJECT/config/application.config.php
+* Create the folder: YOUR-PROJECT/data/ZfcDatagrid
+
 Next steps
 ===========
 * Provide example with Album getting started example
