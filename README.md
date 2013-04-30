@@ -21,7 +21,7 @@ Test if it works
 
 Features
 ===========
-* different datasources: 
+* datasources: 
     * [DONE] php arrays
     * Zend\Sql\Select
     * Doctrine\ORM\QueryBuilder
@@ -47,6 +47,8 @@ Features
 * extending the service
 * ...TBD
 
+Examples
+===========
 Examples
 ===========
 
