@@ -10,9 +10,8 @@ Installation
 --------
 
 ```sh
-composer require doctrine/doctrine-module:dev-master
+php composer.phar require thadafinser/zfc-datagrid:dev-master
 ```
-
 Add `ZfcDatagrid` to your `config/application.config.php`
 
 Create the folder: `data/ZfcDatagrid`
