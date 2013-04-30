@@ -10,8 +10,8 @@ use ZfcDatagrid\Column\Style;
     </div>
     
     <div class="span6 text-center">
-        <?php if(isset($title)):?>
-            <h3><?= $this->escapeHtml($title); ?></h3>
+        <?php if(isset($this->title)):?>
+            <h3><?= $this->escapeHtml($this->title); ?></h3>
         <?php endif;?>
     </div>
     
@@ -62,7 +62,7 @@ use ZfcDatagrid\Column\Style;
     <thead>
         <tr>
             <?php 
-            foreach($columns as $column){
+            foreach($this->columns as $column){
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */
                 $classes = array();
                 $styles = array();
@@ -128,7 +128,7 @@ use ZfcDatagrid\Column\Style;
     </thead><!-- END table header -->
     
     <tbody>
-        <?php foreach($data as $row): ?>
+        <?php foreach($this->data as $row): ?>
             <?php if(isset($row['idConcated'])):?>
                 <tr id="<?= $this->escapehtmlattr($row['idConcated']); ?>">
             <?php else:?>
@@ -136,7 +136,7 @@ use ZfcDatagrid\Column\Style;
             <?php endif; ?>
             
                 <?php 
-                foreach($columns as $column){
+                foreach($this->columns as $column){
                     /* @var $column \ZfcDatagrid\Column\AbstractColumn */
 
                     $styles = array();
@@ -185,12 +185,12 @@ use ZfcDatagrid\Column\Style;
 </table>
 
 <?php
-$pages = $paginator->getPages();
+$pages = $this->paginator->getPages();
 ?>
 <!-- Start Pagination -->
 <div class="row-fluid">
     <div class="span4">
-        <?= $this->translate('Page').' '.$paginator->getCurrentPageNumber().' '.$this->translate('of').' '.$paginator->count(); ?>
+        <?= $this->translate('Page').' '.$this->paginator->getCurrentPageNumber().' '.$this->translate('of').' '.$this->paginator->count(); ?>
     </div>
     <div class="span4">
         <div class="pagination">
@@ -273,6 +273,6 @@ $pages = $paginator->getPages();
         </div>
     </div>
     <div class="span4 text-right">
-        <?= $this->translate('Showing').' '.$paginator->getCurrentItemCount().' '.$this->translate('of').' '.$paginator->getTotalItemCount().' '.$this->translate('items'); ?>
+        <?= $this->translate('Showing').' '.$this->paginator->getCurrentItemCount().' '.$this->translate('of').' '.$this->paginator->getTotalItemCount().' '.$this->translate('items'); ?>
     </div>
 </div><!-- End Pagination -->
