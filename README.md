@@ -8,7 +8,9 @@ WORK IN PROGRESS....
 
 Installation
 --------
+To get started with a ZF2 application, please see: http://framework.zend.com/manual/2.1/en/user-guide/skeleton-application.html
 
+Within your project, just do this 3 steps:
 ```sh
 php composer.phar require thadafinser/zfc-datagrid:dev-master
 ```
