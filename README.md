@@ -11,11 +11,13 @@ Installation
 * Activate the module in YOUR-PROJECT/config/application.config.php
 * Create the folder: YOUR-PROJECT/data/ZfcDatagrid
 
-Next steps
+Test if it works
 ===========
-* Provide example with Album getting started example
-    * https://github.com/Hounddog/Album
-    * http://zf2.readthedocs.org/en/latest/user-guide/modules.html
+* HTTP rendering http://YOUR-PROJECT/zfcDatagrid/example/bootstrap
+* Console rendering
+    * go to: YOUR-PROJECT/public
+    * php index.php show example grid
+    * php index.php show example grid --page 2
 
 Features
 ===========
