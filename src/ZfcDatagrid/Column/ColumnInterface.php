@@ -49,8 +49,16 @@ interface ColumnInterface
 
     public function isHidden ();
 
+    /**
+     * Set this column as a identity column
+     * 
+     * @param boolean $mode
+     */
     public function setIdentity ($mode = true);
 
+    /**
+     * Is this a identity column?
+     */
     public function isIdentity ();
 
     /**
