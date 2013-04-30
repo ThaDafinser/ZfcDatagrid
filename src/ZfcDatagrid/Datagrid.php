@@ -90,7 +90,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     protected $dataSource = null;
 
-    protected $rowsPerPage = 25;
+    protected $itemsPerPage = 25;
 
     /**
      *
@@ -98,6 +98,12 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     protected $columns = array();
 
+    /**
+     * 
+     * @var string
+     */
+    protected $rowClickLink = '#';
+    
     /**
      * The prepared data
      *
@@ -343,18 +349,22 @@ class Datagrid implements ServiceLocatorAwareInterface
         return false;
     }
 
-    public function setRowsPerPage ($count = 25)
+    /**
+     * Set items per page (-1 for unlimited)
+     * @param integer $count
+     */
+    public function setItemsPerPage ($count = 25)
     {
-        $this->rowsPerPage = (int) $count;
+        $this->itemsPerPage = (int) $count;
     }
 
     /**
      *
      * @return integer
      */
-    public function getRowsPerPage ()
+    public function getItemsPerPage ()
     {
-        return (int) $this->rowsPerPage;
+        return (int) $this->itemsPerPage;
     }
 
     /**
@@ -467,6 +477,19 @@ class Datagrid implements ServiceLocatorAwareInterface
         return $this->isUserSortActive;
     }
 
+    /**
+     * Set the row click link - identity will be automatically appended!
+     * 
+     * @param string $link
+     */
+    public function setRowClickLink($link = '#'){
+        $this->rowClickLink = (string)$link;
+    }
+    
+    public function getRowClickLink(){
+        return $this->rowClickLink;
+    }
+    
     /**
      *
      * @return array
@@ -609,7 +632,7 @@ class Datagrid implements ServiceLocatorAwareInterface
                 // Export always all pages
                 $this->paginator->setItemCountPerPage(- 1);
             } else {
-                $this->paginator->setItemCountPerPage($this->getRowsPerPage());
+                $this->paginator->setItemCountPerPage($this->getItemsPerPage());
             }
             $this->paginator->setCurrentPageNumber($this->getCurrentPage());
             
