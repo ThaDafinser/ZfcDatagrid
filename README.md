@@ -1,20 +1,21 @@
-ZfcDatagrid
+Datagrid module for Zend Framework 2
 ===========
 
 A datagrid for ZF2 where the data input and output can be whatever you want :-)
 
 WORK IN PROGRESS....
 
-Test it!
-===========
 
 Installation
 --------
-* Download it (composer or zip)
-    * composer: "zf-commons/zfc-datagrid": "dev-master"
-    * Packagist: https://packagist.org/packages/zf-commons/zfc-datagrid
-* Activate the module in YOUR-PROJECT/config/application.config.php
-* Create the folder: YOUR-PROJECT/data/ZfcDatagrid
+
+```sh
+composer require doctrine/doctrine-module:dev-master
+```
+
+Add `ZfcDatagrid` to your `config/application.config.php`
+
+Create the folder: `data/ZfcDatagrid`
 
 Test if it works
 --------
