@@ -22,33 +22,44 @@ Test if it works
 Features
 ===========
 * datasources: 
-    * [DONE] php arrays
+    * php arrays
+* pagination
+* output formats: 
+    * Bootstrap table
+    * plain array
+    * console
+* different column types
+    * DateTime
+    * Number
+    * String
+* styling the data output by column and/or value
+    * bold
+    * color red
+* custom views/templates possible
+* custom configuration
+* extending the service
+* ...
+
+TODO  List
+===========
+* datasources: 
     * Zend\Sql\Select
     * Doctrine\ORM\QueryBuilder
     * ...
-* [DONE] pagination
 * output formats: 
-    * [DONE] Bootstrap table
-    * [DONE] plain array
-    * [DONE] console
     * jqGrid
     * tcPDF
     * PHPExcel
     * ...
-* [DONE] different column types
-    * [DONE] DateTime
-    * [DONE] Number
-    * [DONE] String
-* [DONE] styling the data output by column and/or value
-    * [DONE] bold
-    * [DONE] color red
-* custom views/templates possible
-* custom configuration
-* extending the service
-* ...TBD
+* different columns
+    * [WIP] custom object as source
+    * Buttons / Icons / Links
+    * HTML
+    * Images
+* styling the data output by column and/or value
+    * italic
+    * more colors (yellow, green, ...)
 
-Examples
-===========
 Examples
 ===========
 
