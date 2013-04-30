@@ -1,7 +1,7 @@
 <?php
 namespace ZfcDatagrid\Controller;
 
-use LispBase\Mvc\Controller\AbstractActionController;
+use Zend\Mvc\Controller\AbstractActionController;
 use ZfcDatagrid\Renderer\AbstractRenderer;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Type;
