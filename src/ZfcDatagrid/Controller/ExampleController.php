@@ -20,7 +20,8 @@ class ExampleController extends AbstractActionController
         /* @var $dataGrid \ZfcDatagrid\Datagrid */
         $dataGrid = $this->getServiceLocator()->get('zfcDatagrid');
         $dataGrid->setTitle('Persons');
-        $dataGrid->setRowsPerPage(5);
+        $dataGrid->setItemsPerPage(5);
+        $dataGrid->setRowClickLink('/zfcDatagrid/example/edit');
         $dataGrid->setDataSource($this->getDataArray());
         
         $col = new Column\Standard('id');
@@ -84,6 +85,7 @@ class ExampleController extends AbstractActionController
         $col->setLabel('Birthday');
         $col->setWidth(10);
         $col->setType(new Type\Date());
+        $col->setUserSortDisabled(true);
         $dataGrid->addColumn($col);
         
         {
@@ -115,7 +117,7 @@ class ExampleController extends AbstractActionController
         /* @var $dataGrid \ZfcDatagrid\Datagrid */
         $dataGrid = $this->getServiceLocator()->get('zfcDatagrid');
         $dataGrid->setTitle('Persons');
-        $dataGrid->setRowsPerPage(5);
+        $dataGrid->setItemsPerPage(5);
         $dataGrid->setDataSource($this->getDataArray());
         
         $col = new Column\Standard('id');
@@ -154,10 +156,10 @@ class ExampleController extends AbstractActionController
     {
         $row = array(
             'id' => 1,
-            'displayName' => 'Very loooooong name..........',
-            'familyName' => 'Family',
-            'givenName' => '123',
-            'gender' => 'f',
+            'displayName' => 'Wayne? John!',
+            'familyName' => 'Wayne',
+            'givenName' => 'John',
+            'gender' => 'm',
             'age' => 35,
             'weight' => 50,
             'birthday' => '1987-10-03',
@@ -165,8 +167,9 @@ class ExampleController extends AbstractActionController
         );
         $row2 = array(
             'id' => 2,
-            'displayName' => 'Aaa',
-            'givenName' => 'Bbb',
+            'displayName' => 'Franz Ferdinand',
+            'familyName' => 'Ferdinand',
+            'givenName' => 'Franz',
             'gender' => 'm',
             'age' => 20,
             'weight' => 123.12222,
@@ -175,8 +178,9 @@ class ExampleController extends AbstractActionController
         );
         $row3 = array(
             'id' => 3,
-            'displayName' => 'Aaa',
-            'givenName' => 'Aaaa',
+            'displayName' => 'Peter Kaiser',
+            'familyName' => 'Kaiser',
+            'givenName' => 'Peter',
             'gender' => 'm',
             'age' => 23,
             'weight' => 70.23,
@@ -185,20 +189,21 @@ class ExampleController extends AbstractActionController
         );
         $row4 = array(
             'id' => 5,
-            'displayName' => 'Zzz',
-            'familyName' => 'Family',
-            'givenName' => '123',
-            'gender' => 'f',
-            'age' => 35,
-            'weight' => 50,
+            'displayName' => 'Martin Keckeis',
+            'familyName' => 'Keckeis',
+            'givenName' => 'Martin',
+            'gender' => 'm',
+            'age' => 25,
+            'weight' => 70,
             'birthday' => '1987-10-03',
             'changeDate' => '14:30:41 19.04.01'
         );
         $row5 = array(
             'id' => 5,
-            'displayName' => 'Aaa',
-            'givenName' => 'Ccc',
-            'gender' => 'm',
+            'displayName' => 'Anna Marie Franz',
+            'familyName' => 'Franz',
+            'givenName' => 'Anna Marie',
+            'gender' => 'f',
             'age' => 20,
             'weight' => 123.12222,
             'birthday' => '1981-01-31',
@@ -206,8 +211,9 @@ class ExampleController extends AbstractActionController
         );
         $row6 = array(
             'id' => 6,
-            'displayName' => 'Aaa',
-            'givenName' => 'Aaaa',
+            'displayName' => 'Sarah Blumenfeld',
+            'familyName' => 'Blumenfeld',
+            'givenName' => 'Sarah',
             'gender' => 'f',
             'age' => 23,
             'weight' => 70.23,
