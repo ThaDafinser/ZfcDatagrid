@@ -173,9 +173,10 @@ abstract class AbstractRenderer implements RendererInterface
         }
         $viewModel->setVariable('activeParameters', $activeParameters);
         
-//         $viewModel->setVariable('gridId', $grid->getGridId());
         $viewModel->setVariable('columns', $this->getColumns());
         $viewModel->setVariable('paginator', $this->getPaginator());
         $viewModel->setVariable('data', $this->getData());
+        
+        $viewModel->setVariable('rowClickLink', $grid->getRowClickLink());
     }
 }
