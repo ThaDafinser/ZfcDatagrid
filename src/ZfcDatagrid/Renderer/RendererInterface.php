@@ -1,10 +1,11 @@
 <?php
 namespace ZfcDatagrid\Renderer;
 
-use Zend\Stdlib\ResponseInterface;
-use Zend\Paginator\Paginator;
-use Zend\View\Model\ViewModel;
 use ZfcDatagrid\Datagrid;
+use Zend\Paginator\Paginator;
+use Zend\Mvc\MvcEvent;
+use Zend\View\Model\ViewModel;
+use Zend\Http\Response;
 
 interface RendererInterface
 {
@@ -28,9 +29,9 @@ interface RendererInterface
 
     /**
      *
-     * @param ResponseInterface $response            
+     * @param MvcEvent $mvcEvent            
      */
-    public function setResponse (ResponseInterface $response);
+    public function setMvcEvent (MvcEvent $mvcEvent);
 
     /**
      * Set the viewModel
@@ -45,7 +46,14 @@ interface RendererInterface
     public function prepareViewModel(Datagrid $grid);
     
     /**
+     * @return boolean
+     */
+    public function isExport();
+    
+    /**
      * Execute all...
+     * 
+     * @return ViewModel|Response\Stream
      */
     public function execute();
 }
