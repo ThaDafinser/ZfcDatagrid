@@ -18,10 +18,10 @@ Installation
 
 Test if it works
 --------
-* HTTP rendering 
+* HTTP rendering (browser output)
     * http://YOUR-PROJECT/zfcDatagrid/example/bootstrap
-* Console rendering
-    * go to: YOUR-PROJECT/public
+* Console rendering (run in console)
+    * cd YOUR-PROJECT/public/
     * php index.php show example grid
     * php index.php show example grid --page 2
 
