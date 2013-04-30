@@ -1,6 +1,7 @@
 <?php
 namespace ZfcDatagrid\Column;
 
+use ZfcDatagrid\Column\DataPopulation\Object;
 
 abstract class AbstractColumn implements ColumnInterface
 {
@@ -20,7 +21,7 @@ abstract class AbstractColumn implements ColumnInterface
     protected $type = null;
 
     protected $styles = array();
-    
+
     protected $width = 5;
 
     protected $isHidden = false;
@@ -32,13 +33,19 @@ abstract class AbstractColumn implements ColumnInterface
     protected $sortDefaults = array();
 
     protected $sortActive = null;
-    
+
     protected $translationEnabled = false;
 
     protected $replaceValues = array();
-    
+
     protected $notReplacedGetEmpty = true;
-    
+
+    /**
+     *
+     * @var DataPopulation\DataPopulationInterface
+     */
+    protected $dataPopulation;
+
     public function setLabel ($name)
     {
         $this->label = (string) $name;
@@ -127,22 +134,25 @@ abstract class AbstractColumn implements ColumnInterface
         return $this->type;
     }
 
-    public function addStyle(Style\AbstractStyle $style){
+    public function addStyle (Style\AbstractStyle $style)
+    {
         $this->styles[] = $style;
     }
-    
-    public function getStyles(){
+
+    public function getStyles ()
+    {
         return $this->styles;
     }
-    
-    public function hasStyles(){
-        if(count($this->styles) > 0){
+
+    public function hasStyles ()
+    {
+        if (count($this->styles) > 0) {
             return true;
         }
-    
+        
         return false;
     }
-    
+
     /**
      * Is the user allowed to do sort on this column?
      *
@@ -150,7 +160,7 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function setUserSortDisabled ($mode = true)
     {
-        $this->userSortEnabled = (bool) $mode;
+        $this->userSortEnabled = (bool) ! $mode;
     }
 
     /**
@@ -166,6 +176,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * The data will get sorted by this column (by default)
      * If will be changed by the user per request (POST,GET .
+     *
      *
      *
      * ..)
@@ -222,8 +233,9 @@ abstract class AbstractColumn implements ColumnInterface
         
         return false;
     }
-    
-    public function getSortActiveDirection(){
+
+    public function getSortActiveDirection ()
+    {
         return $this->sortActive;
     }
 
@@ -246,28 +258,59 @@ abstract class AbstractColumn implements ColumnInterface
     {
         return (bool) $this->translationEnabled;
     }
-    
+
     public function setReplaceValues (array $values, $notReplacedGetEmpty = true)
     {
         $this->replaceValues = $values;
         $this->notReplacedGetEmpty = (bool) $notReplacedGetEmpty;
     }
-    
+
     public function hasReplaceValues ()
     {
         if (count($this->replaceValues) > 0)
             return true;
-    
+        
         return false;
     }
-    
+
     public function getReplaceValues ()
     {
         return $this->replaceValues;
     }
-    
+
     public function notReplacedGetEmpty ()
     {
         return $this->notReplacedGetEmpty;
+    }
+
+    /**
+     *
+     * @param DataPopulation\DataPopulationInterface $dataPopulation            
+     */
+    public function setDataPopulation (DataPopulation\DataPopulationInterface $dataPopulation)
+    {
+        if($dataPopulation instanceof DataPopulation\Object && $dataPopulation->getObject() === null){
+            throw new \Exception('object is missing in DataPopulation\Object!');
+        }
+        
+        $this->dataPopulation = $dataPopulation;
+    }
+
+    /**
+     *
+     * @return DataPopulation\DataPopulationInterface
+     */
+    public function getDataPopulation ()
+    {
+        return $this->dataPopulation;
+    }
+
+    public function hasDataPopulation ()
+    {
+        if ($this->dataPopulation !== null) {
+            return true;
+        }
+        
+        return false;
     }
 }

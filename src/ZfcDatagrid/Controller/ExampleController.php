@@ -28,6 +28,28 @@ class ExampleController extends AbstractActionController
         $col->setIdentity();
         $dataGrid->addColumn($col);
         
+        {
+            /**
+             * Gravatar example
+             * - take the email from the datasource
+             * - object makes the rest :-)
+             * 
+             * @note Could be whatever you want -> Grab data from everywhere you want with dynamic parameters :-)
+             */
+            $colEmail = new Column\Standard('email');
+            $colEmail->setLabel('E-Mail');
+            $colEmail->setHidden();
+            
+            $dataPopulation = new Column\DataPopulation\Object();
+            $dataPopulation->setObject(new Column\DataPopulation\Object\Gravatar());
+            $dataPopulation->addObjectParameterColumn('email', $colEmail);
+            
+            $col = new Column\Image('avatar');
+            $col->setLabel('Avatar');
+            $col->setDataPopulation($dataPopulation);
+            $dataGrid->addColumn($col);
+        }
+        
         $col = new Column\Standard('displayName');
         $col->setLabel('Displayname');
         $col->setWidth(25);
@@ -45,6 +67,8 @@ class ExampleController extends AbstractActionController
         $col->setWidth(15);
         $col->setSortDefault(2, 'DESC');
         $dataGrid->addColumn($col);
+        
+        $dataGrid->addColumn($colEmail);
         
         $col = new Column\Standard('gender');
         $col->setLabel('Gender');
@@ -159,6 +183,7 @@ class ExampleController extends AbstractActionController
             'displayName' => 'Wayne? John!',
             'familyName' => 'Wayne',
             'givenName' => 'John',
+            'email' => 'unknown@gmail.com',
             'gender' => 'm',
             'age' => 35,
             'weight' => 50,
@@ -170,6 +195,7 @@ class ExampleController extends AbstractActionController
             'displayName' => 'Franz Ferdinand',
             'familyName' => 'Ferdinand',
             'givenName' => 'Franz',
+            'email' => 'unknown@gmail.com',
             'gender' => 'm',
             'age' => 20,
             'weight' => 123.12222,
@@ -181,6 +207,7 @@ class ExampleController extends AbstractActionController
             'displayName' => 'Peter Kaiser',
             'familyName' => 'Kaiser',
             'givenName' => 'Peter',
+            'email' => 'unknown@test.com',
             'gender' => 'm',
             'age' => 23,
             'weight' => 70.23,
@@ -192,6 +219,7 @@ class ExampleController extends AbstractActionController
             'displayName' => 'Martin Keckeis',
             'familyName' => 'Keckeis',
             'givenName' => 'Martin',
+            'email' => 'martin.keckeis1@gmail.com',
             'gender' => 'm',
             'age' => 25,
             'weight' => 70,
@@ -203,6 +231,7 @@ class ExampleController extends AbstractActionController
             'displayName' => 'Anna Marie Franz',
             'familyName' => 'Franz',
             'givenName' => 'Anna Marie',
+            'email' => 'unknown@test.com',
             'gender' => 'f',
             'age' => 20,
             'weight' => 123.12222,
@@ -214,6 +243,7 @@ class ExampleController extends AbstractActionController
             'displayName' => 'Sarah Blumenfeld',
             'familyName' => 'Blumenfeld',
             'givenName' => 'Sarah',
+            'email' => 'unknown@test.com',
             'gender' => 'f',
             'age' => 23,
             'weight' => 70.23,

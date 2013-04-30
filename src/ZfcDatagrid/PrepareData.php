@@ -58,11 +58,27 @@ class PrepareData
             foreach ($this->getColumns() as $column) {
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */
                 
-                if (isset($row[$column->getUniqueId()])) {
-                    if ($column->isIdentity() === true) {
-                        $ids[] = $row[$column->getUniqueId()];
+                if (isset($row[$column->getUniqueId()]) && $column->isIdentity() === true) {
+                    $ids[] = $row[$column->getUniqueId()];
+                }
+                
+                /**
+                 * Maybe the data come not from another DataSource?
+                 */
+                if ($column->hasDataPopulation() === true) {
+                    // @todo improve the interface...
+                    $dataPopulation = $column->getDataPopulation();
+                    if ($dataPopulation instanceof Column\DataPopulation\Object) {
+                        
+                        foreach ($dataPopulation->getParameters() as $parameter) {
+                            $dataPopulation->setParameterValue($parameter['objectParameterName'], $row[$parameter['column']->getUniqueId()]);
+                        }
+                        $row[$column->getUniqueId()] = $dataPopulation->toString();
+                    } else {
+                        throw new \Exception('@todo');
                     }
                 }
+                
                 if (! isset($row[$column->getUniqueId()])) {
                     $row[$column->getUniqueId()] = '';
                 }
