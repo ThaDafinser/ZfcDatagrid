@@ -1,0 +1,278 @@
+<?php 
+use ZfcDatagrid\Column\Type;
+use ZfcDatagrid\Column\Style;
+/* @var $paginator \Zend\Paginator\Paginator */
+?>
+
+<div class="row-fluid">
+    <div class="span3">
+        <a href="#" class="btn btn-primary">Add new entry</a> 
+    </div>
+    
+    <div class="span6 text-center">
+        <?php if(isset($title)):?>
+            <h3><?= $this->escapeHtml($title); ?></h3>
+        <?php endif;?>
+    </div>
+    
+    <div class="span3 text-right">
+        <a class="hidden" href="<?= $this->url(null, 
+                array(),
+                array(
+                    'query' => array(
+                        $this->parameterNames['rendererType'] => 'tcpdf'
+                    )
+                ),
+                true
+            );?>" 
+            class="btn
+        ">
+            Download PDF
+        </a>
+        <a class="hidden" href="<?= $this->url(null, 
+                array(),
+                array(
+                    'query' => array(
+                        $this->parameterNames['rendererType'] => 'excel'
+                    )
+                ),
+                true
+            );?>" 
+            class="btn
+        ">
+            Download Excel
+        </a>
+        <a href="<?= $this->url(null, 
+                array(),
+                array(
+                    'query' => array(
+                        $this->parameterNames['rendererType'] => 'printPlain'
+                    )
+                ),
+                true
+            );?>" 
+            class="btn
+        ">
+            Print plain
+        </a>
+    </div>
+</div><!-- End title + actions -->
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <?php 
+            foreach($columns as $column){
+                /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+                $classes = array();
+                $styles = array();
+                
+                $id = $column->getUniqueId();
+                
+                $label = $this->translate($column->getLabel());
+                $width = $column->getWidth();
+                if($width != ''){
+                    $styles[] = 'width: '.$this->escapehtmlattr($width).'%';
+                }
+                
+                
+                if($column->isHidden() === true){
+                    $classes[] = 'hidden';
+                }
+                if($column->getType() instanceof Type\Number){
+                    $styles[] = 'text-align: right';
+                }
+                ?>
+                <th id="<?= $this->escapehtmlattr($id); ?>" class="<?= implode(',', $classes); ?>" style="<?= implode(';', $styles); ?>">
+                    
+                    <?php if($column->isUserSortEnabled() === true): 
+                        if($column->isSortActive() === true && $column->getSortActiveDirection() === 'ASC'){
+                            $direction = 'DESC';
+                        } else{
+                            $direction = 'ASC';
+                        }
+                    ?>
+                        <a href="<?= 
+                            $this->url(null, 
+                                array(),
+                                array(
+                                    'query' => array_merge($this->activeParameters, array(
+                                            $this->parameterNames['sortColumn'] => $column->getUniqueId(),
+                                            $this->parameterNames['sortDirection'] => $direction,
+                                        )
+                                    )
+                                ),
+                                true
+                            );?>
+                        ">
+                            <?= $this->escapeHtml($label); ?>
+                        </a>
+                    <?php else: ?>
+                        <?= $this->escapeHtml($label); ?>
+                    <?php endif; ?>
+                    
+                    <?php 
+                    if($column->isSortActive() === true){
+                        if($column->getSortActiveDirection() === 'ASC'):?>
+                            <i class="icon-arrow-down"></i>
+                        <?php else: ?>
+                            <i class="icon-arrow-up"></i>
+                        <?php endif;
+                    }
+                    ?>
+                </th>
+                <?php
+            }
+            ?>
+        </tr>
+    </thead><!-- END table header -->
+    
+    <tbody>
+        <?php foreach($data as $row): ?>
+            <?php if(isset($row['idConcated'])):?>
+                <tr id="<?= $this->escapehtmlattr($row['idConcated']); ?>">
+            <?php else:?>
+                <tr>
+            <?php endif; ?>
+            
+                <?php 
+                foreach($columns as $column){
+                    /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+
+                    $styles = array();
+                    $classes = array();
+                    
+                    if($column->isHidden() === true){
+                        $classes[] = 'hidden';
+                    }
+                    
+                    $type = $column->getType();
+                    if($type instanceof Type\Number){
+                        $styles[] = 'text-align: right';
+                    }
+                    
+                    if($column->hasStyles() === true){
+                        foreach($column->getStyles() as $style){
+                            /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
+                            if($style->isApply($row) === true){
+                                if ($style instanceof Style\Bold) {
+                                    $styles[] = 'font-weight: bold';
+                                } elseif($style instanceof Style\Color\Red){
+                                    $styles[] = 'color: red';
+                                } else{
+                                    throw new \Exception('Not defined yet: "'.get_class($style).'"');
+                                }
+                            }
+                        }
+                    }
+                    
+                    if(isset($row[$column->getUniqueId()])): ?>
+                        <td class="<?= implode(',', $classes); ?>" style="<?= implode(';', $styles); ?>">
+                            <?= $this->escapeHtml($row[$column->getUniqueId()]); ?>
+                        </td>
+                    <?php else: ?>
+                        <td class="<?= implode(',', $classes); ?>" style="<?= implode(';', $styles); ?>">
+                            &nbsp;
+                        </td>
+                    <?php endif; ?>
+                    
+                <?php
+                }
+                ?>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+<?php
+$pages = $paginator->getPages();
+?>
+<!-- Start Pagination -->
+<div class="row-fluid">
+    <div class="span4">
+        <?= $this->translate('Page').' '.$paginator->getCurrentPageNumber().' '.$this->translate('of').' '.$paginator->count(); ?>
+    </div>
+    <div class="span4">
+        <div class="pagination">
+            <ul>
+
+                <?php if($pages->current > 1):?>
+                    <li><a href="<?= 
+                            $this->url(null, 
+                                array(),
+                                array(
+                                    'query' => array_merge($this->activeParameters, array(
+                                            $this->parameterNames['currentPage'] => $pages->current - 1
+                                        )
+                                    )
+                                ),
+                                true
+                            );?>
+                        ">
+                            &laquo;
+                        </a>
+                    </li>
+                <?php else: ?>
+                    <li class="disabled">
+                        <a href="#">&laquo;</a>
+                    </li>
+                <?php endif;?>
+                
+                <?php foreach($pages->pagesInRange as $page):?>
+                    <?php 
+                    $add = '';
+                    if($pages->current === $page){
+                        $add = 'class="active"';
+                    }
+                    
+                    if($pages->current != $page){
+                        $url = $this->url($this->matchedRouteName, 
+                            array(),
+                            array(
+                                'query' => array_merge($this->activeParameters, array(
+                                        $this->parameterNames['currentPage'] => $page
+                                    )
+                                )
+                            ),
+                            true
+                        );
+                    } else{
+                        $url = '#';
+                    }
+                    ?>
+                    <li <?= $add; ?>>
+                        <a href="<?= $url; ?>">
+                            <?= $page; ?>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+                
+                <?php if($pages->current < $pages->pageCount): ?>
+                    <li>
+                        <a href="<?= 
+                            $this->url($this->matchedRouteName, 
+                                array(),
+                                array(
+                                    'query' => array_merge($this->activeParameters, array(
+                                            $this->parameterNames['currentPage'] => $pages->current + 1
+                                        )
+                                    )
+                                ),
+                                true
+                            );?>
+                        ">&raquo;</a>
+                    </li>
+                    
+                <?php else: ?>
+                    <li class="disabled">
+                        <a href="#">&raquo;</a>
+                    </li>
+                <?php endif;?>
+                
+            </ul>
+        </div>
+    </div>
+    <div class="span4 text-right">
+        <?= $this->translate('Showing').' '.$paginator->getCurrentItemCount().' '.$this->translate('of').' '.$paginator->getTotalItemCount().' '.$this->translate('items'); ?>
+    </div>
+</div><!-- End Pagination -->
