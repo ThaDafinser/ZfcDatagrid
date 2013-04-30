@@ -53,42 +53,109 @@ https://github.com/ThaDafinser/ZfcDatagrid/blob/master/src/ZfcDatagrid/Controlle
 
 Preview:
 ```PHP
-namespace MyModule\Controller;
+<?php
+namespace ZfcDatagrid\Controller;
+
+use Zend\Mvc\Controller\AbstractActionController;
+use ZfcDatagrid\Renderer\AbstractRenderer;
+use ZfcDatagrid\Column;
+use ZfcDatagrid\Column\Type;
+use ZfcDatagrid\Column\Style;
 
 class ExampleController extends AbstractActionController
 {
 
-    public function listAction ()
+    /**
+     * Simple bootstrap table
+     *
+     * @return \ZfcDatagrid\Controller\ViewModel
+     */
+    public function bootstrapAction ()
     {
-        $queryBuilder = new \Doctrine\ORM\QueryBuilder();
-        //@todo write the query
+        /* @var $dataGrid \ZfcDatagrid\Datagrid */
+        $dataGrid = $this->getServiceLocator()->get('zfcDatagrid');
+        $dataGrid->setTitle('Persons');
+        $dataGrid->setRowsPerPage(5);
+        $dataGrid->setDataSource($this->getDataArray());
         
-        $dataGrid = $this->getServiceLocator()->get('ZfcDatagrid');
-        
-        $dataGrid->setTitle('Title test');
-        $dataGrid->setDataSource($queryBuilder);
-        
-        $col = new \ZfcDatagrid\Column\Standard('id', 'a');
+        $col = new Column\Standard('id');
+        $col->setIdentity();
         $dataGrid->addColumn($col);
         
-        $col = new \ZfcDatagrid\Column\Standard('displayName', 'a');
+        $col = new Column\Standard('displayName');
         $col->setLabel('Displayname');
-        $col->setWidth(50);
+        $col->setWidth(25);
+        $col->setSortDefault(1, 'ASC');
+        $col->addStyle(new Style\Bold());
         $dataGrid->addColumn($col);
         
-        $col = new \ZfcDatagrid\Column\Standard('familyName', 'a');
+        $col = new Column\Standard('familyName');
         $col->setLabel('Familyname');
-        $col->setWidth(25);
+        $col->setWidth(15);
         $dataGrid->addColumn($col);
         
-        $col = new \ZfcDatagrid\Column\Standard('givenName', 'a');
+        $col = new Column\Standard('givenName');
         $col->setLabel('Givenname');
-        $col->setWidth(25);
+        $col->setWidth(15);
+        $col->setSortDefault(2, 'DESC');
         $dataGrid->addColumn($col);
+        
+        $col = new Column\Standard('gender');
+        $col->setLabel('Gender');
+        $col->setWidth(10);
+        $col->setReplaceValues(array(
+            'm' => 'male',
+            'f' => 'female'
+        ));
+        $col->setTranslationEnabled(true);
+        $dataGrid->addColumn($col);
+        
+        {
+            $col = new Column\Standard('age');
+            $col->setLabel('Age');
+            $col->setWidth(5);
+            $col->setType(new Type\Number());
+            
+            $style = new Style\Color\Red();
+            $style->setByValue($col, 20);
+            $col->addStyle($style);
+            
+            $dataGrid->addColumn($col);
+        }
+        
+        {
+            $colType = new Type\Number();
+            $colType->addAttribute(\NumberFormatter::FRACTION_DIGITS, 2);
+            $colType->setSuffix(' kg');
+            
+            $col = new Column\Standard('weight');
+            $col->setLabel('Weight');
+            $col->setWidth(10);
+            $col->setType($colType);
+            $dataGrid->addColumn($col);
+        }
+        
+        $col = new Column\Standard('birthday');
+        $col->setLabel('Birthday');
+        $col->setWidth(10);
+        $col->setType(new Type\Date());
+        $dataGrid->addColumn($col);
+        
+        {
+            $colType = new Type\Date('H:i:s d.m.y', \IntlDateFormatter::MEDIUM, \IntlDateFormatter::MEDIUM);
+            $colType->setSourceTimezone('Europe/Vienna');
+            $colType->setOutputTimezone('UTC');
+            
+            $col = new Column\Standard('changeDate');
+            $col->setLabel('Last change');
+            $col->setWidth(15);
+            $col->setType($colType);
+            $dataGrid->addColumn($col);
+        }
         
         $dataGrid->execute();
-
-        return $dataGrid->getViewModel();
+        
+        return $dataGrid->getResponse();
     }
 }
 ```
