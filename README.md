@@ -34,9 +34,13 @@ Features
 * extending the service
 * ...TBD
 
-Example
+Examples
 ===========
 
+Examples will be provided here:
+https://github.com/ThaDafinser/ZfcDatagrid/blob/master/src/ZfcDatagrid/Controller/ExampleController.php
+
+Preview:
 ```PHP
 namespace MyModule\Controller;
 
