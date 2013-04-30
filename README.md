@@ -77,7 +77,7 @@ class ExampleController extends AbstractActionController
         /* @var $dataGrid \ZfcDatagrid\Datagrid */
         $dataGrid = $this->getServiceLocator()->get('zfcDatagrid');
         $dataGrid->setTitle('Persons');
-        $dataGrid->setRowsPerPage(5);
+        $dataGrid->setItemsPerPage(5);
         $dataGrid->setDataSource($this->getDataArray());
         
         $col = new Column\Standard('id');
