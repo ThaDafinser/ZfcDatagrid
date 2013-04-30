@@ -14,9 +14,9 @@ Next steps
 Features
 ===========
 * different datasources: 
+    * [DONE] php arrays
     * Zend\Sql\Select
     * Doctrine\ORM\QueryBuilder
-    * [DONE] php arrays
     * ...
 * [DONE] pagination
 * output formats: 
@@ -27,8 +27,13 @@ Features
     * tcPDF
     * PHPExcel
     * ...
-* [DONE] different column types and formatters
+* [DONE] different column types
+    * [DONE] DateTime
+    * [DONE] Number
+    * [DONE] String
 * [DONE] styling the data output by column and/or value
+    * [DONE] bold
+    * [DONE] color red
 * custom views/templates possible
 * custom configuration
 * extending the service
