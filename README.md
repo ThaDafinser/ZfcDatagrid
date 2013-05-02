@@ -21,7 +21,8 @@ Create the folder: `data/ZfcDatagrid`
 Test if it works
 --------
 * HTTP rendering (browser output)
-    * http://YOUR-PROJECT/zfcDatagrid/example/bootstrap
+    * http://YOUR-PROJECT/zfcDatagrid/person/bootstrap (PhpArray)
+    * http://YOUR-PROJECT/zfcDatagrid/personDoctrine2/bootstrap (Doctrine2)
 * Console rendering (run in console)
     * cd YOUR-PROJECT/public/
     * php index.php show example grid
