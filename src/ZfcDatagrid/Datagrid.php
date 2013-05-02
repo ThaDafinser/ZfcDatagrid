@@ -4,7 +4,6 @@ namespace ZfcDatagrid;
 use ZfcDatagrid\DataSource;
 use ZfcDatagrid\Renderer;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router;
 use Zend\Http\PhpEnvironment\Request as HttpRequest;
 use Zend\Console\Request as ConsoleRequest;
 use Zend\View\Model\ViewModel;
@@ -16,6 +15,7 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Cache;
 use Zend\Session\Container as SessionContainer;
+use Zend\Db\Sql\Select as ZendSelect;
 
 class Datagrid implements ServiceLocatorAwareInterface
 {
@@ -326,6 +326,13 @@ class Datagrid implements ServiceLocatorAwareInterface
             $this->dataSource = new DataSource\Doctrine2($data);
         } elseif (is_array($data)) {
             $this->dataSource = new DataSource\PhpArray($data);
+        } elseif ($data instanceof ZendSelect) {
+            $args = func_get_args();
+            if(count($args) === 1 || (!$args[1] instanceof \Zend\Db\Adapter\Adapter && !$args[1] instanceof \Zend\Db\Sql\Sql)){
+                throw new \Exception('The $adapterOrSqlObject is missing');
+            }
+            $this->dataSource = new DataSource\ZendSelect($data);
+            $this->dataSource->setAdapter($args[1]);
         } else {
             throw new \Exception('$data must implement the interface ZfcDatagrid\DataSource\DataSourceInterface');
         }
@@ -642,7 +649,10 @@ class Datagrid implements ServiceLocatorAwareInterface
             /* @var $currentItems \ArrayIterator */
             $data = $this->paginator->getCurrentItems();
             if (! is_array($data)) {
-                if ($data instanceof ArrayIterator) {
+                if ($data instanceof \Zend\Db\ResultSet\ResultSet) {
+                    $data = $data->toArray();
+                }
+                elseif ($data instanceof ArrayIterator) {
                     $data = $data->getArrayCopy();
                 } else {
                     $add = '';

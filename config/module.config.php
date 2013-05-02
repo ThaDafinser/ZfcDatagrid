@@ -1,5 +1,72 @@
 <?php
 return array(
+    'zfcDatagrid_dbAdapter' => array(
+        'driver' => 'Pdo_Sqlite',
+        'database' => 'data/ZfcDatagrid/testDb.sqlite'
+    ),
+    
+    'doctrine' => array(
+        'connection' => array(
+            'orm_zfcDatagrid' => array(
+                'driverClass' => 'Doctrine\DBAL\Driver\PDOSqlite\Driver',
+                'params' => array(
+                    'charset' => 'utf8',
+                    'path' => 'data/ZfcDatagrid/testDb.sqlite'
+                )
+            )
+        ),
+        
+        'configuration' => array(
+            'orm_zfcDatagrid' => array(
+                'metadata_cache' => 'array',
+                'query_cache' => 'array',
+                'result_cache' => 'array',
+                'driver' => 'orm_zfcDatagrid',
+                'generate_proxies' => true,
+                'proxy_dir' => 'data/ZfcDatagrid/Proxy',
+                'proxy_namespace' => 'ZfcDatagrid\Proxy',
+                'filters' => array()
+            )
+        ),
+        
+        'driver' => array(
+            'ZfcDatagrid_Driver' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(
+                    __DIR__ . '/../src/ZfcDatagrid/Examples/Entity'
+                )
+            ),
+            
+            'orm_zfcDatagrid' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\DriverChain',
+                'drivers' => array(
+                    'ZfcDatagrid\Examples\Entity' => 'ZfcDatagrid_Driver'
+                )
+            )
+        ),
+        
+        // now you define the entity manager configuration
+        'entitymanager' => array(
+            // This is the alternative config
+            'orm_zfcDatagrid' => array(
+                'connection' => 'orm_zfcDatagrid',
+                'configuration' => 'orm_zfcDatagrid'
+            )
+        ),
+        
+        'eventmanager' => array(
+            'orm_crawler' => array()
+        ),
+        
+        'sql_logger_collector' => array(
+            'orm_crawler' => array()
+        ),
+        
+        'entity_resolver' => array(
+            'orm_crawler' => array()
+        )
+    ),
     
     'ZfcDatagrid' => array(
         
@@ -43,10 +110,12 @@ return array(
      */
     'controllers' => array(
         'invokables' => array(
-            'ZfcDatagrid\Controller\Example' => 'ZfcDatagrid\Controller\ExampleController'
+            'ZfcDatagrid\Examples\Controller\Person' => 'ZfcDatagrid\Examples\Controller\PersonController',
+            'ZfcDatagrid\Examples\Controller\PersonDoctrine2' => 'ZfcDatagrid\Examples\Controller\PersonDoctrine2Controller',
+            'ZfcDatagrid\Examples\Controller\PersonZend' => 'ZfcDatagrid\Examples\Controller\PersonZendController'
         )
     ),
-
+    
     'router' => array(
         'routes' => array(
             'ZfcDatagrid' => array(
@@ -54,9 +123,9 @@ return array(
                 'options' => array(
                     'route' => '/zfcDatagrid',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'ZfcDatagrid\Controller',
-                        'controller' => 'Example',
-                        'action' => 'index'
+                        '__NAMESPACE__' => 'ZfcDatagrid\Examples\Controller',
+                        'controller' => 'person',
+                        'action' => 'bootstrap'
                     )
                 ),
                 
@@ -97,9 +166,9 @@ return array(
             'routes' => array(
                 'ZfcDatagrid' => array(
                     'options' => array(
-                        'route' => 'show example grid [--page=]',
+                        'route' => 'datagrid person [--page=]',
                         'defaults' => array(
-                            'controller' => 'ZfcDatagrid\Controller\Example',
+                            'controller' => 'ZfcDatagrid\Examples\Controller\Person',
                             'action' => 'console'
                         )
                     )

@@ -47,7 +47,7 @@ class Date implements TypeInterface
      * @param string $sourceTimezone            
      * @param string $outputTimezone            
      */
-    public function __construct ($sourceDateTimeFormat = 'Y-m-d', $outputDateType = IntlDateFormatter::MEDIUM, $outputTimeType = IntlDateFormatter::NONE, $locale = null, $sourceTimezone = 'UTC', $outputTimezone = null)
+    public function __construct ($sourceDateTimeFormat = 'Y-m-d H:i:s', $outputDateType = IntlDateFormatter::MEDIUM, $outputTimeType = IntlDateFormatter::NONE, $locale = null, $sourceTimezone = 'UTC', $outputTimezone = null)
     {
         $this->sourceDateTimeFormat = $sourceDateTimeFormat;
         $this->outputDateType = $outputDateType;

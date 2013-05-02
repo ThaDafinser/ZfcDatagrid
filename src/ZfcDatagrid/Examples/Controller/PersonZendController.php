@@ -1,13 +1,12 @@
 <?php
-namespace ZfcDatagrid\Controller;
+namespace ZfcDatagrid\Examples\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use ZfcDatagrid\Renderer\AbstractRenderer;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Type;
 use ZfcDatagrid\Column\Style;
 
-class ExampleController extends AbstractActionController
+class PersonZendController extends AbstractActionController
 {
 
     /**
@@ -17,14 +16,19 @@ class ExampleController extends AbstractActionController
      */
     public function bootstrapAction ()
     {
+        /* @var $dbAdapter \Zend\Db\Adapter\Adapter */
+        $dbAdapter = $this->getServiceLocator()->get('zfcDatagrid_dbAdapter');
+        
         /* @var $dataGrid \ZfcDatagrid\Datagrid */
         $dataGrid = $this->getServiceLocator()->get('zfcDatagrid');
         $dataGrid->setTitle('Persons');
         $dataGrid->setItemsPerPage(5);
         $dataGrid->setRowClickLink('/zfcDatagrid/example/edit');
-        $dataGrid->setDataSource($this->getDataArray());
+        $dataGrid->setDataSource($this->getServiceLocator()
+            ->get('zfcDatagrid.examples.data.zendSelect')
+            ->getPersons(), $dbAdapter);
         
-        $col = new Column\Standard('id');
+        $col = new Column\Standard('id', 'p');
         $col->setIdentity();
         $dataGrid->addColumn($col);
         
@@ -33,10 +37,10 @@ class ExampleController extends AbstractActionController
              * Gravatar example
              * - take the email from the datasource
              * - object makes the rest :-)
-             * 
+             *
              * @note Could be whatever you want -> Grab data from everywhere you want with dynamic parameters :-)
              */
-            $colEmail = new Column\Standard('email');
+            $colEmail = new Column\Standard('email', 'p');
             $colEmail->setLabel('E-Mail');
             $colEmail->setHidden();
             
@@ -50,19 +54,19 @@ class ExampleController extends AbstractActionController
             $dataGrid->addColumn($col);
         }
         
-        $col = new Column\Standard('displayName');
+        $col = new Column\Standard('displayName', 'p');
         $col->setLabel('Displayname');
         $col->setWidth(25);
         $col->setSortDefault(1, 'ASC');
         $col->addStyle(new Style\Bold());
         $dataGrid->addColumn($col);
         
-        $col = new Column\Standard('familyName');
+        $col = new Column\Standard('familyName', 'p');
         $col->setLabel('Familyname');
         $col->setWidth(15);
         $dataGrid->addColumn($col);
         
-        $col = new Column\Standard('givenName');
+        $col = new Column\Standard('givenName', 'p');
         $col->setLabel('Givenname');
         $col->setWidth(15);
         $col->setSortDefault(2, 'DESC');
@@ -70,7 +74,7 @@ class ExampleController extends AbstractActionController
         
         $dataGrid->addColumn($colEmail);
         
-        $col = new Column\Standard('gender');
+        $col = new Column\Standard('gender', 'p');
         $col->setLabel('Gender');
         $col->setWidth(10);
         $col->setReplaceValues(array(
@@ -81,7 +85,7 @@ class ExampleController extends AbstractActionController
         $dataGrid->addColumn($col);
         
         {
-            $col = new Column\Standard('age');
+            $col = new Column\Standard('age', 'p');
             $col->setLabel('Age');
             $col->setWidth(5);
             $col->setType(new Type\Number());
@@ -98,14 +102,14 @@ class ExampleController extends AbstractActionController
             $colType->addAttribute(\NumberFormatter::FRACTION_DIGITS, 2);
             $colType->setSuffix(' kg');
             
-            $col = new Column\Standard('weight');
+            $col = new Column\Standard('weight', 'p');
             $col->setLabel('Weight');
             $col->setWidth(10);
             $col->setType($colType);
             $dataGrid->addColumn($col);
         }
         
-        $col = new Column\Standard('birthday');
+        $col = new Column\Standard('birthday', 'p');
         $col->setLabel('Birthday');
         $col->setWidth(10);
         $col->setType(new Type\Date());
@@ -113,11 +117,11 @@ class ExampleController extends AbstractActionController
         $dataGrid->addColumn($col);
         
         {
-            $colType = new Type\Date('H:i:s d.m.y', \IntlDateFormatter::MEDIUM, \IntlDateFormatter::MEDIUM);
+            $colType = new Type\Date('Y-m-d H:i:s', \IntlDateFormatter::MEDIUM, \IntlDateFormatter::MEDIUM);
             $colType->setSourceTimezone('Europe/Vienna');
             $colType->setOutputTimezone('UTC');
             
-            $col = new Column\Standard('changeDate');
+            $col = new Column\Standard('changeDate', 'p');
             $col->setLabel('Last change');
             $col->setWidth(15);
             $col->setType($colType);
@@ -142,7 +146,9 @@ class ExampleController extends AbstractActionController
         $dataGrid = $this->getServiceLocator()->get('zfcDatagrid');
         $dataGrid->setTitle('Persons');
         $dataGrid->setItemsPerPage(5);
-        $dataGrid->setDataSource($this->getDataArray());
+        $dataGrid->setDataSource($this->getServiceLocator()
+            ->get('zfcDatagrid.examples.data.zendSelect')
+            ->getPersons());
         
         $col = new Column\Standard('id');
         $col->setIdentity();
@@ -174,92 +180,5 @@ class ExampleController extends AbstractActionController
         $dataGrid->execute();
         
         return $dataGrid->getResponse();
-    }
-
-    private function getDataArray ()
-    {
-        $row = array(
-            'id' => 1,
-            'displayName' => 'Wayne? John!',
-            'familyName' => 'Wayne',
-            'givenName' => 'John',
-            'email' => 'unknown@gmail.com',
-            'gender' => 'm',
-            'age' => 35,
-            'weight' => 50,
-            'birthday' => '1987-10-03',
-            'changeDate' => '14:30:41 19.04.01'
-        );
-        $row2 = array(
-            'id' => 2,
-            'displayName' => 'Franz Ferdinand',
-            'familyName' => 'Ferdinand',
-            'givenName' => 'Franz',
-            'email' => 'unknown@gmail.com',
-            'gender' => 'm',
-            'age' => 20,
-            'weight' => 123.12222,
-            'birthday' => '1981-01-31',
-            'changeDate' => '22:30:41 31.12.99'
-        );
-        $row3 = array(
-            'id' => 3,
-            'displayName' => 'Peter Kaiser',
-            'familyName' => 'Kaiser',
-            'givenName' => 'Peter',
-            'email' => 'unknown@test.com',
-            'gender' => 'm',
-            'age' => 23,
-            'weight' => 70.23,
-            'birthday' => '1991-10-03',
-            'changeDate' => '09:30:41 19.04.13'
-        );
-        $row4 = array(
-            'id' => 5,
-            'displayName' => 'Martin Keckeis',
-            'familyName' => 'Keckeis',
-            'givenName' => 'Martin',
-            'email' => 'martin.keckeis1@gmail.com',
-            'gender' => 'm',
-            'age' => 25,
-            'weight' => 70,
-            'birthday' => '1987-10-03',
-            'changeDate' => '14:30:41 19.04.01'
-        );
-        $row5 = array(
-            'id' => 5,
-            'displayName' => 'Anna Marie Franz',
-            'familyName' => 'Franz',
-            'givenName' => 'Anna Marie',
-            'email' => 'unknown@test.com',
-            'gender' => 'f',
-            'age' => 20,
-            'weight' => 123.12222,
-            'birthday' => '1981-01-31',
-            'changeDate' => '22:30:41 31.12.99'
-        );
-        $row6 = array(
-            'id' => 6,
-            'displayName' => 'Sarah Blumenfeld',
-            'familyName' => 'Blumenfeld',
-            'givenName' => 'Sarah',
-            'email' => 'unknown@test.com',
-            'gender' => 'f',
-            'age' => 23,
-            'weight' => 70.23,
-            'birthday' => '1991-10-03',
-            'changeDate' => '09:30:41 19.04.13'
-        );
-        
-        $data = array(
-            $row,
-            $row2,
-            $row3,
-            $row4,
-            $row5,
-            $row6
-        );
-        
-        return $data;
     }
 }
