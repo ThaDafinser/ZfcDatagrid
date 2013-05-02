@@ -221,8 +221,8 @@ class PersonController extends AbstractActionController
 
     /**
      * Usage
-     * php index.php show example grid --page 1
-     * php index.php show example grid --page 2
+     * php index.php datagrid person
+     * php index.php datagrid person --page 2
      *
      * @return \Zend\Http\Response\Stream
      */
