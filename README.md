@@ -83,7 +83,7 @@ Examples
 ===========
 
 Examples will be provided here:
-https://github.com/ThaDafinser/ZfcDatagrid/blob/master/src/ZfcDatagrid/Examples/Controller/PersonController.php
+https://github.com/ThaDafinser/ZfcDatagrid/blob/master/src/ZfcDatagrid/Examples/Controller/
 
 Preview:
 ```PHP
