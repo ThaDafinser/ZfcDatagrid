@@ -11,18 +11,30 @@
         "zf2",
         "Zend Framework"
     ],
+    
     "authors":     [
         {
             "name": "Martin Keckeis",
             "email": "martin.keckeis1@gmail.com"
         }
     ],
+    
     "minimum-stability": "dev",
+    
     "require": {
         "ext-intl": "*",
         "php": ">=5.3.3",
         "zendframework/zendframework": "~2.1"
     },
+    
+    "require-dev": {
+        "phpunit/PHPUnit": "3.7.*"
+    },
+    
+    "suggest" : {
+		"doctrine/doctrine-orm-module": ">=0.7"
+    },
+    
     "autoload": {
         "psr-0": {
             "ZfcDatagrid\\": "src/",
