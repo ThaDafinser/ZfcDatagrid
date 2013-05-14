@@ -24,6 +24,7 @@
 * datasources: 
     * php arrays
     * Doctrine\ORM\QueryBuilder
+    * Zend\Db\Sql\Select
 * external datasources
     * gravatar
 * pagination
