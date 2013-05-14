@@ -4,7 +4,7 @@
 * testing
 * ...
 
-## 0.3.0 (TBD):
+## 0.3.0 (work in progress):
 * exporting
     * PDF (tcpdf)
     * Excel (PHPExcel)
