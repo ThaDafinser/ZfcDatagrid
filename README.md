@@ -1,15 +1,14 @@
-Datagrid module for Zend Framework 2
-===========
+# Datagrid module for Zend Framework 2
 
 A datagrid for ZF2 where the data input and output can be whatever you want :-)
 
-WORK IN PROGRESS....
 
 
-Installation
---------
+## Installation
+### Create a new ZF2 project (optional)
 To get started with a ZF2 application, please see: http://framework.zend.com/manual/2.1/en/user-guide/skeleton-application.html
 
+### Composer
 Within your project, just do this 3 steps:
 ```sh
 php composer.phar require thadafinser/zfc-datagrid:dev-master
@@ -18,8 +17,7 @@ Add `ZfcDatagrid` to your `config/application.config.php`
 
 Create the folder: `data/ZfcDatagrid`
 
-Test if it works
---------
+### Test if it works
 * HTTP rendering (browser output)
     * http://YOUR-PROJECT/zfcDatagrid/person/bootstrap (PhpArray)
     * http://YOUR-PROJECT/zfcDatagrid/personDoctrine2/bootstrap (Doctrine2)
@@ -28,64 +26,19 @@ Test if it works
     * php index.php show example grid
     * php index.php show example grid --page 2
 
-Screenshots
---------
+## Current features
+See changelog: https://github.com/ThaDafinser/ZfcDatagrid/blob/master/CHANGELOG.md
+
+## Screenshots
 ![ScreenShot](https://raw.github.com/ThaDafinser/ZfcDatagrid/master/docs/screenshots/ZfcDatagrid_bootstrap.jpg)
 ![ScreenShot](https://raw.github.com/ThaDafinser/ZfcDatagrid/master/docs/screenshots/ZfcDatagrid_console.jpg)
 
-Features
-===========
-
-Currently available
---------
-* datasources: 
-    * php arrays
-    * Doctrine\ORM\QueryBuilder
-* pagination
-* output formats: 
-    * Bootstrap table
-    * plain array
-    * console
-* different column types
-    * DateTime
-    * Number
-    * String
-    * [WIP] custom objects as source (Gravatar)
-* styling the data output by column and/or value
-    * bold
-    * color red
-* custom views/templates possible
-* custom configuration
-* extending the service
-* ...
-
-TODO  List
---------
-* [WIP] filtering
-* datasources: 
-    * Zend\Sql\Select
-    * ...
-* output formats: 
-    * jqGrid
-    * tcPDF
-    * PHPExcel
-    * ...
-* different columns
-    * [WIP] Buttons / Icons / Links
-    * HTML
-    * Images
-* styling the data output by column and/or value
-    * italic
-    * more colors (yellow, green, ...)
-
-
-Examples
-===========
+## Examples
 
 Examples will be provided here:
 https://github.com/ThaDafinser/ZfcDatagrid/blob/master/src/ZfcDatagrid/Examples/Controller/
 
-Preview:
+## Code example
 ```PHP
 <?php
 namespace ZfcDatagrid\Examples\Controller;
@@ -274,10 +227,8 @@ class PersonController extends AbstractActionController
 
 ```
 
-Dependencies
-===========
-Required
---------
+# Dependencies
+## Required
 * PHP >= 5.3
 * PHP intl extension
 * ZF2
@@ -288,8 +239,7 @@ Required
     * Translator
 * Twitter Bootstrap (currently only output mode)
 
-Optional
---------
+## Optional
 * ZF2
 * Doctrine2 + DoctrineModule (if used as datasource)
 * 
