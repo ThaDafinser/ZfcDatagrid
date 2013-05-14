@@ -23,7 +23,6 @@ class PersonDoctrine2Controller extends AbstractActionController
         $dataGrid = $this->getServiceLocator()->get('zfcDatagrid');
         $dataGrid->setTitle('Persons');
         $dataGrid->setItemsPerPage(5);
-        $dataGrid->setRowClickLink('/zfcDatagrid/example/edit');
         $dataGrid->setDataSource($this->getServiceLocator()
             ->get('zfcDatagrid.examples.data.doctrine2')
             ->getPersons(), $dbAdapter);
@@ -89,6 +88,7 @@ class PersonDoctrine2Controller extends AbstractActionController
             $col->setLabel('Age');
             $col->setWidth(5);
             $col->setType(new Type\Number());
+            $col->setFilterDefaultValue('>=20');
             
             $style = new Style\Color\Red();
             $style->setByValue($col, 20);

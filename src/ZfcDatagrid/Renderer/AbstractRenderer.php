@@ -6,15 +6,15 @@ use Zend\View\Model\ViewModel;
 use Zend\Mvc\MvcEvent;
 use ZfcDatagrid\Datagrid;
 use Zend\I18n\Translator\Translator;
-
+use Zend\Stdlib\RequestInterface as Request;
 
 abstract class AbstractRenderer implements RendererInterface
 {
 
     protected $options = array();
-    
+
     protected $title;
-    
+
     /**
      *
      * @var Paginator
@@ -22,7 +22,7 @@ abstract class AbstractRenderer implements RendererInterface
     protected $paginator;
 
     protected $columns = array();
-    
+
     /**
      *
      * @var array
@@ -42,17 +42,16 @@ abstract class AbstractRenderer implements RendererInterface
     protected $viewModel;
 
     /**
-     * 
+     *
      * @var Translator
      */
     protected $translator;
-    
 
     public function setOptions (array $config)
     {
         $this->options = $config;
     }
-    
+
     /**
      *
      * @return array
@@ -61,17 +60,18 @@ abstract class AbstractRenderer implements RendererInterface
     {
         return $this->options;
     }
-    
+
     public function setPaginator (Paginator $paginator)
     {
         $this->paginator = $paginator;
     }
-    
+
     /**
-     * 
+     *
      * @return \Zend\Paginator\Paginator
      */
-    public function getPaginator(){
+    public function getPaginator ()
+    {
         return $this->paginator;
     }
 
@@ -79,11 +79,12 @@ abstract class AbstractRenderer implements RendererInterface
     {
         $this->columns = $columns;
     }
-    
-    public function getColumns(){
+
+    public function getColumns ()
+    {
         return $this->columns;
     }
-    
+
     /**
      * The prepared data
      *
@@ -94,28 +95,36 @@ abstract class AbstractRenderer implements RendererInterface
         $this->data = $data;
     }
 
-    public function getData(){
+    public function getData ()
+    {
         return $this->data;
     }
-    
+
     /**
      * Not used ATM...
+     *
      * @deprecated
-     * 
+     *
+     *
+     *
      * @see \ZfcDatagrid\Renderer\RendererInterface::setMvcEvent()
      */
     public function setMvcEvent (MvcEvent $mvcEvent)
     {
         $this->mvcEvent = $mvcEvent;
     }
-    
+
     /**
      * Not used ATM...
+     *
      * @deprecated
-     * 
+     *
+     *
+     *
      * @return MvcEvent
      */
-    public function getMvcEvent(){
+    public function getMvcEvent ()
+    {
         return $this->mvcEvent;
     }
 
@@ -123,29 +132,56 @@ abstract class AbstractRenderer implements RendererInterface
     {
         $this->viewModel = $viewModel;
     }
-    
+
     /**
-     * 
+     *
      * @return \Zend\View\Model\ViewModel
      */
-    public function getViewModel(){
+    public function getViewModel ()
+    {
         return $this->viewModel;
     }
-    
-    public function setTranslator(Translator $translator){
+
+    public function setTranslator (Translator $translator)
+    {
         $this->translator = $translator;
     }
-    
-    public function getTranslator(){
+
+    public function getTranslator ()
+    {
         return $this->translator;
     }
-    
-    public function setTitle($title){
+
+    public function setTitle ($title)
+    {
         $this->title = $title;
     }
-    
-    public function getTitle(){
+
+    public function getTitle ()
+    {
         return $this->title;
+    }
+
+    /**
+     *
+     * @param Request $request            
+     *
+     * @return array
+     */
+    public function getSortConditions (Request $request)
+    {
+        throw new \Exception('if the renderer is not for export, please implement this method: "getSortConditions()"!');
+    }
+
+    /**
+     *
+     * @param Request $request            
+     *
+     * @return array
+     */
+    public function getFilters (Request $request)
+    {
+        throw new \Exception('if the renderer is not for export, please implement this method! "getFilters()"');
     }
 
     /**
@@ -159,6 +195,9 @@ abstract class AbstractRenderer implements RendererInterface
     {
         $parameterNames = $this->getOptions()['parameters'];
         $viewModel = $this->viewModel;
+        
+        $viewModel->setVariable('gridId', $grid->getGridId());
+        
         $viewModel->setVariable('title', $this->getTitle());
         $viewModel->setVariable('parameterNames', $parameterNames);
         
@@ -177,6 +216,13 @@ abstract class AbstractRenderer implements RendererInterface
         $viewModel->setVariable('paginator', $this->getPaginator());
         $viewModel->setVariable('data', $this->getData());
         
-        $viewModel->setVariable('rowClickLink', $grid->getRowClickLink());
+        if ($grid->hasRowClickAction() === true) {
+            $viewModel->setVariable('rowClickLink', $grid->getRowClickAction()
+                ->getLink());
+        } else {
+            $viewModel->setVariable('rowClickLink', '#');
+        }
+        
+        $viewModel->setVariable('isUserFilterEnabled', $grid->isUserFilterEnabled());
     }
 }

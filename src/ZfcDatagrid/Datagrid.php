@@ -71,12 +71,18 @@ class Datagrid implements ServiceLocatorAwareInterface
 
     /**
      *
+     * @var Renderer\AbstractRenderer
+     */
+    private $renderer;
+
+    /**
+     *
      * @var Translator
      */
     protected $translator;
 
     protected $gridId;
-    
+
     /**
      * The grid title
      *
@@ -99,11 +105,11 @@ class Datagrid implements ServiceLocatorAwareInterface
     protected $columns = array();
 
     /**
-     * 
-     * @var string
+     *
+     * @var Column\Action\AbstractAction
      */
-    protected $rowClickLink = '#';
-    
+    protected $rowClickAction = null;
+
     /**
      * The prepared data
      *
@@ -122,6 +128,14 @@ class Datagrid implements ServiceLocatorAwareInterface
      * @var boolean
      */
     protected $isUserSortActive = false;
+
+    /**
+     *
+     * @var array
+     */
+    protected $filters = array();
+
+    protected $isUserFilterEnabled = true;
 
     /**
      *
@@ -168,14 +182,17 @@ class Datagrid implements ServiceLocatorAwareInterface
     {
         return $this->options;
     }
-    
-    public function setGridId($id = null){
-        if($id !== null){
-            $this->gridId = (string)$id;
+
+    public function setGridId ($id = null)
+    {
+        if ($id !== null) {
+            $this->gridId = (string) $id;
         }
     }
-    public function getGridId(){
-        if($this->gridId === null){
+
+    public function getGridId ()
+    {
+        if ($this->gridId === null) {
             $this->gridId = 'defaultGrid';
         }
         
@@ -230,7 +247,9 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function getCacheId ()
     {
         if ($this->cacheId === null) {
-            $this->cacheId = $this->getSession()->getManager()->getId().'_'.$this->getGridId();
+            $this->cacheId = $this->getSession()
+                ->getManager()
+                ->getId() . '_' . $this->getGridId();
         }
         
         return $this->cacheId;
@@ -328,7 +347,7 @@ class Datagrid implements ServiceLocatorAwareInterface
             $this->dataSource = new DataSource\PhpArray($data);
         } elseif ($data instanceof ZendSelect) {
             $args = func_get_args();
-            if(count($args) === 1 || (!$args[1] instanceof \Zend\Db\Adapter\Adapter && !$args[1] instanceof \Zend\Db\Sql\Sql)){
+            if (count($args) === 1 || (! $args[1] instanceof \Zend\Db\Adapter\Adapter && ! $args[1] instanceof \Zend\Db\Sql\Sql)) {
                 throw new \Exception('The $adapterOrSqlObject is missing');
             }
             $this->dataSource = new DataSource\ZendSelect($data);
@@ -358,7 +377,8 @@ class Datagrid implements ServiceLocatorAwareInterface
 
     /**
      * Set items per page (-1 for unlimited)
-     * @param integer $count
+     *
+     * @param integer $count            
      */
     public function setItemsPerPage ($count = 25)
     {
@@ -405,7 +425,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     }
 
     /**
-     * Set active sortBy (from cache f.x.)
+     * Set active sortBy (called for exmport from cache f.x.)
      *
      * @param array $sortBy            
      */
@@ -420,44 +440,29 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function getSortConditions ()
     {
+        if ($this->isExecuted() !== true) {
+            throw new \Exception('You need to call "execute()" first!');
+        }
+        
         if (count($this->sortConditions) > 0) {
             // set from cache! (for export)
             return $this->sortConditions;
         }
         
-        $sortConditions = array();
-        {
-            // @todo Check for GET/POST/..
-            $parameters = $this->getOptions()['parameters'];
-            
-            if ($this->getRequest() instanceof HttpRequest && $this->getRequest()->getQuery($parameters['sortColumn']) != '') {
-                $sortColumn = $this->getRequest()->getQuery($parameters['sortColumn']);
-                $sortDirection = $this->getRequest()->getQuery($parameters['sortDirection'], 'ASC');
-                if ($sortDirection != 'ASC' && $sortDirection != 'DESC') {
-                    $sortDirection = 'ASC';
-                }
-                
-                foreach ($this->getColumns() as $column) {
-                    /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-                    if ($column->getUniqueId() == $sortColumn) {
-                        $sortConditions[1] = array(
-                            'sortDirection' => $sortDirection,
-                            'column' => $column
-                        );
-                        
-                        $column->setSortActive(true, $sortDirection);
-                        
-                        $this->setUserSortActive(true);
-                    }
-                }
-            }
+        $renderer = $this->getRenderer();
+        $sortConditions = $renderer->getSortConditions($this->getRequest());
+        if (count($sortConditions) > 0) {
+            $this->setUserSortActive(true);
         }
         
         if (count($sortConditions) === 0) {
+            /**
+             * Get the default sort conditions defined for the columns
+             */
             foreach ($this->getColumns() as $column) {
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-                if ($column->hasSortDefaults() === true) {
-                    $sortDefaults = $column->getSortDefaults();
+                if ($column->hasSortDefault() === true) {
+                    $sortDefaults = $column->getSortDefault();
                     
                     $sortConditions[$sortDefaults['priority']] = array(
                         'sortDirection' => $sortDefaults['sortDirection'],
@@ -470,6 +475,8 @@ class Datagrid implements ServiceLocatorAwareInterface
             
             ksort($sortConditions);
         }
+        
+        $this->setSortConditions($sortConditions);
         
         return $sortConditions;
     }
@@ -484,19 +491,104 @@ class Datagrid implements ServiceLocatorAwareInterface
         return $this->isUserSortActive;
     }
 
+    public function setUserFilterDisabled ($mode = true)
+    {
+        $this->isUserFilterEnabled = (bool) ! $mode;
+    }
+
     /**
-     * Set the row click link - identity will be automatically appended!
-     * 
-     * @param string $link
+     *
+     * @return boolean
      */
-    public function setRowClickLink($link = '#'){
-        $this->rowClickLink = (string)$link;
+    public function isUserFilterEnabled ()
+    {
+        return (bool) $this->isUserFilterEnabled;
     }
-    
-    public function getRowClickLink(){
-        return $this->rowClickLink;
+
+    /**
+     * Set the filters from cache
+     *
+     * @param array $filters            
+     */
+    private function setFilters (array $filters)
+    {
+        $this->filters = $filters;
     }
-    
+
+    /**
+     *
+     * @return array
+     */
+    public function getFilters ()
+    {
+        if ($this->isExecuted() !== true) {
+            throw new \Exception('You need to call "execute()" first!');
+        }
+        
+        if (count($this->filters) > 0) {
+            // set from cache! (for export)
+            return $this->filters;
+        }
+        
+        $renderer = $this->getRenderer();
+        $filters = array();
+        $filters = $renderer->getFilters($this->getRequest());
+        // if (count($filters) > 0) {
+        // $this->setUserSortActive(true);
+        // }
+        
+        if (count($filters) === 0) {
+            if ($this->getRequest() instanceof ConsoleRequest || ($this->getRequest() instanceof HttpRequest && ! $this->getRequest()->isPost())) {
+                /**
+                 * Get the default filter conditions defined for the columns
+                 */
+                foreach ($this->getColumns() as $column) {
+                    /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+                    if ($column->hasFilterDefaultValue() === true) {
+                        
+                        $filter = new \ZfcDatagrid\Filter();
+                        $filter->setFromColumn($column, $column->getFilterDefaultValue());
+                        $filters[] = $filter;
+                        
+                        $column->setFilterActive(true, $filter->getDisplayValue());
+                    }
+                }
+            }
+        }
+        
+        $this->setFilters($filters);
+        
+        return $filters;
+    }
+
+    /**
+     * Set the row click action - identity will be automatically appended!
+     *
+     * @param Column\Action\AbstractAction $action            
+     */
+    public function setRowClickAction (Column\Action\AbstractAction $action)
+    {
+        $this->rowClickAction = $action;
+    }
+
+    /**
+     *
+     * @return null Column\Action\AbstractAction
+     */
+    public function getRowClickAction ()
+    {
+        return $this->rowClickAction;
+    }
+
+    public function hasRowClickAction ()
+    {
+        if (is_object($this->rowClickAction)) {
+            return true;
+        }
+        
+        return false;
+    }
+
     /**
      *
      * @return array
@@ -525,38 +617,44 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function getRenderer ()
     {
-        $options = $this->getOptions();
-        $parameterName = $options['parameters']['rendererType'];
-        
-        if ($this->getRequest() instanceof ConsoleRequest) {
-            $rendererName = $options['defaults']['renderer']['console'];
-        } else {
-            $rendererName = $options['defaults']['renderer']['http'];
-        }
-        if ($this->forceRenderer !== null) {
-            $rendererName = $this->forceRenderer;
-        } elseif ($this->getRequest() instanceof HttpRequest && $this->getRequest()->getQuery($parameterName) != '') {
-            $rendererName = $this->getRequest()->getQuery($parameterName);
-        }
-        
-        $rendererName = 'zfcDatagrid.renderer.' . $rendererName;
-        
-        if ($this->getServiceLocator()->has($rendererName) === true) {
-            /* @var $renderer \Zend\Paginator\Paginator */
-            $renderer = $this->getServiceLocator()->get($rendererName);
-            if (! $renderer instanceof Renderer\AbstractRenderer) {
-                throw new \Exception('Renderer service must implement "ZfcDatagrid\Renderer\AbstractRenderer"');
-            }
-            $renderer->setOptions($this->getOptions());
-            $renderer->setMvcEvent($this->getMvcEvent());
-            $renderer->setViewModel($this->getViewModel());
-            $renderer->setTranslator($this->getTranslator());
-            $renderer->setTitle($this->getTitle());
+        if ($this->renderer === null) {
             
-            return $renderer;
-        } else {
-            throw new \Exception('Renderer service was not found, please register it: "' . $rendererName . '"');
+            $options = $this->getOptions();
+            $parameterName = $options['parameters']['rendererType'];
+            
+            if ($this->getRequest() instanceof ConsoleRequest) {
+                $rendererName = $options['defaults']['renderer']['console'];
+            } else {
+                $rendererName = $options['defaults']['renderer']['http'];
+            }
+            if ($this->forceRenderer !== null) {
+                $rendererName = $this->forceRenderer;
+            } elseif ($this->getRequest() instanceof HttpRequest && $this->getRequest()->getQuery($parameterName) != '') {
+                $rendererName = $this->getRequest()->getQuery($parameterName);
+            }
+            
+            $rendererName = 'zfcDatagrid.renderer.' . $rendererName;
+            
+            if ($this->getServiceLocator()->has($rendererName) === true) {
+                /* @var $renderer \Zend\Paginator\Paginator */
+                $renderer = $this->getServiceLocator()->get($rendererName);
+                if (! $renderer instanceof Renderer\AbstractRenderer) {
+                    throw new \Exception('Renderer service must implement "ZfcDatagrid\Renderer\AbstractRenderer"');
+                }
+                $renderer->setOptions($this->getOptions());
+                $renderer->setMvcEvent($this->getMvcEvent());
+                $renderer->setViewModel($this->getViewModel());
+                $renderer->setTranslator($this->getTranslator());
+                $renderer->setTitle($this->getTitle());
+                $renderer->setColumns($this->getColumns());
+                
+                $this->renderer = $renderer;
+            } else {
+                throw new \Exception('Renderer service was not found, please register it: "' . $rendererName . '"');
+            }
         }
+        
+        return $this->renderer;
     }
 
     /**
@@ -578,6 +676,8 @@ class Datagrid implements ServiceLocatorAwareInterface
         
         $renderer = $this->getRenderer();
         
+        $this->isExecuted = true;
+        
         /**
          * Step 1) Apply needed columns + filters + sort
          * - from Request (HTML View) -> and save in cache for export
@@ -595,6 +695,7 @@ class Datagrid implements ServiceLocatorAwareInterface
              * ONLY FOR EXPORT!
              */
             if ($renderer->isExport() === true) {
+                $success = false;
                 $data = $this->getCache()->getItem($this->getCacheId(), $success);
                 if (! $success) {
                     throw new \Exception('Cache for export is missing...');
@@ -602,6 +703,7 @@ class Datagrid implements ServiceLocatorAwareInterface
                 $data = unserialize($data);
                 
                 $this->setSortConditions($data['sortConditions']);
+                $this->setFilters($data['filters']);
             }
             
             /**
@@ -614,14 +716,17 @@ class Datagrid implements ServiceLocatorAwareInterface
             /**
              * Step 1.4: Filtering
              */
-            $this->getDataSource()->addFilter();
+            foreach ($this->getFilters() as $filter) {
+                $this->getDataSource()->addFilter($filter);
+            }
             
             /**
-             * Step 1.5) Save cahe
+             * Step 1.5) Save it in cache
              */
             if ($renderer->isExport() === false) {
                 $data = array(
-                    'sortConditions' => $this->getSortConditions()
+                    'sortConditions' => $this->getSortConditions(),
+                    'filters' => $this->getFilters()
                 );
                 $this->getCache()->setItem($this->getCacheId(), serialize($data));
             }
@@ -651,8 +756,7 @@ class Datagrid implements ServiceLocatorAwareInterface
             if (! is_array($data)) {
                 if ($data instanceof \Zend\Db\ResultSet\ResultSet) {
                     $data = $data->toArray();
-                }
-                elseif ($data instanceof ArrayIterator) {
+                } elseif ($data instanceof ArrayIterator) {
                     $data = $data->getArrayCopy();
                 } else {
                     $add = '';
@@ -685,7 +789,6 @@ class Datagrid implements ServiceLocatorAwareInterface
          * Step 4) Render the data to the defined output format (HTML, PDF...)
          * - Styling the values based on column (and value)
          */
-        $renderer->setColumns($this->getColumns());
         $renderer->setPaginator($this->getPaginator());
         $renderer->setData($this->getPreparedData());
         $renderer->prepareViewModel($this);
@@ -715,12 +818,13 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function getCurrentPage ()
     {
         $parameterName = $this->getOptions()['parameters']['currentPage'];
+        
         if ($this->getRequest() instanceof HttpRequest) {
-            return $this->getRequest()->getQuery($parameterName, 1);
+            return $this->getRequest()->getPost($parameterName, $this->getRequest()
+                ->getQuery($parameterName, 1));
         } else {
             return $this->getRequest()->getParam($parameterName, 1);
         }
-        // return $this->getMvcEvent()->getRouteMatch()->getParam($parameterName, 1);
     }
 
     /**

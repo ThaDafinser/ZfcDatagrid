@@ -85,17 +85,17 @@ interface ColumnInterface
     public function setSortDefault ($priority = 1, $direction = 'ASC');
 
     /**
-     * Get the sort defaults
+     * Get the sort default
      * @return array
      */
-    public function getSortDefaults ();
+    public function getSortDefault ();
 
     /**
      * Does this column has sort defaults?
      * 
      * @return boolean
      */
-    public function hasSortDefaults ();
+    public function hasSortDefault ();
 
     /**
      * Enable data translation

@@ -1,6 +1,7 @@
 <?php
 namespace ZfcDatagrid\DataSource;
 
+use ZfcDatagrid\Filter;
 use Zend\Paginator\Adapter\ArrayAdapter as PaginatorAdapter;
 use ZfcDatagrid\Column\AbstractColumn;
 
@@ -12,6 +13,8 @@ class PhpArray implements DataSourceInterface
     private $columns = array();
 
     private $sortConditions = array();
+
+    private $filters = array();
 
     /**
      *
@@ -57,9 +60,13 @@ class PhpArray implements DataSourceInterface
 
     /**
      * Add a filter rule
+     *
+     * @param Filter $filter            
      */
-    public function addFilter ()
-    {}
+    public function addFilter (Filter $filter)
+    {
+        $this->filters[] = $filter;
+    }
 
     /**
      * Execute the query and set the paginator
@@ -102,6 +109,76 @@ class PhpArray implements DataSourceInterface
         /**
          * Step 3) Apply filters
          */
+        foreach ($this->filters as $filter) {
+            /* @var $filter \ZfcDatagrid\Filter */
+            if ($filter->isColumnFilter() === true) {
+                
+                $methodToFilter = 'isLike';
+                switch ($filter->getOperator()) {
+                    
+                    case Filter::LIKE:
+                        $methodToFilter = 'isLike';
+                        break;
+                    
+                    case Filter::LIKE_LEFT:
+                        $methodToFilter = 'isLikeLeft';
+                        break;
+                    
+                    case Filter::LIKE_RIGHT:
+                        $methodToFilter = 'isLikeRight';
+                        break;
+                    
+                    case Filter::NOT_LIKE:
+                        $methodToFilter = 'isNotLike';
+                        break;
+                    
+                    case Filter::NOT_LIKE_LEFT:
+                        $methodToFilter = 'isNotLikeLeft';
+                        break;
+                    
+                    case Filter::NOT_LIKE_RIGHT:
+                        $methodToFilter = 'isNotLikeRight';
+                        break;
+                    
+                    case Filter::EQUAL:
+                        $methodToFilter = 'isEqual';
+                        break;
+                    
+                    case Filter::NOT_EQUAL:
+                        $methodToFilter = 'isNotEqual';
+                        break;
+                    
+                    case Filter::GREATER_EQUAL:
+                        $methodToFilter = 'isGreaterEqual';
+                        break;
+                    
+                    case Filter::GREATER:
+                        $methodToFilter = 'isGreater';
+                        break;
+                    
+                    case Filter::LESS_EQUAL:
+                        $methodToFilter = 'isLessEqual';
+                        break;
+                    
+                    case Filter::LESS:
+                        $methodToFilter = 'isLess';
+                        break;
+                    
+                    case Filter::BETWEEN:
+                        $methodToFilter = 'isBetween';
+                        break;
+                    
+                    default:
+                        throw new \Exception('This operator is currently not supported: ' . $filter->getOperator());
+                        break;
+                }
+                
+                $data = array_filter($data, array(
+                    new PhpArray\Filter($filter->getColumn()->getUniqueId(), $filter->getValue()),
+                    $methodToFilter
+                ));
+            }
+        }
         
         /**
          * Step 4) Pagination

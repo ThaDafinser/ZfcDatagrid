@@ -23,7 +23,6 @@ class PersonZendController extends AbstractActionController
         $dataGrid = $this->getServiceLocator()->get('zfcDatagrid');
         $dataGrid->setTitle('Persons');
         $dataGrid->setItemsPerPage(5);
-        $dataGrid->setRowClickLink('/zfcDatagrid/example/edit');
         $dataGrid->setDataSource($this->getServiceLocator()
             ->get('zfcDatagrid.examples.data.zendSelect')
             ->getPersons(), $dbAdapter);

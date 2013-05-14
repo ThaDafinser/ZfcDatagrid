@@ -2,9 +2,11 @@
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Type;
 use ZfcDatagrid\Column\Style;
-/* @var $paginator \Zend\Paginator\Paginator */
 ?>
 
+<form name="form_<?= $this->gridId; ?>" method="post" action="<?= $this->url(null, array(), array(), true); ?>">
+    <input type="submit" class="hidden" name="hiddenSubmit" />
+    
 <div class="row-fluid">
     <div class="span3">
         <a href="#" class="btn btn-primary">Add new entry</a> 
@@ -60,11 +62,19 @@ use ZfcDatagrid\Column\Style;
 </div><!-- End title + actions -->
 
 <?php 
+
+$orderOnclick = 'document.forms[\'form_'.$this->gridId.'\'].elements[\'' . $this->parameterNames['sortColumn'] . '\'].value = \'%s\';';
+$orderOnclick .= 'document.forms[\'form_'.$this->gridId.'\'].elements[\'' . $this->parameterNames['sortDirection'] . '\'].value = \'%s\';';
+$orderOnclick.= 'document.forms[\'form_'.$this->gridId.'\'].submit(); return false;';
+
 $classes = array('table', 'table-striped', 'table-bordered');
 if($this->rowClickLink != '#'){
     $classes[] = 'table-hover';
 }
 ?>
+<input type="hidden" name="<?= $this->parameterNames['sortColumn']?>" />
+<input type="hidden" name="<?= $this->parameterNames['sortDirection']?>" />
+
 <table class="<?= implode(' ', $classes); ?>">
     <thead>
         <tr>
@@ -98,7 +108,7 @@ if($this->rowClickLink != '#'){
                         } else{
                             $direction = 'ASC';
                         }
-                    ?>
+                        ?>
                         <a href="<?= 
                             $this->url(null, 
                                 array(),
@@ -111,7 +121,7 @@ if($this->rowClickLink != '#'){
                                 ),
                                 true
                             );?>
-                        ">
+                        " onclick="<?= sprintf($orderOnclick, $column->getUniqueId(), $direction); ?>">
                             <?= $this->escapeHtml($label); ?>
                         </a>
                     <?php else: ?>
@@ -121,9 +131,9 @@ if($this->rowClickLink != '#'){
                     <?php 
                     if($column->isSortActive() === true){
                         if($column->getSortActiveDirection() === 'ASC'):?>
-                            <i class="icon-arrow-down"></i>
+                            <i class="icon-chevron-down"></i>
                         <?php else: ?>
-                            <i class="icon-arrow-up"></i>
+                            <i class="icon-chevron-up"></i>
                         <?php endif;
                     }
                     ?>
@@ -132,8 +142,35 @@ if($this->rowClickLink != '#'){
             }
             ?>
         </tr>
+        
+        <!-- User filters -->
+        <?php if($this->isUserFilterEnabled === true):?>
+            <tr>
+                <?php
+                foreach($this->columns as $column){
+                    /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+
+                    $classes = array();
+                    if($column->isHidden() === true){
+                        $classes[] = 'hidden';
+                    }
+                    
+                    $htmlFilter = '';
+                    if($column->isUserFilterEnabled() === true){
+                        $htmlFilter = '<input type="text" name="toolbarFilters['.$column->getUniqueId().']" style="width: 80%" value="'.$column->getFilterActiveValue().'" />';
+                    }
+                    ?>
+                    <td class="<?= implode(',', $classes); ?>">
+                        <?= $htmlFilter; ?>
+                    </td>
+                    <?php
+                }
+                ?>
+            </tr>
+        <?php endif; ?>
     </thead><!-- END table header -->
     
+    <!-- Start table BODY -->
     <tbody>
         <?php foreach($this->data as $row): ?>
             <?php if(isset($row['idConcated'])):?>
@@ -175,12 +212,23 @@ if($this->rowClickLink != '#'){
                     
                     if($column instanceof Column\Image){
                         $value = ' <a href="#" class="thumbnail"><img src="'.$this->escapeHtmlAttr($row[$column->getUniqueId()]).'" /></a>';
+                    } elseif($column instanceof Column\Action){
+                        $actions = array();
+                        foreach($column->getActions() as $action){
+                            $icon = '';
+                            if($action->hasIconClass() === true){
+                                $icon = '<i class="'.$action->getIconClass().'"></i>';
+                            }
+                            $actions[] = '<a class="btn" href="'.$action->getLink().'">' . $icon . ' ' . $action->getLabel() . '</a>';
+                        }
+                        
+                        $value = implode(' ', $actions);
                     } else{
                         $value = $this->escapeHtml($row[$column->getUniqueId()]);
                     }
                     
-                    if($this->rowClickLink != '#'){
-//                         $value = '<a href="'.$this->rowClickLink.'">'.$value.'</a>';
+                    if($column instanceof Column\Standard && $this->rowClickLink != '#'){
+                        $value = '<a href="'.$this->rowClickLink.'">'.$value.'</a>';
                     }
                     ?>
                     <td class="<?= implode(',', $classes); ?>" style="<?= implode(';', $styles); ?>">
@@ -197,6 +245,9 @@ if($this->rowClickLink != '#'){
 
 <?php
 $pages = $this->paginator->getPages();
+
+$paginatorOnclick = 'document.forms[\'form_'.$this->gridId.'\'].elements[\'' . $this->parameterNames['currentPage'] . '\'].value = %s;';
+$paginatorOnclick.= 'document.forms[\'form_'.$this->gridId.'\'].submit(); return false;';
 ?>
 <!-- Start Pagination -->
 <div class="row-fluid">
@@ -205,8 +256,10 @@ $pages = $this->paginator->getPages();
     </div>
     <div class="span4">
         <div class="pagination">
+        
+            <input type="hidden" name="<?= $this->parameterNames['currentPage']; ?>" value="<?= $pages->current; ?>" />
+            
             <ul>
-
                 <?php if($pages->current > 1):?>
                     <li><a href="<?= 
                             $this->url(null, 
@@ -219,7 +272,7 @@ $pages = $this->paginator->getPages();
                                 ),
                                 true
                             );?>
-                        ">
+                        "  onclick="<?= sprintf($paginatorOnclick, $pages->current - 1);?>">
                             &laquo;
                         </a>
                     </li>
@@ -252,7 +305,7 @@ $pages = $this->paginator->getPages();
                     }
                     ?>
                     <li <?= $add; ?>>
-                        <a href="<?= $url; ?>">
+                        <a href="<?= $url; ?>" onclick="<?= sprintf($paginatorOnclick, $page);?>">
                             <?= $page; ?>
                         </a>
                     </li>
@@ -271,7 +324,9 @@ $pages = $this->paginator->getPages();
                                 ),
                                 true
                             );?>
-                        ">&raquo;</a>
+                        " onclick="<?= sprintf($paginatorOnclick, $pages->current + 1);?>">
+                            &raquo;
+                        </a>
                     </li>
                     
                 <?php else: ?>
@@ -284,6 +339,7 @@ $pages = $this->paginator->getPages();
         </div>
     </div>
     <div class="span4 text-right">
-        <?= $this->translate('Showing').' '.$paginator->getCurrentItemCount().' '.$this->translate('of').' '.$paginator->getTotalItemCount().' '.$this->translate('items'); ?>
+        <?= $this->translate('Showing').' '.$this->paginator->getCurrentItemCount().' '.$this->translate('of').' '.$this->paginator->getTotalItemCount().' '.$this->translate('items'); ?>
     </div>
 </div><!-- End Pagination -->
+</form>

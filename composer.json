@@ -12,7 +12,7 @@
         "Zend Framework"
     ],
     
-    "authors":     [
+    "authors": [
         {
             "name": "Martin Keckeis",
             "email": "martin.keckeis1@gmail.com"
@@ -32,7 +32,9 @@
     },
     
     "suggest" : {
-		"doctrine/doctrine-orm-module": ">=0.7"
+		"doctrine/doctrine-orm-module": ">=0.7",
+		"codeplex/phpexcel": "~1.7",
+		"tecnick.com/tcpdf": "dev-master"
     },
     
     "autoload": {

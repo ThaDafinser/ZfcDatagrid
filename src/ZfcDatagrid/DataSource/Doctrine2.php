@@ -1,8 +1,9 @@
 <?php
 namespace ZfcDatagrid\DataSource;
 
+use ZfcDatagrid\Filter;
 use ZfcDatagrid\Datasource\Doctrine2Paginator as PaginatorAdapter;
-use ZfcDatagrid\Column\AbstractColumn;
+use ZfcDatagrid\Column;
 use Doctrine\ORM;
 use Doctrine\ORM\Query\Expr;
 
@@ -18,6 +19,8 @@ class Doctrine2 implements DataSourceInterface
     private $columns = array();
 
     private $sortConditions = array();
+
+    private $filters = array();
 
     /**
      * The data result
@@ -48,10 +51,10 @@ class Doctrine2 implements DataSourceInterface
     /**
      * Set sort conditions
      *
-     * @param AbstractColumn $column            
+     * @param Column\AbstractColumn $column            
      * @param string $sortDirection            
      */
-    public function addSortCondition (AbstractColumn $column, $sortDirection = 'ASC')
+    public function addSortCondition (Column\AbstractColumn $column, $sortDirection = 'ASC')
     {
         $this->sortConditions[] = array(
             'column' => $column,
@@ -61,9 +64,13 @@ class Doctrine2 implements DataSourceInterface
 
     /**
      * Add a filter rule
+     *
+     * @param Filter $filter            
      */
-    public function addFilter ()
-    {}
+    public function addFilter (Filter $filter)
+    {
+        $this->filters[] = $filter;
+    }
 
     public function execute ()
     {
@@ -74,7 +81,7 @@ class Doctrine2 implements DataSourceInterface
          */
         $selectColumns = array();
         foreach ($this->columns as $column) {
-            if (! $column->hasDataPopulation()) {
+            if ($column instanceof Column\Standard && ! $column->hasDataPopulation()) {
                 $colString = $column->getSelectPart1();
                 if ($column->getSelectPart2() != '') {
                     $colString .= '.' . $column->getSelectPart2();
@@ -103,12 +110,83 @@ class Doctrine2 implements DataSourceInterface
         /**
          * Step 3) Apply filters
          */
+        foreach ($this->filters as $filter) {
+            /* @var $filter \ZfcDatagrid\Filter */
+            if ($filter->isColumnFilter() === true) {
+                $values = $filter->getValue();
+                
+                $column = $filter->getColumn();
+                $colString = $column->getSelectPart1();
+                if ($column->getSelectPart2() != '') {
+                    $colString .= '.' . $column->getSelectPart2();
+                }
+                
+                switch ($filter->getOperator()) {
+                    
+                    case Filter::LIKE:
+                        $queryBuilder->expr()->like($colString, $queryBuilder->expr()->literal('%'. addcslashes($values[0], '_%') .'%') );
+                        break;
+                    
+                    case Filter::LIKE_LEFT:
+                        $queryBuilder->expr()->like($colString, $queryBuilder->expr()->literal('%'. addcslashes($values[0], '_%')) );
+                        break;
+                    
+                    case Filter::LIKE_RIGHT:
+                        $queryBuilder->expr()->like($colString, $queryBuilder->expr()->literal(addcslashes($values[0], '_%') .'%') );
+                        break;
+                    
+                    case Filter::NOT_LIKE:
+                        $queryBuilder->expr()->literal($colString. 'NOT LIKE \'%'.$values[0].'%\'');
+                        break;
+                    
+                    case Filter::NOT_LIKE_LEFT:
+                        $queryBuilder->expr()->literal($colString. 'NOT LIKE \'%'.$values[0].'\'');
+                        break;
+                    
+                    case Filter::NOT_LIKE_RIGHT:
+                        $queryBuilder->expr()->literal($colString. 'NOT LIKE \''.$values[0].'%\'');
+                        break;
+                    
+                    case Filter::EQUAL:
+                        $queryBuilder->expr()->eq($colString, $values[0]);
+                        break;
+                    
+                    case Filter::NOT_EQUAL:
+                        $queryBuilder->expr()->neq($colString, $values[0]);
+                        break;
+                    
+                    case Filter::GREATER_EQUAL:
+                        $queryBuilder->expr()->gte($colString, $values[0]);
+                        break;
+                    
+                    case Filter::GREATER:
+                        $queryBuilder->expr()->gt($colString, $values[0]);
+                        break;
+                    
+                    case Filter::LESS_EQUAL:
+                        $queryBuilder->expr()->lte($colString, $values[0]);
+                        break;
+                    
+                    case Filter::LESS:
+                        $queryBuilder->expr()->lt($colString, $values[0]);
+                        break;
+                    
+                    case Filter::BETWEEN:
+                        $queryBuilder->expr()->between($colString, $values[0], $values[1]);
+                        break;
+                    
+                    default:
+                        throw new \Exception('This operator is currently not supported: ' . $filter->getOperator());
+                        break;
+                }
+            }
+        }
         
         /**
          * Step 4) Pagination
          */
-//         echo $queryBuilder->getQuery()->getSQL();
-//         exit();
+        // echo $queryBuilder->getQuery()->getSQL();
+        // exit();
         $this->paginatorAdapter = new PaginatorAdapter($queryBuilder);
     }
 

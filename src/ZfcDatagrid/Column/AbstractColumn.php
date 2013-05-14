@@ -1,7 +1,7 @@
 <?php
 namespace ZfcDatagrid\Column;
 
-use ZfcDatagrid\Column\DataPopulation\Object;
+use ZfcDatagrid\Filter;
 
 abstract class AbstractColumn implements ColumnInterface
 {
@@ -30,9 +30,19 @@ abstract class AbstractColumn implements ColumnInterface
 
     protected $userSortEnabled = true;
 
-    protected $sortDefaults = array();
+    protected $sortDefault = array();
 
     protected $sortActive = null;
+
+    protected $filterDefaultValue = null;
+
+    protected $filterDefaultOperation = null;
+
+    protected $filterActive = null;
+
+    protected $filterActiveValue = '';
+
+    protected $userFilterEnabled = true;
 
     protected $translationEnabled = false;
 
@@ -127,7 +137,7 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      *
-     * @return null Type\TypeInterface
+     * @return Type\TypeInterface
      */
     public function getType ()
     {
@@ -179,6 +189,12 @@ abstract class AbstractColumn implements ColumnInterface
      *
      *
      *
+     *
+     *
+     *
+     *
+     *
+     *
      * ..)
      *
      * @param integer $priority            
@@ -186,7 +202,7 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function setSortDefault ($priority = 1, $direction = 'ASC')
     {
-        $this->sortDefaults = array(
+        $this->sortDefault = array(
             'priority' => $priority,
             'sortDirection' => $direction
         );
@@ -197,9 +213,9 @@ abstract class AbstractColumn implements ColumnInterface
      *
      * @return array
      */
-    public function getSortDefaults ()
+    public function getSortDefault ()
     {
-        return $this->sortDefaults;
+        return $this->sortDefault;
     }
 
     /**
@@ -207,9 +223,9 @@ abstract class AbstractColumn implements ColumnInterface
      *
      * @return boolean
      */
-    public function hasSortDefaults ()
+    public function hasSortDefault ()
     {
-        if (count($this->sortDefaults) > 0) {
+        if (count($this->sortDefault) > 0) {
             return true;
         }
         
@@ -240,6 +256,99 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
+     *
+     * @param boolean $mode            
+     */
+    public function setUserFilterDisabled ($mode = true)
+    {
+        $this->userFilterEnabled = (bool) ! $mode;
+    }
+
+    /**
+     * Set the default filterung value (used as long no user filtering getting applied)
+     * Examples
+     * $grid->setFilterDefaultValue('something');
+     * $grid->setFilterDefaultValue('>20');
+     *
+     * OPERATORS are ALLOWED (like for the user)
+     *
+     * @param string $value            
+     */
+    public function setFilterDefaultValue ($value = null)
+    {
+        if ($value != '') {
+            $this->filterDefaultValue = (string) $value;
+        }
+    }
+
+    public function getFilterDefaultValue ()
+    {
+        return $this->filterDefaultValue;
+    }
+
+    public function hasFilterDefaultValue ()
+    {
+        if ($this->filterDefaultValue != '') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setFilterDefaultOperation ($operation = Filter::LIKE)
+    {
+        $this->filterDefaultOperation = $operation;
+    }
+
+    public function getFilterDefaultOperation ()
+    {
+        if ($this->filterDefaultOperation != '') {
+            return $this->filterDefaultOperation;
+        }
+        
+        if ($this->getType() instanceof Type\Number) {
+            return Filter::EQUAL;
+        } elseif ($this->getType() instanceof Type\Date) {
+            return FILTER::GREATER_EQUAL;
+        }
+        
+        return Filter::LIKE;
+    }
+
+    /**
+     *
+     * @param boolean $mode            
+     */
+    public function setFilterActive ($mode = true, $value = '')
+    {
+        $this->filterActive = (bool) $mode;
+        $this->filterActiveValue = $value;
+    }
+
+    /**
+     *
+     * @return boolean
+     */
+    public function isFilterActive ()
+    {
+        return $this->filterActive;
+    }
+
+    public function getFilterActiveValue ()
+    {
+        return $this->filterActiveValue;
+    }
+
+    /**
+     *
+     * @return boolean
+     */
+    public function isUserFilterEnabled ()
+    {
+        return (bool) $this->userFilterEnabled;
+    }
+
+    /**
      * Enable data translation
      *
      * @param boolean $mode            
@@ -263,6 +372,8 @@ abstract class AbstractColumn implements ColumnInterface
     {
         $this->replaceValues = $values;
         $this->notReplacedGetEmpty = (bool) $notReplacedGetEmpty;
+        
+        $this->setFilterDefaultOperation(Filter::EQUAL);
     }
 
     public function hasReplaceValues ()
@@ -289,7 +400,7 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function setDataPopulation (DataPopulation\DataPopulationInterface $dataPopulation)
     {
-        if($dataPopulation instanceof DataPopulation\Object && $dataPopulation->getObject() === null){
+        if ($dataPopulation instanceof DataPopulation\Object && $dataPopulation->getObject() === null) {
             throw new \Exception('object is missing in DataPopulation\Object!');
         }
         

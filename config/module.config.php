@@ -27,7 +27,7 @@ return array(
         ),
         
         'enabledExportFormats' => array(
-            'plainText'
+            'printPlain'
         ),
         
         'parameters' => array(

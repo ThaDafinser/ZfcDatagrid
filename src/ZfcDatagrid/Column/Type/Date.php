@@ -1,7 +1,6 @@
 <?php
 namespace ZfcDatagrid\Column\Type;
 
-use DateTime;
 use IntlDateFormatter;
 use Locale;
 

@@ -5,7 +5,7 @@ use ZfcDatagrid\Datagrid;
 use Zend\Paginator\Paginator;
 use Zend\Mvc\MvcEvent;
 use Zend\View\Model\ViewModel;
-use Zend\Http\Response;
+use Zend\Stdlib\RequestInterface as Request;
 
 interface RendererInterface
 {
@@ -44,6 +44,22 @@ interface RendererInterface
      * Populates the view with variables
      */
     public function prepareViewModel(Datagrid $grid);
+    
+    /**
+     * 
+     * @param Request $request
+     * 
+     * @return array
+     */
+    public function getSortConditions (Request $request);
+    
+    /**
+     * 
+     * @param Request $request
+     * 
+     * @return array
+     */
+    public function getFilters(Request $request);
     
     /**
      * @return boolean

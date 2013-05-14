@@ -5,7 +5,8 @@ use ZfcDatagrid\Renderer\AbstractRenderer;
 use ZfcDataGrid\Column\Type;
 use Zend\Text\Table\Table as TextTable;
 use Zend\Text\Table;
-use Zend\View\Model\ConsoleModel;
+use Zend\Stdlib\RequestInterface as Request;
+use Zend\Console\Request as ConsoleRequest;
 
 /**
  * For CLI or E-Mail useful
@@ -19,6 +20,38 @@ class ZendTable extends AbstractRenderer
      * @var integer
      */
     private $maxConsoleWidth = 78;
+
+    /**
+     * @todo enable parameters from console
+     * 
+     * @param Request $request            
+     *
+     * @return array
+     */
+    public function getSortConditions (Request $request)
+    {
+        if (! $request instanceof ConsoleRequest) {
+            throw new \Exception('Must be an instance of ConsoleRequest for console rendering');
+        }
+        
+        return array();
+    }
+
+    /**
+     * @todo enable parameters from console
+     *
+     * @param Request $request            
+     *
+     * @return array
+     */
+    public function getFilters (Request $request)
+    {
+        if (! $request instanceof ConsoleRequest) {
+            throw new \Exception('Must be an instance of ConsoleRequest for console rendering');
+        }
+        
+        return array();
+    }
 
     public function isExport ()
     {

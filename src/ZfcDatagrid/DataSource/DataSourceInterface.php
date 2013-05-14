@@ -1,6 +1,7 @@
 <?php
 namespace ZfcDatagrid\DataSource;
 
+use ZfcDatagrid\Filter;
 use ZfcDatagrid\Column\AbstractColumn;
 
 interface DataSourceInterface
@@ -25,15 +26,17 @@ interface DataSourceInterface
     /**
      * Set sort conditions
      *
-     * @param AbstractColumn $column
+     * @param AbstractColumn $column            
      * @param string $sortDirection            
      */
     public function addSortCondition (AbstractColumn $column, $sortDirection = 'ASC');
 
     /**
      * Add a filter rule
+     * 
+     * @param Filter $filter            
      */
-    public function addFilter ();
+    public function addFilter (Filter $filter);
 
     /**
      * Execute the query and set the paginator
