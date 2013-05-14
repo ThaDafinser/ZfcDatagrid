@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 0.3.0 (TBD):
+* exporting
+    * PDF (tcpdf)
+    * Excel (PHPExcel)
+* treegrid
+* toolbar
+    * filters
+    * actions
+    * exports
+* ...more styles? ...
+
 ## 0.2.0 (Work in progress):
 * filtering
     * different operators (>=, <=, >, <>, !=, ~, ....)
