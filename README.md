@@ -40,6 +40,7 @@ Currently available
 --------
 * datasources: 
     * php arrays
+    * Doctrine\ORM\QueryBuilder
 * pagination
 * output formats: 
     * Bootstrap table
@@ -49,6 +50,7 @@ Currently available
     * DateTime
     * Number
     * String
+    * [WIP] custom objects as source (Gravatar)
 * styling the data output by column and/or value
     * bold
     * color red
@@ -59,10 +61,9 @@ Currently available
 
 TODO  List
 --------
-* filtering
+* [WIP] filtering
 * datasources: 
     * Zend\Sql\Select
-    * Doctrine\ORM\QueryBuilder
     * ...
 * output formats: 
     * jqGrid
@@ -70,8 +71,7 @@ TODO  List
     * PHPExcel
     * ...
 * different columns
-    * [WIP] custom object as source
-    * Buttons / Icons / Links
+    * [WIP] Buttons / Icons / Links
     * HTML
     * Images
 * styling the data output by column and/or value
