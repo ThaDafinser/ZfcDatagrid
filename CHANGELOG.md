@@ -15,7 +15,7 @@
     * exports
 * ...more styles? ...
 
-## 0.2.0 (Work in progress):
+## 0.2.0:
 * filtering
     * different operators (>=, <=, >, <>, !=, ~, ....)
 * row actions (buttons)
