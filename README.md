@@ -24,6 +24,7 @@ Create the folder: `data/ZfcDatagrid`
 **Doctrine2** http://YOUR-PROJECT/zfcDatagrid/personDoctrine2/bootstrap
 
 **Zend\Db\Sql\Select** http://YOUR-PROJECT/zfcDatagrid/personZend/bootstrap
+> Attention! The Zend\Db\Sql\Select example only works with Doctrine2 working (Doctrine will create the sqlite database....)
 
 ####Console####
 ```sh
