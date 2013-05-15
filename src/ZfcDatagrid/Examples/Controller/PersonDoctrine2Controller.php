@@ -16,16 +16,13 @@ class PersonDoctrine2Controller extends AbstractActionController
      */
     public function bootstrapAction ()
     {
-        /* @var $dbAdapter \Zend\Db\Adapter\Adapter */
-        $dbAdapter = $this->getServiceLocator()->get('zfcDatagrid_dbAdapter');
-        
         /* @var $dataGrid \ZfcDatagrid\Datagrid */
         $dataGrid = $this->getServiceLocator()->get('zfcDatagrid');
         $dataGrid->setTitle('Persons');
         $dataGrid->setItemsPerPage(5);
         $dataGrid->setDataSource($this->getServiceLocator()
             ->get('zfcDatagrid.examples.data.doctrine2')
-            ->getPersons(), $dbAdapter);
+            ->getPersons());
         
         $col = new Column\Standard('id', 'p');
         $col->setIdentity();
