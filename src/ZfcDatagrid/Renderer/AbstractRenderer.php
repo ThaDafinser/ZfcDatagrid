@@ -209,6 +209,9 @@ abstract class AbstractRenderer implements RendererInterface
             
             $activeParameters[$parameterNames['sortColumn']] = $sortCondition['column']->getUniqueId();
             $activeParameters[$parameterNames['sortDirection']] = $sortCondition['sortDirection'];
+        } else{
+            $activeParameters[$parameterNames['sortColumn']] = '';
+            $activeParameters[$parameterNames['sortDirection']] = '';
         }
         $viewModel->setVariable('activeParameters', $activeParameters);
         
