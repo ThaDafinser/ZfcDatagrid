@@ -124,27 +124,33 @@ class Doctrine2 implements DataSourceInterface
                 switch ($filter->getOperator()) {
                     
                     case Filter::LIKE:
-                        $queryBuilder->expr()->like($colString, $queryBuilder->expr()->literal('%'. addcslashes($values[0], '_%') .'%') );
+                        $queryBuilder->expr()->like($colString, $queryBuilder->expr()
+                            ->literal('%' . $values[0] . '%'));
                         break;
                     
                     case Filter::LIKE_LEFT:
-                        $queryBuilder->expr()->like($colString, $queryBuilder->expr()->literal('%'. addcslashes($values[0], '_%')) );
+                        $queryBuilder->expr()->like($colString, $queryBuilder->expr()
+                            ->literal('%' . $values[0]));
                         break;
                     
                     case Filter::LIKE_RIGHT:
-                        $queryBuilder->expr()->like($colString, $queryBuilder->expr()->literal(addcslashes($values[0], '_%') .'%') );
+                        $queryBuilder->expr()->like($colString, $queryBuilder->expr()
+                            ->literal($values[0] . '%'));
                         break;
                     
                     case Filter::NOT_LIKE:
-                        $queryBuilder->expr()->literal($colString. 'NOT LIKE \'%'.$values[0].'%\'');
+                        $queryBuilder->expr()->notLike($colString, $queryBuilder->expr()
+                            ->literal('%' . $values[0] . '%'));
                         break;
                     
                     case Filter::NOT_LIKE_LEFT:
-                        $queryBuilder->expr()->literal($colString. 'NOT LIKE \'%'.$values[0].'\'');
+                        $queryBuilder->expr()->notLike($colString, $queryBuilder->expr()
+                            ->literal('%' . $values[0]));
                         break;
                     
                     case Filter::NOT_LIKE_RIGHT:
-                        $queryBuilder->expr()->literal($colString. 'NOT LIKE \''.$values[0].'%\'');
+                        $queryBuilder->expr()->notLike($colString, $queryBuilder->expr()
+                            ->literal($values[0] . '%'));
                         break;
                     
                     case Filter::EQUAL:
