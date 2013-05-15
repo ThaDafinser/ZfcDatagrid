@@ -17,9 +17,9 @@ class ZendSelect implements DataSourceInterface
 
     /**
      *
-     * @var unknown
+     * @var \Zend\Db\Sql\Sql
      */
-    private $adapterOrSqlObject;
+    private $sqlObject;
 
     private $columns = array();
 
@@ -50,8 +50,10 @@ class ZendSelect implements DataSourceInterface
 
     public function setAdapter ($adapterOrSqlObject)
     {
-        if ($adapterOrSqlObject instanceof \Zend\Db\Adapter\Adapter || $adapterOrSqlObject instanceof \Zend\Db\Sql\Sql) {
-            $this->adapterOrSqlObject = $adapterOrSqlObject;
+        if ($adapterOrSqlObject instanceof \Zend\Db\Sql\Sql) {
+            $this->sqlObject = $adapterOrSqlObject;
+        } elseif ($adapterOrSqlObject instanceof \Zend\Db\Adapter\Adapter) {
+            $this->sqlObject = new \Zend\Db\Sql\Sql($adapterOrSqlObject);
         } else {
             throw new \Exception("Unknown $adapterOrSqlObject..." . get_class($adapterOrSqlObject));
         }
@@ -88,6 +90,10 @@ class ZendSelect implements DataSourceInterface
 
     public function execute ()
     {
+        if ($this->sqlObject === null || ! $this->sqlObject instanceof \Zend\Db\Sql\Sql) {
+            throw new \Exception('setAdapter() must be called first!');
+        }
+        
         $select = $this->select;
         
         /**
@@ -120,6 +126,20 @@ class ZendSelect implements DataSourceInterface
             }
         }
         
+        $adapter = $this->sqlObject->getAdapter();
+        $qi = function  ($name) use( $adapter)
+        {
+            return $adapter->getPlatform()->quoteIdentifier($name);
+        };
+        $qv = function  ($value) use( $adapter)
+        {
+            return $adapter->getPlatform()->quoteValue($value);
+        };
+        $fp = function  ($name) use( $adapter)
+        {
+            return $adapter->getDriver()->formatParameterName($name);
+        };
+        
         /**
          * Step 3) Apply filters
          */
@@ -134,22 +154,36 @@ class ZendSelect implements DataSourceInterface
                 switch ($filter->getOperator()) {
                     
                     case Filter::LIKE:
-                        $select->where->like($colString, $values[0]);
+                        // $select->where->expression($qi($colString) . ' = %' . $qv($values[0]) . '%');
+                        
+                        // $this->sqlObject->getAdapter()->getPlatform()->quoteIdentifier($identifier)
+                        $select->where->like($colString, '%' . $values[0] . '%');
                         break;
                     
                     case Filter::LIKE_LEFT:
+                        $select->where->like($colString, '%' . $values[0]);
                         break;
                     
                     case Filter::LIKE_RIGHT:
+                        $select->where->like($colString, $values[0] . '%');
                         break;
                     
                     case Filter::NOT_LIKE:
+                        $select->where->literal($qi($colString) . ' NOT LIKE ?', array(
+                            '%' . $values[0] . '%'
+                        ));
                         break;
                     
                     case Filter::NOT_LIKE_LEFT:
+                        $select->where->literal($qi($colString) . 'NOT LIKE ?', array(
+                            '%' . $values[0]
+                        ));
                         break;
                     
                     case Filter::NOT_LIKE_RIGHT:
+                        $select->where->literal($qi($colString) . 'NOT LIKE ?', array(
+                            $values[0] . '%'
+                        ));
                         break;
                     
                     case Filter::EQUAL:
@@ -190,10 +224,7 @@ class ZendSelect implements DataSourceInterface
         /**
          * Step 4) Pagination
          */
-        if ($this->adapterOrSqlObject === null) {
-            throw new \Exception('Missing $adapterOrSqlObject...');
-        }
-        $this->paginatorAdapter = new PaginatorAdapter($select, $this->adapterOrSqlObject);
+        $this->paginatorAdapter = new PaginatorAdapter($select, $this->sqlObject);
     }
 
     /**
