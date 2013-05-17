@@ -5,10 +5,11 @@
 * ...
 
 ## 0.3.0 (work in progress):
-* exporting
+* output formats
     * PDF (tcpdf)
     * Excel (PHPExcel)
-* treegrid
+    * AJAX (jqGrid)
+    * HTML print
 * toolbar
     * filters
     * actions
