@@ -3,24 +3,12 @@ namespace ZfcDatagrid\DataSource;
 
 use ZfcDatagrid\Filter;
 use Zend\Paginator\Adapter\ArrayAdapter as PaginatorAdapter;
-use ZfcDatagrid\Column\AbstractColumn;
 
-class PhpArray implements DataSourceInterface
+class PhpArray extends AbstractDataSource
 {
 
     private $data = array();
 
-    private $columns = array();
-
-    private $sortConditions = array();
-
-    private $filters = array();
-
-    /**
-     *
-     * @var PaginatorAdapter
-     */
-    private $paginatorAdapter;
 
     /**
      * Set the data source
@@ -37,38 +25,6 @@ class PhpArray implements DataSourceInterface
     }
 
     /**
-     * Set the columns
-     */
-    public function setColumns (array $columns)
-    {
-        $this->columns = $columns;
-    }
-
-    /**
-     * Set sort conditions
-     *
-     * @param AbstractColumn $column            
-     * @param string $sortDirection            
-     */
-    public function addSortCondition (AbstractColumn $column, $sortDirection = 'ASC')
-    {
-        $this->sortConditions[] = array(
-            'column' => $column,
-            'sortDirection' => $sortDirection
-        );
-    }
-
-    /**
-     * Add a filter rule
-     *
-     * @param Filter $filter            
-     */
-    public function addFilter (Filter $filter)
-    {
-        $this->filters[] = $filter;
-    }
-
-    /**
      * Execute the query and set the paginator
      * - with sort statements
      * - with filters statements
@@ -78,12 +34,7 @@ class PhpArray implements DataSourceInterface
         $data = $this->data;
         
         /**
-         * Step 1) Remove unneeded columns
-         */
-        // @todo ? Better performance or let it be?
-        
-        /**
-         * Step 2) Apply sorting
+         * Step 1) Apply sorting
          *
          * @see http://php.net/manual/de/function.array-multisort.php
          * @see example number 3
@@ -107,7 +58,7 @@ class PhpArray implements DataSourceInterface
         }
         
         /**
-         * Step 3) Apply filters
+         * Step 2) Apply filters
          */
         foreach ($this->filters as $filter) {
             /* @var $filter \ZfcDatagrid\Filter */
@@ -181,20 +132,27 @@ class PhpArray implements DataSourceInterface
         }
         
         /**
+         * Step 3) Remove unneeded columns
+         */
+        $selectedColumns = array();
+        foreach ($this->columns as $column) {
+            $selectedColumns[] = $column->getUniqueId();
+        }
+        
+        foreach ($data as &$row) {
+            foreach ($row as $keyRowCol => $rowCol) {
+                if (! in_array($keyRowCol, $selectedColumns)) {
+                    unset($row[$keyRowCol]);
+                }
+            }
+        }
+        
+        // @todo ? Better performance or let it be?
+        
+        /**
          * Step 4) Pagination
          */
-        $this->paginatorAdapter = new PaginatorAdapter($data);
-        $this->data = $data;
-    }
-
-    /**
-     * Get the paginator adapter
-     *
-     * @return \Zend\Paginator\Adapter\AdapterInterface
-     */
-    public function getPaginatorAdapter ()
-    {
-        return $this->paginatorAdapter;
+        $this->setPaginatorAdapter(new PaginatorAdapter($data));
     }
 
     private function getSortArrayParameter ($sortCondition)

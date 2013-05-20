@@ -16,7 +16,7 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      *
-     * @var Type\TypeInterface
+     * @var Type\AbstractType
      */
     protected $type = null;
 
@@ -37,6 +37,12 @@ abstract class AbstractColumn implements ColumnInterface
     protected $filterDefaultValue = null;
 
     protected $filterDefaultOperation = null;
+
+    /**
+     *
+     * @var null array
+     */
+    protected $filterSelectOptions;
 
     protected $filterActive = null;
 
@@ -128,19 +134,23 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Set the column type
      *
-     * @param Type\TypeInterface $type            
+     * @param Type\AbstractType $type            
      */
-    public function setType (Type\TypeInterface $type)
+    public function setType (Type\AbstractType $type)
     {
         $this->type = $type;
     }
 
     /**
      *
-     * @return Type\TypeInterface
+     * @return Type\AbstractType
      */
     public function getType ()
     {
+        if ($this->type === null) {
+            $this->type = new Type\String();
+        }
+        
         return $this->type;
     }
 
@@ -186,6 +196,9 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * The data will get sorted by this column (by default)
      * If will be changed by the user per request (POST,GET .
+     *
+     *
+     *
      *
      *
      *
@@ -306,13 +319,30 @@ abstract class AbstractColumn implements ColumnInterface
             return $this->filterDefaultOperation;
         }
         
-        if ($this->getType() instanceof Type\Number) {
-            return Filter::EQUAL;
-        } elseif ($this->getType() instanceof Type\Date) {
-            return FILTER::GREATER_EQUAL;
+        return $this->getType()->getFilterDefaultOperation();
+    }
+
+    public function setFilterSelectOptions (array $options = null, $noSelect = true)
+    {
+        if ($noSelect === true)
+            $options = array_merge(array(
+                '' => '-'
+            ), $options);
+        $this->filterSelectOptions = $options;
+    }
+
+    public function getFilterSelectOptions ()
+    {
+        return $this->filterSelectOptions;
+    }
+
+    public function hasFilterSelectOptions ()
+    {
+        if (is_array($this->filterSelectOptions)) {
+            return true;
         }
         
-        return Filter::LIKE;
+        return false;
     }
 
     /**
@@ -374,6 +404,7 @@ abstract class AbstractColumn implements ColumnInterface
         $this->notReplacedGetEmpty = (bool) $notReplacedGetEmpty;
         
         $this->setFilterDefaultOperation(Filter::EQUAL);
+        $this->setFilterSelectOptions($values);
     }
 
     public function hasReplaceValues ()

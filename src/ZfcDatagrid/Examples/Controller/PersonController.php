@@ -10,17 +10,11 @@ use ZfcDatagrid\Column\Style;
 class PersonController extends AbstractActionController
 {
 
-    /**
-     * Simple bootstrap table
-     *
-     * @return \ZfcDatagrid\Controller\ViewModel
-     */
-    public function bootstrapAction ()
-    {
+    private function getGrid(){
         /* @var $dataGrid \ZfcDatagrid\Datagrid */
         $dataGrid = $this->getServiceLocator()->get('zfcDatagrid');
         $dataGrid->setTitle('Persons');
-        $dataGrid->setItemsPerPage(5);
+        $dataGrid->setDefaultItemsPerPage(5);
         $dataGrid->setDataSource($this->getServiceLocator()
             ->get('zfcDatagrid.examples.data.phpArray')
             ->getPersons());
@@ -39,12 +33,14 @@ class PersonController extends AbstractActionController
              */
             $colEmail = new Column\Standard('email');
             $colEmail->setLabel('E-Mail');
-            $colEmail->setHidden();
+            $colEmail->setType(new Type\Email());
             
+//             $colEmail->setHidden();
+        
             $dataPopulation = new Column\DataPopulation\Object();
             $dataPopulation->setObject(new Column\DataPopulation\Object\Gravatar());
             $dataPopulation->addObjectParameterColumn('email', $colEmail);
-            
+        
             $col = new Column\Image('avatar');
             $col->setLabel('Avatar');
             $col->setDataPopulation($dataPopulation);
@@ -87,11 +83,11 @@ class PersonController extends AbstractActionController
             $col->setWidth(5);
             $col->setType(new Type\Number());
             $col->setFilterDefaultValue('>=20');
-            
+        
             $style = new Style\Color\Red();
             $style->setByValue($col, 20);
             $col->addStyle($style);
-            
+        
             $dataGrid->addColumn($col);
         }
         
@@ -99,7 +95,7 @@ class PersonController extends AbstractActionController
             $colType = new Type\Number();
             $colType->addAttribute(\NumberFormatter::FRACTION_DIGITS, 2);
             $colType->setSuffix(' kg');
-            
+        
             $col = new Column\Standard('weight');
             $col->setLabel('Weight');
             $col->setWidth(10);
@@ -111,15 +107,15 @@ class PersonController extends AbstractActionController
         $col = new Column\Standard('birthday');
         $col->setLabel('Birthday');
         $col->setWidth(10);
-        $col->setType(new Type\Date());
+        $col->setType(new Type\DateTime());
         $col->setUserSortDisabled(true);
         $dataGrid->addColumn($col);
         
         {
-            $colType = new Type\Date('Y-m-d H:i:s', \IntlDateFormatter::MEDIUM, \IntlDateFormatter::MEDIUM);
+            $colType = new Type\DateTime('Y-m-d H:i:s', \IntlDateFormatter::MEDIUM, \IntlDateFormatter::MEDIUM);
             $colType->setSourceTimezone('Europe/Vienna');
             $colType->setOutputTimezone('UTC');
-            
+        
             $col = new Column\Standard('changeDate');
             $col->setLabel('Last change');
             $col->setWidth(15);
@@ -130,7 +126,7 @@ class PersonController extends AbstractActionController
         $action = new Column\Action\Button();
         $action->setIconClass('icon-list-alt');
         $action->setLabel('test');
-        $action->setLink('/test');
+        $action->setHtmlAttributes('href', '/test');
         
         $col = new Column\Action();
         $col->setLabel('Actions');
@@ -139,6 +135,34 @@ class PersonController extends AbstractActionController
         $dataGrid->addColumn($col);
         
         $dataGrid->setRowClickAction($action);
+        
+        return $dataGrid;
+
+    }
+    
+    /**
+     * bootstrap table
+     *
+     * @return \ZfcDatagrid\Controller\ViewModel
+     */
+    public function bootstrapAction ()
+    {
+        $dataGrid = $this->getGrid();
+    
+        $dataGrid->execute();
+    
+        return $dataGrid->getResponse();
+    }
+    
+    /**
+     * bootstrap table
+     *
+     * @return \ZfcDatagrid\Controller\ViewModel
+     */
+    public function jqgridAction ()
+    {
+        $dataGrid = $this->getGrid();
+        $dataGrid->setRenderer('jqgrid');
         
         $dataGrid->execute();
         
@@ -157,7 +181,7 @@ class PersonController extends AbstractActionController
         /* @var $dataGrid \ZfcDatagrid\Datagrid */
         $dataGrid = $this->getServiceLocator()->get('zfcDatagrid');
         $dataGrid->setTitle('Persons');
-        $dataGrid->setItemsPerPage(5);
+        $dataGrid->setDefaultItemsPerPage(5);
         $dataGrid->setDataSource($this->getServiceLocator()
             ->get('zfcDatagrid.examples.data.phpArray')
             ->getPersons());
@@ -193,7 +217,4 @@ class PersonController extends AbstractActionController
         
         return $dataGrid->getResponse();
     }
-
-    private function getDataArray ()
-    {}
 }

@@ -22,32 +22,63 @@ return array(
             'plugins' => array(
                 'exception_handler' => array(
                     'throw_exceptions' => false
+                ),
+                
+                'Serializer'
+            )
+        ),
+        
+        'renderer' => array(
+            'bootstrapTable' => array(
+                'parameterNames' => array(
+                    // Internal => bootstrapTable
+                    'currentPage' => 'currentPage',
+                    'sortColumns' => 'sortByColumns',
+                    'sortDirections' => 'sortDirections'
+                )
+            ),
+            
+            'jqGrid' => array(
+                'parameterNames' => array(
+                    // Internal => jqGrid
+                    'currentPage' => 'currentPage',
+                    'itemsPerPage' => 'itemsPerPage',
+                    'sortColumns' => 'sortByColumns',
+                    'sortDirections' => 'sortDirections',
+                    'isSearch' => 'isSearch'
+                )
+            ),
+            
+            'zendTable' => array(
+                'parameterNames' => array(
+                    // Internal => ZendTable (console)
+                    'currentPage' => 'page',
+                    'itemsPerPage' => 'items',
+                    'sortColumns' => 'sortBys',
+                    'sortDirections' => 'sortDirs',
+                    
+                    'filterColumns' => 'filterBys',
+                    'filterValues' => 'filterValues'
                 )
             )
         ),
         
-        'enabledExportFormats' => array(
-            'printPlain'
-        ),
-        
-        'parameters' => array(
-            'currentPage' => 'page',
-            'sortColumn' => 'sortByColumn',
-            'sortDirection' => 'sortDirection',
-            
+        // General parameters
+        'generalParameterNames' => array(
             'rendererType' => 'rendererType'
         )
     ),
     
     'service_manager' => array(
         'invokables' => array(
-            'zfcDatagrid.renderer.bootstrapTable' => 'ZfcDatagrid\Renderer\Html\BootstrapTable',
-            'zfcDatagrid.renderer.printPlain' => 'ZfcDatagrid\Renderer\Html\PrintPlain',
+            'zfcDatagrid.renderer.bootstrapTable' => 'ZfcDatagrid\Renderer\BootstrapTable\Renderer',
+            'zfcDatagrid.renderer.printHtml' => 'ZfcDatagrid\Renderer\PrintHtml\Renderer',
             'zfcDatagrid.renderer.zendTable' => 'ZfcDatagrid\Renderer\Text\ZendTable',
+            'zfcDatagrid.renderer.jqgrid' => 'ZfcDatagrid\Renderer\JqGrid\Renderer',
             
             'zfcDatagrid.examples.data.phpArray' => 'ZfcDatagrid\Examples\Data\PhpArray',
             'zfcDatagrid.examples.data.doctrine2' => 'ZfcDatagrid\Examples\Data\Doctrine2',
-            'zfcDatagrid.examples.data.zendSelect' => 'ZfcDatagrid\Examples\Data\ZendSelect',
+            'zfcDatagrid.examples.data.zendSelect' => 'ZfcDatagrid\Examples\Data\ZendSelect'
         ),
         
         'factories' => array(
@@ -61,19 +92,20 @@ return array(
                     $dataGrid->setTranslator($serviceManager->get('translator'));
                 }
                 $dataGrid->init();
-        
+                
                 return $dataGrid;
             },
             
-            'zfcDatagrid_dbAdapter' => function(ServiceManager $serviceManager){
+            'zfcDatagrid_dbAdapter' => function  (ServiceManager $serviceManager)
+            {
                 return new \Zend\Db\Adapter\Adapter($serviceManager->get('config')['zfcDatagrid_dbAdapter']);
             },
-        
+            
             // For the doctrine examples!
             'doctrine.connection.orm_zfcDatagrid' => new \DoctrineORMModule\Service\DBALConnectionFactory('orm_zfcDatagrid'),
             'doctrine.configuration.orm_zfcDatagrid' => new \DoctrineORMModule\Service\ConfigurationFactory('orm_zfcDatagrid'),
             'doctrine.entitymanager.orm_zfcDatagrid' => new \DoctrineORMModule\Service\EntityManagerFactory('orm_zfcDatagrid'),
-        
+            
             'doctrine.driver.orm_zfcDatagrid' => new \DoctrineModule\Service\DriverFactory('orm_zfcDatagrid'),
             'doctrine.eventmanager.orm_zfcDatagrid' => new \DoctrineModule\Service\EventManagerFactory('orm_zfcDatagrid'),
             'doctrine.entity_resolver.orm_zfcDatagrid' => new \DoctrineORMModule\Service\EntityResolverFactory('orm_zfcDatagrid'),
@@ -81,19 +113,26 @@ return array(
         )
     ),
     
-
+    'view_helpers' => array(
+        'invokables' => array(
+            'bootstrapTableRow' => 'ZfcDatagrid\Renderer\BootstrapTable\View\Helper\TableRow',
+            'jqgridColumns' => 'ZfcDatagrid\Renderer\JqGrid\View\Helper\Columns'
+        )
+    ),
+    
     'view_manager' => array(
-    
+        
         'template_map' => array(
-            'zfc-datagrid/renderer/html/bootstrap-table' => __DIR__ . '/../view/zfc-datagrid/renderer/html/bootstrap-table.phtml',
-            'zfc-datagrid/renderer/html/print-plain' => __DIR__ . '/../view/zfc-datagrid/renderer/html/print-plain.phtml'
+            'zfc-datagrid/renderer/bootstrapTable/table' => __DIR__ . '/../view/zfc-datagrid/renderer/bootstrapTable/table.phtml',
+            'zfc-datagrid/renderer/printHtml/layout' => __DIR__ . '/../view/zfc-datagrid/renderer/printHtml/layout.phtml',
+            'zfc-datagrid/renderer/printHtml/table' => __DIR__ . '/../view/zfc-datagrid/renderer/printHtml/table.phtml',
+            'zfc-datagrid/renderer/jqGrid/table' => __DIR__ . '/../view/zfc-datagrid/renderer/jqGrid/table.phtml'
         ),
-    
+        
         'template_path_stack' => array(
             'ZfcDatagrid' => __DIR__ . '/../view'
         )
     ),
-    
     
     /**
      * ONLY EXAMPLE CONFIGURATION BELOW!!!!!!
@@ -102,7 +141,10 @@ return array(
         'invokables' => array(
             'ZfcDatagrid\Examples\Controller\Person' => 'ZfcDatagrid\Examples\Controller\PersonController',
             'ZfcDatagrid\Examples\Controller\PersonDoctrine2' => 'ZfcDatagrid\Examples\Controller\PersonDoctrine2Controller',
-            'ZfcDatagrid\Examples\Controller\PersonZend' => 'ZfcDatagrid\Examples\Controller\PersonZendController'
+            'ZfcDatagrid\Examples\Controller\PersonZend' => 'ZfcDatagrid\Examples\Controller\PersonZendController',
+            
+            'ZfcDatagrid\Examples\Controller\Category' => 'ZfcDatagrid\Examples\Controller\CategoryController',
+            'ZfcDatagrid\Examples\Controller\Random' => 'ZfcDatagrid\Examples\Controller\RandomController'
         )
     ),
     
@@ -154,11 +196,21 @@ return array(
     'console' => array(
         'router' => array(
             'routes' => array(
-                'ZfcDatagrid' => array(
+                'datagrid-person' => array(
                     'options' => array(
-                        'route' => 'datagrid person [--page=]',
+                        'route' => 'datagrid person [--page=] [--items=] [--filterBys=] [--filterValues=] [--sortBys=] [--sortDirs=]',
                         'defaults' => array(
                             'controller' => 'ZfcDatagrid\Examples\Controller\Person',
+                            'action' => 'console'
+                        )
+                    )
+                ),
+                
+                'datagrid-category' => array(
+                    'options' => array(
+                        'route' => 'datagrid category [--page=] [--items=] [--filterBys=] [--filterValues=] [--sortBys=] [--sortDirs=]',
+                        'defaults' => array(
+                            'controller' => 'ZfcDatagrid\Examples\Controller\Category',
                             'action' => 'console'
                         )
                     )

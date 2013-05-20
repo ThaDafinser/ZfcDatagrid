@@ -5,8 +5,11 @@ use ZfcDatagrid\Column\Style;
 ?>
 
 <form name="form_<?= $this->gridId; ?>" method="post" action="<?= $this->url(null, array(), array(), true); ?>">
+
     <input type="submit" class="hidden" name="hiddenSubmit" />
-    
+    <input type="hidden" name="<?= $this->parameterNames['sortColumns']; ?>" value="<?= $this->activeParameters[$this->parameterNames['sortColumns']]; ?>" />
+    <input type="hidden" name="<?= $this->parameterNames['sortDirections']; ?>" value="<?= $this->activeParameters[$this->parameterNames['sortDirections']]; ?>" />
+
 <div class="row-fluid">
     <div class="span3">
         <a href="#" class="btn btn-primary">Add new entry</a> 
@@ -23,7 +26,7 @@ use ZfcDatagrid\Column\Style;
                 array(),
                 array(
                     'query' => array(
-                        $this->parameterNames['rendererType'] => 'tcpdf'
+                        $this->generalParameterNames['rendererType'] => 'tcpdf'
                     )
                 ),
                 true
@@ -36,7 +39,7 @@ use ZfcDatagrid\Column\Style;
                 array(),
                 array(
                     'query' => array(
-                        $this->parameterNames['rendererType'] => 'excel'
+                        $this->generalParameterNames['rendererType'] => 'excel'
                     )
                 ),
                 true
@@ -49,7 +52,7 @@ use ZfcDatagrid\Column\Style;
                 array(),
                 array(
                     'query' => array(
-                        $this->parameterNames['rendererType'] => 'printPlain'
+                        $this->generalParameterNames['rendererType'] => 'printHtml'
                     )
                 ),
                 true
@@ -63,8 +66,8 @@ use ZfcDatagrid\Column\Style;
 
 <?php 
 
-$orderOnclick = 'document.forms[\'form_'.$this->gridId.'\'].elements[\'' . $this->parameterNames['sortColumn'] . '\'].value = \'%s\';';
-$orderOnclick .= 'document.forms[\'form_'.$this->gridId.'\'].elements[\'' . $this->parameterNames['sortDirection'] . '\'].value = \'%s\';';
+$orderOnclick = 'document.forms[\'form_'.$this->gridId.'\'].elements[\'' . $this->parameterNames['sortColumns'] . '\'].value = \'%s\';';
+$orderOnclick .= 'document.forms[\'form_'.$this->gridId.'\'].elements[\'' . $this->parameterNames['sortDirections'] . '\'].value = \'%s\';';
 $orderOnclick.= 'document.forms[\'form_'.$this->gridId.'\'].submit(); return false;';
 
 $classes = array('table', 'table-striped', 'table-bordered');
@@ -72,8 +75,7 @@ if($this->rowClickLink != '#'){
     $classes[] = 'table-hover';
 }
 ?>
-<input type="hidden" name="<?= $this->parameterNames['sortColumn']?>" />
-<input type="hidden" name="<?= $this->parameterNames['sortDirection']?>" />
+
 
 <table class="<?= implode(' ', $classes); ?>">
     <thead>
@@ -114,8 +116,8 @@ if($this->rowClickLink != '#'){
                                 array(),
                                 array(
                                     'query' => array_merge($this->activeParameters, array(
-                                            $this->parameterNames['sortColumn'] => $column->getUniqueId(),
-                                            $this->parameterNames['sortDirection'] => $direction,
+                                            $this->parameterNames['sortColumns'] => $column->getUniqueId(),
+                                            $this->parameterNames['sortDirections'] => $direction,
                                         )
                                     )
                                 ),
@@ -173,72 +175,7 @@ if($this->rowClickLink != '#'){
     <!-- Start table BODY -->
     <tbody>
         <?php foreach($this->data as $row): ?>
-            <?php if(isset($row['idConcated'])):?>
-                <tr id="<?= $this->escapehtmlattr($row['idConcated']); ?>">
-            <?php else:?>
-                <tr>
-            <?php endif; ?>
-            
-                <?php 
-                foreach($this->columns as $column){
-                    /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-
-                    $styles = array();
-                    $classes = array();
-                    
-                    if($column->isHidden() === true){
-                        $classes[] = 'hidden';
-                    }
-                    
-                    $type = $column->getType();
-                    if($type instanceof Type\Number){
-                        $styles[] = 'text-align: right';
-                    }
-                    
-                    if($column->hasStyles() === true){
-                        foreach($column->getStyles() as $style){
-                            /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
-                            if($style->isApply($row) === true){
-                                if ($style instanceof Style\Bold) {
-                                    $styles[] = 'font-weight: bold';
-                                } elseif($style instanceof Style\Color\Red){
-                                    $styles[] = 'color: red';
-                                } else{
-                                    throw new \Exception('Not defined yet: "'.get_class($style).'"');
-                                }
-                            }
-                        }
-                    }
-                    
-                    if($column instanceof Column\Image){
-                        $value = ' <a href="#" class="thumbnail"><img src="'.$this->escapeHtmlAttr($row[$column->getUniqueId()]).'" /></a>';
-                    } elseif($column instanceof Column\Action){
-                        $actions = array();
-                        foreach($column->getActions() as $action){
-                            $icon = '';
-                            if($action->hasIconClass() === true){
-                                $icon = '<i class="'.$action->getIconClass().'"></i>';
-                            }
-                            $actions[] = '<a class="btn" href="'.$action->getLink().'">' . $icon . ' ' . $action->getLabel() . '</a>';
-                        }
-                        
-                        $value = implode(' ', $actions);
-                    } else{
-                        $value = $this->escapeHtml($row[$column->getUniqueId()]);
-                    }
-                    
-                    if($column instanceof Column\Standard && $this->rowClickLink != '#'){
-                        $value = '<a href="'.$this->rowClickLink.'">'.$value.'</a>';
-                    }
-                    ?>
-                    <td class="<?= implode(',', $classes); ?>" style="<?= implode(';', $styles); ?>">
-                        <?= $value ?>
-                    </td>
-                    
-                <?php
-                }
-                ?>
-            </tr>
+            <?php echo $this->bootstrapTableRow($row, $this->columns, $this->rowClickLink); ?>
         <?php endforeach; ?>
     </tbody>
 </table>

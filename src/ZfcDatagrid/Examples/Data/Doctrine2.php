@@ -100,19 +100,23 @@ class Doctrine2 implements ServiceLocatorAwareInterface
         $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_zfcDatagrid');
         $personEntity = $entityManager->getRepository('ZfcDatagrid\Examples\Entity\Person');
         
-        //Test if the SqLite is ready...
+        // if($entityManager->getConnection()->isConnected() === true){
+        
+        // }
+        
+        // Test if the SqLite is ready...
         try {
-            $data = $personEntity->findAll(); 
+            $data = $personEntity->find(2);
         } catch (\Exception $e) {
             $this->createTables();
             
-            $data = $personEntity->findAll();
+            $data = $personEntity->find(2);
         }
         
         $qb = $entityManager->createQueryBuilder();
         $qb->select('p');
         $qb->from('ZfcDatagrid\Examples\Entity\Person', 'p');
-
+        
         return $qb;
     }
 }

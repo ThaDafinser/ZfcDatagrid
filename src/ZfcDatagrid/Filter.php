@@ -1,12 +1,7 @@
 <?php
 namespace ZfcDatagrid;
 
-use IntlDateFormatter;
-use DateTime;
-use DateTimeZone;
-use NumberFormatter;
 use ZfcDatagrid\Column;
-use ZfcDatagrid\Column\Type;
 
 class Filter
 {
@@ -198,30 +193,7 @@ class Filter
          */
         foreach ($value as &$val) {
             $type = $this->getColumn()->getType();
-            if ($type instanceof Type\Date) {
-                $formatter = new IntlDateFormatter($type->getLocale(), $type->getOutputDateType(), $type->getOutputTimeType(), $type->getOutputTimezone(), IntlDateFormatter::GREGORIAN, $type->getOutputPattern());
-                $timestamp = $formatter->parse($val);
-                
-                $date = new DateTime();
-                $date->setTimestamp($timestamp);
-                $date->setTimezone(new DateTimeZone($type->getSourceTimezone()));
-                
-                $val = $date->format($type->getSourceDateTimeFormat());
-            } elseif ($type instanceof Type\Number) {
-                $formatter = new NumberFormatter($type->getLocale(), $type->getFormatStyle());
-                foreach ($type->getAttributes() as $attribute) {
-                    $formatter->setAttribute($attribute['attribute'], $attribute['value']);
-                }
-                
-                if (strlen($type->getPrefix()) > 0 && strpos($val, $type->getPrefix()) === 0) {
-                    $val = substr($val, strlen($type->getPrefix()));
-                }
-                if (strlen($type->getSuffix()) > 0 && strpos($val, $type->getSuffix()) > 0) {
-                    $val = substr($val, 0, - strlen($type->getSuffix()));
-                }
-                
-                $val = $formatter->parse($val);
-            }
+            $val = $type->getFilterValue($val);
             
             // @TODO Translation + Replace
         }

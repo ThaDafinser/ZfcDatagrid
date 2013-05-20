@@ -119,4 +119,81 @@ class PhpArray implements ServiceLocatorAwareInterface
         
         return $data;
     }
+
+    /**
+     *
+     * @return array
+     */
+    public function getCategorys ()
+    {
+        $id = 0;
+        
+        $data = array();
+        
+        $data[] = array(
+            'id' => ++ $id,
+            'parentId' => null,
+            'hasChildren' => 'y',
+            'name' => 'Root'
+        );
+        
+        $data[] = array(
+            'id' => ++ $id,
+            'parentId' => $id - 1,
+            'hasChildren' => 'y',
+            'name' => 'Second level: entry 1',
+            'level' => 1
+        );
+        
+        $data[] = array(
+            'id' => ++ $id,
+            'parentId' => $id - 1,
+            'hasChildren' => 'n',
+            'name' => 'Third level: entry 1'
+        );
+        
+        $data[] = array(
+            'id' => ++ $id,
+            'parentId' => $id - 2,
+            'hasChildren' => 'n',
+            'name' => 'Third level: entry 2'
+        );
+        
+        $data[] = array(
+            'id' => ++ $id,
+            'parentId' => null,
+            'hasChildren' => 'y',
+            'name' => 'Root2'
+        );
+        
+        $data[] = array(
+            'id' => ++ $id,
+            'parentId' => $id - 1,
+            'hasChildren' => 'n',
+            'name' => 'Second level of Root2',
+            'level' => 1
+        );
+        
+        return $data;
+    }
+
+    public function getRandom ()
+    {
+        $maxRow = rand(100, 200);
+        
+        $persons = $this->getPersons();
+        
+        $data = array();
+        for ($i = 1; $i <= $maxRow; $i ++) {
+            $row = array(
+                'id' => $i,
+                'number' => rand(0, 20000),
+                'name' => $persons[rand(0, 5)]['displayName']
+            );
+            
+            $data[] = $row;
+        }
+        
+        return $data;
+    }
 }

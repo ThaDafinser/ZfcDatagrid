@@ -6,7 +6,7 @@ use ZfcDatagrid\Column;
 use Zend\Paginator\Adapter\DbSelect as PaginatorAdapter;
 use Zend\Db\Sql;
 
-class ZendSelect implements DataSourceInterface
+class ZendSelect extends AbstractDataSource
 {
 
     /**
@@ -17,22 +17,9 @@ class ZendSelect implements DataSourceInterface
 
     /**
      *
-     * @var unknown
+     * @var \Zend\Db\Sql\Sql
      */
-    private $adapterOrSqlObject;
-
-    private $columns = array();
-
-    private $sortConditions = array();
-
-    private $filters = array();
-
-    /**
-     * The data result
-     *
-     * @var PaginatorAdapter
-     */
-    private $paginatorAdapter;
+    private $sqlObject;
 
     /**
      * Data source
@@ -50,44 +37,21 @@ class ZendSelect implements DataSourceInterface
 
     public function setAdapter ($adapterOrSqlObject)
     {
-        if ($adapterOrSqlObject instanceof \Zend\Db\Adapter\Adapter || $adapterOrSqlObject instanceof \Zend\Db\Sql\Sql) {
-            $this->adapterOrSqlObject = $adapterOrSqlObject;
+        if ($adapterOrSqlObject instanceof \Zend\Db\Sql\Sql) {
+            $this->sqlObject = $adapterOrSqlObject;
+        } elseif ($adapterOrSqlObject instanceof \Zend\Db\Adapter\Adapter) {
+            $this->sqlObject = new \Zend\Db\Sql\Sql($adapterOrSqlObject);
         } else {
             throw new \Exception("Unknown $adapterOrSqlObject..." . get_class($adapterOrSqlObject));
         }
     }
 
-    public function setColumns (array $columns)
-    {
-        $this->columns = $columns;
-    }
-
-    /**
-     * Set sort conditions
-     *
-     * @param Column\AbstractColumn $column            
-     * @param string $sortDirection            
-     */
-    public function addSortCondition (Column\AbstractColumn $column, $sortDirection = 'ASC')
-    {
-        $this->sortConditions[] = array(
-            'column' => $column,
-            'sortDirection' => $sortDirection
-        );
-    }
-
-    /**
-     * Add a filter rule
-     *
-     * @param Filter $filter            
-     */
-    public function addFilter (Filter $filter)
-    {
-        $this->filters[] = $filter;
-    }
-
     public function execute ()
     {
+        if ($this->sqlObject === null || ! $this->sqlObject instanceof \Zend\Db\Sql\Sql) {
+            throw new \Exception('setAdapter() must be called first!');
+        }
+        
         $select = $this->select;
         
         /**
@@ -120,6 +84,20 @@ class ZendSelect implements DataSourceInterface
             }
         }
         
+        $adapter = $this->sqlObject->getAdapter();
+        $qi = function  ($name) use( $adapter)
+        {
+            return $adapter->getPlatform()->quoteIdentifier($name);
+        };
+        $qv = function  ($value) use( $adapter)
+        {
+            return $adapter->getPlatform()->quoteValue($value);
+        };
+        $fp = function  ($name) use( $adapter)
+        {
+            return $adapter->getDriver()->formatParameterName($name);
+        };
+        
         /**
          * Step 3) Apply filters
          */
@@ -134,22 +112,33 @@ class ZendSelect implements DataSourceInterface
                 switch ($filter->getOperator()) {
                     
                     case Filter::LIKE:
-                        $select->where->like($colString, $values[0]);
+                        $select->where->like($colString, '%' . $values[0] . '%');
                         break;
                     
                     case Filter::LIKE_LEFT:
+                        $select->where->like($colString, '%' . $values[0]);
                         break;
                     
                     case Filter::LIKE_RIGHT:
+                        $select->where->like($colString, $values[0] . '%');
                         break;
                     
                     case Filter::NOT_LIKE:
+                        $select->where->literal($qi($colString) . ' NOT LIKE ?', array(
+                            '%' . $values[0] . '%'
+                        ));
                         break;
                     
                     case Filter::NOT_LIKE_LEFT:
+                        $select->where->literal($qi($colString) . 'NOT LIKE ?', array(
+                            '%' . $values[0]
+                        ));
                         break;
                     
                     case Filter::NOT_LIKE_RIGHT:
+                        $select->where->literal($qi($colString) . 'NOT LIKE ?', array(
+                            $values[0] . '%'
+                        ));
                         break;
                     
                     case Filter::EQUAL:
@@ -190,18 +179,6 @@ class ZendSelect implements DataSourceInterface
         /**
          * Step 4) Pagination
          */
-        if ($this->adapterOrSqlObject === null) {
-            throw new \Exception('Missing $adapterOrSqlObject...');
-        }
-        $this->paginatorAdapter = new PaginatorAdapter($select, $this->adapterOrSqlObject);
-    }
-
-    /**
-     *
-     * @return PaginatorAdapter
-     */
-    public function getPaginatorAdapter ()
-    {
-        return $this->paginatorAdapter;
+        $this->setPaginatorAdapter(new PaginatorAdapter($select, $this->sqlObject));
     }
 }

@@ -5,7 +5,6 @@ use ZfcDatagrid\Renderer\AbstractRenderer;
 use ZfcDataGrid\Column\Type;
 use Zend\Text\Table\Table as TextTable;
 use Zend\Text\Table;
-use Zend\Stdlib\RequestInterface as Request;
 use Zend\Console\Request as ConsoleRequest;
 
 /**
@@ -21,15 +20,79 @@ class ZendTable extends AbstractRenderer
      */
     private $maxConsoleWidth = 78;
 
+    private function getRendererOptions ()
+    {
+        return $this->getOptions()['renderer']['zendTable'];
+    }
+
     /**
-     * @todo enable parameters from console
-     * 
-     * @param Request $request            
      *
+     * @todo enable parameters from console
+     *      
      * @return array
      */
-    public function getSortConditions (Request $request)
+    public function getSortConditions ()
     {
+        $request = $this->getRequest();
+        if (! $request instanceof ConsoleRequest) {
+            throw new \Exception('Must be an instance of ConsoleRequest for console rendering');
+        }
+        
+        $rendererOptions = $this->getRendererOptions();
+        $parameterNames = $rendererOptions['parameterNames'];
+        
+        $sortConditions = array();
+        
+        $sortColumns = $request->getParam($parameterNames['sortColumns']);
+        $sortDirections = $request->getParam($parameterNames['sortDirections']);
+        if ($sortColumns != '') {
+            $sortColumns = explode(',', $sortColumns);
+            $sortDirections = explode(',', $sortDirections);
+            
+            if (count($sortColumns) != count($sortDirections)) {
+                throw new \Exception('Count missmatch order columns/direction');
+            }
+            
+            foreach ($sortColumns as $key => $sortColumn) {
+                $sortDirection = strtoupper($sortDirections[$key]);
+                
+                if ($sortDirection != 'ASC' && $sortDirection != 'DESC') {
+                    $sortDirection = 'ASC';
+                }
+                
+                foreach ($this->getColumns() as $column) {
+                    /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+                    if ($column->getUniqueId() == $sortColumn) {
+                        $sortConditions[] = array(
+                            'sortDirection' => $sortDirection,
+                            'column' => $column
+                        );
+                        
+                        $column->setSortActive(true, $sortDirection);
+                    }
+                }
+            }
+        }
+        
+        if (count($sortConditions) > 0) {
+            $this->sortConditions = $sortConditions;
+        } else {
+            // No user sorting -> get default sorting
+            $this->sortConditions = $this->getSortConditionsDefault();
+        }
+        
+        return $this->sortConditions;
+    }
+
+    /**
+     *
+     * @todo enable parameters from console
+     *      
+     * @return array
+     */
+    public function getFilters ()
+    {
+        $request = $this->getRequest();
         if (! $request instanceof ConsoleRequest) {
             throw new \Exception('Must be an instance of ConsoleRequest for console rendering');
         }
@@ -38,22 +101,48 @@ class ZendTable extends AbstractRenderer
     }
 
     /**
-     * @todo enable parameters from console
+     * Should be implemented for each renderer itself (just default)
      *
-     * @param Request $request            
-     *
-     * @return array
+     * @return integer
      */
-    public function getFilters (Request $request)
+    public function getCurrentPageNumber ()
     {
+        $request = $this->getRequest();
         if (! $request instanceof ConsoleRequest) {
             throw new \Exception('Must be an instance of ConsoleRequest for console rendering');
         }
         
-        return array();
+        $rendererOptions = $this->getRendererOptions();
+        $parameterNames = $rendererOptions['parameterNames'];
+        if ($request->getParam($parameterNames['currentPage']) != '') {
+            return (int) $request->getParam($parameterNames['currentPage']);
+        }
+        
+        return (int) 1;
+    }
+
+    public function getItemsPerPage ($defaultItems = 25)
+    {
+        $request = $this->getRequest();
+        if (! $request instanceof ConsoleRequest) {
+            throw new \Exception('Must be an instance of ConsoleRequest for console rendering');
+        }
+        
+        $rendererOptions = $this->getRendererOptions();
+        $parameterNames = $rendererOptions['parameterNames'];
+        if ($request->getParam($parameterNames['itemsPerPage']) != '') {
+            return (int) $request->getParam($parameterNames['itemsPerPage']);
+        }
+        
+        return (int) $defaultItems;
     }
 
     public function isExport ()
+    {
+        return false;
+    }
+
+    public function isHtml ()
     {
         return false;
     }

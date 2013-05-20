@@ -1,16 +1,23 @@
 <?php
 namespace ZfcDatagrid\Renderer;
 
+use ZfcDatagrid\Datagrid;
+use ZfcDatagrid\Column;
 use Zend\Paginator\Paginator;
 use Zend\View\Model\ViewModel;
 use Zend\Mvc\MvcEvent;
-use ZfcDatagrid\Datagrid;
 use Zend\I18n\Translator\Translator;
-use Zend\Stdlib\RequestInterface as Request;
+use Zend\Http\PhpEnvironment\Request as HttpRequest;
+use Zend\Console\Request as ConsoleRequest;
 
 abstract class AbstractRenderer implements RendererInterface
 {
-
+    
+    // const TREE_DEFAULT_SIGN_CLOSED = '>';
+    // const TREE_DEFAULT_SIGN_OPENED = '';
+    
+    // protected $treeSignClosed = self::TREE_DEFAULT_SIGN_CLOSED;
+    // protected $treeSignOpened = self::TREE_DEFAULT_SIGN_OPENED;
     protected $options = array();
 
     protected $title;
@@ -23,6 +30,12 @@ abstract class AbstractRenderer implements RendererInterface
 
     protected $columns = array();
 
+    protected $sortConditions = null;
+
+    protected $filters = null;
+
+    protected $currentPageNumber = 1;
+
     /**
      *
      * @var array
@@ -34,6 +47,12 @@ abstract class AbstractRenderer implements RendererInterface
      * @var MvcEvent
      */
     protected $mvcEvent;
+
+    /**
+     *
+     * @var array
+     */
+    protected $cacheData;
 
     /**
      *
@@ -61,6 +80,24 @@ abstract class AbstractRenderer implements RendererInterface
         return $this->options;
     }
 
+    /**
+     * Paginator is here to retreive the totalItemCount, count pages, current page, .
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     * NOT FOR THE ACTUAL DATA!!!!
+     *
+     * @param \Zend\Paginator\Paginator $paginator            
+     */
     public function setPaginator (Paginator $paginator)
     {
         $this->paginator = $paginator;
@@ -100,12 +137,29 @@ abstract class AbstractRenderer implements RendererInterface
         return $this->data;
     }
 
+    public function setCacheData (array $cacheData = null)
+    {
+        $this->cacheData = $cacheData;
+    }
+
+    private function getCacheSortConditions ()
+    {
+        if (! isset($this->cacheData['sortConditions'])) {
+            throw new \Exception('Sort conditions from cache are missing!');
+        }
+        return $this->cacheData['sortConditions'];
+    }
+
+    private function getCacheFilters ()
+    {
+        if (! isset($this->cacheData['filters'])) {
+            throw new \Exception('Filters from cache are missing!');
+        }
+        return $this->cacheData['filters'];
+    }
+
     /**
      * Not used ATM...
-     *
-     * @deprecated
-     *
-     *
      *
      * @see \ZfcDatagrid\Renderer\RendererInterface::setMvcEvent()
      */
@@ -116,10 +170,6 @@ abstract class AbstractRenderer implements RendererInterface
 
     /**
      * Not used ATM...
-     *
-     * @deprecated
-     *
-     *
      *
      * @return MvcEvent
      */
@@ -164,24 +214,130 @@ abstract class AbstractRenderer implements RendererInterface
 
     /**
      *
-     * @param Request $request            
-     *
-     * @return array
+     * @return \Zend\Stdlib\RequestInterface
      */
-    public function getSortConditions (Request $request)
+    public function getRequest ()
     {
-        throw new \Exception('if the renderer is not for export, please implement this method: "getSortConditions()"!');
+        return $this->getMvcEvent()->getRequest();
     }
 
     /**
      *
-     * @param Request $request            
+     * @return array
+     */
+    public function getSortConditions ()
+    {
+        if (is_array($this->sortConditions)) {
+            // set from cache! (for export)
+            return $this->sortConditions;
+        } elseif ($this->isExport() === true) {
+            // Export renderer should always retrieve the sort conditions from cache!
+            $this->sortConditions = $this->getCacheSortConditions();
+            
+            return $this->sortConditions;
+        }
+        
+        $this->sortConditions = $this->getSortConditionsDefault();
+        
+        return $this->sortConditions;
+    }
+
+    /**
+     * Get the default sort conditions defined for the columns
      *
      * @return array
      */
-    public function getFilters (Request $request)
+    public function getSortConditionsDefault ()
     {
-        throw new \Exception('if the renderer is not for export, please implement this method! "getFilters()"');
+        $sortConditions = array();
+        foreach ($this->getColumns() as $column) {
+            /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+            if ($column->hasSortDefault() === true) {
+                $sortDefaults = $column->getSortDefault();
+                
+                $sortConditions[$sortDefaults['priority']] = array(
+                    'sortDirection' => $sortDefaults['sortDirection'],
+                    'column' => $column
+                );
+                
+                $column->setSortActive(true, $sortDefaults['sortDirection']);
+            }
+        }
+        
+        ksort($sortConditions);
+        
+        return $sortConditions;
+    }
+
+    /**
+     *
+     * @return array
+     */
+    public function getFilters ()
+    {
+        if (is_array($this->filters)) {
+            // set from cache! (for export)
+            return $this->filters;
+        } elseif ($this->isExport() === true) {
+            // Export renderer should always retrieve the filters from cache!
+            $this->filters = $this->getCacheFilters();
+            
+            return $this->filters;
+        }
+        
+        $this->filters = $this->getFiltersDefault();
+        
+        return $this->filters;
+    }
+
+    /**
+     * Get the default filter conditions defined for the columns
+     *
+     * @return array
+     */
+    public function getFiltersDefault ()
+    {
+        $filters = array();
+        if ($this->getRequest() instanceof ConsoleRequest || ($this->getRequest() instanceof HttpRequest && ! $this->getRequest()->isPost())) {
+            
+            foreach ($this->getColumns() as $column) {
+                /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+                if ($column->hasFilterDefaultValue() === true) {
+                    
+                    $filter = new \ZfcDatagrid\Filter();
+                    $filter->setFromColumn($column, $column->getFilterDefaultValue());
+                    $filters[] = $filter;
+                    
+                    $column->setFilterActive(true, $filter->getDisplayValue());
+                }
+            }
+        }
+        
+        return $filters;
+    }
+
+    /**
+     * Should be implemented for each renderer itself (just default)
+     *
+     * @return integer
+     */
+    public function getCurrentPageNumber ()
+    {
+        return (int) $this->currentPageNumber;
+    }
+
+    /**
+     * Should be implemented for each renderer itself (just default)
+     *
+     * @return integer
+     */
+    public function getItemsPerPage ($defaultItems = 25)
+    {
+        if ($this->isExport() === true) {
+            return (int) - 1;
+        }
+        
+        return $defaultItems;
     }
 
     /**
@@ -193,28 +349,19 @@ abstract class AbstractRenderer implements RendererInterface
      */
     public function prepareViewModel (Datagrid $grid)
     {
-        $parameterNames = $this->getOptions()['parameters'];
-        $viewModel = $this->viewModel;
+        $viewModel = $this->getViewModel();
         
         $viewModel->setVariable('gridId', $grid->getGridId());
         
         $viewModel->setVariable('title', $this->getTitle());
-        $viewModel->setVariable('parameterNames', $parameterNames);
         
-        $activeParameters = array();
-        $activeParameters[$parameterNames['currentPage']] = $grid->getCurrentPage();
-        if ($grid->isUserSortActive() === true) {
-            $sortCondition = $grid->getSortConditions();
-            $sortCondition = array_pop($sortCondition);
-            
-            $activeParameters[$parameterNames['sortColumn']] = $sortCondition['column']->getUniqueId();
-            $activeParameters[$parameterNames['sortDirection']] = $sortCondition['sortDirection'];
-        }
-        $viewModel->setVariable('activeParameters', $activeParameters);
+        $generalParameterNames = $this->getOptions()['generalParameterNames'];
+        $viewModel->setVariable('generalParameterNames', $generalParameterNames);
         
         $viewModel->setVariable('columns', $this->getColumns());
         $viewModel->setVariable('paginator', $this->getPaginator());
         $viewModel->setVariable('data', $this->getData());
+        $viewModel->setVariable('filters', $this->getFilters());
         
         if ($grid->hasRowClickAction() === true) {
             $viewModel->setVariable('rowClickLink', $grid->getRowClickAction()
@@ -224,5 +371,29 @@ abstract class AbstractRenderer implements RendererInterface
         }
         
         $viewModel->setVariable('isUserFilterEnabled', $grid->isUserFilterEnabled());
+    }
+
+    protected function setRendererOptions ($options)
+    {
+        $parameterNames = $options['parameterNames'];
+        
+        $viewModel = $this->getViewModel();
+        $viewModel->setVariable('rendererOptions', $options);
+        $viewModel->setVariable('parameterNames', $parameterNames);
+        
+        $activeParameters = array();
+        $activeParameters[$parameterNames['currentPage']] = $this->getCurrentPageNumber();
+        {
+            $sortColumns = array();
+            $sortDirections = array();
+            foreach ($this->getSortConditions() as $sortCondition) {
+                $sortColumns[] = $sortCondition['column']->getUniqueId();
+                $sortDirections[] = $sortCondition['sortDirection'];
+            }
+            
+            $activeParameters[$parameterNames['sortColumns']] = implode(',', $sortColumns);
+            $activeParameters[$parameterNames['sortDirections']] = implode(',', $sortDirections);
+        }
+        $viewModel->setVariable('activeParameters', $activeParameters);
     }
 }

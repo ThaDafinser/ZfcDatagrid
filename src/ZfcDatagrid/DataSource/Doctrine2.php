@@ -7,7 +7,7 @@ use ZfcDatagrid\Column;
 use Doctrine\ORM;
 use Doctrine\ORM\Query\Expr;
 
-class Doctrine2 implements DataSourceInterface
+class Doctrine2 extends AbstractDataSource
 {
 
     /**
@@ -16,18 +16,6 @@ class Doctrine2 implements DataSourceInterface
      */
     private $queryBuilder;
 
-    private $columns = array();
-
-    private $sortConditions = array();
-
-    private $filters = array();
-
-    /**
-     * The data result
-     *
-     * @var PaginatorAdapter
-     */
-    private $paginatorAdapter;
 
     /**
      * Data source
@@ -41,35 +29,6 @@ class Doctrine2 implements DataSourceInterface
         } else {
             throw new \Exception("Unknown data input..." . get_class($data));
         }
-    }
-
-    public function setColumns (array $columns)
-    {
-        $this->columns = $columns;
-    }
-
-    /**
-     * Set sort conditions
-     *
-     * @param Column\AbstractColumn $column            
-     * @param string $sortDirection            
-     */
-    public function addSortCondition (Column\AbstractColumn $column, $sortDirection = 'ASC')
-    {
-        $this->sortConditions[] = array(
-            'column' => $column,
-            'sortDirection' => $sortDirection
-        );
-    }
-
-    /**
-     * Add a filter rule
-     *
-     * @param Filter $filter            
-     */
-    public function addFilter (Filter $filter)
-    {
-        $this->filters[] = $filter;
     }
 
     public function execute ()
@@ -110,6 +69,7 @@ class Doctrine2 implements DataSourceInterface
         /**
          * Step 3) Apply filters
          */
+        $whereExpressions = array();
         foreach ($this->filters as $filter) {
             /* @var $filter \ZfcDatagrid\Filter */
             if ($filter->isColumnFilter() === true) {
@@ -121,81 +81,97 @@ class Doctrine2 implements DataSourceInterface
                     $colString .= '.' . $column->getSelectPart2();
                 }
                 
-                switch ($filter->getOperator()) {
-                    
-                    case Filter::LIKE:
-                        $queryBuilder->expr()->like($colString, $queryBuilder->expr()->literal('%'. addcslashes($values[0], '_%') .'%') );
-                        break;
-                    
-                    case Filter::LIKE_LEFT:
-                        $queryBuilder->expr()->like($colString, $queryBuilder->expr()->literal('%'. addcslashes($values[0], '_%')) );
-                        break;
-                    
-                    case Filter::LIKE_RIGHT:
-                        $queryBuilder->expr()->like($colString, $queryBuilder->expr()->literal(addcslashes($values[0], '_%') .'%') );
-                        break;
-                    
-                    case Filter::NOT_LIKE:
-                        $queryBuilder->expr()->literal($colString. 'NOT LIKE \'%'.$values[0].'%\'');
-                        break;
-                    
-                    case Filter::NOT_LIKE_LEFT:
-                        $queryBuilder->expr()->literal($colString. 'NOT LIKE \'%'.$values[0].'\'');
-                        break;
-                    
-                    case Filter::NOT_LIKE_RIGHT:
-                        $queryBuilder->expr()->literal($colString. 'NOT LIKE \''.$values[0].'%\'');
-                        break;
-                    
-                    case Filter::EQUAL:
-                        $queryBuilder->expr()->eq($colString, $values[0]);
-                        break;
-                    
-                    case Filter::NOT_EQUAL:
-                        $queryBuilder->expr()->neq($colString, $values[0]);
-                        break;
-                    
-                    case Filter::GREATER_EQUAL:
-                        $queryBuilder->expr()->gte($colString, $values[0]);
-                        break;
-                    
-                    case Filter::GREATER:
-                        $queryBuilder->expr()->gt($colString, $values[0]);
-                        break;
-                    
-                    case Filter::LESS_EQUAL:
-                        $queryBuilder->expr()->lte($colString, $values[0]);
-                        break;
-                    
-                    case Filter::LESS:
-                        $queryBuilder->expr()->lt($colString, $values[0]);
-                        break;
-                    
-                    case Filter::BETWEEN:
-                        $queryBuilder->expr()->between($colString, $values[0], $values[1]);
-                        break;
-                    
-                    default:
-                        throw new \Exception('This operator is currently not supported: ' . $filter->getOperator());
-                        break;
-                }
+                $whereExpressions[] = $this->getWhereExpression($filter->getOperator(), $colString, $values, $queryBuilder->expr());
             }
+        }
+        
+        if (count($whereExpressions) > 0) {
+            // Maybe WHERE are already existing...so keep it!
+            $where = $queryBuilder->getDQLPart('where');
+            
+            $or = $queryBuilder->expr()->andX();
+            $or->add($where);
+            $or->addMultiple($whereExpressions);
+            
+            $queryBuilder->where($or);
         }
         
         /**
          * Step 4) Pagination
          */
-        // echo $queryBuilder->getQuery()->getSQL();
-        // exit();
-        $this->paginatorAdapter = new PaginatorAdapter($queryBuilder);
+        $this->setPaginatorAdapter(new PaginatorAdapter($queryBuilder));
     }
 
     /**
+     * getWhereExpression
      *
-     * @return PaginatorAdapter
+     * @param string $operator            
+     * @param string $colString            
+     * @param array $values            
+     * @throws \Exception
+     * @return \Doctrine\ORM\Query\Expr
      */
-    public function getPaginatorAdapter ()
+    private function getWhereExpression ($operator, $colString, $values)
     {
-        return $this->paginatorAdapter;
+        $expr = new Expr();
+        
+        switch ($operator) {
+            
+            case Filter::LIKE:
+                return $expr->like($colString, $expr->literal('%' . $values[0] . '%'));
+                break;
+            
+            case Filter::LIKE_LEFT:
+                return $expr->like($colString, $expr->literal('%' . $values[0]));
+                break;
+            
+            case Filter::LIKE_RIGHT:
+                return $expr->like($colString, $expr->literal($values[0] . '%'));
+                break;
+            
+            case Filter::NOT_LIKE:
+                return $expr->notLike($colString, $expr->literal('%' . $values[0] . '%'));
+                break;
+            
+            case Filter::NOT_LIKE_LEFT:
+                return $expr->notLike($colString, $expr->literal('%' . $values[0]));
+                break;
+            
+            case Filter::NOT_LIKE_RIGHT:
+                return $expr->notLike($colString, $expr->literal($values[0] . '%'));
+                break;
+            
+            case Filter::EQUAL:
+                return $expr->eq($colString, $values[0]);
+                break;
+            
+            case Filter::NOT_EQUAL:
+                return $expr->neq($colString, $values[0]);
+                break;
+            
+            case Filter::GREATER_EQUAL:
+                return $expr->gte($colString, $values[0]);
+                break;
+            
+            case Filter::GREATER:
+                return $expr->gt($colString, $values[0]);
+                break;
+            
+            case Filter::LESS_EQUAL:
+                return $expr->lte($colString, $values[0]);
+                break;
+            
+            case Filter::LESS:
+                return $expr->lt($colString, $values[0]);
+                break;
+            
+            case Filter::BETWEEN:
+                return $expr->between($colString, $values[0], $values[1]);
+                break;
+            
+            default:
+                throw new \Exception('This operator is currently not supported: ' . $operator);
+                break;
+        }
     }
 }

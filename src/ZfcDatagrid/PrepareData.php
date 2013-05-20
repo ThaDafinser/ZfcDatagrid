@@ -104,28 +104,10 @@ class PrepareData
                 }
                 
                 /**
-                 * Date / time / datetime
+                 * Type converting
                  */
                 $type = $column->getType();
-                if ($type instanceof Type\Date) {
-                    if ($row[$column->getUniqueId()] instanceof DateTime) {
-                        $date = $row[$column->getUniqueId()];
-                        $date->setTimezone(new DateTimeZone($type->getSourceTimezone()));
-                        $date->setTimezone(new DateTimeZone($type->getOutputTimezone()));
-                    } else {
-                        $date = DateTime::createFromFormat($type->getSourceDateTimeFormat(), $row[$column->getUniqueId()], new DateTimeZone($type->getSourceTimezone()));
-                        $date->setTimezone(new DateTimeZone($type->getOutputTimezone()));
-                    }
-                    $formatter = new IntlDateFormatter($type->getLocale(), $type->getOutputDateType(), $type->getOutputTimeType(), $type->getOutputTimezone(), IntlDateFormatter::GREGORIAN, $type->getOutputPattern());
-                    $row[$column->getUniqueId()] = $formatter->format($date);
-                } elseif ($type instanceof Type\Number) {
-                    $formatter = new NumberFormatter($type->getLocale(), $type->getFormatStyle());
-                    foreach ($type->getAttributes() as $attribute) {
-                        $formatter->setAttribute($attribute['attribute'], $attribute['value']);
-                    }
-                    
-                    $row[$column->getUniqueId()] = $type->getPrefix() . $formatter->format($row[$column->getUniqueId()], $type->getFormatType()) . $type->getSuffix();
-                }
+                $row[$column->getUniqueId()] = $type->getUserValue($row[$column->getUniqueId()]);
             }
             
             // Concat all identity columns

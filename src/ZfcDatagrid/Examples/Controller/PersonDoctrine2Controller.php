@@ -22,7 +22,7 @@ class PersonDoctrine2Controller extends AbstractActionController
         /* @var $dataGrid \ZfcDatagrid\Datagrid */
         $dataGrid = $this->getServiceLocator()->get('zfcDatagrid');
         $dataGrid->setTitle('Persons');
-        $dataGrid->setItemsPerPage(5);
+        $dataGrid->setDefaultItemsPerPage(5);
         $dataGrid->setDataSource($this->getServiceLocator()
             ->get('zfcDatagrid.examples.data.doctrine2')
             ->getPersons(), $dbAdapter);
@@ -112,12 +112,12 @@ class PersonDoctrine2Controller extends AbstractActionController
         $col = new Column\Standard('birthday', 'p');
         $col->setLabel('Birthday');
         $col->setWidth(10);
-        $col->setType(new Type\Date());
+        $col->setType(new Type\DateTime());
         $col->setUserSortDisabled(true);
         $dataGrid->addColumn($col);
         
         {
-            $colType = new Type\Date('Y-m-d H:i:s', \IntlDateFormatter::MEDIUM, \IntlDateFormatter::MEDIUM);
+            $colType = new Type\DateTime('Y-m-d H:i:s', \IntlDateFormatter::MEDIUM, \IntlDateFormatter::MEDIUM);
             $colType->setSourceTimezone('Europe/Vienna');
             $colType->setOutputTimezone('UTC');
             
@@ -145,7 +145,7 @@ class PersonDoctrine2Controller extends AbstractActionController
         /* @var $dataGrid \ZfcDatagrid\Datagrid */
         $dataGrid = $this->getServiceLocator()->get('zfcDatagrid');
         $dataGrid->setTitle('Persons');
-        $dataGrid->setItemsPerPage(5);
+        $dataGrid->setDefaultItemsPerPage(5);
         $dataGrid->setDataSource($this->getServiceLocator()
             ->get('zfcDatagrid.examples.data.doctrine2')
             ->getPersons());

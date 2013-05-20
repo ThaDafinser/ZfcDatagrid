@@ -1,10 +1,13 @@
 <?php
 namespace ZfcDatagrid\Column\Type;
 
-use IntlDateFormatter;
+use ZfcDatagrid\Filter;
 use Locale;
+use IntlDateFormatter;
+use DateTime as PhpDateTime;
+use DateTimeZone;
 
-class Date implements TypeInterface
+class DateTime extends AbstractType
 {
 
     protected $sourceDateTimeFormat;
@@ -35,7 +38,7 @@ class Date implements TypeInterface
     protected $outputTimezone;
 
     protected $outputPattern;
-    
+
     /**
      *
      * @param string $sourceDateTimeFormat
@@ -109,14 +112,15 @@ class Date implements TypeInterface
     {
         return $this->sourceTimezone;
     }
-    
-    public function setOutputTimezone($timezone = null){
+
+    public function setOutputTimezone ($timezone = null)
+    {
         $this->outputTimezone = $timezone;
     }
 
     public function getOutputTimezone ()
     {
-        if($this->outputTimezone === null){
+        if ($this->outputTimezone === null) {
             $this->outputTimezone = date_default_timezone_get();
         }
         
@@ -125,15 +129,63 @@ class Date implements TypeInterface
 
     /**
      * ATTENTION: IntlDateTimeFormatter FORMAT!
-     * 
-     * @param string $pattern
+     *
+     * @param string $pattern            
      */
-    public function setOutputPattern($pattern = null){
+    public function setOutputPattern ($pattern = null)
+    {
         $this->outputPattern = $pattern;
     }
-    
+
     public function getOutputPattern ()
     {
         return $this->outputPattern;
+    }
+
+    public function getTypeName(){
+        return 'dateTime';
+    }
+    
+    public function getFilterDefaultOperation ()
+    {
+        return Filter::GREATER_EQUAL;
+    }
+
+    /**
+     *
+     * @param string $val            
+     * @return string
+     */
+    public function getFilterValue ($val)
+    {
+        $formatter = new IntlDateFormatter($this->getLocale(), $this->getOutputDateType(), $this->getOutputTimeType(), $this->getOutputTimezone(), IntlDateFormatter::GREGORIAN, $this->getOutputPattern());
+        $timestamp = $formatter->parse($val);
+        
+        $date = new PhpDateTime();
+        $date->setTimestamp($timestamp);
+        $date->setTimezone(new DateTimeZone($this->getSourceTimezone()));
+        
+        return $date->format($this->getSourceDateTimeFormat());
+    }
+
+    /**
+     * Convert the value from the source to the value, which the user will see
+     *
+     * @param string $val            
+     * @return string
+     */
+    public function getUserValue ($val)
+    {
+        if ($val instanceof PhpDateTime) {
+            $date = $val;
+            $date->setTimezone(new DateTimeZone($this->getSourceTimezone()));
+            $date->setTimezone(new DateTimeZone($this->getOutputTimezone()));
+        } else {
+            $date = PhpDateTime::createFromFormat($this->getSourceDateTimeFormat(), $val, new DateTimeZone($this->getSourceTimezone()));
+            $date->setTimezone(new DateTimeZone($this->getOutputTimezone()));
+        }
+        $formatter = new IntlDateFormatter($this->getLocale(), $this->getOutputDateType(), $this->getOutputTimeType(), $this->getOutputTimezone(), IntlDateFormatter::GREGORIAN, $this->getOutputPattern());
+        
+        return $formatter->format($date);
     }
 }

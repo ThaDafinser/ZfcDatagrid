@@ -28,7 +28,8 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, Co
     public function getConsoleUsage (Console $console)
     {
         return array(
-            'datagrid person' => 'Show example person ZfcDatagrid'
+            'datagrid person [--page=] [--items=] [-sortBy=] [-sortDir=]' => 'Show person datagrid',
+            'datagrid category' => 'Show category datagrid'
         );
     }
 }

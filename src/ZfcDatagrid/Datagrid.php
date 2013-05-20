@@ -34,15 +34,15 @@ class Datagrid implements ServiceLocatorAwareInterface
 
     /**
      *
-     * @var Cache\Storage\StorageInterface
-     */
-    protected $cache;
-
-    /**
-     *
      * @var SessionContainer
      */
     protected $session;
+
+    /**
+     *
+     * @var Cache\Storage\StorageInterface
+     */
+    protected $cache;
 
     /**
      *
@@ -96,7 +96,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     protected $dataSource = null;
 
-    protected $itemsPerPage = 25;
+    protected $defaulItemsPerPage = 25;
 
     /**
      *
@@ -121,20 +121,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @var array
      */
-    protected $sortConditions = array();
-
-    /**
-     *
-     * @var boolean
-     */
-    protected $isUserSortActive = false;
-
-    /**
-     *
-     * @var array
-     */
-    protected $filters = array();
-
+    // protected $filters = array();
     protected $isUserFilterEnabled = true;
 
     /**
@@ -376,22 +363,22 @@ class Datagrid implements ServiceLocatorAwareInterface
     }
 
     /**
-     * Set items per page (-1 for unlimited)
+     * Set default items per page (-1 for unlimited)
      *
      * @param integer $count            
      */
-    public function setItemsPerPage ($count = 25)
+    public function setDefaultItemsPerPage ($count = 25)
     {
-        $this->itemsPerPage = (int) $count;
+        $this->defaulItemsPerPage = (int) $count;
     }
 
     /**
      *
      * @return integer
      */
-    public function getItemsPerPage ()
+    public function getDefaultItemsPerPage ()
     {
-        return (int) $this->itemsPerPage;
+        return (int) $this->defaulItemsPerPage;
     }
 
     /**
@@ -424,73 +411,6 @@ class Datagrid implements ServiceLocatorAwareInterface
         return $this->columns;
     }
 
-    /**
-     * Set active sortBy (called for exmport from cache f.x.)
-     *
-     * @param array $sortBy            
-     */
-    private function setSortConditions (array $sortBy)
-    {
-        $this->sortConditions = $sortBy;
-    }
-
-    /**
-     *
-     * @return array
-     */
-    public function getSortConditions ()
-    {
-        if ($this->isExecuted() !== true) {
-            throw new \Exception('You need to call "execute()" first!');
-        }
-        
-        if (count($this->sortConditions) > 0) {
-            // set from cache! (for export)
-            return $this->sortConditions;
-        }
-        
-        $renderer = $this->getRenderer();
-        $sortConditions = $renderer->getSortConditions($this->getRequest());
-        if (count($sortConditions) > 0) {
-            $this->setUserSortActive(true);
-        }
-        
-        if (count($sortConditions) === 0) {
-            /**
-             * Get the default sort conditions defined for the columns
-             */
-            foreach ($this->getColumns() as $column) {
-                /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-                if ($column->hasSortDefault() === true) {
-                    $sortDefaults = $column->getSortDefault();
-                    
-                    $sortConditions[$sortDefaults['priority']] = array(
-                        'sortDirection' => $sortDefaults['sortDirection'],
-                        'column' => $column
-                    );
-                    
-                    $column->setSortActive(true, $sortDefaults['sortDirection']);
-                }
-            }
-            
-            ksort($sortConditions);
-        }
-        
-        $this->setSortConditions($sortConditions);
-        
-        return $sortConditions;
-    }
-
-    public function setUserSortActive ($mode = true)
-    {
-        $this->isUserSortActive = (bool) $mode;
-    }
-
-    public function isUserSortActive ()
-    {
-        return $this->isUserSortActive;
-    }
-
     public function setUserFilterDisabled ($mode = true)
     {
         $this->isUserFilterEnabled = (bool) ! $mode;
@@ -503,62 +423,6 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function isUserFilterEnabled ()
     {
         return (bool) $this->isUserFilterEnabled;
-    }
-
-    /**
-     * Set the filters from cache
-     *
-     * @param array $filters            
-     */
-    private function setFilters (array $filters)
-    {
-        $this->filters = $filters;
-    }
-
-    /**
-     *
-     * @return array
-     */
-    public function getFilters ()
-    {
-        if ($this->isExecuted() !== true) {
-            throw new \Exception('You need to call "execute()" first!');
-        }
-        
-        if (count($this->filters) > 0) {
-            // set from cache! (for export)
-            return $this->filters;
-        }
-        
-        $renderer = $this->getRenderer();
-        $filters = array();
-        $filters = $renderer->getFilters($this->getRequest());
-        // if (count($filters) > 0) {
-        // $this->setUserSortActive(true);
-        // }
-        
-        if (count($filters) === 0) {
-            if ($this->getRequest() instanceof ConsoleRequest || ($this->getRequest() instanceof HttpRequest && ! $this->getRequest()->isPost())) {
-                /**
-                 * Get the default filter conditions defined for the columns
-                 */
-                foreach ($this->getColumns() as $column) {
-                    /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-                    if ($column->hasFilterDefaultValue() === true) {
-                        
-                        $filter = new \ZfcDatagrid\Filter();
-                        $filter->setFromColumn($column, $column->getFilterDefaultValue());
-                        $filters[] = $filter;
-                        
-                        $column->setFilterActive(true, $filter->getDisplayValue());
-                    }
-                }
-            }
-        }
-        
-        $this->setFilters($filters);
-        
-        return $filters;
     }
 
     /**
@@ -613,14 +477,14 @@ class Datagrid implements ServiceLocatorAwareInterface
     /**
      * Return the current renderer (PDF / Excel
      *
-     * @return Renderer\RendererInterface
+     * @return \ZfcDatagrid\Renderer\AbstractRenderer
      */
     public function getRenderer ()
     {
         if ($this->renderer === null) {
             
             $options = $this->getOptions();
-            $parameterName = $options['parameters']['rendererType'];
+            $parameterName = $options['generalParameterNames']['rendererType'];
             
             if ($this->getRequest() instanceof ConsoleRequest) {
                 $rendererName = $options['defaults']['renderer']['console'];
@@ -674,7 +538,12 @@ class Datagrid implements ServiceLocatorAwareInterface
             throw new \Exception('No datasource defined! So no grid to display...');
         }
         
+        /**
+         * Read cache
+         */
         $renderer = $this->getRenderer();
+        $renderer->setCacheData($this->getCache()
+            ->getItem($this->getCacheId()));
         
         $this->isExecuted = true;
         
@@ -690,46 +559,28 @@ class Datagrid implements ServiceLocatorAwareInterface
             $this->getDataSource()->setColumns($this->getColumns());
             
             /**
-             * Step 1.2) Read cahe
-             *
-             * ONLY FOR EXPORT!
+             * Step 1.2) Sorting
              */
-            if ($renderer->isExport() === true) {
-                $success = false;
-                $data = $this->getCache()->getItem($this->getCacheId(), $success);
-                if (! $success) {
-                    throw new \Exception('Cache for export is missing...');
-                }
-                $data = unserialize($data);
-                
-                $this->setSortConditions($data['sortConditions']);
-                $this->setFilters($data['filters']);
-            }
-            
-            /**
-             * Step 1.3) Sorting
-             */
-            foreach ($this->getSortConditions() as $condition) {
+            foreach ($renderer->getSortConditions() as $condition) {
                 $this->getDataSource()->addSortCondition($condition['column'], $condition['sortDirection']);
             }
             
             /**
-             * Step 1.4: Filtering
+             * Step 1.3) Filtering
              */
-            foreach ($this->getFilters() as $filter) {
+            foreach ($renderer->getFilters() as $filter) {
                 $this->getDataSource()->addFilter($filter);
             }
-            
-            /**
-             * Step 1.5) Save it in cache
-             */
-            if ($renderer->isExport() === false) {
-                $data = array(
-                    'sortConditions' => $this->getSortConditions(),
-                    'filters' => $this->getFilters()
-                );
-                $this->getCache()->setItem($this->getCacheId(), serialize($data));
-            }
+        }
+        /**
+         * Save cache
+         */
+        if ($renderer->isExport() === false) {
+            $cacheData = array(
+                'sortConditions' => $renderer->getSortConditions(),
+                'filters' => $renderer->getFilters()
+            );
+            $success = $this->getCache()->setItem($this->getCacheId(), $cacheData);
         }
         
         /**
@@ -740,16 +591,8 @@ class Datagrid implements ServiceLocatorAwareInterface
             $paginatorAdapter = $this->getDataSource()->getPaginatorAdapter();
             
             $this->paginator = new Paginator($paginatorAdapter);
-            if ($renderer->isExport() === true) {
-                // Export always all pages
-                $this->paginator->setItemCountPerPage(- 1);
-            } else {
-                $this->paginator->setItemCountPerPage($this->getItemsPerPage());
-            }
-            $this->paginator->setCurrentPageNumber($this->getCurrentPage());
-            
-            $this->paginator->getCurrentItemCount();
-            $this->paginator->getTotalItemCount();
+            $this->paginator->setCurrentPageNumber($renderer->getCurrentPageNumber());
+            $this->paginator->setItemCountPerPage($renderer->getItemsPerPage($this->getDefaultItemsPerPage()));
             
             /* @var $currentItems \ArrayIterator */
             $data = $this->paginator->getCurrentItems();
@@ -813,18 +656,6 @@ class Datagrid implements ServiceLocatorAwareInterface
         }
         
         return $this->paginator;
-    }
-
-    public function getCurrentPage ()
-    {
-        $parameterName = $this->getOptions()['parameters']['currentPage'];
-        
-        if ($this->getRequest() instanceof HttpRequest) {
-            return $this->getRequest()->getPost($parameterName, $this->getRequest()
-                ->getQuery($parameterName, 1));
-        } else {
-            return $this->getRequest()->getParam($parameterName, 1);
-        }
     }
 
     /**
