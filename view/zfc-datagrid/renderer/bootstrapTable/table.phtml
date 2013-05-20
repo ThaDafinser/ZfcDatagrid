@@ -7,18 +7,9 @@ use ZfcDatagrid\Column\Style;
 <form name="form_<?= $this->gridId; ?>" method="post" action="<?= $this->url(null, array(), array(), true); ?>">
 
     <input type="submit" class="hidden" name="hiddenSubmit" />
-<<<<<<< HEAD:view/zfc-datagrid/renderer/bootstrapTable/table.phtml
-<<<<<<< HEAD:view/zfc-datagrid/renderer/bootstrapTable/table.phtml
     <input type="hidden" name="<?= $this->parameterNames['sortColumns']; ?>" value="<?= $this->activeParameters[$this->parameterNames['sortColumns']]; ?>" />
     <input type="hidden" name="<?= $this->parameterNames['sortDirections']; ?>" value="<?= $this->activeParameters[$this->parameterNames['sortDirections']]; ?>" />
 
-=======
-=======
->>>>>>> e50a95ad1485f0bee9abb81ae26d37507b8290b4:view/zfc-datagrid/renderer/html/bootstrap-table.phtml
-    <input type="hidden" name="<?= $this->parameterNames['sortColumn']; ?>" value="<?= $this->activeParameters[$this->parameterNames['sortColumn']]; ?>" />
-    <input type="hidden" name="<?= $this->parameterNames['sortDirection']; ?>" value="<?= $this->activeParameters[$this->parameterNames['sortDirection']]; ?>" />
-    
->>>>>>> e50a95ad1485f0bee9abb81ae26d37507b8290b4:view/zfc-datagrid/renderer/html/bootstrap-table.phtml
 <div class="row-fluid">
     <div class="span3">
         <a href="#" class="btn btn-primary">Add new entry</a> 
@@ -84,13 +75,6 @@ if($this->rowClickLink != '#'){
     $classes[] = 'table-hover';
 }
 ?>
-<<<<<<< HEAD:view/zfc-datagrid/renderer/bootstrapTable/table.phtml
-<<<<<<< HEAD:view/zfc-datagrid/renderer/bootstrapTable/table.phtml
-
-=======
->>>>>>> e50a95ad1485f0bee9abb81ae26d37507b8290b4:view/zfc-datagrid/renderer/html/bootstrap-table.phtml
-=======
->>>>>>> e50a95ad1485f0bee9abb81ae26d37507b8290b4:view/zfc-datagrid/renderer/html/bootstrap-table.phtml
 
 <table class="<?= implode(' ', $classes); ?>">
     <thead>
