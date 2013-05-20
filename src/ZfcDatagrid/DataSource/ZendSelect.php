@@ -21,7 +21,10 @@ class ZendSelect extends AbstractDataSource
      */
     private $sqlObject;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> e50a95ad1485f0bee9abb81ae26d37507b8290b4
 
     private $columns = array();
 
@@ -129,6 +132,12 @@ class ZendSelect extends AbstractDataSource
                     
                     case Filter::LIKE:
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+                        // $select->where->expression($qi($colString) . ' = %' . $qv($values[0]) . '%');
+                        
+                        // $this->sqlObject->getAdapter()->getPlatform()->quoteIdentifier($identifier)
+>>>>>>> e50a95ad1485f0bee9abb81ae26d37507b8290b4
 =======
                         // $select->where->expression($qi($colString) . ' = %' . $qv($values[0]) . '%');
                         
@@ -202,8 +211,11 @@ class ZendSelect extends AbstractDataSource
          * Step 4) Pagination
          */
 <<<<<<< HEAD
+<<<<<<< HEAD
         $this->setPaginatorAdapter(new PaginatorAdapter($select, $this->sqlObject));
 =======
+=======
+>>>>>>> e50a95ad1485f0bee9abb81ae26d37507b8290b4
         $this->paginatorAdapter = new PaginatorAdapter($select, $this->sqlObject);
     }
 
