@@ -81,7 +81,74 @@ class Doctrine2 extends AbstractDataSource
                     $colString .= '.' . $column->getSelectPart2();
                 }
                 
+<<<<<<< HEAD
                 $whereExpressions[] = $this->getWhereExpression($filter->getOperator(), $colString, $values, $queryBuilder->expr());
+=======
+                switch ($filter->getOperator()) {
+                    
+                    case Filter::LIKE:
+                        $queryBuilder->expr()->like($colString, $queryBuilder->expr()
+                            ->literal('%' . $values[0] . '%'));
+                        break;
+                    
+                    case Filter::LIKE_LEFT:
+                        $queryBuilder->expr()->like($colString, $queryBuilder->expr()
+                            ->literal('%' . $values[0]));
+                        break;
+                    
+                    case Filter::LIKE_RIGHT:
+                        $queryBuilder->expr()->like($colString, $queryBuilder->expr()
+                            ->literal($values[0] . '%'));
+                        break;
+                    
+                    case Filter::NOT_LIKE:
+                        $queryBuilder->expr()->notLike($colString, $queryBuilder->expr()
+                            ->literal('%' . $values[0] . '%'));
+                        break;
+                    
+                    case Filter::NOT_LIKE_LEFT:
+                        $queryBuilder->expr()->notLike($colString, $queryBuilder->expr()
+                            ->literal('%' . $values[0]));
+                        break;
+                    
+                    case Filter::NOT_LIKE_RIGHT:
+                        $queryBuilder->expr()->notLike($colString, $queryBuilder->expr()
+                            ->literal($values[0] . '%'));
+                        break;
+                    
+                    case Filter::EQUAL:
+                        $queryBuilder->expr()->eq($colString, $values[0]);
+                        break;
+                    
+                    case Filter::NOT_EQUAL:
+                        $queryBuilder->expr()->neq($colString, $values[0]);
+                        break;
+                    
+                    case Filter::GREATER_EQUAL:
+                        $queryBuilder->expr()->gte($colString, $values[0]);
+                        break;
+                    
+                    case Filter::GREATER:
+                        $queryBuilder->expr()->gt($colString, $values[0]);
+                        break;
+                    
+                    case Filter::LESS_EQUAL:
+                        $queryBuilder->expr()->lte($colString, $values[0]);
+                        break;
+                    
+                    case Filter::LESS:
+                        $queryBuilder->expr()->lt($colString, $values[0]);
+                        break;
+                    
+                    case Filter::BETWEEN:
+                        $queryBuilder->expr()->between($colString, $values[0], $values[1]);
+                        break;
+                    
+                    default:
+                        throw new \Exception('This operator is currently not supported: ' . $filter->getOperator());
+                        break;
+                }
+>>>>>>> e50a95ad1485f0bee9abb81ae26d37507b8290b4
             }
         }
         

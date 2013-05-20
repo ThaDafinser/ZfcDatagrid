@@ -18,13 +18,20 @@ Add `ZfcDatagrid` to your `config/application.config.php`
 Create the folder: `data/ZfcDatagrid`
 
 ### Test if it works
-* HTTP rendering (browser output)
-    * http://YOUR-PROJECT/zfcDatagrid/person/bootstrap (PhpArray)
-    * http://YOUR-PROJECT/zfcDatagrid/personDoctrine2/bootstrap (Doctrine2)
-* Console rendering (run in console)
-    * cd YOUR-PROJECT/public/
-    * php index.php show example grid
-    * php index.php show example grid --page 2
+####Browser####
+**PhpArray** http://YOUR-PROJECT/zfcDatagrid/person/bootstrap
+
+**Doctrine2** http://YOUR-PROJECT/zfcDatagrid/personDoctrine2/bootstrap
+
+**Zend\Db\Sql\Select** http://YOUR-PROJECT/zfcDatagrid/personZend/bootstrap
+> Attention! The Zend\Db\Sql\Select example only works with Doctrine2 working (Doctrine will create the sqlite database....)
+
+####Console####
+```sh
+cd YOUR-PROJECT/public/
+php index.php datagrid person
+php index.php datagrid person --page 2
+```
 
 ## Current features
 See changelog: https://github.com/ThaDafinser/ZfcDatagrid/blob/master/CHANGELOG.md

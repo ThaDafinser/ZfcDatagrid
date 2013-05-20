@@ -4,18 +4,19 @@
 * testing
 * ...
 
-## 0.3.0 (TBD):
-* exporting
+## 0.3.0 (work in progress):
+* output formats
     * PDF (tcpdf)
     * Excel (PHPExcel)
-* treegrid
+    * AJAX (jqGrid)
+    * HTML print
 * toolbar
     * filters
     * actions
     * exports
 * ...more styles? ...
 
-## 0.2.0 (Work in progress):
+## 0.2.0:
 * filtering
     * different operators (>=, <=, >, <>, !=, ~, ....)
 * row actions (buttons)
@@ -24,6 +25,7 @@
 * datasources: 
     * php arrays
     * Doctrine\ORM\QueryBuilder
+    * Zend\Db\Sql\Select
 * external datasources
     * gravatar
 * pagination

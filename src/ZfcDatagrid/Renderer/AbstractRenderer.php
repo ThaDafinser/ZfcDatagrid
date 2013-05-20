@@ -355,8 +355,24 @@ abstract class AbstractRenderer implements RendererInterface
         
         $viewModel->setVariable('title', $this->getTitle());
         
+<<<<<<< HEAD
         $generalParameterNames = $this->getOptions()['generalParameterNames'];
         $viewModel->setVariable('generalParameterNames', $generalParameterNames);
+=======
+        $activeParameters = array();
+        $activeParameters[$parameterNames['currentPage']] = $grid->getCurrentPage();
+        if ($grid->isUserSortActive() === true) {
+            $sortCondition = $grid->getSortConditions();
+            $sortCondition = array_pop($sortCondition);
+            
+            $activeParameters[$parameterNames['sortColumn']] = $sortCondition['column']->getUniqueId();
+            $activeParameters[$parameterNames['sortDirection']] = $sortCondition['sortDirection'];
+        } else{
+            $activeParameters[$parameterNames['sortColumn']] = '';
+            $activeParameters[$parameterNames['sortDirection']] = '';
+        }
+        $viewModel->setVariable('activeParameters', $activeParameters);
+>>>>>>> e50a95ad1485f0bee9abb81ae26d37507b8290b4
         
         $viewModel->setVariable('columns', $this->getColumns());
         $viewModel->setVariable('paginator', $this->getPaginator());
