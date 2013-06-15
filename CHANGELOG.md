@@ -1,9 +1,11 @@
 # CHANGELOG
 
-## 0.4.0 (TBD):
+## x.x.x (TBD):
 * output formats
     * PDF (tcpdf)
     * Excel (PHPExcel)
+    
+## 0.4.0 (work in progress):
 * toolbar
     * filters
     * actions
