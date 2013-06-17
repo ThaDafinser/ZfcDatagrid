@@ -1,20 +1,24 @@
 # CHANGELOG
 
-## 0.4.0 (TBD):
-* testing
-* ...
-
-## 0.3.0 (work in progress):
+## x.x.x (TBD):
 * output formats
     * PDF (tcpdf)
     * Excel (PHPExcel)
-    * AJAX (jqGrid)
-    * HTML print
+    
+## 0.4.0 (work in progress):
 * toolbar
     * filters
     * actions
     * exports
 * ...more styles? ...
+* testing
+* ...
+
+## 0.3.0 (work in progress):
+* output formats
+    * AJAX (jqGrid)
+    * HTML print
+* column types
 
 ## 0.2.0:
 * filtering
