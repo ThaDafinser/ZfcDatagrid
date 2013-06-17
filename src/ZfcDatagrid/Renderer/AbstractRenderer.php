@@ -2,7 +2,6 @@
 namespace ZfcDatagrid\Renderer;
 
 use ZfcDatagrid\Datagrid;
-use ZfcDatagrid\Column;
 use Zend\Paginator\Paginator;
 use Zend\View\Model\ViewModel;
 use Zend\Mvc\MvcEvent;
@@ -12,12 +11,7 @@ use Zend\Console\Request as ConsoleRequest;
 
 abstract class AbstractRenderer implements RendererInterface
 {
-    
-    // const TREE_DEFAULT_SIGN_CLOSED = '>';
-    // const TREE_DEFAULT_SIGN_OPENED = '';
-    
-    // protected $treeSignClosed = self::TREE_DEFAULT_SIGN_CLOSED;
-    // protected $treeSignOpened = self::TREE_DEFAULT_SIGN_OPENED;
+
     protected $options = array();
 
     protected $title;
@@ -60,6 +54,10 @@ abstract class AbstractRenderer implements RendererInterface
      */
     protected $viewModel;
 
+    protected $template;
+
+    protected $templateToolbar;
+
     /**
      *
      * @var Translator
@@ -80,16 +78,74 @@ abstract class AbstractRenderer implements RendererInterface
         return $this->options;
     }
 
+    public function getRendererOptions ()
+    {
+        $options = $this->getOptions();
+        return $options['renderer'][$this->getName()];
+    }
+
+    public function setViewModel (ViewModel $viewModel)
+    {
+        $this->viewModel = $viewModel;
+    }
+
+    /**
+     *
+     * @return \Zend\View\Model\ViewModel
+     */
+    public function getViewModel ()
+    {
+        return $this->viewModel;
+    }
+
+    public function setTemplate ($name)
+    {
+        $this->template = (string) $name;
+    }
+
+    public function getTemplate ()
+    {
+        if ($this->template === null) {
+            $this->template = $this->getTemplatePathDefault('layout');
+        }
+        
+        return $this->template;
+    }
+
+    /**
+     * Get the default template path (if there is no own set)
+     *
+     * @param string $type
+     *            layout or toolbar
+     * @return string
+     */
+    public function getTemplatePathDefault ($type = 'layout')
+    {
+        if ($type === 'layout') {
+            return 'zfc-datagrid/renderer/' . $this->getName() . '/' . $type;
+        } elseif ($type === 'toolbar') {
+            return 'zfc-datagrid/toolbar/toolbar';
+        }
+        
+        throw new \Exception('not defined: "' . $type . '"');
+    }
+
+    public function setToolbarTemplate ($name)
+    {
+        $this->templateToolbar = (string) $name;
+    }
+
+    public function getToolbarTemplate ()
+    {
+        if ($this->templateToolbar === null) {
+            $this->templateToolbar = $this->getTemplatePathDefault('toolbar');
+        }
+        
+        return $this->templateToolbar;
+    }
+
     /**
      * Paginator is here to retreive the totalItemCount, count pages, current page, .
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
      *
      *
      *
@@ -178,20 +234,6 @@ abstract class AbstractRenderer implements RendererInterface
         return $this->mvcEvent;
     }
 
-    public function setViewModel (ViewModel $viewModel)
-    {
-        $this->viewModel = $viewModel;
-    }
-
-    /**
-     *
-     * @return \Zend\View\Model\ViewModel
-     */
-    public function getViewModel ()
-    {
-        return $this->viewModel;
-    }
-
     public function setTranslator (Translator $translator)
     {
         $this->translator = $translator;
@@ -260,7 +302,7 @@ abstract class AbstractRenderer implements RendererInterface
                     'column' => $column
                 );
                 
-                $column->setSortActive(true, $sortDefaults['sortDirection']);
+                $column->setSortActive($sortDefaults['sortDirection']);
             }
         }
         
@@ -308,7 +350,7 @@ abstract class AbstractRenderer implements RendererInterface
                     $filter->setFromColumn($column, $column->getFilterDefaultValue());
                     $filters[] = $filter;
                     
-                    $column->setFilterActive(true, $filter->getDisplayValue());
+                    $column->setFilterActive($filter->getDisplayColumnValue());
                 }
             }
         }
@@ -351,14 +393,24 @@ abstract class AbstractRenderer implements RendererInterface
     {
         $viewModel = $this->getViewModel();
         
-        $viewModel->setVariable('gridId', $grid->getGridId());
-        
+        $viewModel->setVariable('gridId', $grid->getId());
         $viewModel->setVariable('title', $this->getTitle());
         
-        $generalParameterNames = $this->getOptions()['generalParameterNames'];
+        $viewModel->setVariable('templateToolbar', $this->getToolbarTemplate());
+        
+        $options = $this->getOptions();
+        $generalParameterNames = $options['generalParameterNames'];
         $viewModel->setVariable('generalParameterNames', $generalParameterNames);
         
         $viewModel->setVariable('columns', $this->getColumns());
+        $columnsHidden = array();
+        foreach ($this->getColumns() as $column) {
+            if ($column->isHidden()) {
+                $columnsHidden[] = $column->getUniqueId();
+            }
+        }
+        $viewModel->setVariable('columnsHidden', $columnsHidden);
+        
         $viewModel->setVariable('paginator', $this->getPaginator());
         $viewModel->setVariable('data', $this->getData());
         $viewModel->setVariable('filters', $this->getFilters());
@@ -371,10 +423,11 @@ abstract class AbstractRenderer implements RendererInterface
         }
         
         $viewModel->setVariable('isUserFilterEnabled', $grid->isUserFilterEnabled());
-    }
-
-    protected function setRendererOptions ($options)
-    {
+        
+        /**
+         * renderer specific parameter names
+         */
+        $options = $this->getRendererOptions();
         $parameterNames = $options['parameterNames'];
         
         $viewModel = $this->getViewModel();
@@ -395,5 +448,7 @@ abstract class AbstractRenderer implements RendererInterface
             $activeParameters[$parameterNames['sortDirections']] = implode(',', $sortDirections);
         }
         $viewModel->setVariable('activeParameters', $activeParameters);
+        
+        $viewModel->setVariable('exportRenderers', $grid->getExportRenderers());
     }
 }

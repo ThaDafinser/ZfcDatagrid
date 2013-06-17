@@ -30,7 +30,7 @@ class Standard extends AbstractColumn
             // $column = new Column('title')
             $this->setUniqueId($columnOrIndexOrObject);
             $this->setSelect($columnOrIndexOrObject);
-        } elseif (is_object($columnOrIndexOrObject) && $tableOrAliasOrUniqueId !== null) {
+        } elseif (is_object($columnOrIndexOrObject) && $tableOrAliasOrUniqueId !== null && is_string($tableOrAliasOrUniqueId)) {
             // $column = new Column('(SELECT GROUP_CONCAT....)', 'someAlias')
             $this->setUniqueId($tableOrAliasOrUniqueId);
             $this->setSelect($columnOrIndexOrObject);

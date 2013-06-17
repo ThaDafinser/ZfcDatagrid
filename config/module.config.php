@@ -5,9 +5,16 @@ return array(
     'ZfcDatagrid' => array(
         
         'defaults' => array(
+            // If no specific rendere given, use this renderes for HTTP / console
             'renderer' => array(
                 'http' => 'bootstrapTable',
                 'console' => 'zendTable'
+            ),
+            
+            // general available export formats
+            'export' => array(
+                'tcpdf' => 'PDF',
+                'phpExcel' => 'Excel'
             )
         ),
         
@@ -29,6 +36,7 @@ return array(
         ),
         
         'renderer' => array(
+            
             'bootstrapTable' => array(
                 'parameterNames' => array(
                     // Internal => bootstrapTable
@@ -45,7 +53,10 @@ return array(
                     'itemsPerPage' => 'itemsPerPage',
                     'sortColumns' => 'sortByColumns',
                     'sortDirections' => 'sortDirections',
-                    'isSearch' => 'isSearch'
+                    'isSearch' => 'isSearch',
+                    
+                    'columnsHidden' => 'columnsHidden',
+                    'columnsGroupByLocal' => 'columnsGroupBy'
                 )
             ),
             
@@ -71,6 +82,8 @@ return array(
     
     'service_manager' => array(
         'invokables' => array(
+            'DatagridManager' => 'ZfcDatagrid\ServiceManager\DatagridManagerFactory',
+            
             'zfcDatagrid.renderer.bootstrapTable' => 'ZfcDatagrid\Renderer\BootstrapTable\Renderer',
             'zfcDatagrid.renderer.printHtml' => 'ZfcDatagrid\Renderer\PrintHtml\Renderer',
             'zfcDatagrid.renderer.zendTable' => 'ZfcDatagrid\Renderer\Text\ZendTable',

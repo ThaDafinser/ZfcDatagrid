@@ -2,12 +2,14 @@
 namespace ZfcDatagrid\Column\Style;
 
 use ZfcDatagrid\Column\AbstractColumn;
+use ZfcDatagrid\Filter;
+
 abstract class AbstractStyle implements StyleInterface
 {
 
     private $byValues = array();
 
-    public function setByValue (AbstractColumn $column, $value, $operator = 'equal')
+    public function setByValue (AbstractColumn $column, $value, $operator = Filter::EQUAL)
     {
         $this->byValues[] = array(
             'column' => $column,
@@ -35,14 +37,23 @@ abstract class AbstractStyle implements StyleInterface
         if ($this->isForAll() === true) {
             return true;
         } else {
-
+            
             foreach ($this->getByValues() as $rule) {
                 $value = '';
-                if(isset($row[$rule['column']->getUniqueId()]))
+                if (isset($row[$rule['column']->getUniqueId()])) {
                     $value = $row[$rule['column']->getUniqueId()];
+                }
+                
+                switch ($rule['operator']) {
+                    case Filter::EQUAL:
+                        if ($rule['value'] == $value) {
+                            return true;
+                        }
+                        break;
                     
-                if ($rule['operator'] === 'equal' && $rule['value'] == $value) {
-                    return true;
+                    default:
+                        throw new \Exception('currently not implemented filter type: "' . $rule['operator'] . '"');
+                        break;
                 }
             }
         }

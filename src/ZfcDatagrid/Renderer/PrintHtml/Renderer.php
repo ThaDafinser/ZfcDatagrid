@@ -9,16 +9,11 @@ use Zend\View\Model\ViewModel;
 class Renderer extends AbstractRenderer
 {
 
-    protected $template = 'zfc-datagrid/renderer/printHtml/layout';
+    protected $template;
 
-    public function setTemplate ($name = 'zfc-datagrid/renderer/printHtml/layout')
+    public function getName ()
     {
-        $this->template = (string) $name;
-    }
-
-    public function getTemplate ()
-    {
-        return $this->template;
+        return 'printHtml';
     }
 
     public function isExport ()
@@ -49,16 +44,14 @@ class Renderer extends AbstractRenderer
         
         return $layout;
         
-//         $viewModel->setTemplate('zfc-datagrid/renderer/printHtml/layout');
+        // $viewModel->setTemplate('zfc-datagrid/renderer/printHtml/layout');
         
-//         $viewChild = new ViewModel();
-//         $viewChild->setVariables($viewModel->getVariables());
-//         $viewChild->setTemplate($this->getTemplate());
+        // $viewChild = new ViewModel();
+        // $viewChild->setVariables($viewModel->getVariables());
+        // $viewChild->setTemplate($this->getTemplate());
         
+        // $viewModel->addChild($viewChild, 'table');
         
-        
-//         $viewModel->addChild($viewChild, 'table');
-        
-//         return $viewModel;
+        // return $viewModel;
     }
 }

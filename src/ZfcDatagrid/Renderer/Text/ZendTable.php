@@ -20,9 +20,9 @@ class ZendTable extends AbstractRenderer
      */
     private $maxConsoleWidth = 78;
 
-    private function getRendererOptions ()
+    public function getName ()
     {
-        return $this->getOptions()['renderer']['zendTable'];
+        return 'zendTable';
     }
 
     /**
@@ -68,7 +68,7 @@ class ZendTable extends AbstractRenderer
                             'column' => $column
                         );
                         
-                        $column->setSortActive(true, $sortDirection);
+                        $column->setSortActive($sortDirection);
                     }
                 }
             }

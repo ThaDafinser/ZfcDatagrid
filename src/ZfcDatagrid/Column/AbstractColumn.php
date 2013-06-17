@@ -100,7 +100,7 @@ abstract class AbstractColumn implements ColumnInterface
 
     public function setWidth ($percent)
     {
-        $this->width = (int) $percent;
+        $this->width = (float) $percent;
     }
 
     public function getWidth ()
@@ -208,6 +208,9 @@ abstract class AbstractColumn implements ColumnInterface
      *
      *
      *
+     *
+     *
+     *
      * ..)
      *
      * @param integer $priority            
@@ -245,13 +248,9 @@ abstract class AbstractColumn implements ColumnInterface
         return false;
     }
 
-    public function setSortActive ($mode = true, $direction = 'ASC')
+    public function setSortActive ($direction = 'ASC')
     {
-        if ($mode === true) {
-            $this->sortActive = $direction;
-        } else {
-            $this->sortActive = null;
-        }
+        $this->sortActive = $direction;
     }
 
     public function isSortActive ()
@@ -324,10 +323,12 @@ abstract class AbstractColumn implements ColumnInterface
 
     public function setFilterSelectOptions (array $options = null, $noSelect = true)
     {
-        if ($noSelect === true)
-            $options = array_merge(array(
+        if ($noSelect === true) {
+            $nothing = array(
                 '' => '-'
-            ), $options);
+            );
+            $options = array_merge($nothing, $options);
+        }
         $this->filterSelectOptions = $options;
     }
 
@@ -349,9 +350,9 @@ abstract class AbstractColumn implements ColumnInterface
      *
      * @param boolean $mode            
      */
-    public function setFilterActive ($mode = true, $value = '')
+    public function setFilterActive ($value = '')
     {
-        $this->filterActive = (bool) $mode;
+        $this->filterActive = (bool) true;
         $this->filterActiveValue = $value;
     }
 
@@ -454,5 +455,26 @@ abstract class AbstractColumn implements ColumnInterface
         }
         
         return false;
+    }
+
+    public function setRendererParameter ($name, $value, $rendererType = 'jqgrid')
+    {
+        if (! isset($this->rendererParameter[$rendererType])) {
+            $this->rendererParameter[$rendererType] = array();
+        }
+        
+        $parameters = $this->rendererParameter[$rendererType];
+        $parameters[$name] = $value;
+        
+        $this->rendererParameter[$rendererType] = $parameters;
+    }
+
+    public function getRendererParameters ($rendererType = 'jqgrid')
+    {
+        if (! isset($this->rendererParameter[$rendererType])) {
+            $this->rendererParameter[$rendererType] = array();
+        }
+        
+        return $this->rendererParameter[$rendererType];
     }
 }

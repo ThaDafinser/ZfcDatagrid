@@ -1,0 +1,138 @@
+<?php 
+$parameterNames = $this->rendererOptions['parameterNames'];
+
+// $sortColumns = explode(',', $this->activeParameters[$parameterNames['sortColumns']]);
+// $sortDirections = explode(',', $this->activeParameters[$parameterNames['sortDirections']]);
+
+// $sortDirection = strtolower(array_pop($sortDirections));
+// $sortBys = array();
+// foreach($sortColumns as $key => $value){
+//     $sortBy = $value;
+//     if(isset($sortDirections[$key]))
+//         $sortBy .= ' '.strtolower($sortDirections[$key]);
+    
+//     $sortBys[] = $sortBy;
+// }
+// $sortBys = implode(', ', $sortBys);
+?>
+
+<?= $this->partial($this->templateToolbar, array('exportRenderers' => $this->exportRenderers));?>
+
+<table id="<?= $this->gridId; ?>"></table>
+<div id="<?= $this->gridId; ?>_pager"></div>
+
+<input type="hidden" id="<?= $this->gridId.'_'.$parameterNames['columnsHidden']; ?>" name="<?= $this->gridId.'_'.$parameterNames['columnsHidden']; ?>" value="<?= implode(',',$this->columnsHidden); ?>" />
+<input type="hidden" id="<?= $this->gridId.'_'.$parameterNames['columnsGroupByLocal']; ?>" name="<?= $this->gridId.'_'.$parameterNames['columnsGroupByLocal']; ?>" value="" />
+
+<script>
+var grid_<?= $this->gridId; ?>_actionsColumns = <?= json_encode($this->columnsAction) ?>;
+
+var grid_<?= $this->gridId; ?> = $('#<?= $this->gridId; ?>').jqGrid({
+
+	url: '<?= $this->url(null, array(), array(), true); ?>',
+
+	caption: '<?= $this->title; ?>',
+
+	autowidth : true,
+    forceFit : false,
+    shrinkToFit : true,
+    gridview : true,
+    hoverrows : true,
+    viewrecords : true,
+
+    grouping: true,
+//     multiSort: true,
+    
+    rowNum: <?= $this->paginator->getItemCountPerPage();?>,
+    	    
+	mtype : 'POST',
+    postData: {
+    	<?= $parameterNames['columnsHidden']?>: function(){
+            return $('#<?= $this->gridId.'_'.$parameterNames['columnsHidden']; ?>').val();
+        },
+        <?= $parameterNames['columnsGroupByLocal']?>: function(){
+            return $('#<?= $this->gridId.'_'.$parameterNames['columnsGroupByLocal']; ?>').val();
+        }
+    },
+	
+	
+	sortname: '<?= $this->activeParameters[$parameterNames['sortColumns']]; ?>',
+	sortorder: '<?= $this->activeParameters[$parameterNames['sortDirections']]; ?>',
+	
+	prmNames : {
+		page: '<?= $parameterNames['currentPage']; ?>',
+		rows: '<?= $parameterNames['itemsPerPage']; ?>',
+		sort: '<?= $parameterNames['sortColumns']; ?>',
+		order: '<?= $parameterNames['sortDirections']; ?>',
+		search: '<?= $parameterNames['isSearch']; ?>',
+	},
+	
+	pager : '#<?= $this->gridId; ?>_pager',
+
+    colModel: <?= $this->jqgridColumns($this->columns); ?>,
+
+    datatype : 'local',
+    jsonReader : {
+        repeatitems : false,
+        id : 'idConcated'
+    },
+
+    onSelectRow: function(rowId, status, e){
+        console.log('rowCLick: ' + rowId);
+    },
+
+    beforeSelectRow: function (rowid, e) {
+    	var colModel = grid_<?= $this->gridId; ?>.jqGrid('getGridParam','colModel');
+    	var name = colModel[$.jgrid.getCellIndex(e.target)];
+
+    	if (grid_<?= $this->gridId; ?>_actionsColumns.indexOf(name.index) >= 0) {
+            return false;
+        }
+
+        return true;
+    }
+});
+<?php if($this->isUserFilterEnabled === true):?>
+    grid_<?= $this->gridId; ?>.jqGrid('filterToolbar');
+<?php endif; ?>
+
+grid_<?= $this->gridId; ?>.jqGrid('setGridParam', {
+    datatype : 'json'
+}).trigger('reload');
+grid_<?= $this->gridId; ?>.jqGrid()[0].addJSONData(<?= json_encode($this->data); ?>);
+grid_<?= $this->gridId; ?>.trigger('reload');
+
+//This is needed to load the data with ajax!
+grid_<?= $this->gridId; ?>.jqGrid('setGridParam', {
+    jsonReader : {
+        repeatitems : false,
+        id : 'idConcated',
+
+        //The current page
+        page : function(data) {
+            if (data.data) {
+                return data.data.page;
+            }
+        },
+
+        records : function(data) {
+            if (data.data) {
+                return data.data.records;
+            }
+        },
+
+        total : function(data) {
+            if (data.data) {
+                return data.data.total;
+            }
+        },
+
+        //Data (rows)
+        root : function(data) {
+            if (data.data) {
+                return data.data.rows;
+            }
+        }
+    }
+});
+</script>

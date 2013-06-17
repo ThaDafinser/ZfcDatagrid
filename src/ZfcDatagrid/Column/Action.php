@@ -1,6 +1,13 @@
 <?php
 namespace ZfcDatagrid\Column;
 
+/**
+ * Action Column
+ * IMPORTANT: Will only be shown on HTML renderer
+ * 
+ * So Attributes for HTML are valid...
+ *
+ */
 class Action extends AbstractColumn
 {
 

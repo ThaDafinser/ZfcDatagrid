@@ -6,7 +6,9 @@ namespace ZfcDatagrid\Column;
  */
 class Image extends AbstractColumn
 {
-    public function __construct($uniqueId = 'image'){
+
+    public function __construct ($uniqueId = 'image')
+    {
         $this->setUniqueId($uniqueId);
         
         $this->setUserSortDisabled(true);

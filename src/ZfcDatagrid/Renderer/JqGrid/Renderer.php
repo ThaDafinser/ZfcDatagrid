@@ -2,27 +2,16 @@
 namespace ZfcDatagrid\Renderer\JqGrid;
 
 use ZfcDatagrid\Renderer\AbstractRenderer;
+use ZfcDatagrid\Column;
 use Zend\Http\PhpEnvironment\Request as HttpRequest;
 use Zend\View\Model\JsonModel;
 
 class Renderer extends AbstractRenderer
 {
 
-    protected $template = 'zfc-datagrid/renderer/jqGrid/table';
-
-    public function setTemplate ($name = 'zfc-datagrid/renderer/jqGrid/table')
+    public function getName ()
     {
-        $this->template = (string) $name;
-    }
-
-    public function getTemplate ()
-    {
-        return $this->template;
-    }
-
-    private function getRendererOptions ()
-    {
-        return $this->getOptions()['renderer']['jqGrid'];
+        return 'jqGrid';
     }
 
     /**
@@ -72,7 +61,7 @@ class Renderer extends AbstractRenderer
                             'column' => $column
                         );
                         
-                        $column->setSortActive(true, $sortDirection);
+                        $column->setSortActive($sortDirection);
                     }
                 }
             }
@@ -106,8 +95,8 @@ class Renderer extends AbstractRenderer
         $parameterNames = $rendererOptions['parameterNames'];
         
         $isSearch = $request->getPost($parameterNames['isSearch']);
-        if($isSearch == 'true'){
-            //User filtering
+        if ($isSearch == 'true') {
+            // User filtering
             foreach ($this->getColumns() as $column) {
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */
                 if ($request->getPost($column->getUniqueId()) != '') {
@@ -118,7 +107,7 @@ class Renderer extends AbstractRenderer
                     
                     $filters[] = $filter;
                     
-                    $column->setFilterActive(true, $filter->getDisplayValue());
+                    $column->setFilterActive($filter->getDisplayColumnValue());
                 }
             }
         }
@@ -162,24 +151,61 @@ class Renderer extends AbstractRenderer
     public function execute ()
     {
         $request = $this->getRequest();
-        if ($request instanceof HttpRequest && $request->isXmlHttpRequest() === true) {
+        if ($request instanceof HttpRequest && $request->isXmlHttpRequest() === true && $request->isPost() === true) {
             // AJAX Request...load only data...
             $viewModel = new JsonModel();
             $viewModel->setVariable('data', $this->getDataJqGrid());
         } else {
             $viewModel = $this->getViewModel();
             $viewModel->setTemplate($this->getTemplate());
-            
-            $this->setRendererOptions($this->getRendererOptions());
-            
             $viewModel->setVariable('data', $this->getDataJqGrid());
+            
+            $columnsAction = array();
+            $columns = $viewModel->getVariable('columns');
+            foreach ($columns as $column) {
+                if ($column instanceof Column\Action) {
+                    /* @var $column \ZfcDatagrid\Column\Action */
+            
+                    $columnsAction[] = $column->getUniqueId();
+                }
+            }
+            
+            $viewModel->setVariable('columnsAction', $columnsAction);
         }
         
         return $viewModel;
     }
 
+    public function getData ()
+    {
+        $data = $this->data;
+        
+        foreach ($data as &$row) {
+            foreach ($this->getColumns() as $column) {
+                if ($column instanceof Column\Action) {
+                    /* @var $column \ZfcDatagrid\Column\Action */
+                    
+                    $actions = array();
+                    foreach ($column->getActions() as $action) {
+                        /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
+                        
+                        if ($action->isDisplayed($row) === true) {
+                            $actions[] = $action->toHtml();
+                        }
+                    }
+                    
+                    $row[$column->getUniqueId()] = implode(' ', $actions);
+                }
+            }
+        }
+        
+        return $data;
+    }
+
     private function getDataJqGrid ()
     {
+        $data = $this->getData();
+        
         return array(
             'rows' => $this->getData(),
             'page' => $this->getPaginator()->getCurrentPageNumber(),

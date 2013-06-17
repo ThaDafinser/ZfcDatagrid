@@ -1,0 +1,15 @@
+
+<?php foreach($this->exportRenderers as $type => $name): ?>
+    <a class="btn" href="<?= $this->url(null, 
+            array(),
+            array(
+                'query' => array(
+                    $this->generalParameterNames['rendererType'] => $type
+                )
+            ),
+            true
+        );?>" 
+    >
+        <?= $name; ?>
+    </a>
+<?php endforeach;;?>

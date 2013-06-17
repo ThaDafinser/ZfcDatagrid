@@ -3,8 +3,8 @@ namespace ZfcDatagrid\Renderer\JqGrid\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
 use ZfcDatagrid\Column;
-use ZfcDatagrid\Column\Style;
 use ZfcDatagrid\Column\Type;
+use ZfcDatagrid\Column\Style;
 
 /**
  * View Helper
@@ -20,13 +20,14 @@ class Columns extends AbstractHelper
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
             
             $options = array(
-                'name' => $column->getUniqueId(),
-                'index' => $column->getUniqueId(),
-                'label' => $column->getLabel(),
+                'name' => (string) $column->getUniqueId(),
+                'index' => (string) $column->getUniqueId(),
+                'label' => (string) $column->getLabel(),
                 
-                'hidden' => $column->isHidden(),
-                'sortable' => $column->isUserSortEnabled(),
-                'search' => $column->isUserFilterEnabled()
+                'width' => $column->getWidth(),
+                'hidden' => (bool) $column->isHidden(),
+                'sortable' => (bool) $column->isUserSortEnabled(),
+                'search' => (bool) $column->isUserFilterEnabled()
             );
             
             /**
@@ -39,16 +40,48 @@ class Columns extends AbstractHelper
                     $formatter = 'email';
                     break;
                 
+                case 'array':
+                    $formatter = 'function(cellvalue, options, rowObject){';
+                    // $formatter .= 'console.log(options); console.log(rowObject);';
+                    $formatter .= 'return cellvalue;';
+                    $formatter .= '}';
+                    break;
+                
                 // case 'link':
                 // $formatter = 'link';
                 // break;
             }
+            
+            if ($column instanceof Column\Action) {
+                $formatter = 'function(cellvalue, options, rowObject){';
+                // $formatter .= 'console.log(options); console.log(rowObject);';
+                $formatter .= 'return cellvalue;';
+                $formatter .= '}';
+            } elseif ($column instanceof Column\Image) {
+                $formatter = 'function(cellvalue, options, rowObject){';
+                $formatter .= 'return \'<img src="\' + cellvalue + \'" />\'';
+                $formatter .= '}';
+            }
+            
+            $rendererParameters = $column->getRendererParameters('jqgrid');
+            if (isset($rendererParameters['formatter'])) {
+                $formatter = $rendererParameters['formatter'];
+            }
+            
             if ($formatter != '') {
-                $options['formatter'] = $formatter;
+                $options['formatter'] = (string) $formatter;
             }
             
             if ($column->getType() instanceof Type\Number) {
-                $options['align'] = 'right';
+                $options['align'] = (string) 'right';
+            }
+            
+            /**
+             * Cellattr
+             */
+            $rendererParameters = $column->getRendererParameters('jqgrid');
+            if (isset($rendererParameters['cellattr'])) {
+                $options['cellattr'] = (string) $rendererParameters['cellattr'];
             }
             
             /**
@@ -64,16 +97,42 @@ class Columns extends AbstractHelper
                 $filter = new \ZfcDatagrid\Filter();
                 $filter->setFromColumn($column, $column->getFilterDefaultValue());
                 
-                $searchoptions['defaultValue'] = $filter->getDisplayValue();
+                $searchoptions['defaultValue'] = $filter->getDisplayColumnValue();
             }
             
             if (count($searchoptions) > 0) {
                 $options['searchoptions'] = $searchoptions;
             }
             
-            $return[] = $options;
+            /**
+             * Because with json_encode we get problems, it's custom made!
+             */
+            $colModel = array();
+            foreach ($options as $key => $value) {
+                if (is_array($value)) {
+                    $value = json_encode($value);
+                } elseif (is_bool($value)) {
+                    if ($value === true) {
+                        $value = 'true';
+                    } else {
+                        $value = 'false';
+                    }
+                } elseif ($key == 'formatter') {
+                    if (stripos($value, 'formatter') === false && stripos($value, 'function') === false) {
+                        $value = '"' . $value . '"';
+                    }
+                } elseif ($key == 'cellattr') {
+                    // SKIP THIS
+                } else {
+                    $value = '"' . $value . '"';
+                }
+                
+                $colModel[] = (string) $key . ': ' . $value;
+            }
+            
+            $return[] = '{' . implode(',', $colModel) . '}';
         }
         
-        return json_encode($return);
+        return '[' . implode(',', $return) . ']';
     }
 }

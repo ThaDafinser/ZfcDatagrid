@@ -59,7 +59,7 @@ class Filter
 
     private $value;
 
-    private $displayValue;
+    private $displayColumnValue;
 
     public function setFromColumn (Column\AbstractColumn $column, $inputFilterValue)
     {
@@ -182,7 +182,7 @@ class Filter
         }
         
         $this->operator = $operator;
-        $this->displayValue = vsprintf($operator, $value);
+        $this->displayColumnValue = vsprintf($operator, $value);
         
         /**
          * The searched value must be converted maybe....
@@ -233,8 +233,13 @@ class Filter
         return $this->operator;
     }
 
-    public function getDisplayValue ()
+    /**
+     * Get the value displayed to the user
+     * 
+     * @return string
+     */
+    public function getDisplayColumnValue ()
     {
-        return $this->displayValue;
+        return $this->displayColumnValue;
     }
 }

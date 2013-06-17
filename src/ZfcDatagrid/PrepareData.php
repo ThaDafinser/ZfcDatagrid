@@ -1,11 +1,6 @@
 <?php
 namespace ZfcDatagrid;
 
-use ZfcDatagrid\Column\Type;
-use DateTime;
-use DateTimeZone;
-use IntlDateFormatter;
-use NumberFormatter;
 use Zend\I18n\Translator\Translator;
 
 class PrepareData
@@ -106,8 +101,7 @@ class PrepareData
                 /**
                  * Type converting
                  */
-                $type = $column->getType();
-                $row[$column->getUniqueId()] = $type->getUserValue($row[$column->getUniqueId()]);
+                $row[$column->getUniqueId()] = $column->getType()->getUserValue($row[$column->getUniqueId()]);
             }
             
             // Concat all identity columns

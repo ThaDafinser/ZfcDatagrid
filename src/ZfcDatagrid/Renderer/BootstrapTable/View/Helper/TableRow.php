@@ -45,6 +45,8 @@ class TableRow extends AbstractHelper
         foreach ($columns as $column) {
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
             
+            $value = $row[$column->getUniqueId()];
+            
             $styles = array();
             $classes = array();
             
@@ -52,9 +54,14 @@ class TableRow extends AbstractHelper
                 $classes[] = 'hidden';
             }
             
-            $type = $column->getType();
-            if ($type instanceof Type\Number) {
-                $styles[] = 'text-align: right';
+            switch ($column->getType()->getTypeName()) {
+                case 'number':
+                    $styles[] = 'text-align: right';
+                    break;
+                
+                case 'array':
+                    $value = '<pre>' . print_r($value, true) . '</pre>';
+                    break;
             }
             
             if ($column->hasStyles() === true) {
@@ -73,20 +80,19 @@ class TableRow extends AbstractHelper
             }
             
             if ($column instanceof Column\Image) {
-                $value = ' <a href="#" class="thumbnail"><img src="' . $row[$column->getUniqueId()] . '" /></a>';
+                $value = ' <a href="#" class="thumbnail"><img src="' . $value . '" /></a>';
             } elseif ($column instanceof Column\Action) {
+                /* @var $column \ZfcDatagrid\Column\Action */
                 $actions = array();
                 foreach ($column->getActions() as $action) {
-                    $icon = '';
-                    if ($action->hasIconClass() === true) {
-                        $icon = '<i class="' . $action->getIconClass() . '"></i> ';
+                    /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
+                    
+                    if ($action->isDisplayed($row) === true) {
+                        $actions[] = $action->toHtml();
                     }
-                    $actions[] = '<a class="btn" href="' . $action->getLink() . '">' . $icon . $action->getLabel() . '</a>';
                 }
                 
                 $value = implode(' ', $actions);
-            }  else {
-                $value = $row[$column->getUniqueId()];
             }
             
             if ($column instanceof Column\Standard && $rowClickLink != '#') {

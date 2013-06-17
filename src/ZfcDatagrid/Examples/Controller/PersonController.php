@@ -124,9 +124,8 @@ class PersonController extends AbstractActionController
         }
         
         $action = new Column\Action\Button();
-        $action->setIconClass('icon-list-alt');
         $action->setLabel('test');
-        $action->setHtmlAttributes('href', '/test');
+        $action->setAttribute('href', '/test');
         
         $col = new Column\Action();
         $col->setLabel('Actions');

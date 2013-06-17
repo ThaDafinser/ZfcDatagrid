@@ -134,7 +134,8 @@ class PhpArray implements ServiceLocatorAwareInterface
             'id' => ++ $id,
             'parentId' => null,
             'hasChildren' => 'y',
-            'name' => 'Root'
+            'name' => 'Root',
+            'tags' => 'Tag1,Tag2, Martin, ZfcDatagrid'
         );
         
         $data[] = array(
@@ -142,14 +143,16 @@ class PhpArray implements ServiceLocatorAwareInterface
             'parentId' => $id - 1,
             'hasChildren' => 'y',
             'name' => 'Second level: entry 1',
-            'level' => 1
+            'level' => 1,
+            'tags' => 'Tag1,Root, Root2'
         );
         
         $data[] = array(
             'id' => ++ $id,
             'parentId' => $id - 1,
             'hasChildren' => 'n',
-            'name' => 'Third level: entry 1'
+            'name' => 'Third level: entry 1',
+            'tags' => 'cool, stuff'
         );
         
         $data[] = array(

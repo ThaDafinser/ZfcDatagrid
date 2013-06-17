@@ -1,0 +1,23 @@
+<div class="row-fluid" style="margin-bottom: 5px;">
+
+    <!-- Actions (add, ...) -->
+    <div class="span2">
+        <a class="btn btn-primary">
+            <?= $this->translate('Add'); ?>
+        </a>
+    </div>
+    
+    <!-- Anything else (filter, ...) -->
+    <div class="span6">
+        <div data-toggle="buttons-radio" class="btn-group" id="togglePicturestabs-2_grid">
+            <button value="true" class="btn" type="button">Ja</button>
+            <button value="false" class="btn active" type="button">Nein</button>
+        </div>
+    </div>
+    
+    <!-- Export buttons -->
+    <div class="span4 text-right">
+        <?= $this->partial('zfc-datagrid/toolbar/export', array('exportRenderers' => $this->exportRenderers));?>
+    </div>
+    
+</div>

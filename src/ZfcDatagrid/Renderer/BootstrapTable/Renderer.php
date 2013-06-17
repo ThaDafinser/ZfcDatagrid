@@ -7,21 +7,9 @@ use Zend\Http\PhpEnvironment\Request as HttpRequest;
 class Renderer extends AbstractRenderer
 {
 
-    protected $template = 'zfc-datagrid/renderer/bootstrapTable/table';
-
-    public function setTemplate ($name = 'zfc-datagrid/renderer/bootstrapTable/table')
+    public function getName ()
     {
-        $this->template = (string) $name;
-    }
-
-    public function getTemplate ()
-    {
-        return $this->template;
-    }
-
-    private function getRendererOptions ()
-    {
-        return $this->getOptions()['renderer']['bootstrapTable'];
+        return 'bootstrapTable';
     }
 
     /**
@@ -71,7 +59,7 @@ class Renderer extends AbstractRenderer
                             'column' => $column
                         );
                         
-                        $column->setSortActive(true, $sortDirection);
+                        $column->setSortActive($sortDirection);
                     }
                 }
             }
@@ -120,12 +108,13 @@ class Renderer extends AbstractRenderer
                             
                             $filters[] = $filter;
                             
-                            $column->setFilterActive(true, $filter->getDisplayValue());
+                            $column->setFilterActive($filter->getDisplayColumnValue());
                         }
                     }
                 }
             }
         }
+        
         if (count($filters) > 0) {
             $this->filters = $filters;
         } else {
@@ -162,9 +151,7 @@ class Renderer extends AbstractRenderer
     public function execute ()
     {
         $viewModel = $this->getViewModel();
-        
         $viewModel->setTemplate($this->getTemplate());
-        $this->setRendererOptions($this->getRendererOptions());
         
         return $viewModel;
     }

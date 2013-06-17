@@ -10,59 +10,8 @@ use ZfcDatagrid\Column\Style;
     <input type="hidden" name="<?= $this->parameterNames['sortColumns']; ?>" value="<?= $this->activeParameters[$this->parameterNames['sortColumns']]; ?>" />
     <input type="hidden" name="<?= $this->parameterNames['sortDirections']; ?>" value="<?= $this->activeParameters[$this->parameterNames['sortDirections']]; ?>" />
 
-<div class="row-fluid">
-    <div class="span3">
-        <a href="#" class="btn btn-primary">Add new entry</a> 
-    </div>
     
-    <div class="span6 text-center">
-        <?php if(isset($this->title)):?>
-            <h3><?= $this->escapeHtml($this->title); ?></h3>
-        <?php endif;?>
-    </div>
-    
-    <div class="span3 text-right">
-        <a class="hidden" href="<?= $this->url(null, 
-                array(),
-                array(
-                    'query' => array(
-                        $this->generalParameterNames['rendererType'] => 'tcpdf'
-                    )
-                ),
-                true
-            );?>" 
-            class="btn
-        ">
-            Download PDF
-        </a>
-        <a class="hidden" href="<?= $this->url(null, 
-                array(),
-                array(
-                    'query' => array(
-                        $this->generalParameterNames['rendererType'] => 'excel'
-                    )
-                ),
-                true
-            );?>" 
-            class="btn
-        ">
-            Download Excel
-        </a>
-        <a href="<?= $this->url(null, 
-                array(),
-                array(
-                    'query' => array(
-                        $this->generalParameterNames['rendererType'] => 'printHtml'
-                    )
-                ),
-                true
-            );?>" 
-            class="btn
-        ">
-            Print plain
-        </a>
-    </div>
-</div><!-- End title + actions -->
+<?= $this->toolbar; ?>
 
 <?php 
 
@@ -75,6 +24,8 @@ if($this->rowClickLink != '#'){
     $classes[] = 'table-hover';
 }
 ?>
+
+<?= $this->partial($this->templateToolbar, array('exportRenderers' => $this->exportRenderers));?>
 
 <table class="<?= implode(' ', $classes); ?>">
     <thead>
