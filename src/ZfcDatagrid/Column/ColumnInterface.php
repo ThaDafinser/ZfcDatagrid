@@ -12,13 +12,6 @@ interface ColumnInterface
     public function setLabel ($name);
 
     /**
-     * Get the label
-     *
-     * @return string
-     */
-    public function getLabel ();
-
-    /**
      * Overwrite the Unique ID
      *
      * @param string $id            

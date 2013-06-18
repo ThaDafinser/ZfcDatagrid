@@ -165,7 +165,7 @@ class Renderer extends AbstractRenderer
             foreach ($columns as $column) {
                 if ($column instanceof Column\Action) {
                     /* @var $column \ZfcDatagrid\Column\Action */
-            
+                    
                     $columnsAction[] = $column->getUniqueId();
                 }
             }

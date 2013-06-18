@@ -1,7 +1,8 @@
 <?php
 namespace ZfcDatagrid\Column\DataPopulation;
 
-interface DataPopulationInterface{
+interface DataPopulationInterface
+{
     
     /**
      * Return the result

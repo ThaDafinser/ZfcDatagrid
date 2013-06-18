@@ -16,7 +16,6 @@ class Doctrine2 extends AbstractDataSource
      */
     private $queryBuilder;
 
-
     /**
      * Data source
      *
@@ -142,27 +141,27 @@ class Doctrine2 extends AbstractDataSource
                 break;
             
             case Filter::EQUAL:
-                return $expr->eq($colString, $values[0]);
+                return $expr->eq($colString, $expr->literal($values[0]));
                 break;
             
             case Filter::NOT_EQUAL:
-                return $expr->neq($colString, $values[0]);
+                return $expr->neq($colString, $expr->literal($values[0]));
                 break;
             
             case Filter::GREATER_EQUAL:
-                return $expr->gte($colString, $values[0]);
+                return $expr->gte($colString, $expr->literal($values[0]));
                 break;
             
             case Filter::GREATER:
-                return $expr->gt($colString, $values[0]);
+                return $expr->gt($colString, $expr->literal($values[0]));
                 break;
             
             case Filter::LESS_EQUAL:
-                return $expr->lte($colString, $values[0]);
+                return $expr->lte($colString, $expr->literal($values[0]));
                 break;
             
             case Filter::LESS:
-                return $expr->lt($colString, $values[0]);
+                return $expr->lt($colString, $expr->literal($values[0]));
                 break;
             
             case Filter::BETWEEN:

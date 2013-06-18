@@ -6,7 +6,7 @@ use ZfcDatagrid\Filter;
 abstract class AbstractColumn implements ColumnInterface
 {
 
-    protected $label = '';
+    protected $label;
 
     protected $uniqueId;
 
@@ -67,6 +67,11 @@ abstract class AbstractColumn implements ColumnInterface
         $this->label = (string) $name;
     }
 
+    /**
+     * Get the label
+     * 
+     * @return string|null
+     */
     public function getLabel ()
     {
         return $this->label;
