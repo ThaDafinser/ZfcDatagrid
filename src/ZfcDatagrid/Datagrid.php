@@ -568,10 +568,10 @@ class Datagrid implements ServiceLocatorAwareInterface
             } else {
                 $rendererName = $options['defaults']['renderer']['http'];
             }
-        }
-        
-        if ($this->getRequest() instanceof HttpRequest && $this->getRequest()->getQuery($parameterName) != '') {
-            $rendererName = $this->getRequest()->getQuery($parameterName);
+            
+            if ($this->getRequest() instanceof HttpRequest && $this->getRequest()->getQuery($parameterName) != '') {
+                $rendererName = $this->getRequest()->getQuery($parameterName);
+            }
         }
         
         return $rendererName;
