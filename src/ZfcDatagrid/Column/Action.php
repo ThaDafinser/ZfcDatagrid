@@ -16,10 +16,12 @@ class Action extends AbstractColumn
     public function __construct ($uniqueId = 'action')
     {
         $this->setUniqueId($uniqueId);
-        $this->setLabel('actions');
+        $this->setLabel('Actions');
         
         $this->setUserSortDisabled(true);
         $this->setUserFilterDisabled(true);
+        
+        $this->setRowClickDisabled(true);
     }
 
     public function addAction (Action\AbstractAction $action)
@@ -35,4 +37,6 @@ class Action extends AbstractColumn
     {
         return $this->actions;
     }
+    
+    
 }

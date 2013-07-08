@@ -19,8 +19,10 @@ $orderOnclick = 'document.forms[\'form_'.$this->gridId.'\'].elements[\'' . $this
 $orderOnclick .= 'document.forms[\'form_'.$this->gridId.'\'].elements[\'' . $this->parameterNames['sortDirections'] . '\'].value = \'%s\';';
 $orderOnclick.= 'document.forms[\'form_'.$this->gridId.'\'].submit(); return false;';
 
+$link = '#';
 $classes = array('table', 'table-striped', 'table-bordered');
-if($this->rowClickLink != '#'){
+if($this->rowClickAction){
+    $link = $this->rowClickAction->getLink();
     $classes[] = 'table-hover';
 }
 ?>
@@ -38,7 +40,11 @@ if($this->rowClickLink != '#'){
                 
                 $id = $column->getUniqueId();
                 
-                $label = $this->translate($column->getLabel());
+                $label = '';
+                if($column->getLabel() != ''){
+                    $label = $this->translate($column->getLabel());
+                }
+                
                 $width = $column->getWidth();
                 if($width != ''){
                     $styles[] = 'width: '.$this->escapehtmlattr($width).'%';
@@ -125,7 +131,7 @@ if($this->rowClickLink != '#'){
     <!-- Start table BODY -->
     <tbody>
         <?php foreach($this->data as $row): ?>
-            <?php echo $this->bootstrapTableRow($row, $this->columns, $this->rowClickLink); ?>
+            <?php echo $this->bootstrapTableRow($row, $this->columns, $link); ?>
         <?php endforeach; ?>
     </tbody>
 </table>

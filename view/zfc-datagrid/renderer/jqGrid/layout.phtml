@@ -14,28 +14,42 @@ $parameterNames = $this->rendererOptions['parameterNames'];
 //     $sortBys[] = $sortBy;
 // }
 // $sortBys = implode(', ', $sortBys);
+
+$url = $this->url(null, array(), array(), true);
+if($this->overwriteUrl != ''){
+    $url = $this->overwriteUrl;
+}
+$parametersHtml = array();
+foreach($this->parameters as $name => $value){
+    $parametersHtml []= $name.': \''.$value.'\'';
+}
+
+$tableClasses = array();
+if($this->rowClickAction){
+    $tableClasses[] = 'clickable';
+}
 ?>
 
 <?= $this->partial($this->templateToolbar, array('exportRenderers' => $this->exportRenderers));?>
 
-<table id="<?= $this->gridId; ?>"></table>
+<table id="<?= $this->gridId; ?>" class="<?= implode(' ', $tableClasses); ?>"></table>
 <div id="<?= $this->gridId; ?>_pager"></div>
 
 <input type="hidden" id="<?= $this->gridId.'_'.$parameterNames['columnsHidden']; ?>" name="<?= $this->gridId.'_'.$parameterNames['columnsHidden']; ?>" value="<?= implode(',',$this->columnsHidden); ?>" />
 <input type="hidden" id="<?= $this->gridId.'_'.$parameterNames['columnsGroupByLocal']; ?>" name="<?= $this->gridId.'_'.$parameterNames['columnsGroupByLocal']; ?>" value="" />
 
 <script>
-var grid_<?= $this->gridId; ?>_actionsColumns = <?= json_encode($this->columnsAction) ?>;
+var grid_<?= $this->gridId; ?>_columnsRowClickDisabled = <?= json_encode($this->columnsRowClickDisabled) ?>;
 
 var grid_<?= $this->gridId; ?> = $('#<?= $this->gridId; ?>').jqGrid({
 
-	url: '<?= $this->url(null, array(), array(), true); ?>',
+	url: '<?= $url; ?>',
 
 	caption: '<?= $this->title; ?>',
 
 	height: 'auto',
 	autowidth : true,
-    forceFit : false,
+    forceFit : true,
     shrinkToFit : true,
     gridview : true,
     hoverrows : true,
@@ -54,6 +68,12 @@ var grid_<?= $this->gridId; ?> = $('#<?= $this->gridId; ?>').jqGrid({
         <?= $parameterNames['columnsGroupByLocal']?>: function(){
             return $('#<?= $this->gridId.'_'.$parameterNames['columnsGroupByLocal']; ?>').val();
         }
+        <?php
+        if(count($parametersHtml) > 0){
+            echo ',';
+        }
+        echo implode(',', $parametersHtml);
+        ?>
     },
 	
 	
@@ -79,17 +99,21 @@ var grid_<?= $this->gridId; ?> = $('#<?= $this->gridId; ?>').jqGrid({
     },
 
     onSelectRow: function(rowId, status, e){
-        console.log('rowCLick: ' + rowId);
+    	<?php if($this->rowClickAction): ?>
+             <?php if($this->rowClickAction->getAttribute('onclick') != ''): ?>
+                 <?= $this->rowClickAction->getAttribute('onclick'); ?>
+             <?php endif; ?>
+        <?php endif; ?>
     },
 
-    beforeSelectRow: function (rowid, e) {
+    beforeSelectRow: function (rowId, e) {
     	var colModel = grid_<?= $this->gridId; ?>.jqGrid('getGridParam','colModel');
     	var name = colModel[$.jgrid.getCellIndex(e.target)];
 
-    	if (grid_<?= $this->gridId; ?>_actionsColumns.indexOf(name.index) >= 0) {
+    	if (grid_<?= $this->gridId; ?>_columnsRowClickDisabled.indexOf(name.index) >= 0) {
             return false;
         }
-
+        
         return true;
     }
 });

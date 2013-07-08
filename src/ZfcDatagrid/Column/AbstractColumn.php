@@ -56,6 +56,8 @@ abstract class AbstractColumn implements ColumnInterface
 
     protected $notReplacedGetEmpty = true;
 
+    protected $rowClickEnabled = true;
+    
     /**
      *
      * @var DataPopulation\DataPopulationInterface
@@ -481,5 +483,13 @@ abstract class AbstractColumn implements ColumnInterface
         }
         
         return $this->rendererParameter[$rendererType];
+    }
+    
+    public function setRowClickDisabled($mode = true){
+        $this->rowClickEnabled = (bool)!$mode;
+    }
+    
+    public function isRowClickEnabled(){
+        return $this->rowClickEnabled;
     }
 }

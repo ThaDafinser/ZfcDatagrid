@@ -10,12 +10,17 @@ class PhpArray extends AbstractType
     }
 
     /**
+     *
      * @return array
      */
     public function getUserValue ($val)
     {
         if (! is_array($val)) {
-            $val = explode(',', $val);
+            if ($val == '') {
+                $val = array();
+            } else {
+                $val = explode(',', $val);
+            }
         }
         
         return $val;

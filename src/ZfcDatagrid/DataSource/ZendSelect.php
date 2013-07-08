@@ -21,11 +21,6 @@ class ZendSelect extends AbstractDataSource
      */
     private $sqlObject;
 
-    private $columns = array();
-
-    private $sortConditions = array();
-
-    private $filters = array();
 
     /**
      * The data result

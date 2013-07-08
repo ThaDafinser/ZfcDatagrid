@@ -5,6 +5,7 @@ return array(
     'ZfcDatagrid' => array(
         
         'defaults' => array(
+            
             // If no specific rendere given, use this renderes for HTTP / console
             'renderer' => array(
                 'http' => 'bootstrapTable',
@@ -136,10 +137,10 @@ return array(
     'view_manager' => array(
         
         'template_map' => array(
-            'zfc-datagrid/renderer/bootstrapTable/table' => __DIR__ . '/../view/zfc-datagrid/renderer/bootstrapTable/table.phtml',
+            'zfc-datagrid/renderer/bootstrapTable/layout' => __DIR__ . '/../view/zfc-datagrid/renderer/bootstrapTable/layout.phtml',
             'zfc-datagrid/renderer/printHtml/layout' => __DIR__ . '/../view/zfc-datagrid/renderer/printHtml/layout.phtml',
             'zfc-datagrid/renderer/printHtml/table' => __DIR__ . '/../view/zfc-datagrid/renderer/printHtml/table.phtml',
-            'zfc-datagrid/renderer/jqGrid/table' => __DIR__ . '/../view/zfc-datagrid/renderer/jqGrid/table.phtml'
+            'zfc-datagrid/renderer/jqGrid/layout' => __DIR__ . '/../view/zfc-datagrid/renderer/jqGrid/layout.phtml'
         ),
         
         'template_path_stack' => array(
@@ -155,9 +156,8 @@ return array(
             'ZfcDatagrid\Examples\Controller\Person' => 'ZfcDatagrid\Examples\Controller\PersonController',
             'ZfcDatagrid\Examples\Controller\PersonDoctrine2' => 'ZfcDatagrid\Examples\Controller\PersonDoctrine2Controller',
             'ZfcDatagrid\Examples\Controller\PersonZend' => 'ZfcDatagrid\Examples\Controller\PersonZendController',
-            
-            'ZfcDatagrid\Examples\Controller\Category' => 'ZfcDatagrid\Examples\Controller\CategoryController',
-            'ZfcDatagrid\Examples\Controller\Random' => 'ZfcDatagrid\Examples\Controller\RandomController'
+            'ZfcDatagrid\Examples\Controller\Minimal' => 'ZfcDatagrid\Examples\Controller\MinimalController',
+            'ZfcDatagrid\Examples\Controller\Category' => 'ZfcDatagrid\Examples\Controller\CategoryController'
         )
     ),
     

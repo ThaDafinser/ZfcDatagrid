@@ -4,13 +4,60 @@ namespace ZfcDatagrid\Renderer\JqGrid\View\Helper;
 use Zend\View\Helper\AbstractHelper;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Type;
-use ZfcDatagrid\Column\Style;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * View Helper
  */
-class Columns extends AbstractHelper
+class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
 {
+
+    private $translator;
+    
+    /**
+     * Set the service locator.
+     * 
+     * @param ServiceLocatorInterface $serviceLocator
+     *            @return CustomHelper
+     */
+    public function setServiceLocator (ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+        return $this;
+    }
+
+    /**
+     * Get the service locator.
+     *
+     * @return \Zend\View\HelperPluginManager
+     */
+    public function getServiceLocator ()
+    {
+        return $this->serviceLocator;
+    }
+    
+    /**
+     * 
+     * @param string $message
+     * @return string
+     */
+    public function translate($message){
+        if($this->translator === false){
+            return $message;
+        }
+        
+        if($this->translator === null){
+            if($this->getServiceLocator()->getServiceLocator()->has('translator')){
+                $this->translator = $this->getServiceLocator()->getServiceLocator()->get('translator');
+            } else{
+                $this->translator = false;
+                return $message;
+            }
+        }
+        
+        return $this->translator->translate($message);
+    }
 
     public function __invoke (array $columns)
     {
@@ -22,7 +69,7 @@ class Columns extends AbstractHelper
             $options = array(
                 'name' => (string) $column->getUniqueId(),
                 'index' => (string) $column->getUniqueId(),
-                'label' => (string) $column->getLabel(),
+                'label' => $this->translate((string) $column->getLabel()),
                 
                 'width' => $column->getWidth(),
                 'hidden' => (bool) $column->isHidden(),

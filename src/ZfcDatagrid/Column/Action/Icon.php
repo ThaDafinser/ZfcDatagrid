@@ -10,6 +10,7 @@ class Icon extends AbstractAction
 
     public function setIconClass ($name)
     {
+        $this->addClass($name);
         $this->iconClass = (string) $name;
     }
 
@@ -20,6 +21,16 @@ class Icon extends AbstractAction
 
     public function toHtml ()
     {
-        return '<i class="' . $this->iconClass . '" title="' . $this->getTitle() . '"></i>';
+        $attributes = array();
+        foreach ($this->getAttributes() as $attrKey => $attrValue) {
+            if (is_array($attrValue)) {
+                $attrValue = implode(' ', $attrValue);
+            }
+            $attributes[] = $attrKey . '="' . $attrValue . '"';
+        }
+        
+        $attributes = implode(' ', $attributes);
+        
+        return '<i title="' . $this->getTitle() . '" ' . $attributes . '></i>';
     }
 }

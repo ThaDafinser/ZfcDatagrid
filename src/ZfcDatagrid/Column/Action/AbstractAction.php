@@ -2,6 +2,7 @@
 namespace ZfcDatagrid\Column\Action;
 
 use ZfcDatagrid\Column;
+use ZfcDatagrid\Filter;
 
 abstract class AbstractAction
 {
@@ -93,11 +94,12 @@ abstract class AbstractAction
         $this->setAttribute('class', $class);
     }
 
-    public function addShowOnValue (Column\AbstractColumn $col, $value = null)
+    public function addShowOnValue (Column\AbstractColumn $col, $value = null, $operator = Filter::EQUAL)
     {
         $this->showOnValues[] = array(
             'column' => $col,
-            'value' => $value
+            'value' => $value,
+            'operator' => $operator
         );
     }
 
@@ -132,9 +134,28 @@ abstract class AbstractAction
     public function isDisplayed (array $row)
     {
         if ($this->hasShowOnValues() === true) {
-            foreach ($this->getShowOnValues() as $showOnValue) {
-                if ($showOnValue['value'] === $row[$showOnValue['column']->getUniqueId()]) {
-                    return true;
+            foreach ($this->getShowOnValues() as $rule) {
+                $value = '';
+                if (isset($row[$rule['column']->getUniqueId()])) {
+                    $value = $row[$rule['column']->getUniqueId()];
+                }
+                
+                switch ($rule['operator']) {
+                    case Filter::EQUAL:
+                        if ($rule['value'] == $value) {
+                            return true;
+                        }
+                        break;
+                    
+                    case Filter::NOT_EQUAL:
+                        if ($rule['value'] != $value) {
+                            return true;
+                        }
+                        break;
+                    
+                    default:
+                        throw new \Exception('currently not implemented filter type: "' . $rule['operator'] . '"');
+                        break;
                 }
             }
         } else {
@@ -147,6 +168,9 @@ abstract class AbstractAction
     /**
      *
      * @return
+     *
+     *
+     *
      *
      */
     abstract public function toHtml ();

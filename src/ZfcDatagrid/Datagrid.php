@@ -56,6 +56,10 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     protected $mvcEvent;
 
+    protected $parameters = array();
+    
+    protected $url;
+    
     /**
      *
      * @var HttpRequest
@@ -417,6 +421,42 @@ class Datagrid implements ServiceLocatorAwareInterface
     {
         return $this->title;
     }
+    
+    /**
+     * Add a external parameter
+     * @param string $name
+     * @param mixed $value
+     */
+    public function addParameter($name, $value){
+        $this->parameters[$name] = $value;
+    }
+    
+    /**
+     * 
+     * @return array
+     */
+    public function getParameters(){
+        return $this->parameters;
+    }
+    
+    public function hasParameters(){
+        if(count($this->getParamaeters()) > 0){
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public function setUrl($url){
+        $this->url = $url;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getUrl(){
+        return $this->url;
+    }
 
     public function setExportRenderers (array $renderers = array())
     {
@@ -440,12 +480,16 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function addColumn (Column\AbstractColumn $col)
     {
-        $this->columns[] = $col;
+        $this->columns[$col->getUniqueId()] = $col;
     }
 
     public function getColumns ()
     {
         return $this->columns;
+    }
+    
+    public function getColumnByUniqueId($id){
+        return $this->columns[$id];
     }
 
     public function setUserFilterDisabled ($mode = true)
@@ -557,6 +601,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function getRendererName ()
     {
         if ($this->forceRenderer !== null) {
+            //A special renderer was given -> use is
             $rendererName = $this->forceRenderer;
         } else {
             // DEFAULT
@@ -568,10 +613,10 @@ class Datagrid implements ServiceLocatorAwareInterface
             } else {
                 $rendererName = $options['defaults']['renderer']['http'];
             }
-        }
-        
-        if ($this->getRequest() instanceof HttpRequest && $this->getRequest()->getQuery($parameterName) != '') {
-            $rendererName = $this->getRequest()->getQuery($parameterName);
+            
+            if ($this->getRequest() instanceof HttpRequest && $this->getRequest()->getQuery($parameterName) != '') {
+                $rendererName = $this->getRequest()->getQuery($parameterName);
+            }
         }
         
         return $rendererName;

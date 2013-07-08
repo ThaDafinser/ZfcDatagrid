@@ -121,6 +121,11 @@ abstract class AbstractRenderer implements RendererInterface
      */
     public function getTemplatePathDefault ($type = 'layout')
     {
+        $options = $this->getOptions();
+        if (isset($options['renderer'][$this->getName()]['templates'][$type])) {
+            return $options['renderer'][$this->getName()]['templates'][$type];
+        }
+        
         if ($type === 'layout') {
             return 'zfc-datagrid/renderer/' . $this->getName() . '/' . $type;
         } elseif ($type === 'toolbar') {
@@ -146,6 +151,7 @@ abstract class AbstractRenderer implements RendererInterface
 
     /**
      * Paginator is here to retreive the totalItemCount, count pages, current page, .
+     *
      *
      *
      *
@@ -395,6 +401,8 @@ abstract class AbstractRenderer implements RendererInterface
         
         $viewModel->setVariable('gridId', $grid->getId());
         $viewModel->setVariable('title', $this->getTitle());
+        $viewModel->setVariable('parameters', $grid->getParameters());
+        $viewModel->setVariable('overwriteUrl', $grid->getUrl());
         
         $viewModel->setVariable('templateToolbar', $this->getToolbarTemplate());
         
@@ -416,10 +424,7 @@ abstract class AbstractRenderer implements RendererInterface
         $viewModel->setVariable('filters', $this->getFilters());
         
         if ($grid->hasRowClickAction() === true) {
-            $viewModel->setVariable('rowClickLink', $grid->getRowClickAction()
-                ->getLink());
-        } else {
-            $viewModel->setVariable('rowClickLink', '#');
+            $viewModel->setVariable('rowClickAction', $grid->getRowClickAction());
         }
         
         $viewModel->setVariable('isUserFilterEnabled', $grid->isUserFilterEnabled());

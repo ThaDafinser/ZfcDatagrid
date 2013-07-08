@@ -151,7 +151,7 @@ class Renderer extends AbstractRenderer
     public function execute ()
     {
         $request = $this->getRequest();
-        if ($request instanceof HttpRequest && $request->isXmlHttpRequest() === true && $request->isPost() === true) {
+        if ($request instanceof HttpRequest && $request->isXmlHttpRequest() === true && $request->isPost() === true && $request->getPost('nd') != '') {
             // AJAX Request...load only data...
             $viewModel = new JsonModel();
             $viewModel->setVariable('data', $this->getDataJqGrid());
@@ -160,17 +160,17 @@ class Renderer extends AbstractRenderer
             $viewModel->setTemplate($this->getTemplate());
             $viewModel->setVariable('data', $this->getDataJqGrid());
             
-            $columnsAction = array();
+            $columnsRowClickDisabled = array();
             $columns = $viewModel->getVariable('columns');
             foreach ($columns as $column) {
-                if ($column instanceof Column\Action) {
-                    /* @var $column \ZfcDatagrid\Column\Action */
-                    
-                    $columnsAction[] = $column->getUniqueId();
+                /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+                
+                if ($column->isRowClickEnabled() !== true) {
+                    $columnsRowClickDisabled[] = $column->getUniqueId();
                 }
             }
             
-            $viewModel->setVariable('columnsAction', $columnsAction);
+            $viewModel->setVariable('columnsRowClickDisabled', $columnsRowClickDisabled);
         }
         
         return $viewModel;

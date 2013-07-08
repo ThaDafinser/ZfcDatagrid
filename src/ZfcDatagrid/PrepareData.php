@@ -92,16 +92,22 @@ class PrepareData
                 }
                 
                 /**
-                 * Translate
-                 */
-                if ($column->isTranslationEnabled() === true) {
-                    $row[$column->getUniqueId()] = $this->getTranslator()->translate($row[$column->getUniqueId()]);
-                }
-                
-                /**
                  * Type converting
                  */
                 $row[$column->getUniqueId()] = $column->getType()->getUserValue($row[$column->getUniqueId()]);
+                
+                /**
+                 * Translate (nach typ convertierung -> PhpArray...)
+                 */
+                if ($column->isTranslationEnabled() === true) {
+                    if (is_array($row[$column->getUniqueId()])) {
+                        foreach ($row[$column->getUniqueId()] as &$value) {
+                            $value = $this->getTranslator()->translate($value);
+                        }
+                    } else {
+                        $row[$column->getUniqueId()] = $this->getTranslator()->translate($row[$column->getUniqueId()]);
+                    }
+                }
             }
             
             // Concat all identity columns
