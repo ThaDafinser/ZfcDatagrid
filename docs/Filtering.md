@@ -1,6 +1,18 @@
 # Filtering the grid
 
-Every grid comes per default with a column filtering.
+Every grid comes per default with a column filtering. 
+Dependend of the entered filtering values, the operator for the filtering will change.
+
+The default operator is LIKE with wildcards on both sides...
+To change the default operator, you can set it for each column explicit:
+```php
+$column->setFilterDefaultOperation(\ZfcDatagrid\Filter::YOUR_TYPE);
+```
+
+or you set the appropriate Column\Type. For example the Type\Number has the default operator "EQUAL".
+```php
+$column->setType(new \ZfcDatagrid\Column\Type\Number());
+```
 
 ## Currently available filters
 ```sh
