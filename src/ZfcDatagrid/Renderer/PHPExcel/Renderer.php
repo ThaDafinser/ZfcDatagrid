@@ -176,9 +176,10 @@ class Renderer extends AbstractRenderer
     private function getPaperWidth ()
     {
         $options = $this->getOptions();
+        $export = $options['settings']['export'];
         
-        $papersize = $options['papersize'];
-        $orientation = $options['orientation'];
+        $papersize = $export['papersize'];
+        $orientation = $export['orientation'];
         
         if (substr($papersize, 0, 1) != 'A') {
             throw new \Exception('Currently only "A" paper formats are supported!');
