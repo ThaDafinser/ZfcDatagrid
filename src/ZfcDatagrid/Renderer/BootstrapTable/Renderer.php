@@ -12,6 +12,16 @@ class Renderer extends AbstractRenderer
         return 'bootstrapTable';
     }
 
+    public function isExport ()
+    {
+        return false;
+    }
+
+    public function isHtml ()
+    {
+        return true;
+    }
+
     /**
      *
      * @see \ZfcDatagrid\Renderer\AbstractRenderer::getSortConditions()
@@ -136,16 +146,6 @@ class Renderer extends AbstractRenderer
         }
         
         return (int) $this->currentPageNumber;
-    }
-
-    public function isExport ()
-    {
-        return false;
-    }
-
-    public function isHtml ()
-    {
-        return true;
     }
 
     public function execute ()

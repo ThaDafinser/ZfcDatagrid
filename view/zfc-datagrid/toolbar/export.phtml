@@ -1,15 +1,11 @@
-
+<?php 
+$url = $this->url(null, array(), array(), true);
+if($this->overwriteUrl != ''){
+    $url = $this->overwriteUrl;
+}
+?>
 <?php foreach($this->exportRenderers as $type => $name): ?>
-    <a class="btn" href="<?= $this->url(null, 
-            array(),
-            array(
-                'query' => array(
-                    $this->generalParameterNames['rendererType'] => $type
-                )
-            ),
-            true
-        );?>" 
-    >
+    <a class="btn" href="<?= $url.'?'.$this->generalParameterNames['rendererType'].'='.$type;?>">
         <?= $name; ?>
     </a>
-<?php endforeach;;?>
+<?php endforeach; ?>

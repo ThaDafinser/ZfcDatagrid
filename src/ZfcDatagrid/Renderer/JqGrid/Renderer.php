@@ -14,6 +14,16 @@ class Renderer extends AbstractRenderer
         return 'jqGrid';
     }
 
+    public function isHtml ()
+    {
+        return true;
+    }
+
+    public function isExport ()
+    {
+        return false;
+    }
+
     /**
      *
      * @see \ZfcDatagrid\Renderer\AbstractRenderer::getSortConditions()
@@ -138,16 +148,6 @@ class Renderer extends AbstractRenderer
         return (int) $this->currentPageNumber;
     }
 
-    public function isHtml ()
-    {
-        return true;
-    }
-
-    public function isExport ()
-    {
-        return false;
-    }
-
     public function execute ()
     {
         $request = $this->getRequest();
@@ -178,7 +178,7 @@ class Renderer extends AbstractRenderer
 
     public function getData ()
     {
-        $data = $this->data;
+        $data = parent::getData();
         
         foreach ($data as &$row) {
             foreach ($this->getColumns() as $column) {

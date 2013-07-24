@@ -18,6 +18,12 @@ abstract class AbstractRenderer implements RendererInterface
 
     /**
      *
+     * @var string
+     */
+    protected $cacheId;
+
+    /**
+     *
      * @var Paginator
      */
     protected $paginator;
@@ -78,10 +84,18 @@ abstract class AbstractRenderer implements RendererInterface
         return $this->options;
     }
 
+    /**
+     *
+     * @return array
+     */
     public function getRendererOptions ()
     {
         $options = $this->getOptions();
-        return $options['renderer'][$this->getName()];
+        if (isset($options['renderer'][$this->getName()])) {
+            return $options['renderer'][$this->getName()];
+        } else {
+            return array();
+        }
     }
 
     public function setViewModel (ViewModel $viewModel)
@@ -150,12 +164,7 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     * Paginator is here to retreive the totalItemCount, count pages, current page, .
-     *
-     *
-     *
-     *
-     *
+     * Paginator is here to retreive the totalItemCount, count pages, current page
      * NOT FOR THE ACTUAL DATA!!!!
      *
      * @param \Zend\Paginator\Paginator $paginator            
@@ -174,14 +183,47 @@ abstract class AbstractRenderer implements RendererInterface
         return $this->paginator;
     }
 
+    /**
+     * Set the columns
+     *
+     * @param array $columns            
+     */
     public function setColumns (array $columns)
     {
         $this->columns = $columns;
     }
 
+    /**
+     * Get all columns
+     *
+     * @return array
+     */
     public function getColumns ()
     {
         return $this->columns;
+    }
+
+    /**
+     * Calculate the sum of the displayed column width to 100%
+     *
+     * @param array $columns            
+     */
+    protected function calculateColumnWidthPercent (array $columns)
+    {
+        $widthAllColumn = 0;
+        foreach ($columns as $column) {
+            /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+            $widthAllColumn += $column->getWidth();
+        }
+        
+        $widthSum = 0;
+        // How much 1 percent columnd width is really "one" percent...
+        $relativeOnePercent = $widthAllColumn / 100;
+        
+        foreach ($columns as $column) {
+            $widthSum += (round($column->getWidth() / $relativeOnePercent));
+            $column->setWidth(round($column->getWidth() / $relativeOnePercent));
+        }
     }
 
     /**
@@ -245,6 +287,10 @@ abstract class AbstractRenderer implements RendererInterface
         $this->translator = $translator;
     }
 
+    /**
+     *
+     * @return \Zend\I18n\Translator\Translator
+     */
     public function getTranslator ()
     {
         return $this->translator;
@@ -258,6 +304,39 @@ abstract class AbstractRenderer implements RendererInterface
     public function getTitle ()
     {
         return $this->title;
+    }
+
+    public function setCacheId ($cacheId)
+    {
+        $this->cacheId = $cacheId;
+    }
+
+    public function getCacheId ()
+    {
+        return $this->cacheId;
+    }
+
+    /**
+     * Get a valid filename to save
+     * (WITHOUT the extension!)
+     *
+     * @return string
+     */
+    public function getFilename ()
+    {
+        $title = $this->getTitle();
+        
+        $filenameParts = array();
+        
+        $filenameParts[] = date('Y-m-d');
+        
+        if ($this->getTitle() != '') {
+            $title = $this->getTitle();
+            $title = str_replace(' ', '_', $title);
+            $filenameParts[] = preg_replace("/[^a-z0-9_-]+/i", "", $title);
+        }
+        
+        return implode('_', $filenameParts);
     }
 
     /**
@@ -433,26 +512,26 @@ abstract class AbstractRenderer implements RendererInterface
          * renderer specific parameter names
          */
         $options = $this->getRendererOptions();
-        $parameterNames = $options['parameterNames'];
-        
-        $viewModel = $this->getViewModel();
         $viewModel->setVariable('rendererOptions', $options);
-        $viewModel->setVariable('parameterNames', $parameterNames);
-        
-        $activeParameters = array();
-        $activeParameters[$parameterNames['currentPage']] = $this->getCurrentPageNumber();
-        {
-            $sortColumns = array();
-            $sortDirections = array();
-            foreach ($this->getSortConditions() as $sortCondition) {
-                $sortColumns[] = $sortCondition['column']->getUniqueId();
-                $sortDirections[] = $sortCondition['sortDirection'];
-            }
+        if ($this->isExport() === false) {
+            $parameterNames = $options['parameterNames'];
+            $viewModel->setVariable('parameterNames', $parameterNames);
             
-            $activeParameters[$parameterNames['sortColumns']] = implode(',', $sortColumns);
-            $activeParameters[$parameterNames['sortDirections']] = implode(',', $sortDirections);
+            $activeParameters = array();
+            $activeParameters[$parameterNames['currentPage']] = $this->getCurrentPageNumber();
+            {
+                $sortColumns = array();
+                $sortDirections = array();
+                foreach ($this->getSortConditions() as $sortCondition) {
+                    $sortColumns[] = $sortCondition['column']->getUniqueId();
+                    $sortDirections[] = $sortCondition['sortDirection'];
+                }
+                
+                $activeParameters[$parameterNames['sortColumns']] = implode(',', $sortColumns);
+                $activeParameters[$parameterNames['sortDirections']] = implode(',', $sortDirections);
+            }
+            $viewModel->setVariable('activeParameters', $activeParameters);
         }
-        $viewModel->setVariable('activeParameters', $activeParameters);
         
         $viewModel->setVariable('exportRenderers', $grid->getExportRenderers());
     }

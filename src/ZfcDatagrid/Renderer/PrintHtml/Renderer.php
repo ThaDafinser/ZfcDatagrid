@@ -9,8 +9,6 @@ use Zend\View\Model\ViewModel;
 class Renderer extends AbstractRenderer
 {
 
-    protected $template;
-
     public function getName ()
     {
         return 'printHtml';

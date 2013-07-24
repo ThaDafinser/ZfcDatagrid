@@ -142,10 +142,11 @@ class DateTime extends AbstractType
         return $this->outputPattern;
     }
 
-    public function getTypeName(){
+    public function getTypeName ()
+    {
         return 'dateTime';
     }
-    
+
     public function getFilterDefaultOperation ()
     {
         return Filter::GREATER_EQUAL;
@@ -169,13 +170,17 @@ class DateTime extends AbstractType
     }
 
     /**
-     * Convert the value from the source to the value, which the user will see
+     * Convert the value from the source to the value, which the user will see in the column
      *
-     * @param string $val            
+     * @param mixed $val            
      * @return string
      */
     public function getUserValue ($val)
     {
+        if ($val == '') {
+            return '';
+        }
+        
         if ($val instanceof PhpDateTime) {
             $date = $val;
             $date->setTimezone(new DateTimeZone($this->getSourceTimezone()));

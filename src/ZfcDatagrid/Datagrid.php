@@ -57,9 +57,9 @@ class Datagrid implements ServiceLocatorAwareInterface
     protected $mvcEvent;
 
     protected $parameters = array();
-    
+
     protected $url;
-    
+
     /**
      *
      * @var HttpRequest
@@ -157,6 +157,9 @@ class Datagrid implements ServiceLocatorAwareInterface
 
     protected $forceRenderer;
 
+    /**
+     * Init method is called automatically with the service creation
+     */
     public function init ()
     {
         if ($this->getCache() === null) {
@@ -167,17 +170,27 @@ class Datagrid implements ServiceLocatorAwareInterface
         $this->isInit = true;
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function isInit ()
     {
         return (bool) $this->isInit;
     }
 
+    /**
+     * Set the options from config
+     *
+     * @param array $config            
+     */
     public function setOptions (array $config)
     {
         $this->options = $config;
     }
 
     /**
+     * Get the config options
      *
      * @return array
      */
@@ -212,12 +225,15 @@ class Datagrid implements ServiceLocatorAwareInterface
         return $this->id;
     }
 
+    /**
+     * Set the session
+     *
+     * @param SessionContainer $session            
+     */
     public function setSession (SessionContainer $session)
     {
         $this->session = $session;
-        if ($this->hash) {
-            $this->initCsrfToken();
-        }
+        
         return $this;
     }
 
@@ -421,40 +437,47 @@ class Datagrid implements ServiceLocatorAwareInterface
     {
         return $this->title;
     }
-    
+
     /**
      * Add a external parameter
-     * @param string $name
-     * @param mixed $value
+     *
+     * @param string $name            
+     * @param mixed $value            
      */
-    public function addParameter($name, $value){
+    public function addParameter ($name, $value)
+    {
         $this->parameters[$name] = $value;
     }
-    
+
     /**
-     * 
+     *
      * @return array
      */
-    public function getParameters(){
+    public function getParameters ()
+    {
         return $this->parameters;
     }
-    
-    public function hasParameters(){
-        if(count($this->getParamaeters()) > 0){
+
+    public function hasParameters ()
+    {
+        if (count($this->getParamaeters()) > 0) {
             return true;
         }
         
         return false;
     }
-    
-    public function setUrl($url){
+
+    public function setUrl ($url)
+    {
         $this->url = $url;
     }
-    
+
     /**
+     *
      * @return string
      */
-    public function getUrl(){
+    public function getUrl ()
+    {
         return $this->url;
     }
 
@@ -467,7 +490,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     {
         if ($this->exportRenderers === null) {
             $options = $this->getOptions();
-            $this->exportRenderers = $options['defaults']['export'];
+            $this->exportRenderers = $options['settings']['export']['formats'];
         }
         
         return $this->exportRenderers;
@@ -487,8 +510,9 @@ class Datagrid implements ServiceLocatorAwareInterface
     {
         return $this->columns;
     }
-    
-    public function getColumnByUniqueId($id){
+
+    public function getColumnByUniqueId ($id)
+    {
         return $this->columns[$id];
     }
 
@@ -556,7 +580,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     }
 
     /**
-     * Return the current renderer (PDF / Excel
+     * Return the current renderer and give him some knowledge about the rest
      *
      * @return \ZfcDatagrid\Renderer\AbstractRenderer
      */
@@ -583,6 +607,7 @@ class Datagrid implements ServiceLocatorAwareInterface
                 $renderer->setTranslator($this->getTranslator());
                 $renderer->setTitle($this->getTitle());
                 $renderer->setColumns($this->getColumns());
+                $renderer->setCacheId($this->getCacheId());
                 
                 $this->renderer = $renderer;
             } else {
@@ -595,28 +620,29 @@ class Datagrid implements ServiceLocatorAwareInterface
 
     /**
      * Get the current renderer name
-     * 
+     *
      * @return string
      */
     public function getRendererName ()
     {
+        $options = $this->getOptions();
+        $parameterName = $options['generalParameterNames']['rendererType'];
+        
         if ($this->forceRenderer !== null) {
-            //A special renderer was given -> use is
+            // A special renderer was given -> use is
             $rendererName = $this->forceRenderer;
         } else {
             // DEFAULT
-            $options = $this->getOptions();
-            $parameterName = $options['generalParameterNames']['rendererType'];
             
             if ($this->getRequest() instanceof ConsoleRequest) {
-                $rendererName = $options['defaults']['renderer']['console'];
+                $rendererName = $options['settings']['default']['renderer']['console'];
             } else {
-                $rendererName = $options['defaults']['renderer']['http'];
+                $rendererName = $options['settings']['default']['renderer']['http'];
             }
-            
-            if ($this->getRequest() instanceof HttpRequest && $this->getRequest()->getQuery($parameterName) != '') {
-                $rendererName = $this->getRequest()->getQuery($parameterName);
-            }
+        }
+        
+        if ($this->getRequest() instanceof HttpRequest && $this->getRequest()->getQuery($parameterName) != '') {
+            $rendererName = $this->getRequest()->getQuery($parameterName);
         }
         
         return $rendererName;

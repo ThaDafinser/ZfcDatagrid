@@ -25,19 +25,6 @@ interface ColumnInterface
      */
     public function getUniqueId ();
 
-    /**
-     * Set the width
-     *
-     * @param integer $percent            
-     */
-    public function setWidth ($percent);
-
-    /**
-     *
-     * @return integer
-     */
-    public function getWidth ();
-
     public function setHidden ($mode = true);
 
     public function isHidden ();

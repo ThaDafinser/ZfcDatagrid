@@ -24,6 +24,17 @@ class ZendTable extends AbstractRenderer
     {
         return 'zendTable';
     }
+    
+
+    public function isExport ()
+    {
+        return false;
+    }
+    
+    public function isHtml ()
+    {
+        return false;
+    }
 
     /**
      *
@@ -137,15 +148,6 @@ class ZendTable extends AbstractRenderer
         return (int) $defaultItems;
     }
 
-    public function isExport ()
-    {
-        return false;
-    }
-
-    public function isHtml ()
-    {
-        return false;
-    }
 
     public function execute ()
     {

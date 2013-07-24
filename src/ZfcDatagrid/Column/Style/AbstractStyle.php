@@ -45,8 +45,15 @@ abstract class AbstractStyle implements StyleInterface
                 }
                 
                 switch ($rule['operator']) {
+                    
                     case Filter::EQUAL:
                         if ($rule['value'] == $value) {
+                            return true;
+                        }
+                        break;
+                    
+                    case Filter::NOT_EQUAL:
+                        if ($rule['value'] != $value) {
                             return true;
                         }
                         break;

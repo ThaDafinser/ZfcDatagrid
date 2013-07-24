@@ -30,10 +30,11 @@ if($this->rowClickAction){
 }
 ?>
 
-<?= $this->partial($this->templateToolbar, array('exportRenderers' => $this->exportRenderers));?>
+<?= $this->partial($this->templateToolbar);?>
 
 <table id="<?= $this->gridId; ?>" class="<?= implode(' ', $tableClasses); ?>"></table>
 <div id="<?= $this->gridId; ?>_pager"></div>
+<iframe name="<?= $this->gridId; ?>_fileFrame" id="<?= $this->gridId; ?>_fileFrame" src="about:none" style="display: none;"></iframe>
 
 <input type="hidden" id="<?= $this->gridId.'_'.$parameterNames['columnsHidden']; ?>" name="<?= $this->gridId.'_'.$parameterNames['columnsHidden']; ?>" value="<?= implode(',',$this->columnsHidden); ?>" />
 <input type="hidden" id="<?= $this->gridId.'_'.$parameterNames['columnsGroupByLocal']; ?>" name="<?= $this->gridId.'_'.$parameterNames['columnsGroupByLocal']; ?>" value="" />

@@ -57,7 +57,7 @@ abstract class AbstractColumn implements ColumnInterface
     protected $notReplacedGetEmpty = true;
 
     protected $rowClickEnabled = true;
-    
+
     /**
      *
      * @var DataPopulation\DataPopulationInterface
@@ -71,8 +71,8 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      * Get the label
-     * 
-     * @return string|null
+     *
+     * @return string null
      */
     public function getLabel ()
     {
@@ -105,11 +105,22 @@ abstract class AbstractColumn implements ColumnInterface
         return $this->selectPart2;
     }
 
+    /**
+     * Set the width in "percent"
+     * It will be calculated to 100% dependend on what is displayed
+     * If it's a different output mode like Excel it's dependend on the papersize/orientation
+     *
+     * @param number $percent            
+     */
     public function setWidth ($percent)
     {
         $this->width = (float) $percent;
     }
 
+    /**
+     * Get the width
+     * @return number
+     */
     public function getWidth ()
     {
         return $this->width;
@@ -203,6 +214,8 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * The data will get sorted by this column (by default)
      * If will be changed by the user per request (POST,GET .
+     *
+     *
      *
      *
      *
@@ -484,12 +497,14 @@ abstract class AbstractColumn implements ColumnInterface
         
         return $this->rendererParameter[$rendererType];
     }
-    
-    public function setRowClickDisabled($mode = true){
-        $this->rowClickEnabled = (bool)!$mode;
+
+    public function setRowClickDisabled ($mode = true)
+    {
+        $this->rowClickEnabled = (bool) ! $mode;
     }
-    
-    public function isRowClickEnabled(){
+
+    public function isRowClickEnabled ()
+    {
         return $this->rowClickEnabled;
     }
 }

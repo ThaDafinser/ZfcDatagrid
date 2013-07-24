@@ -2,24 +2,46 @@
 use Zend\ServiceManager\ServiceManager;
 
 return array(
+    
     'ZfcDatagrid' => array(
         
-        'defaults' => array(
+        'settings' => array(
             
-            // If no specific rendere given, use this renderes for HTTP / console
-            'renderer' => array(
-                'http' => 'bootstrapTable',
-                'console' => 'zendTable'
+            'default' => array(
+                // If no specific rendere given, use this renderes for HTTP / console
+                'renderer' => array(
+                    'http' => 'bootstrapTable',
+                    'console' => 'zendTable'
+                ),
             ),
             
-            // general available export formats
             'export' => array(
-                'tcpdf' => 'PDF',
-                'phpExcel' => 'Excel'
+                //Export is enabled?
+                'enabled' => true,
+                
+                'papersize' => 'A4',
+                
+                // landscape / portrait (we preferr landscape, because datagrids are often wide)
+                'orientation' => 'landscape',
+                
+                'formats' => array(
+                    //type => Displayname (Toolbar - you can use here HTML too...)
+                    //                 'tcpdf' => 'PDF',
+                ),
+                
+                // The output+save directory
+                'path' => 'data/ZfcDatagrid',
+                
+                // mode can be:
+                // direct = PHP handles header + file reading
+                // @TODO iframe = PHP generates the file and a hidden <iframe> sends the document (ATTENTION: your webserver must enable "force-download" for excel/pdf/...)
+                'mode' => 'direct'
             )
+            
         ),
         
         'cache' => array(
+            
             'adapter' => array(
                 'name' => 'Filesystem',
                 'options' => array(
@@ -34,6 +56,7 @@ return array(
                 
                 'Serializer'
             )
+            
         ),
         
         'renderer' => array(
@@ -72,6 +95,18 @@ return array(
                     'filterColumns' => 'filterBys',
                     'filterValues' => 'filterValues'
                 )
+            ),
+            
+            'PHPExcel' => array(
+
+                // The worksheet name (will be translated if possible)
+                'sheetName' => 'Data',
+                
+                // If you only want to export data, set this to false
+                'displayTitle' => true,
+                
+                'rowTitle' => 1,
+                'startRowData' => 3
             )
         ),
         
@@ -85,17 +120,26 @@ return array(
         'invokables' => array(
             'DatagridManager' => 'ZfcDatagrid\ServiceManager\DatagridManagerFactory',
             
+            // HTML renderer
             'zfcDatagrid.renderer.bootstrapTable' => 'ZfcDatagrid\Renderer\BootstrapTable\Renderer',
-            'zfcDatagrid.renderer.printHtml' => 'ZfcDatagrid\Renderer\PrintHtml\Renderer',
-            'zfcDatagrid.renderer.zendTable' => 'ZfcDatagrid\Renderer\Text\ZendTable',
             'zfcDatagrid.renderer.jqgrid' => 'ZfcDatagrid\Renderer\JqGrid\Renderer',
             
+            // CLI renderer
+            'zfcDatagrid.renderer.zendTable' => 'ZfcDatagrid\Renderer\Text\ZendTable',
+            
+            // Export renderer
+            'zfcDatagrid.renderer.printHtml' => 'ZfcDatagrid\Renderer\PrintHtml\Renderer',
+            'zfcDatagrid.renderer.PHPExcel' => 'ZfcDatagrid\Renderer\PHPExcel\Renderer',
+            'zfcDatagrid.renderer.TCPDF' => 'ZfcDatagrid\Renderer\TCPDF\Renderer',
+            
+            // Datasources
             'zfcDatagrid.examples.data.phpArray' => 'ZfcDatagrid\Examples\Data\PhpArray',
             'zfcDatagrid.examples.data.doctrine2' => 'ZfcDatagrid\Examples\Data\Doctrine2',
             'zfcDatagrid.examples.data.zendSelect' => 'ZfcDatagrid\Examples\Data\ZendSelect'
         ),
         
         'factories' => array(
+            
             'zfcDatagrid' => function  (ServiceManager $serviceManager)
             {
                 $dataGrid = new \ZfcDatagrid\Datagrid();
