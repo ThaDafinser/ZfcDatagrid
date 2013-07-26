@@ -8,14 +8,19 @@ Export is currently only supported for PHPExcel and some other things are missin
 To get started, please follow the installation and the small ["Getting started guide"](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/docs/Getting-started.md)
 
 ## Installation
-### Create a new ZF2 project (optional)
+### (optional) Create a new ZF2 project
 To get started with a ZF2 application, please see the [Skeleton application](http://framework.zend.com/manual/2.1/en/user-guide/skeleton-application.html)
 
-### Composer
-Within your project, just do this 3 steps:
+### Get ZfcDatagrid
+Install it with ``composer`` is easy
 ```sh
 php composer.phar require thadafinser/zfc-datagrid:dev-master
 ```
+(If you don't have composer:
+Download it as a zip from github and put in into ``vendor/ZfcDatagrid`` and make sure that autoloading works)
+
+Then enable the module
+
 Add `ZfcDatagrid` to your `config/application.config.php`
 
 Create the folder: `data/ZfcDatagrid`
