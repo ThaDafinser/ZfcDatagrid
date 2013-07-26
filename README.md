@@ -2,11 +2,14 @@
 
 A datagrid for ZF2 where the data input and output can be whatever you want :-)
 
+**Note** it's **still in develoment**, but there are already cool things around (at least i think so...)
+Export is currently only supported for PHPExcel and some other things are missing...give me some time and it will be completed :-)
 
+To get started, please follow the installation and the small ["Getting started guide"](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/docs/Getting-started.md)
 
 ## Installation
 ### Create a new ZF2 project (optional)
-To get started with a ZF2 application, please see: http://framework.zend.com/manual/2.1/en/user-guide/skeleton-application.html
+To get started with a ZF2 application, please see the [Skeleton application](http://framework.zend.com/manual/2.1/en/user-guide/skeleton-application.html)
 
 ### Composer
 Within your project, just do this 3 steps:
