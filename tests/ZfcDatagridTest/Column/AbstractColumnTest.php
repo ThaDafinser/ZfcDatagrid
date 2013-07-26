@@ -7,6 +7,10 @@ use ZfcDatagrid\Column\Type;
 use ZfcDatagrid\Column\Style;
 use PHPUnit_Framework_TestCase;
 
+/**
+ * @group Column
+ * @covers ZfcDatagrid\Column\AbstractColumn
+ */
 class AbstractColumnTest extends PHPUnit_Framework_TestCase
 {
 
@@ -57,9 +61,9 @@ class AbstractColumnTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $column->getStyles());
         $this->assertEquals(false, $column->hasStyles());
         
-        $column->setType(new Type\Email());
+        $column->setType(new Type\PhpArray());
         $this->assertInstanceOf('ZfcDatagrid\Column\Type\AbstractType', $column->getType());
-        $this->assertInstanceOf('ZfcDatagrid\Column\Type\Email', $column->getType());
+        $this->assertInstanceOf('ZfcDatagrid\Column\Type\PhpArray', $column->getType());
         
         $column->addStyle(new Style\Bold());
         $this->assertEquals(true, $column->hasStyles());
@@ -212,5 +216,18 @@ class AbstractColumnTest extends PHPUnit_Framework_TestCase
         $object = new DataPopulation\Object();
         $this->setExpectedException('Exception');
         $column->setDataPopulation($object);
+    }
+    
+    public function testRowClick(){
+        /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+        $column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        
+        $this->assertTrue($column->isRowClickEnabled());
+        
+        $column->setRowClickDisabled(true);
+        $this->assertFalse($column->isRowClickEnabled());
+        
+        $column->setRowClickDisabled(false);
+        $this->assertTrue($column->isRowClickEnabled());
     }
 }

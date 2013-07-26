@@ -142,8 +142,9 @@ return array(
             
             'zfcDatagrid' => function  (ServiceManager $serviceManager)
             {
+                $config = $serviceManager->get('config');
                 $dataGrid = new \ZfcDatagrid\Datagrid();
-                $dataGrid->setOptions($serviceManager->get('config')['ZfcDatagrid']);
+                $dataGrid->setOptions($config['ZfcDatagrid']);
                 $dataGrid->setMvcEvent($serviceManager->get('application')
                     ->getMvcEvent());
                 if ($serviceManager->has('translator') === true) {
@@ -156,7 +157,8 @@ return array(
             
             'zfcDatagrid_dbAdapter' => function  (ServiceManager $serviceManager)
             {
-                return new \Zend\Db\Adapter\Adapter($serviceManager->get('config')['zfcDatagrid_dbAdapter']);
+                $config = $serviceManager->get('config');
+                return new \Zend\Db\Adapter\Adapter($config['zfcDatagrid_dbAdapter']);
             },
             
             // For the doctrine examples!

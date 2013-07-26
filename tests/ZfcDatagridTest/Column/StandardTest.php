@@ -4,6 +4,10 @@ namespace ZfcDatagridTest\Column;
 use ZfcDatagrid\Column;
 use PHPUnit_Framework_TestCase;
 
+/**
+ * @group Column
+ * @covers ZfcDatagrid\Column\Standard
+ */
 class StandardTest extends PHPUnit_Framework_TestCase
 {
 
@@ -31,21 +35,20 @@ class StandardTest extends PHPUnit_Framework_TestCase
         
         $this->assertEquals($expr, $column->getSelectPart1());
         $this->assertEquals('myAlias', $column->getUniqueId());
-        
     }
-    
+
     public function testException ()
     {
         $this->setExpectedException('Exception');
-
+        
         $expr = new \Zend\Db\Sql\Expression('Something...');
         $column = new Column\Standard($expr);
     }
-    
+
     public function testExceptionNotString ()
     {
         $this->setExpectedException('Exception');
-    
+        
         $expr = new \Zend\Db\Sql\Expression('Something...');
         $column = new Column\Standard($expr, new \stdClass());
     }

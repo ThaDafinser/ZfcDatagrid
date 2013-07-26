@@ -6,7 +6,7 @@ use ZfcDatagrid\Filter;
 use PHPUnit_Framework_TestCase;
 
 /**
- * @group Type
+ * @group Column
  * @covers ZfcDatagrid\Column\Type\AbstractType
  */
 class AbstractTypeTest extends PHPUnit_Framework_TestCase
