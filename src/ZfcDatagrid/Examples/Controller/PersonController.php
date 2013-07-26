@@ -33,7 +33,6 @@ class PersonController extends AbstractActionController
              */
             $colEmail = new Column\Standard('email');
             $colEmail->setLabel('E-Mail');
-            $colEmail->setType(new Type\Email());
             
 //             $colEmail->setHidden();
         
