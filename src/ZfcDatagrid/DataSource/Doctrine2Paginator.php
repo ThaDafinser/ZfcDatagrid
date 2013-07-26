@@ -1,11 +1,4 @@
 <?php
-/**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license http://framework.zend.com/license/new-bsd New BSD License
- */
 namespace ZfcDatagrid\Datasource;
 
 use Zend\Paginator\Adapter\AdapterInterface;
@@ -94,10 +87,9 @@ class Doctrine2Paginator implements AdapterInterface
             
             try {
                 $this->rowCount = $queryBuilder->getQuery()->getSingleScalarResult();
-            } catch (NonUniqueResultException $e) {
+            } catch (\Exception $e) {
                 // when the result is non unique its most likely that a group by was used
                 // if so, we just get the complete result and count the number of results
-                // fixes issue #745
                 $result = $queryBuilder->getQuery()->getResult();
                 $this->rowCount = count($result);
             }
