@@ -89,7 +89,7 @@ class PersonZendController extends AbstractActionController
             $col->setWidth(5);
             $col->setType(new Type\Number());
             
-            $style = new Style\Color\Red();
+            $style = new Style\Color(Style\Color::$RED);
             $style->setByValue($col, 20);
             $col->addStyle($style);
             

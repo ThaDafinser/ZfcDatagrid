@@ -16,6 +16,7 @@ abstract class AbstractAction
     protected $showOnValues = array();
 
     /**
+     * Set the link
      *
      * @param string $href            
      */
@@ -44,6 +45,12 @@ abstract class AbstractAction
         $this->htmlAttributes[$name] = $value;
     }
 
+    /**
+     * Get a HTML attribute
+     * 
+     * @param string $name
+     * @return string
+     */
     public function getAttribute ($name)
     {
         if (isset($this->htmlAttributes[$name])) {
@@ -53,13 +60,18 @@ abstract class AbstractAction
         return '';
     }
 
+    /**
+     * Get all HTML attributes
+     * @return array
+     */
     public function getAttributes ()
     {
         return $this->htmlAttributes;
     }
 
     /**
-     *
+     * Set the title
+     * 
      * @param string $name            
      */
     public function setTitle ($name)
@@ -83,15 +95,12 @@ abstract class AbstractAction
      */
     public function addClass ($className)
     {
-        $attr = $this->getAttributes();
-        if (! isset($attr['class'])) {
-            $attr['class'] = array();
-        }
+        $attr = $this->getAttribute('class');
+        if ($attr != '')
+            $attr .= ' ';
+        $attr .= (string) $className;
         
-        $class = $attr['class'];
-        $class[] = (string) $className;
-        
-        $this->setAttribute('class', $class);
+        $this->setAttribute('class', $attr);
     }
 
     public function addShowOnValue (Column\AbstractColumn $col, $value = null, $operator = Filter::EQUAL)
@@ -167,11 +176,7 @@ abstract class AbstractAction
 
     /**
      *
-     * @return
-     *
-     *
-     *
-     *
+     * @return string
      */
     abstract public function toHtml ();
 }

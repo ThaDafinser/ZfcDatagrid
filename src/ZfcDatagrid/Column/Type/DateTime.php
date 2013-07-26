@@ -51,15 +51,20 @@ class DateTime extends AbstractType
      */
     public function __construct ($sourceDateTimeFormat = 'Y-m-d H:i:s', $outputDateType = IntlDateFormatter::MEDIUM, $outputTimeType = IntlDateFormatter::NONE, $locale = null, $sourceTimezone = 'UTC', $outputTimezone = null)
     {
-        $this->sourceDateTimeFormat = $sourceDateTimeFormat;
-        $this->outputDateType = $outputDateType;
-        $this->outputTimeType = $outputTimeType;
-        $this->locale = $locale;
-        $this->sourceTimezone = $sourceTimezone;
-        $this->outputTimezone = $outputTimezone;
+        $this->setSourceDateTimeFormat($sourceDateTimeFormat);
+        $this->setOutputDateType($outputDateType);
+        $this->setOutputTimeType($outputTimeType);
+        $this->setLocale($locale);
+        $this->setSourceTimezone($sourceTimezone);
+        $this->setOutputTimezone($outputTimezone);
     }
 
-    public function setSourceDateTimeFormat ($format = 'Y-m-d')
+    public function getTypeName ()
+    {
+        return 'dateTime';
+    }
+
+    public function setSourceDateTimeFormat ($format = 'Y-m-d H:i:s')
     {
         $this->sourceDateTimeFormat = $format;
     }
@@ -140,11 +145,6 @@ class DateTime extends AbstractType
     public function getOutputPattern ()
     {
         return $this->outputPattern;
-    }
-
-    public function getTypeName ()
-    {
-        return 'dateTime';
     }
 
     public function getFilterDefaultOperation ()

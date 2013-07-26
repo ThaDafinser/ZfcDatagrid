@@ -10,19 +10,21 @@ class PhpArray extends AbstractType
     }
 
     /**
+     * Convert a value into an array
      *
+     * @param mixed $value            
      * @return array
      */
-    public function getUserValue ($val)
+    public function getUserValue ($value)
     {
-        if (! is_array($val)) {
-            if ($val == '') {
-                $val = array();
+        if (! is_array($value)) {
+            if ($value == '') {
+                $value = array();
             } else {
-                $val = explode(',', $val);
+                $value = explode(',', $value);
             }
         }
         
-        return $val;
+        return $value;
     }
 }

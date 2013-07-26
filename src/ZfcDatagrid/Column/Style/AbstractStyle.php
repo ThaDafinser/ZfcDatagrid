@@ -4,11 +4,22 @@ namespace ZfcDatagrid\Column\Style;
 use ZfcDatagrid\Column\AbstractColumn;
 use ZfcDatagrid\Filter;
 
-abstract class AbstractStyle implements StyleInterface
+abstract class AbstractStyle
 {
 
+    /**
+     *
+     * @var array
+     */
     private $byValues = array();
 
+    /**
+     * Set the style value based and not general
+     *
+     * @param AbstractColumn $column            
+     * @param mixed $value            
+     * @param string $operator            
+     */
     public function setByValue (AbstractColumn $column, $value, $operator = Filter::EQUAL)
     {
         $this->byValues[] = array(
@@ -18,11 +29,19 @@ abstract class AbstractStyle implements StyleInterface
         );
     }
 
+    /**
+     *
+     * @return array
+     */
     public function getByValues ()
     {
         return $this->byValues;
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function isForAll ()
     {
         if (count($this->byValues) === 0) {
@@ -32,6 +51,12 @@ abstract class AbstractStyle implements StyleInterface
         return false;
     }
 
+    /**
+     *
+     * @param array $row            
+     * @throws \Exception
+     * @return boolean
+     */
     public function isApply ($row)
     {
         if ($this->isForAll() === true) {

@@ -8,9 +8,7 @@ class Button extends AbstractAction
 
     public function __construct ()
     {
-        $this->htmlAttributes['class'] = array(
-            'btn'
-        );
+        $this->addClass('btn');
     }
 
     /**
@@ -39,9 +37,6 @@ class Button extends AbstractAction
     {
         $attributes = array();
         foreach ($this->getAttributes() as $attrKey => $attrValue) {
-            if (is_array($attrValue)) {
-                $attrValue = implode(' ', $attrValue);
-            }
             $attributes[] = $attrKey . '="' . $attrValue . '"';
         }
         

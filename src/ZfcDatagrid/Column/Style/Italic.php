@@ -1,6 +1,6 @@
 <?php
 namespace ZfcDatagrid\Column\Style;
 
-interface StyleInterface{
-    
+class Italic extends AbstractStyle
+{
 }

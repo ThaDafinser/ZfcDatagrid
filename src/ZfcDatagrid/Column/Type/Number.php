@@ -37,9 +37,14 @@ class Number extends AbstractType
 
     public function __construct ($formatStyle = NumberFormatter::DECIMAL, $formatType = NumberFormatter::TYPE_DEFAULT, $locale = null)
     {
-        $this->formatStyle = $formatStyle;
-        $this->formatType = $formatType;
-        $this->locale = $locale;
+        $this->setFormatStyle($formatStyle);
+        $this->setFormatType($formatType);
+        $this->setLocale($locale);
+    }
+
+    public function getTypeName ()
+    {
+        return 'number';
     }
 
     public function setFormatStyle ($style = NumberFormatter::DECIMAL)
@@ -123,10 +128,6 @@ class Number extends AbstractType
         return $this->prefix;
     }
 
-    public function getTypeName(){
-        return 'number';
-    }
-    
     public function getFilterDefaultOperation ()
     {
         return Filter::EQUAL;
