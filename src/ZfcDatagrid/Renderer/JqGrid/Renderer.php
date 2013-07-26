@@ -182,7 +182,9 @@ class Renderer extends AbstractRenderer
         
         foreach ($data as &$row) {
             foreach ($this->getColumns() as $column) {
-                if ($column instanceof Column\Action) {
+                if ($column instanceof Column\Standard) {
+//                     $row[$column->getUniqueId()] = nl2br($row[$column->getUniqueId()], true);
+                } elseif ($column instanceof Column\Action) {
                     /* @var $column \ZfcDatagrid\Column\Action */
                     
                     $actions = array();
@@ -195,6 +197,8 @@ class Renderer extends AbstractRenderer
                     }
                     
                     $row[$column->getUniqueId()] = implode(' ', $actions);
+                } elseif ($column instanceof Column\Icon) {
+                    $row[$column->getUniqueId()] = $column->getIconClass();
                 }
             }
         }

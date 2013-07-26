@@ -6,6 +6,7 @@ namespace ZfcDatagrid\Renderer\PHPExcel;
 
 use ZfcDatagrid\Renderer\AbstractRenderer;
 use ZfcDatagrid\Column;
+use ZfcDatagrid\Column\Style;
 use PHPExcel;
 use PHPExcel_Worksheet_PageSetup;
 use PHPExcel_Cell;
@@ -34,6 +35,8 @@ class Renderer extends AbstractRenderer
     public function execute ()
     {
         $options = $this->getOptions();
+        $optionsExport = $options['settings']['export'];
+        
         $rendererOptions = $this->getRendererOptions();
         
         $phpExcel = new PHPExcel();
@@ -83,12 +86,43 @@ class Renderer extends AbstractRenderer
             
             $xColumn = 0;
             foreach ($columnsToExport as $column) {
-                $currentColumn = PHPExcel_Cell::stringFromColumnIndex($xColumn);
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+                $currentColumn = PHPExcel_Cell::stringFromColumnIndex($xColumn);
                 $sheet->getCell($currentColumn . $yRow)->setValueExplicit($row[$column->getUniqueId()], PHPExcel_Cell_DataType::TYPE_STRING);
-                $sheet->getStyle($currentColumn . $yRow)
-                    ->getAlignment()
-                    ->setWrapText(true);
+                
+                $columnStyle = $sheet->getStyle($currentColumn . $yRow);
+                $columnStyle->getAlignment()->setWrapText(true);
+                
+                /*
+                 * Styles
+                 */
+                if ($column->hasStyles() === true) {
+                    foreach ($column->getStyles() as $style) {
+                        /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
+                        if ($style->isApply($row) === true) {
+                            switch (get_class($style)) {
+                                
+                                case 'ZfcDatagrid\Column\Style\Bold':
+                                    $columnStyle->getFont()->setBold(true);
+                                    break;
+                                case 'ZfcDatagrid\Column\Style\Italic':
+                                    $columnStyle->getFont()->setItalic(true);
+                                    break;
+                                
+                                case 'ZfcDatagrid\Column\Style\Color':
+                                    $columnStyle->getFont()
+                                        ->getColor()
+                                        ->setRGB($style->getRgbHexString());
+                                    break;
+                                
+                                default:
+                                    throw new \Exception('Not defined yet: "' . get_class($style) . '"');
+                                    
+                                    break;
+                            }
+                        }
+                    }
+                }
                 
                 $xColumn ++;
             }
@@ -107,7 +141,6 @@ class Renderer extends AbstractRenderer
         $sheet->setAutoFilter('A' . $rendererOptions['startRowData'] . ':' . PHPExcel_Cell::stringFromColumnIndex($endColumn) . $endRow);
         $freezeRow = $rendererOptions['startRowData'] + 1;
         $sheet->freezePane('A' . $freezeRow);
-       
         
         /*
          * Print settings
@@ -117,7 +150,7 @@ class Renderer extends AbstractRenderer
         /*
          * Save the file
          */
-        $path = 'public/download';
+        $path = $optionsExport['path'];
         $saveFilename = $this->getCacheId() . '.xlsx';
         
         $excelWriter = new \PHPExcel_Writer_Excel2007($phpExcel);
@@ -170,50 +203,14 @@ class Renderer extends AbstractRenderer
     }
 
     /**
-     *
-     * @return float
-     */
-    private function getPaperWidth ()
-    {
-        $options = $this->getOptions();
-        $export = $options['settings']['export'];
-        
-        $papersize = $export['papersize'];
-        $orientation = $export['orientation'];
-        
-        if (substr($papersize, 0, 1) != 'A') {
-            throw new \Exception('Currently only "A" paper formats are supported!');
-        }
-        
-        // calc from A0 to selected
-        $divisor = substr($papersize, 1, 1);
-        
-        // A0 dimensions = 841 x 1189 mm
-        $currentX = 841;
-        $currentY = 1189;
-        for ($i = 0; $i < $divisor; $i ++) {
-            $tempY = $currentX;
-            $tempX = floor($currentY / 2);
-            
-            $currentX = $tempX;
-            $currentY = $tempY;
-        }
-        
-        if ($orientation == 'landscape') {
-            return $currentY;
-        } else {
-            return $currentX;
-        }
-    }
-
-    /**
      * Set the printing options
      *
      * @param PHPExcel $phpExcel            
      */
     protected function setPrinting (PHPExcel $phpExcel)
     {
-         $options = $this->getOptions();
+        $options = $this->getOptions();
+        $optionsExport = $options['settings']['export'];
         
         $phpExcel->getProperties()
             ->setCreator('https://github.com/ThaDafinser/ZfcDatagrid')
@@ -222,8 +219,8 @@ class Renderer extends AbstractRenderer
         /*
          * Printing setup
          */
-        $papersize = $options['settings']['export']['papersize'];
-        $orientation = $options['settings']['export']['orientation'];
+        $papersize = $optionsExport['papersize'];
+        $orientation = $optionsExport['orientation'];
         foreach ($phpExcel->getAllSheets() as $sheet) {
             /* @var $sheet \PHPExcel_Worksheet */
             if ($orientation == 'landscape') {
@@ -249,7 +246,6 @@ class Renderer extends AbstractRenderer
                 case 'A2':
                     $sheet->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A2);
                     break;
-                    
             }
         }
         

@@ -1,6 +1,7 @@
 <?php
 namespace ZfcDatagrid;
 
+use ZfcDatagrid\Column;
 use Zend\I18n\Translator\Translator;
 
 class PrepareData
@@ -108,6 +109,9 @@ class PrepareData
                         $row[$column->getUniqueId()] = $this->getTranslator()->translate($row[$column->getUniqueId()]);
                     }
                 }
+                
+                //TRIM
+                $row[$column->getUniqueId()] = trim($row[$column->getUniqueId()]);
             }
             
             // Concat all identity columns
@@ -119,7 +123,7 @@ class PrepareData
         $this->data = $data;
         $this->isPrepared = true;
     }
-
+    
     public function getData ()
     {
         if ($this->isPrepared === false) {

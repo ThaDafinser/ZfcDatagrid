@@ -227,6 +227,44 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
+     * Get the paper width in MM (milimeter)
+     *
+     * @return float
+     */
+    protected function getPaperWidth ()
+    {
+        $options = $this->getOptions();
+        $optionsExport = $options['settings']['export'];
+        
+        $papersize = $optionsExport['papersize'];
+        $orientation = $optionsExport['orientation'];
+        
+        if (substr($papersize, 0, 1) != 'A') {
+            throw new \Exception('Currently only "A" paper formats are supported!');
+        }
+        
+        // calc from A0 to selected
+        $divisor = substr($papersize, 1, 1);
+        
+        // A0 dimensions = 841 x 1189 mm
+        $currentX = 841;
+        $currentY = 1189;
+        for ($i = 0; $i < $divisor; $i ++) {
+            $tempY = $currentX;
+            $tempX = floor($currentY / 2);
+            
+            $currentX = $tempX;
+            $currentY = $tempY;
+        }
+        
+        if ($orientation == 'landscape') {
+            return $currentY;
+        } else {
+            return $currentX;
+        }
+    }
+
+    /**
      * The prepared data
      *
      * @param array $data            
@@ -484,6 +522,7 @@ abstract class AbstractRenderer implements RendererInterface
         $viewModel->setVariable('overwriteUrl', $grid->getUrl());
         
         $viewModel->setVariable('templateToolbar', $this->getToolbarTemplate());
+        $viewModel->setVariable('rendererName', $this->getName());
         
         $options = $this->getOptions();
         $generalParameterNames = $options['generalParameterNames'];

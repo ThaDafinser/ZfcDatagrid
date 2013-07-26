@@ -1,11 +1,14 @@
 <?php
 namespace ZfcDatagrid\Renderer\JqGrid\View\Helper;
 
-use Zend\View\Helper\AbstractHelper;
+use ZfcDatagrid\Filter;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Type;
+use ZfcDatagrid\Column\Style;
+use Zend\View\Helper\AbstractHelper;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use ZfcDatagrid\Column\Style\Color\AbstractColor;
 
 /**
  * View Helper
@@ -14,12 +17,12 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
 {
 
     private $translator;
-    
+
     /**
      * Set the service locator.
-     * 
-     * @param ServiceLocatorInterface $serviceLocator
-     *            @return CustomHelper
+     *
+     * @param ServiceLocatorInterface $serviceLocator            
+     * @return CustomHelper
      */
     public function setServiceLocator (ServiceLocatorInterface $serviceLocator)
     {
@@ -36,21 +39,26 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
     {
         return $this->serviceLocator;
     }
-    
+
     /**
-     * 
-     * @param string $message
+     *
+     * @param string $message            
      * @return string
      */
-    public function translate($message){
-        if($this->translator === false){
+    public function translate ($message)
+    {
+        if ($this->translator === false) {
             return $message;
         }
         
-        if($this->translator === null){
-            if($this->getServiceLocator()->getServiceLocator()->has('translator')){
-                $this->translator = $this->getServiceLocator()->getServiceLocator()->get('translator');
-            } else{
+        if ($this->translator === null) {
+            if ($this->getServiceLocator()
+                ->getServiceLocator()
+                ->has('translator')) {
+                $this->translator = $this->getServiceLocator()
+                    ->getServiceLocator()
+                    ->get('translator');
+            } else {
                 $this->translator = false;
                 return $message;
             }
@@ -80,41 +88,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
             /**
              * Formatting
              */
-            $formatter = '';
-            switch ($column->getType()->getTypeName()) {
-                // Numbers + Date are already formatted on the server side!
-                case 'email':
-                    $formatter = 'email';
-                    break;
-                
-                case 'array':
-                    $formatter = 'function(cellvalue, options, rowObject){';
-                    // $formatter .= 'console.log(options); console.log(rowObject);';
-                    $formatter .= 'return cellvalue;';
-                    $formatter .= '}';
-                    break;
-                
-                // case 'link':
-                // $formatter = 'link';
-                // break;
-            }
-            
-            if ($column instanceof Column\Action) {
-                $formatter = 'function(cellvalue, options, rowObject){';
-                // $formatter .= 'console.log(options); console.log(rowObject);';
-                $formatter .= 'return cellvalue;';
-                $formatter .= '}';
-            } elseif ($column instanceof Column\Image) {
-                $formatter = 'function(cellvalue, options, rowObject){';
-                $formatter .= 'return \'<img src="\' + cellvalue + \'" />\'';
-                $formatter .= '}';
-            }
-            
-            $rendererParameters = $column->getRendererParameters('jqgrid');
-            if (isset($rendererParameters['formatter'])) {
-                $formatter = $rendererParameters['formatter'];
-            }
-            
+            $formatter = $this->getFormatter($column);
             if ($formatter != '') {
                 $options['formatter'] = (string) $formatter;
             }
@@ -181,5 +155,121 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
         }
         
         return '[' . implode(',', $return) . ']';
+    }
+
+    private function getFormatter ($column)
+    {
+        /*
+         * User defined formatter
+         */
+        $rendererParameters = $column->getRendererParameters('jqgrid');
+        if (isset($rendererParameters['formatter'])) {
+            return $rendererParameters['formatter'];
+        }
+        
+        /*
+         * Formatter based on column options + styles
+         */
+        $formatter = '';
+        
+        if ($column->hasStyles() === true) {
+            $styleFormatter = array();
+            
+            /*
+             * First all based on value (only one works) @todo
+             */
+            foreach ($column->getStyles() as $style) {
+                /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
+                if ($style->isForAll() === false) {
+                    foreach ($style->getByValues() as $rule) {
+                        $colString = $rule['column']->getUniqueId();
+                        $operator = '';
+                        switch ($rule['operator']) {
+                            
+                            case Filter::EQUAL:
+                                $operator = '==';
+                                break;
+                            
+                            case Filter::NOT_EQUAL:
+                                $operator = '!=';
+                                break;
+                            
+                            default:
+                                throw new \Exception('currently not implemented filter type: "' . $rule['operator'] . '"');
+                                break;
+                        }
+                        
+                        $styleString = 'if(rowObject.' . $colString . ' ' . $operator . ' \'' . $rule['value'] . '\'){';
+
+                        switch (get_class($style)) {
+                            
+                            case 'ZfcDatagrid\Column\Style\Bold':
+                                $styleString .= 'cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';';
+                                break;
+                            case 'ZfcDatagrid\Column\Style\Italic':
+                                $styleString .= 'cellvalue = \'<span style="font-weight: italic;">\' + cellvalue + \'</span>\';';
+                                break;
+                            
+                            case 'ZfcDatagrid\Column\Style\Color':
+                                $styleString .= 'cellvalue = \'<span style="color: #' . $style->getRgbHexString() . ';">\' + cellvalue + \'</span>\';';
+                                break;
+                            
+                            default:
+                                throw new \Exception('Not defined yet: "' . get_class($style) . '"');
+                                
+                                break;
+                        }
+                        
+                        $styleString .= '}';
+                        
+                        $styleFormatter[] = $styleString;
+                    }
+                }
+            }
+            
+            foreach ($column->getStyles() as $style) {
+                /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
+                if ($style->isForAll() === true) {
+                    if ($style instanceof Style\Bold) {
+                        $styleFormatter[] = 'cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';';
+                    } elseif ($style instanceof Style\Color\Red) {
+                        $styleFormatter[] = 'cellvalue = \'<span style="color: red;">\' + cellvalue + \'</span>\';';
+                    } else {
+                        throw new \Exception('Not defined yet: "' . get_class($style) . '"');
+                    }
+                }
+            }
+            
+            $formatter .= implode(' ', $styleFormatter);
+        }
+        
+        switch ($column->getType()->getTypeName()) {
+            
+            // Numbers + Date are already formatted on the server side!
+            case 'email':
+                $formatter .= 'cellvalue = \'<a href="mailto:\' + cellvalue\'">\' + cellvalue + \'</a>\';';
+                break;
+            
+            case 'array':
+                $formatter .= 'cellvalue = \'<pre>\' + cellvalue + \'</pre>\';';
+                break;
+        }
+        
+        if ($column instanceof Column\Action) {
+            $formatter .= ' cellvalue = cellvalue; ';
+        } elseif ($column instanceof Column\Image) {
+            $formatter .= ' cellvalue = \'<img src="\' + cellvalue + \'" />\'; ';
+        } elseif ($column instanceof Column\Icon) {
+            $formatter .= ' cellvalue = \'<i class="\' + cellvalue + \'" />\'; ';
+        }
+        
+        if ($formatter != '') {
+            $prefix = 'function(cellvalue, options, rowObject){';
+            $suffix = ' return cellvalue; }';
+            
+            $formatter = $prefix . $formatter . $suffix;
+        }
+        
+        return $formatter;
     }
 }

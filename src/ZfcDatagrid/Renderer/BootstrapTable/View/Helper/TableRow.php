@@ -68,12 +68,24 @@ class TableRow extends AbstractHelper
                 foreach ($column->getStyles() as $style) {
                     /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
                     if ($style->isApply($row) === true) {
-                        if ($style instanceof Style\Bold) {
-                            $styles[] = 'font-weight: bold';
-                        } elseif ($style instanceof Style\Color\Red) {
-                            $styles[] = 'color: red';
-                        } else {
-                            throw new \Exception('Not defined yet: "' . get_class($style) . '"');
+                        
+                        switch (get_class($style)) {
+                            
+                            case 'ZfcDatagrid\Column\Style\Bold':
+                                $styles[] = 'font-weight: bold';
+                                break;
+                            case 'ZfcDatagrid\Column\Style\Italic':
+                                $styles[] = 'font-weight: italic';
+                                break;
+                            
+                            case 'ZfcDatagrid\Column\Style\Color':
+                                $styles[] = 'color: #' . $style->getRgbHexString();
+                                break;
+                            
+                            default:
+                                throw new \Exception('Not defined yet: "' . get_class($style) . '"');
+                                
+                                break;
                         }
                     }
                 }
