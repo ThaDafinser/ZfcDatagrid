@@ -75,7 +75,7 @@ class Color extends AbstractStyle
         
         return $this;
     }
-
+    
     /**
      *
      * @param unknown $red            
@@ -139,6 +139,15 @@ class Color extends AbstractStyle
         return $this->blue;
     }
 
+    /**
+     * 
+     * @return array
+     */
+    public function getRgbArray(){
+        return array('red' => $this->getRed(), 'green' => $this->getGreen(), 'blue' => $this->getBlue());
+    }
+    
+    
     /**
      * Convert RGB dec to hex as a string
      *

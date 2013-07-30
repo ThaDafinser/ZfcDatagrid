@@ -16,6 +16,9 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Cache;
 use Zend\Session\Container as SessionContainer;
 use Zend\Db\Sql\Select as ZendSelect;
+use Zend\View\Model\JsonModel;
+use Zend\Stdlib\ResponseInterface;
+
 
 class Datagrid implements ServiceLocatorAwareInterface
 {
@@ -838,5 +841,20 @@ class Datagrid implements ServiceLocatorAwareInterface
         }
         
         return $this->response;
+    }
+    
+    /**
+     * Is this a HTML "init" response?
+     * YES: loading the HTML for the grid
+     * NO: AJAX loading of data or it's an export
+     * 
+     * @return boolean
+     */
+    public function isIHtmlInitReponse(){
+        if (! $this->getResponse() instanceof JsonModel && ! $this->getResponse() instanceof ResponseInterface) {
+            return true;
+        }
+        
+        return false;
     }
 }

@@ -37,7 +37,7 @@ class Renderer extends AbstractRenderer
         $options = $this->getOptions();
         $optionsExport = $options['settings']['export'];
         
-        $rendererOptions = $this->getRendererOptions();
+        $optionsRenderer = $this->getOptionsRenderer();
         
         $phpExcel = new PHPExcel();
         
@@ -45,11 +45,11 @@ class Renderer extends AbstractRenderer
         $phpExcel->setActiveSheetIndex(0);
         $sheet = $phpExcel->getActiveSheet();
         $sheet->setTitle($this->getTranslator()
-            ->translate($rendererOptions['sheetName']));
+            ->translate($optionsRenderer['sheetName']));
         
-        if ($rendererOptions['displayTitle'] === true) {
-            $sheet->setCellValue('A' . $rendererOptions['rowTitle'], $this->getTitle());
-            $sheet->getStyle('A' . $rendererOptions['rowTitle'])
+        if ($optionsRenderer['displayTitle'] === true) {
+            $sheet->setCellValue('A' . $optionsRenderer['rowTitle'], $this->getTitle());
+            $sheet->getStyle('A' . $optionsRenderer['rowTitle'])
                 ->getFont()
                 ->setSize(15);
         }
@@ -64,10 +64,15 @@ class Renderer extends AbstractRenderer
                 $columnsToExport[] = $column;
             }
         }
+        if(count($columnsToExport) === 0){
+            throw new \Exception('No columns to export available');
+        }
         $this->calculateColumnWidth($columnsToExport);
         
+
+        
         $xColumn = 0;
-        $yRow = $rendererOptions['startRowData'];
+        $yRow = $optionsRenderer['startRowData'];
         foreach ($columnsToExport as $column) {
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
             $sheet->setCellValueByColumnAndRow($xColumn, $yRow, $column->getLabel());
@@ -81,7 +86,7 @@ class Renderer extends AbstractRenderer
         /*
          * Data
          */
-        $yRow = $rendererOptions['startRowData'] + 1;
+        $yRow = $optionsRenderer['startRowData'] + 1;
         foreach ($this->getData() as $row) {
             
             $xColumn = 0;
@@ -105,6 +110,7 @@ class Renderer extends AbstractRenderer
                                 case 'ZfcDatagrid\Column\Style\Bold':
                                     $columnStyle->getFont()->setBold(true);
                                     break;
+                                    
                                 case 'ZfcDatagrid\Column\Style\Italic':
                                     $columnStyle->getFont()->setItalic(true);
                                     break;
@@ -138,8 +144,8 @@ class Renderer extends AbstractRenderer
         $endColumn = count($columnsToExport) - 1;
         
         // Autofilter + Freeze
-        $sheet->setAutoFilter('A' . $rendererOptions['startRowData'] . ':' . PHPExcel_Cell::stringFromColumnIndex($endColumn) . $endRow);
-        $freezeRow = $rendererOptions['startRowData'] + 1;
+        $sheet->setAutoFilter('A' . $optionsRenderer['startRowData'] . ':' . PHPExcel_Cell::stringFromColumnIndex($endColumn) . $endRow);
+        $freezeRow = $optionsRenderer['startRowData'] + 1;
         $sheet->freezePane('A' . $freezeRow);
         
         /*
@@ -210,7 +216,7 @@ class Renderer extends AbstractRenderer
     protected function setPrinting (PHPExcel $phpExcel)
     {
         $options = $this->getOptions();
-        $optionsExport = $options['settings']['export'];
+        $optionsRenderer = $this->getOptionsRenderer();
         
         $phpExcel->getProperties()
             ->setCreator('https://github.com/ThaDafinser/ZfcDatagrid')
@@ -219,8 +225,8 @@ class Renderer extends AbstractRenderer
         /*
          * Printing setup
          */
-        $papersize = $optionsExport['papersize'];
-        $orientation = $optionsExport['orientation'];
+        $papersize = $optionsRenderer['papersize'];
+        $orientation = $optionsRenderer['orientation'];
         foreach ($phpExcel->getAllSheets() as $sheet) {
             /* @var $sheet \PHPExcel_Worksheet */
             if ($orientation == 'landscape') {

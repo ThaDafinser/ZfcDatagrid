@@ -151,10 +151,13 @@ class DateTimeTest extends PHPUnit_Framework_TestCase
     public function testUserValueAT ()
     {
         $type = clone $this->datetimeAT;
+        $this->assertEquals('', $type->getUserValue(''));
+        
+        $this->assertEquals('10.01.2013', $type->getUserValue(new \DateTime('2013-01-10')));
         $this->assertEquals('10.01.2013', $type->getUserValue('2013-01-10 00:00:00'));
     
         $type->setOutputTimeType(IntlDateFormatter::SHORT);
-        $this->assertEquals('10.01.2013 10:00', $type->getFilterValue('2013-01-10 00:00:000'));
+        $this->assertEquals('10.01.2013 10:00', $type->getUserValue('2013-01-10 10:00:00'));
     }
     
     /**
@@ -166,6 +169,6 @@ class DateTimeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Jan 10, 2013', $type->getUserValue('2013-01-10 00:00:00'));
     
         $type->setOutputTimeType(IntlDateFormatter::SHORT);
-        $this->assertEquals('Jan 10, 2013 10:00 AM', $type->getFilterValue('2013-01-10 10:00:000'));
+        $this->assertEquals('Jan 10, 2013 10:00 AM', $type->getUserValue('2013-01-10 10:00:00'));
     }
 }

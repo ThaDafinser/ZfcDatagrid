@@ -49,8 +49,8 @@ class ZendTable extends AbstractRenderer
             throw new \Exception('Must be an instance of ConsoleRequest for console rendering');
         }
         
-        $rendererOptions = $this->getRendererOptions();
-        $parameterNames = $rendererOptions['parameterNames'];
+        $optionsRenderer = $this->getOptionsRenderer();
+        $parameterNames = $optionsRenderer['parameterNames'];
         
         $sortConditions = array();
         
@@ -123,8 +123,8 @@ class ZendTable extends AbstractRenderer
             throw new \Exception('Must be an instance of ConsoleRequest for console rendering');
         }
         
-        $rendererOptions = $this->getRendererOptions();
-        $parameterNames = $rendererOptions['parameterNames'];
+        $optionsRenderer = $this->getOptionsRenderer();
+        $parameterNames = $optionsRenderer['parameterNames'];
         if ($request->getParam($parameterNames['currentPage']) != '') {
             return (int) $request->getParam($parameterNames['currentPage']);
         }
@@ -139,8 +139,8 @@ class ZendTable extends AbstractRenderer
             throw new \Exception('Must be an instance of ConsoleRequest for console rendering');
         }
         
-        $rendererOptions = $this->getRendererOptions();
-        $parameterNames = $rendererOptions['parameterNames'];
+        $optionsRenderer = $this->getOptionsRenderer();
+        $parameterNames = $optionsRenderer['parameterNames'];
         if ($request->getParam($parameterNames['itemsPerPage']) != '') {
             return (int) $request->getParam($parameterNames['itemsPerPage']);
         }

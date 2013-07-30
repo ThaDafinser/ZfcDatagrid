@@ -40,8 +40,8 @@ class Renderer extends AbstractRenderer
             throw new \Exception('Must be an instance of HttpRequest for HTML rendering');
         }
         
-        $rendererOptions = $this->getRendererOptions();
-        $parameterNames = $rendererOptions['parameterNames'];
+        $optionsRenderer = $this->getOptionsRenderer();
+        $parameterNames = $optionsRenderer['parameterNames'];
         
         $sortConditions = array();
         $sortColumns = $request->getPost($parameterNames['sortColumns'], $request->getQuery($parameterNames['sortColumns']));
@@ -103,9 +103,6 @@ class Renderer extends AbstractRenderer
             throw new \Exception('Must be an instance of HttpRequest for HTML rendering');
         }
         
-        // $rendererOptions = $this->getRendererOptions();
-        // $parameterNames = $rendererOptions['parameterNames'];
-        
         $filters = array();
         if ($request->isPost() === true && $request->getPost('toolbarFilters') !== null) {
             foreach ($request->getPost('toolbarFilters') as $uniqueId => $value) {
@@ -137,8 +134,8 @@ class Renderer extends AbstractRenderer
 
     public function getCurrentPageNumber ()
     {
-        $rendererOptions = $this->getRendererOptions();
-        $parameterNames = $rendererOptions['parameterNames'];
+        $optionsRenderer = $this->getOptionsRenderer();
+        $parameterNames = $optionsRenderer['parameterNames'];
         
         if ($this->getRequest() instanceof HttpRequest) {
             $this->currentPageNumber = (int) $this->getRequest()->getPost($parameterNames['currentPage'], $this->getRequest()

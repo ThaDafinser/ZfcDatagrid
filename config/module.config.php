@@ -19,11 +19,6 @@ return array(
                 //Export is enabled?
                 'enabled' => true,
                 
-                'papersize' => 'A4',
-                
-                // landscape / portrait (we preferr landscape, because datagrids are often wide)
-                'orientation' => 'landscape',
-                
                 'formats' => array(
                     //type => Displayname (Toolbar - you can use here HTML too...)
                     //                 'tcpdf' => 'PDF',
@@ -40,6 +35,7 @@ return array(
             
         ),
         
+        //The cache is used to save the filter + sort and other things for exporting        
         'cache' => array(
             
             'adapter' => array(
@@ -56,7 +52,6 @@ return array(
                 
                 'Serializer'
             )
-            
         ),
         
         'renderer' => array(
@@ -99,6 +94,11 @@ return array(
             
             'PHPExcel' => array(
 
+                'papersize' => 'A4',
+                
+                // landscape / portrait (we preferr landscape, because datagrids are often wide)
+                'orientation' => 'landscape',
+                
                 // The worksheet name (will be translated if possible)
                 'sheetName' => 'Data',
                 
@@ -107,7 +107,58 @@ return array(
                 
                 'rowTitle' => 1,
                 'startRowData' => 3
+            ),
+            
+            'TCPDF' => array(
+                
+                'papersize' => 'A4',
+                
+                // landscape / portrait (we preferr landscape, because datagrids are often wide)
+                'orientation' => 'landscape',
+                
+                'margins' => array(
+                    'header' => 5,
+                    'footer' => 10,
+                    
+                    'top' => 20,
+                    'bottom' => 11,
+                    'left' => 10,
+                    'right' => 10,
+                ),
+                
+                'icon' => array(
+                    //milimeter...
+                    'size' => 16
+                ),
+                
+                'header' => array(
+                    //define your logo here, please be aware of the relative path...
+                    'logo' => '',
+                    'logoWidth'=> 35
+                ),
+                
+                'style' => array(
+                    
+                    'header' => array(
+                        'font' => 'helvetica',
+                        'size' => 11,
+                        
+                        'color' => array(0,0,0),
+                        'background-color' => array(255,255,200),
+                        
+                    ),
+                    
+                    'data' => array(
+                        'font' => 'helvetica',
+                        'size' => 11,
+                        
+                        'color' => array(0,0,0),
+                        'background-color' => array(255,255,255),
+                    )
+                    
+                )
             )
+            
         ),
         
         // General parameters

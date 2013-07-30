@@ -111,7 +111,13 @@ class PrepareData
                 }
                 
                 //TRIM
-                $row[$column->getUniqueId()] = trim($row[$column->getUniqueId()]);
+                if (is_array($row[$column->getUniqueId()])) {
+                    foreach ($row[$column->getUniqueId()] as &$value) {
+                        $value = trim($value);
+                    }
+                } else{
+                    $row[$column->getUniqueId()] = trim($row[$column->getUniqueId()]);
+                }
             }
             
             // Concat all identity columns

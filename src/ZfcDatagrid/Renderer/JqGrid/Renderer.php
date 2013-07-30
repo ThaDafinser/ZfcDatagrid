@@ -41,8 +41,8 @@ class Renderer extends AbstractRenderer
         if (! $request instanceof HttpRequest) {
             throw new \Exception('Must be an instance of HttpRequest for HTML rendering');
         }
-        $rendererOptions = $this->getRendererOptions();
-        $parameterNames = $rendererOptions['parameterNames'];
+        $optionsRenderer = $this->getOptionsRenderer();
+        $parameterNames = $optionsRenderer['parameterNames'];
         
         $sortConditions = array();
         
@@ -101,8 +101,8 @@ class Renderer extends AbstractRenderer
         
         $filters = array();
         
-        $rendererOptions = $this->getRendererOptions();
-        $parameterNames = $rendererOptions['parameterNames'];
+        $optionsRenderer = $this->getOptionsRenderer();
+        $parameterNames = $optionsRenderer['parameterNames'];
         
         $isSearch = $request->getPost($parameterNames['isSearch']);
         if ($isSearch == 'true') {
@@ -134,8 +134,8 @@ class Renderer extends AbstractRenderer
 
     public function getCurrentPageNumber ()
     {
-        $rendererOptions = $this->getRendererOptions();
-        $parameterNames = $rendererOptions['parameterNames'];
+        $optionsRenderer = $this->getOptionsRenderer();
+        $parameterNames = $optionsRenderer['parameterNames'];
         
         $request = $this->getRequest();
         if ($request instanceof HttpRequest) {

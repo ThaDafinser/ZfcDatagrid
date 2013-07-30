@@ -70,9 +70,9 @@ abstract class AbstractRenderer implements RendererInterface
      */
     protected $translator;
 
-    public function setOptions (array $config)
+    public function setOptions (array $options)
     {
-        $this->options = $config;
+        $this->options = $options;
     }
 
     /**
@@ -88,7 +88,7 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @return array
      */
-    public function getRendererOptions ()
+    public function getOptionsRenderer ()
     {
         $options = $this->getOptions();
         if (isset($options['renderer'][$this->getName()])) {
@@ -221,8 +221,8 @@ abstract class AbstractRenderer implements RendererInterface
         $relativeOnePercent = $widthAllColumn / 100;
         
         foreach ($columns as $column) {
-            $widthSum += (round($column->getWidth() / $relativeOnePercent));
-            $column->setWidth(round($column->getWidth() / $relativeOnePercent));
+            $widthSum += (($column->getWidth() / $relativeOnePercent));
+            $column->setWidth(($column->getWidth() / $relativeOnePercent));
         }
     }
 
@@ -233,11 +233,10 @@ abstract class AbstractRenderer implements RendererInterface
      */
     protected function getPaperWidth ()
     {
-        $options = $this->getOptions();
-        $optionsExport = $options['settings']['export'];
+        $optionsRenderer = $this->getOptionsRenderer();
         
-        $papersize = $optionsExport['papersize'];
-        $orientation = $optionsExport['orientation'];
+        $papersize = $optionsRenderer['papersize'];
+        $orientation = $optionsRenderer['orientation'];
         
         if (substr($papersize, 0, 1) != 'A') {
             throw new \Exception('Currently only "A" paper formats are supported!');
@@ -550,10 +549,10 @@ abstract class AbstractRenderer implements RendererInterface
         /**
          * renderer specific parameter names
          */
-        $options = $this->getRendererOptions();
-        $viewModel->setVariable('rendererOptions', $options);
+        $optionsRenderer = $this->getOptionsRenderer();
+        $viewModel->setVariable('optionsRenderer', $optionsRenderer);
         if ($this->isExport() === false) {
-            $parameterNames = $options['parameterNames'];
+            $parameterNames = $optionsRenderer['parameterNames'];
             $viewModel->setVariable('parameterNames', $parameterNames);
             
             $activeParameters = array();

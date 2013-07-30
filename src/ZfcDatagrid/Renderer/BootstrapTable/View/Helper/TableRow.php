@@ -75,7 +75,7 @@ class TableRow extends AbstractHelper
                                 $styles[] = 'font-weight: bold';
                                 break;
                             case 'ZfcDatagrid\Column\Style\Italic':
-                                $styles[] = 'font-weight: italic';
+                                $styles[] = 'font-style: italic';
                                 break;
                             
                             case 'ZfcDatagrid\Column\Style\Color':

@@ -206,8 +206,9 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                             case 'ZfcDatagrid\Column\Style\Bold':
                                 $styleString .= 'cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';';
                                 break;
+                                
                             case 'ZfcDatagrid\Column\Style\Italic':
-                                $styleString .= 'cellvalue = \'<span style="font-weight: italic;">\' + cellvalue + \'</span>\';';
+                                $styleString .= 'cellvalue = \'<span style="font-style: italic;">\' + cellvalue + \'</span>\';';
                                 break;
                             
                             case 'ZfcDatagrid\Column\Style\Color':
@@ -230,12 +231,25 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
             foreach ($column->getStyles() as $style) {
                 /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
                 if ($style->isForAll() === true) {
-                    if ($style instanceof Style\Bold) {
-                        $styleFormatter[] = 'cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';';
-                    } elseif ($style instanceof Style\Color\Red) {
-                        $styleFormatter[] = 'cellvalue = \'<span style="color: red;">\' + cellvalue + \'</span>\';';
-                    } else {
-                        throw new \Exception('Not defined yet: "' . get_class($style) . '"');
+                    
+                    switch (get_class($style)) {
+                    
+                        case 'ZfcDatagrid\Column\Style\Bold':
+                            $styleFormatter[] = 'cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';';
+                            break;
+                            
+                        case 'ZfcDatagrid\Column\Style\Italic':
+                            $styleFormatter[] = 'cellvalue = \'<span style="font-style: italic;">\' + cellvalue + \'</span>\';';
+                            break;
+                    
+                        case 'ZfcDatagrid\Column\Style\Color':
+                            $styleFormatter[] = 'cellvalue = \'<span style="color: #' . $style->getRgbHexString() . ';">\' + cellvalue + \'</span>\';';
+                            break;
+                    
+                        default:
+                            throw new \Exception('Not defined yet: "' . get_class($style) . '"');
+                    
+                            break;
                     }
                 }
             }
