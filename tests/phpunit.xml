@@ -6,7 +6,7 @@
 >
     <testsuites>
         <testsuite name="ZfcDatagrid Test Suite">
-            <directory suffix="Test.php">./../</directory>
+            <directory suffix="Test.php">./ZfcDatagridTest/</directory>
         </testsuite>
     </testsuites>
     
