@@ -3,7 +3,7 @@
     "description": "Zend Framework 2 Module that provides a datagrid for different datasources and output formats",
     "type":        "library",
     "license":     "WTFPL",
-    "keywords":    [
+    "keywords": [
         "ZfcDatagrid",
         "Datagrid",
         "Datatable",
@@ -12,19 +12,19 @@
         "Zend Framework"
     ],
     
-    "authors": [
-        {
-            "name": "Martin Keckeis",
-            "email": "martin.keckeis1@gmail.com"
-        }
-    ],
+    "authors": [{
+        "name": "Martin Keckeis",
+        "email": "martin.keckeis1@gmail.com"
+    }],
     
     "minimum-stability": "dev",
     
     "require": {
         "ext-intl": "*",
         "php": ">=5.3.3",
+        
         "zendframework/zend-mvc": ">=2.1",
+        "zendframework/zend-modulemanager": ">=2.1",
         "zendframework/zend-session": ">=2.1",
         "zendframework/zend-view": ">=2.1",
         "zendframework/zend-http": ">=2.1",
