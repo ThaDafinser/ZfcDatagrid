@@ -1,4 +1,5 @@
-# Datagrid module for Zend Framework 2
+# Datagrid module for Zend Framework 2 [![Master Branch Build Status](https://secure.travis-ci.org/ThaDafinser/ZfcDatagrid.png?branch=master)](http://travis-ci.org/ThaDafinser/ZfcDatagrid)
+
 
 A datagrid for ZF2 where the data input and output can be whatever you want :-)
 

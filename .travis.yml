@@ -1,0 +1,18 @@
+language: php
+
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+
+matrix:
+  allow_failures:
+    - php: 5.5
+
+before_install:
+ - curl -s https://getcomposer.org/installer | php
+ - php composer.phar install
+ - cd tests
+
+script:
+ - phpunit
