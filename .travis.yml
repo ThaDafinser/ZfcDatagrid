@@ -10,6 +10,7 @@ matrix:
     - php: 5.5
 
 before_script:
+  - composer selfupdate
   - composer update --prefer-source --dev
 
 script:
