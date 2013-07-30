@@ -5,7 +5,8 @@
 
 ## 0.6.0 (WIP):
 * complete unittests
-
+* Travis-ci
+* 
 ## 0.5.0 (work in progress):
 * testing
 * PDF Export
