@@ -9,9 +9,10 @@ matrix:
   allow_failures:
     - php: 5.5
 
-before_script:
-  - composer selfupdate
-  - composer update --prefer-source --dev
+before_install:
+ - curl -s https://getcomposer.org/installer | php
+ - php composer.phar install
+ - cd tests
 
 script:
-  - ./vendor/bin/phpunit
+ - phpunit
