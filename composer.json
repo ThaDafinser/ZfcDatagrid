@@ -24,20 +24,29 @@
     "require": {
         "ext-intl": "*",
         "php": ">=5.3.3",
-        "zendframework/zendframework": "~2.1"
+        "zendframework/zend-mvc": ">=2.1",
+        "zendframework/zend-session": ">=2.1",
+        "zendframework/zend-view": ">=2.1",
+        "zendframework/zend-http": ">=2.1",
+        "zendframework/zend-paginator": ">=2.1",
+        "zendframework/zend-cache": ">=2.1"
     },
     
     "require-dev": {
         "phpunit/PHPUnit": "3.7.*",
         "doctrine/doctrine-orm-module": ">=0.7",
         "codeplex/phpexcel": "~1.7",
-        "tecnick.com/tcpdf": "dev-master"
+        "tecnick.com/tcpdf": ">=6.0",
+        
+        "zendframework/zend-i18n": ">=2.1",
+        "zendframework/zend-console": ">=2.1",
+        "zendframework/zend-db": ">=2.1"
     },
     
     "suggest" : {
 		"doctrine/doctrine-orm-module": ">=0.7",
 		"codeplex/phpexcel": "~1.7",
-		"tecnick.com/tcpdf": "dev-master"
+		"tecnick.com/tcpdf": ">=6.0"
     },
     
     "autoload": {
