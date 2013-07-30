@@ -3,6 +3,9 @@
 ## x.x.x (TBD):
 * complete testing
 
+## 0.6.0 (WIP):
+* complete unittests
+
 ## 0.5.0 (work in progress):
 * testing
 * PDF Export
