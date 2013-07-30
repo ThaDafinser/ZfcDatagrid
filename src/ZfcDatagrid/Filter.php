@@ -61,7 +61,7 @@ class Filter
 
     private $displayColumnValue;
 
-    public function setFromColumn (Column\AbstractColumn $column, $inputFilterValue)
+    public function setFromColumn(Column\AbstractColumn $column, $inputFilterValue)
     {
         $this->column = $column;
         $this->setColumnOperator($inputFilterValue, $column->getFilterDefaultOperation());
@@ -78,7 +78,7 @@ class Filter
      * @param mixed $defaultOperator            
      * @return array
      */
-    private function setColumnOperator ($inputFilterValue, $defaultOperator = self::LIKE)
+    private function setColumnOperator($inputFilterValue, $defaultOperator = self::LIKE)
     {
         $inputFilterValue = (string) $inputFilterValue;
         $inputFilterValue = trim($inputFilterValue);
@@ -169,27 +169,34 @@ class Filter
         } elseif (strpos($inputFilterValue, '<>') !== false) {
             $operator = self::BETWEEN;
             $value = explode('<>', $inputFilterValue);
-            foreach ($value as &$val) {
-                $val = trim($val);
+            if (count($value) != 2) {
+                $value = array(
+                    $value[0],
+                    $value[0]
+                );
             }
         }
         
+        /*
+         * Handle multiple values
+         */
         if (is_string($value)) {
-            $value = trim($value);
-            $value = array(
-                $value
-            );
+            $value = explode(',', $value);
+        }
+        foreach ($value as &$val) {
+            $val = trim($val);
         }
         
         $this->operator = $operator;
-        $this->displayColumnValue = vsprintf($operator, $value);
         
-        /**
-         * The searched value must be converted maybe....
-         * - Translation
-         * - Replace
-         * - DateTime
-         * - ...
+        if ($operator == self::BETWEEN) {
+            $this->displayColumnValue = sprintf($operator, $value[0], $value[1]);
+        } else {
+            $this->displayColumnValue = sprintf($operator, implode(',', $value));
+        }
+        
+        /*
+         * The searched value must be converted maybe.... - Translation - Replace - DateTime - ...
          */
         foreach ($value as &$val) {
             $type = $this->getColumn()->getType();
@@ -201,7 +208,7 @@ class Filter
         $this->value = $value;
     }
 
-    public function isColumnFilter ()
+    public function isColumnFilter()
     {
         if ($this->getColumn() instanceof Column\AbstractColumn) {
             return true;
@@ -214,7 +221,7 @@ class Filter
      *
      * @return \ZfcDatagrid\Column\AbstractColumn
      */
-    public function getColumn ()
+    public function getColumn()
     {
         return $this->column;
     }
@@ -223,22 +230,22 @@ class Filter
      *
      * @return array
      */
-    public function getValue ()
+    public function getValue()
     {
         return $this->value;
     }
 
-    public function getOperator ()
+    public function getOperator()
     {
         return $this->operator;
     }
 
     /**
      * Get the value displayed to the user
-     * 
+     *
      * @return string
      */
-    public function getDisplayColumnValue ()
+    public function getDisplayColumnValue()
     {
         return $this->displayColumnValue;
     }
