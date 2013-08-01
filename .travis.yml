@@ -7,10 +7,11 @@ php:
 
 befor_script:
  - curl -s https://getcomposer.org/installer | php
- - php composer.phar install
+ - php composer.phar install --dev
 
 script:
- - ./vendor/bin/phpunit --coverage-clover ./build/clover.xml
+ - mkdir -p build
+ - php vendor/bin/phpunit -c travis.phpunit.xml
 
 after_script:
-  - php vendor/bin/coveralls
+  - php vendor/bin/coveralls -v --exclude-no-stmt

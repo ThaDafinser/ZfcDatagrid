@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="./tests/Bootstrap.php" backupGlobals="false"
+	backupStaticAttributes="false" colors="true" convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true" convertWarningsToExceptions="true"
+	processIsolation="false" stopOnFailure="false" syntaxCheck="false">
+	<testsuites>
+		<testsuite name="ZfcDatagrid component test suite">
+			<directory>./tests/</directory>
+		</testsuite>
+	</testsuites>
+
+	<filter>
+		<whitelist>
+			<directory suffix=".php">./src</directory>
+			<exclude>
+				<directory>./build</directory>
+				<directory>./config</directory>
+				<directory>./docs</directory>
+				<directory>./tests</directory>
+				<directory>./view</directory>
+			</exclude>
+		</whitelist>
+	</filter>
+
+	<logging>
+		<log type="coverage-clover" target="build/clover.xml" />
+	</logging>
+</phpunit>
