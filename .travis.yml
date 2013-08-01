@@ -10,8 +10,8 @@ befor_script:
  - php composer.phar install --dev
 
 script:
- - mkdir -p build
+ - mkdir -p build/logs
  - php vendor/bin/phpunit -c travis.phpunit.xml
 
 after_script:
-  - php vendor/bin/coveralls -v --exclude-no-stmt
+  - php vendor/bin/coveralls

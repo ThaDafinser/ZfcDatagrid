@@ -35,7 +35,6 @@
     "require-dev": {
         "phpunit/PHPUnit": "3.7.*",
         "satooshi/php-coveralls": "dev-master",
-
         
         "zendframework/zend-i18n": ">=2.1",
         "zendframework/zend-console": ">=2.1",
@@ -43,9 +42,9 @@
     },
     
     "suggest" : {
-		"doctrine/doctrine-orm-module": ">=0.7",
-		"codeplex/phpexcel": "~1.7",
-		"tecnick.com/tcpdf": ">=6.0"
+        "doctrine/doctrine-orm-module": ">=0.7",
+        "codeplex/phpexcel": "~1.7",
+        "tecnick.com/tcpdf": ">=6.0"
     },
     
     "autoload": {
