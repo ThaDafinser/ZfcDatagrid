@@ -12,3 +12,6 @@ before_script:
 script:
  - mkdir -p build/logs
  - ./vendor/bin/phpunit -c travis.phpunit.xml --coverage-clover build/logs/clover.xml
+
+ after_script:
+  - php vendor/bin/coveralls -v
