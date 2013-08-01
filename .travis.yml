@@ -11,4 +11,7 @@ before_install:
  - cd tests
 
 script:
- - phpunit
+ - phpunit --coverage-clover ./build/clover.xml
+
+after_script:
+  - php vendor/bin/coveralls
