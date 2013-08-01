@@ -5,13 +5,12 @@ php:
   - 5.4
   - 5.5
 
-before_install:
+befor_script:
  - curl -s https://getcomposer.org/installer | php
  - php composer.phar install
- - cd tests
 
 script:
- - phpunit --coverage-clover ./build/clover.xml
+ - ./vendor/bin/phpunit --coverage-clover ./build/clover.xml
 
 after_script:
   - php vendor/bin/coveralls
