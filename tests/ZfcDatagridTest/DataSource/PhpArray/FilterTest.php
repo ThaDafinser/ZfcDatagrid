@@ -3,9 +3,6 @@ namespace ZfcDatagridTest\DataSource\PhpArray;
 
 use PHPUnit_Framework_TestCase;
 use ZfcDatagrid\Datasource\PhpArray\Filter as FilterArray;
-// use ZfcDatagrid\DataSource\PhpArray;
-// use ZfcDatagrid\Filter;
-// use ZfcDatagrid\Column\Type;
 
 /**
  * @group DataSource
