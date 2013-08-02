@@ -152,7 +152,7 @@ class Number extends AbstractType
             $val = substr($val, 0, - strlen($this->getSuffix()));
         }
         
-        return $formatter->parse($val);
+        return (string)$formatter->parse($val);
     }
 
     /**
@@ -168,6 +168,6 @@ class Number extends AbstractType
             $formatter->setAttribute($attribute['attribute'], $attribute['value']);
         }
         
-        return $this->getPrefix() . $formatter->format($val, $this->getFormatType()) . $this->getSuffix();
+        return (string)$this->getPrefix() . $formatter->format($val, $this->getFormatType()) . $this->getSuffix();
     }
 }

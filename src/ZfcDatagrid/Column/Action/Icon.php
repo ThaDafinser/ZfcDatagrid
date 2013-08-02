@@ -4,6 +4,8 @@ namespace ZfcDatagrid\Column\Action;
 class Icon extends AbstractAction
 {
 
+    protected $iconClass;
+
     protected $iconLink;
 
     /**
@@ -12,9 +14,23 @@ class Icon extends AbstractAction
      *
      * @param string $name            
      */
-    public function setIconClass ($name)
+    public function setIconClass($name)
     {
-        $this->addClass($name);
+        $this->iconClass = (string) $name;
+    }
+
+    public function getIconClass()
+    {
+        return $this->iconClass;
+    }
+
+    public function hasIconClass()
+    {
+        if ($this->getIconClass() != '') {
+            return true;
+        }
+        
+        return false;
     }
 
     /**
@@ -22,7 +38,7 @@ class Icon extends AbstractAction
      *
      * @param string $http            
      */
-    public function setIconLink ($http)
+    public function setIconLink($http)
     {
         $this->iconLink = (string) $http;
     }
@@ -32,24 +48,35 @@ class Icon extends AbstractAction
      *
      * @return string
      */
-    public function getIconLink ()
+    public function getIconLink()
     {
         return $this->iconLink;
     }
 
-    public function toHtml ()
+    public function hasIconLink()
     {
-        $attributes = array();
-        foreach ($this->getAttributes() as $attrKey => $attrValue) {
-            $attributes[] = $attrKey . '="' . $attrValue . '"';
+        if ($this->getIconLink() != '') {
+            return true;
         }
         
-        $attributes = implode(' ', $attributes);
-        
-        if ($this->getAttribute('class') != '') {
+        return false;
+    }
+
+    public function toHtml()
+    {
+        if ($this->hasIconClass() === true) {
             // a css class is provided, so use it
+            $this->addClass($this->getIconClass());
+            
+            $attributes = array();
+            foreach ($this->getAttributes() as $attrKey => $attrValue) {
+                $attributes[] = $attrKey . '="' . $attrValue . '"';
+            }
+            
+            $attributes = implode(' ', $attributes);
+            
             return '<i title="' . $this->getTitle() . '" ' . $attributes . '></i>';
-        } elseif ($this->getIconLink() != '') {
+        } elseif ($this->hasIconLink() === true) {
             // no css class -> use the icon link instead
             return '<img src="' . $this->getIconLink() . '" />';
         } else {

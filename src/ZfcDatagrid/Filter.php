@@ -172,7 +172,7 @@ class Filter
             if (count($value) != 2) {
                 $value = array(
                     $value[0],
-                    $value[0]
+                    $value[1]
                 );
             }
         }
@@ -186,7 +186,6 @@ class Filter
         foreach ($value as &$val) {
             $val = trim($val);
         }
-        
         $this->operator = $operator;
         
         if ($operator == self::BETWEEN) {
@@ -230,7 +229,7 @@ class Filter
      *
      * @return array
      */
-    public function getValue()
+    public function getValues()
     {
         return $this->value;
     }

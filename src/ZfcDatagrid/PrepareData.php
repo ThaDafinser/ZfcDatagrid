@@ -7,9 +7,23 @@ use Zend\I18n\Translator\Translator;
 class PrepareData
 {
 
+    /**
+     *
+     * @var array
+     */
     private $columns = array();
 
+    /**
+     *
+     * @var array
+     */
     private $data = array();
+
+    /**
+     *
+     * @var array null
+     */
+    private $dataPrepared;
 
     /**
      *
@@ -17,34 +31,86 @@ class PrepareData
      */
     private $translator;
 
-    private $isPrepared = false;
+    /**
+     *
+     * @param array $data            
+     * @param array $columns            
+     */
+    public function __construct(array $data, array $columns)
+    {
+        $this->setData($data);
+        $this->setColumns($columns);
+    }
 
-    public function setColumns (array $columns)
+    /**
+     *
+     * @param array $columns            
+     */
+    public function setColumns(array $columns)
     {
         $this->columns = $columns;
     }
 
-    public function getColumns ()
+    /**
+     *
+     * @return array
+     */
+    public function getColumns()
     {
         return $this->columns;
     }
 
-    public function setData (array $data)
+    /**
+     *
+     * @param array $data            
+     */
+    public function setData(array $data)
     {
         $this->data = $data;
     }
 
-    public function setTranslator (Translator $translator)
+    /**
+     *
+     * @param boolean $raw            
+     * @return array
+     */
+    public function getData($raw = false)
+    {
+        if ($raw === true) {
+            return $this->data;
+        }
+        
+        if (! is_array($this->dataPrepared)) {
+            $this->dataPrepared = $this->prepare();
+        }
+        
+        return $this->dataPrepared;
+    }
+
+    /**
+     *
+     * @param Translator $translator            
+     */
+    public function setTranslator(Translator $translator)
     {
         $this->translator = $translator;
     }
 
-    public function getTranslator ()
+    /**
+     *
+     * @return \Zend\I18n\Translator\Translator
+     */
+    public function getTranslator()
     {
         return $this->translator;
     }
 
-    public function prepare ()
+    /**
+     *
+     * @throws \Exception
+     * @return array
+     */
+    public function prepare()
     {
         $data = $this->data;
         
@@ -85,10 +151,20 @@ class PrepareData
                 if ($column->hasReplaceValues() === true) {
                     $replaceValues = $column->getReplaceValues();
                     
-                    if (isset($replaceValues[$row[$column->getUniqueId()]])) {
-                        $row[$column->getUniqueId()] = $replaceValues[$row[$column->getUniqueId()]];
-                    } elseif ($column->notReplacedGetEmpty() === true) {
-                        $row[$column->getUniqueId()] = '';
+                    if (is_array($row[$column->getUniqueId()])) {
+                        foreach ($row[$column->getUniqueId()] as &$value) {
+                            if (isset($replaceValues[$value])) {
+                                $value = $replaceValues[$value];
+                            } elseif ($column->notReplacedGetEmpty() === true) {
+                                $value = '';
+                            }
+                        }
+                    } else {
+                        if (isset($replaceValues[$row[$column->getUniqueId()]])) {
+                            $row[$column->getUniqueId()] = $replaceValues[$row[$column->getUniqueId()]];
+                        } elseif ($column->notReplacedGetEmpty() === true) {
+                            $row[$column->getUniqueId()] = '';
+                        }
                     }
                 }
                 
@@ -110,12 +186,12 @@ class PrepareData
                     }
                 }
                 
-                //TRIM
+                // TRIM
                 if (is_array($row[$column->getUniqueId()])) {
                     foreach ($row[$column->getUniqueId()] as &$value) {
                         $value = trim($value);
                     }
-                } else{
+                } else {
                     $row[$column->getUniqueId()] = trim($row[$column->getUniqueId()]);
                 }
             }
@@ -126,16 +202,6 @@ class PrepareData
             }
         }
         
-        $this->data = $data;
-        $this->isPrepared = true;
-    }
-    
-    public function getData ()
-    {
-        if ($this->isPrepared === false) {
-            $this->prepare();
-        }
-        
-        return $this->data;
+        return $data;
     }
 }

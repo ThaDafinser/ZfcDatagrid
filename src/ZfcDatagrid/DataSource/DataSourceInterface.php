@@ -19,6 +19,13 @@ interface DataSourceInterface
     public function __construct ($data);
 
     /**
+     * Get the data back from construct
+     * 
+     * @return mixed
+     */
+    public function getData();
+    
+    /**
      * Execute the query and set the paginator
      * - with sort statements
      * - with filters statements

@@ -17,19 +17,38 @@ class IconTest extends PHPUnit_Framework_TestCase
         
         $this->assertEquals(array(), $icon->getAttributes());
     }
+    
+    public function testIconClass(){
+        $icon = new Icon();
 
-    public function testIcon ()
+        $this->assertFalse($icon->hasIconClass());
+        
+        $icon->setIconClass('icon-add');
+        $this->assertEquals('icon-add', $icon->getIconClass());
+        $this->assertTrue($icon->hasIconClass());
+        
+        $this->assertEquals('<i title="" class="icon-add"></i>', $icon->toHtml());;
+    }
+    
+    public function testIconLink ()
     {
         $icon = new Icon();
-        $icon->setIconClass('icon-add');
+    
+        $this->assertFalse($icon->hasIconLink());
+    
+        $icon->setIconLink('/images/21/add.png');
+        $this->assertEquals('/images/21/add.png', $icon->getIconLink());
+        $this->assertTrue($icon->hasIconLink());
         
-        $this->assertEquals(array(
-            'class' => 'icon-add'
-        ), $icon->getAttributes());
+        $this->assertEquals('<img src="/images/21/add.png" />', $icon->toHtml());
+    }
+
+    public function testException ()
+    {
+        $icon = new Icon();
         
-        $icon->setIconLink('/images/icon/add.png');
+        $this->setExpectedException('InvalidArgumentException');
         
-        $html = '<i title="" class="icon-add"></i>';
-        $this->assertEquals($html, $icon->toHtml());
+        $icon->toHtml();
     }
 }

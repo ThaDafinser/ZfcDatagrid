@@ -1,125 +1,169 @@
 <?php
 namespace ZfcDatagrid\Datasource\PhpArray;
 
+use ZfcDatagrid\Filter as DatagridFilter;
+
 class Filter
 {
 
-    private $columnIndex;
-
-    private $valueToFilter;
-
-    public function __construct ($columnIndex, $valueToFilter)
-    {
-        $this->columnIndex = $columnIndex;
-        $this->valueToFilter = $valueToFilter;
-    }
-
-    public function isLike ($value)
-    {
-        if (stripos($value[$this->columnIndex], $this->valueToFilter[0]) !== false) {
-            return true;
-        }
-        
-        return false;
-    }
+    /**
+     *
+     * @var \ZfcDatagrid\Filter
+     */
+    private $filter;
 
     /**
      *
-     * @todo is currently LIKE "isLike()"
+     * @param string $uniqueId            
+     * @param array $valuesToFilter            
      */
-    public function isLikeLeft ($value)
+    public function __construct(\ZfcDatagrid\Filter $filter)
     {
-        if (stripos($value[$this->columnIndex], $this->valueToFilter[0]) !== false) {
-            return true;
+        $this->filter = $filter;
+    }
+
+    public function getFilter()
+    {
+        return $this->filter;
+    }
+
+    private function getRowValue($row)
+    {
+        $rowValue = $row[$this->getFilter()
+            ->getColumn()
+            ->getUniqueId()];
+        
+        if (! is_array($rowValue)) {
+            $rowValue = (string) $rowValue;
         }
         
-        return false;
+        return $rowValue;
     }
 
-    /**
-     *
-     * @todo is currently LIKE "isLike()"
-     */
-    public function isLikeRight ($value)
+    public function applyFilter($row)
     {
-        if (stripos($value[$this->columnIndex], $this->valueToFilter[0]) !== false) {
-            return true;
+        $return = false;
+        
+        $filters = $this->getFilter()->getValues();
+        foreach ($filters as $filter) {
+            $value = $this->getRowValue($row);
+            
+            switch ($this->getFilter()->getOperator()) {
+                
+                case DatagridFilter::LIKE:
+                    if (stripos($value, $filter) !== false) {
+                        $return = true;
+                    }
+                    break;
+                
+                case DatagridFilter::LIKE_LEFT:
+                    $length = strlen($filter);
+                    $start = 0 - $length;
+                    $searchedValue = substr($value, $start, $length);
+                    if (stripos($searchedValue, $filter) !== false) {
+                        $return = true;
+                    }
+                    break;
+                
+                case DatagridFilter::LIKE_RIGHT:
+                    $length = strlen($filter);
+                    $searchedValue = substr($value, 0, $length);
+                    if (stripos($searchedValue, $filter) !== false) {
+                        $return = true;
+                    }
+                    break;
+                
+                case DatagridFilter::NOT_LIKE:
+                    if (stripos($value, $filter) === false) {
+                        $return = true;
+                    } else {
+                        // For not LIKE only one valid has to be matched, that it gets false
+                        $return = false;
+                        break 2;
+                    }
+                    break;
+                
+                case DatagridFilter::NOT_LIKE_LEFT:
+                    $length = strlen($filter);
+                    $start = 0 - $length;
+                    $searchedValue = substr($value, $start, $length);
+                    if (stripos($searchedValue, $filter) === false) {
+                        $return = true;
+                    } else {
+                        // For not LIKE only one valid has to be matched, that it gets false
+                        $return = false;
+                        break 2;
+                    }
+                    break;
+                
+                case DatagridFilter::NOT_LIKE_RIGHT:
+                    $length = strlen($filter);
+                    $searchedValue = substr($value, 0, $length);
+                    if (stripos($searchedValue, $filter) === false) {
+                        $return = true;
+                    } else {
+                        // For not LIKE only one valid has to be matched, that it gets false
+                        $return = false;
+                        break 2;
+                    }
+                    break;
+                
+                case DatagridFilter::EQUAL:
+                case DatagridFilter::IN:
+                    if ($value == $filter) {
+                        $return = true;
+                    }
+                    break;
+                
+                case DatagridFilter::NOT_EQUAL:
+                case DatagridFilter::NOT_IN:
+                    if ($value != $filter) {
+                        $return = true;
+                    } else {
+                        $return = false;
+                        break 2;
+                    }
+                    break;
+                
+                case DatagridFilter::GREATER_EQUAL:
+                    if ($value >= $filter) {
+                        $return = true;
+                    }
+                    break;
+                
+                case DatagridFilter::GREATER:
+                    if ($value > $filter) {
+                        $return = true;
+                    }
+                    break;
+                
+                case DatagridFilter::LESS_EQUAL:
+                    if ($value <= $filter) {
+                        $return = true;
+                    }
+                    break;
+                
+                case DatagridFilter::LESS:
+                    if ($value < $filter) {
+                        $return = true;
+                    }
+                    break;
+                
+                case DatagridFilter::BETWEEN:
+                    $min = min($filters);
+                    $max = max($filters);
+                    if ($value >= $min && $value <= $max) {
+                        $return = true;
+                        break 2;
+                    }
+                    break;
+                
+                default:
+                    throw new \Exception('This filter mode is not supported for PhpArray source: "' . $this->getFilter()->getOperator() . '"');
+                    break;
+            }
         }
         
-        return false;
-    }
-
-    public function isNotLike ($value)
-    {
-        if (stripos($value[$this->columnIndex], $this->valueToFilter[0]) === false) {
-            return true;
-        }
-        
-        return false;
-    }
-
-    /**
-     *
-     * @todo is currently LIKE "isNotLike()"
-     */
-    public function isNotLikeLeft ($value)
-    {
-        if (stripos($value[$this->columnIndex], $this->valueToFilter[0]) === false) {
-            return true;
-        }
-        
-        return false;
-    }
-
-    /**
-     *
-     * @todo is currently LIKE "isNotLike()"
-     */
-    public function isNotLikeRight ($value)
-    {
-        if (stripos($value[$this->columnIndex], $this->valueToFilter[0]) === false) {
-            return true;
-        }
-        
-        return false;
-    }
-
-    public function isEqual ($value)
-    {
-        return $value[$this->columnIndex] == $this->valueToFilter[0];
-    }
-
-    public function isNotEqual ($value)
-    {
-        return $value[$this->columnIndex] != $this->valueToFilter[0];
-    }
-
-    public function isGreaterEqual ($value)
-    {
-        return $value[$this->columnIndex] >= $this->valueToFilter[0];
-    }
-
-    public function isGreater ($value)
-    {
-        return $value[$this->columnIndex] > $this->valueToFilter[0];
-    }
-
-    public function isLessEqual ($value)
-    {
-        return $value[$this->columnIndex] <= $this->valueToFilter[0];
-    }
-
-    public function isLess ($value)
-    {
-        return $value[$this->columnIndex] < $this->valueToFilter[0];
-    }
-
-    public function isBetween ($value)
-    {
-        if ($value[$this->columnIndex] >= $this->valueToFilter[0] && $value[$this->columnIndex] <= $this->valueToFilter[1]) {
-            return true;
-        }
-        
-        return false;
+        return $return;
     }
 }

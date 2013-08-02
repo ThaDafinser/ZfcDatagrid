@@ -42,6 +42,14 @@ class ZendSelect extends AbstractDataSource
             throw new \Exception("Unknown data input..." . get_class($data));
         }
     }
+    
+
+    /**
+     * @return Sql\Select
+     */
+    public function getData(){
+        return $this->select;
+    }
 
     public function setAdapter ($adapterOrSqlObject)
     {
@@ -112,7 +120,7 @@ class ZendSelect extends AbstractDataSource
         foreach ($this->filters as $filter) {
             /* @var $filter \ZfcDatagrid\Filter */
             if ($filter->isColumnFilter() === true) {
-                $values = $filter->getValue();
+                $values = $filter->getValues();
                 
                 $column = $filter->getColumn();
                 $colString = $column->getUniqueId();

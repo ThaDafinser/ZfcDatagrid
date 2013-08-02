@@ -7,7 +7,7 @@
 	processIsolation="false" stopOnFailure="false" syntaxCheck="false">
 	<testsuites>
 		<testsuite name="ZfcDatagrid component test suite">
-			<directory>./tests/</directory>
+			<directory suffix="Test.php">./tests/</directory>
 		</testsuite>
 	</testsuites>
 
@@ -18,6 +18,7 @@
 				<directory>./build</directory>
 				<directory>./config</directory>
 				<directory>./docs</directory>
+				<directory>./src/ZfcDatagrid/Examples</directory>
 				<directory>./tests</directory>
 				<directory>./view</directory>
 			</exclude>
