@@ -270,7 +270,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
             ->method('getRequest')
             ->will($this->returnValue($request));
         $this->datagrid->setMvcEvent($mvcEvent);
-        $this->assertEquals('tcpdf', $this->datagrid->getRendererName());
+        $this->assertEquals('jqGrid', $this->datagrid->getRendererName());
     }
 
     public function testGetRenderer()
