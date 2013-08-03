@@ -21,7 +21,6 @@ class ZendSelect extends AbstractDataSource
      */
     private $sqlObject;
 
-
     /**
      * The data result
      *
@@ -34,38 +33,48 @@ class ZendSelect extends AbstractDataSource
      *
      * @param mixed $data            
      */
-    public function __construct ($data)
+    public function __construct($data)
     {
         if ($data instanceof Sql\Select) {
             $this->select = $data;
         } else {
-            throw new \Exception("Unknown data input..." . get_class($data));
+            throw new \InvalidArgumentException('A instance of Zend\Db\SqlSelect is needed to use this dataSource!');
         }
     }
-    
 
     /**
+     *
      * @return Sql\Select
      */
-    public function getData(){
+    public function getData()
+    {
         return $this->select;
     }
 
-    public function setAdapter ($adapterOrSqlObject)
+    public function setAdapter($adapterOrSqlObject)
     {
         if ($adapterOrSqlObject instanceof \Zend\Db\Sql\Sql) {
             $this->sqlObject = $adapterOrSqlObject;
         } elseif ($adapterOrSqlObject instanceof \Zend\Db\Adapter\Adapter) {
             $this->sqlObject = new \Zend\Db\Sql\Sql($adapterOrSqlObject);
         } else {
-            throw new \Exception("Unknown $adapterOrSqlObject..." . get_class($adapterOrSqlObject));
+            throw new \InvalidArgumentException('Object of "Zend\Db\Sql\Sql" or "Zend\Db\Adapter\Adapter" needed.');
         }
     }
 
-    public function execute ()
+    /**
+     *
+     * @return \Zend\Db\Sql\Sql
+     */
+    public function getAdapter()
+    {
+        return $this->sqlObject;
+    }
+
+    public function execute()
     {
         if ($this->sqlObject === null || ! $this->sqlObject instanceof \Zend\Db\Sql\Sql) {
-            throw new \Exception('setAdapter() must be called first!');
+            throw new \Exception('Object "Zend\Db\Sql\Sql" is missing, please call setAdapter() first!');
         }
         
         $select = $this->select;
@@ -101,15 +110,15 @@ class ZendSelect extends AbstractDataSource
         }
         
         $adapter = $this->sqlObject->getAdapter();
-        $qi = function  ($name) use( $adapter)
+        $qi = function ($name) use($adapter)
         {
             return $adapter->getPlatform()->quoteIdentifier($name);
         };
-        $qv = function  ($value) use( $adapter)
+        $qv = function ($value) use($adapter)
         {
             return $adapter->getPlatform()->quoteValue($value);
         };
-        $fp = function  ($name) use( $adapter)
+        $fp = function ($name) use($adapter)
         {
             return $adapter->getDriver()->formatParameterName($name);
         };
@@ -196,14 +205,5 @@ class ZendSelect extends AbstractDataSource
          * Step 4) Pagination
          */
         $this->paginatorAdapter = new PaginatorAdapter($select, $this->sqlObject);
-    }
-
-    /**
-     *
-     * @return PaginatorAdapter
-     */
-    public function getPaginatorAdapter ()
-    {
-        return $this->paginatorAdapter;
     }
 }

@@ -167,7 +167,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     {
         if ($this->getCache() === null) {
             $options = $this->getOptions();
-            $this->cache = Cache\StorageFactory::factory($options['cache']);
+            $this->setCache(Cache\StorageFactory::factory($options['cache']));
         }
         
         $this->isInit = true;
@@ -231,7 +231,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     /**
      * Set the session
      *
-     * @param SessionContainer $session            
+     * @param \Zend\Session\Container $session            
      */
     public function setSession (SessionContainer $session)
     {
