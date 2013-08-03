@@ -453,6 +453,15 @@ class Datagrid implements ServiceLocatorAwareInterface
 
     /**
      *
+     * @param array $parameters            
+     */
+    public function setParameters(array $parameters)
+    {
+        $this->parameters = $parameters;
+    }
+
+    /**
+     *
      * @return array
      */
     public function getParameters()
@@ -462,7 +471,7 @@ class Datagrid implements ServiceLocatorAwareInterface
 
     public function hasParameters()
     {
-        if (count($this->getParamaeters()) > 0) {
+        if (count($this->getParameters()) > 0) {
             return true;
         }
         
@@ -508,14 +517,27 @@ class Datagrid implements ServiceLocatorAwareInterface
         $this->columns[$col->getUniqueId()] = $col;
     }
 
+    /**
+     *
+     * @return array
+     */
     public function getColumns()
     {
         return $this->columns;
     }
 
+    /**
+     *
+     * @param string $id            
+     * @return Column\AbstractColumn null
+     */
     public function getColumnByUniqueId($id)
     {
-        return $this->columns[$id];
+        if (isset($this->columns[$id])) {
+            return $this->columns[$id];
+        }
+        
+        return null;
     }
 
     public function setUserFilterDisabled($mode = true)
@@ -558,15 +580,6 @@ class Datagrid implements ServiceLocatorAwareInterface
         }
         
         return false;
-    }
-
-    /**
-     *
-     * @return array
-     */
-    private function getPreparedData()
-    {
-        return $this->preparedData;
     }
 
     /**
@@ -635,7 +648,6 @@ class Datagrid implements ServiceLocatorAwareInterface
             $rendererName = $this->forceRenderer;
         } else {
             // DEFAULT
-            
             if ($this->getRequest() instanceof ConsoleRequest) {
                 $rendererName = $options['settings']['default']['renderer']['console'];
             } else {
@@ -643,6 +655,7 @@ class Datagrid implements ServiceLocatorAwareInterface
             }
         }
         
+        //From request
         if ($this->getRequest() instanceof HttpRequest && $this->getRequest()->getQuery($parameterName) != '') {
             $rendererName = $this->getRequest()->getQuery($parameterName);
         }
@@ -784,6 +797,15 @@ class Datagrid implements ServiceLocatorAwareInterface
         }
         
         return $this->paginator;
+    }
+
+    /**
+     *
+     * @return array
+     */
+    private function getPreparedData()
+    {
+        return $this->preparedData;
     }
 
     /**

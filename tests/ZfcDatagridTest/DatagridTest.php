@@ -159,4 +159,123 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->datagrid->setTitle('My title');
         $this->assertEquals('My title', $this->datagrid->getTitle());
     }
+
+    public function testParameters()
+    {
+        $this->assertFalse($this->datagrid->hasParameters());
+        $this->assertEquals(array(), $this->datagrid->getParameters());
+        
+        $this->datagrid->addParameter('myPara', 'test');
+        
+        $this->assertEquals(array(
+            'myPara' => 'test'
+        ), $this->datagrid->getParameters());
+        
+        $this->datagrid->setParameters(array(
+            'other' => 'blubb'
+        ));
+        $this->assertEquals(array(
+            'other' => 'blubb'
+        ), $this->datagrid->getParameters());
+        $this->assertTrue($this->datagrid->hasParameters());
+    }
+
+    public function testUrl()
+    {
+        $this->assertEquals(null, $this->datagrid->getUrl());
+        
+        $this->datagrid->setUrl('/module/controller/action');
+        $this->assertEquals('/module/controller/action', $this->datagrid->getUrl());
+    }
+
+    public function testExportRenderers()
+    {
+        $this->assertEquals(array(), $this->datagrid->getExportRenderers());
+        
+        $this->datagrid->setExportRenderers(array(
+            'tcpdf' => 'PDF'
+        ));
+        
+        $this->assertEquals(array(
+            'tcpdf' => 'PDF'
+        ), $this->datagrid->getExportRenderers());
+    }
+
+    public function testColumns()
+    {
+        $this->assertEquals(array(), $this->datagrid->getColumns());
+        
+        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col->expects($this->any())
+            ->method('getUniqueId')
+            ->will($this->returnValue('myUniqueId'));
+        
+        $this->datagrid->addColumn($col);
+        
+        $this->assertCount(1, $this->datagrid->getColumns());
+        // @todo
+        // $this->assertEquals($col, $this->datagrid->getColumnByUniqueId('myUniqueId'));
+        
+        $this->assertEquals(null, $this->datagrid->getColumnByUniqueId('notAvailable'));
+    }
+
+    public function testUserFilter()
+    {
+        $this->assertTrue($this->datagrid->isUserFilterEnabled());
+        
+        $this->datagrid->setUserFilterDisabled(true);
+        $this->assertFalse($this->datagrid->isUserFilterEnabled());
+    }
+
+    public function testRowClickAction()
+    {
+        $this->assertFalse($this->datagrid->hasRowClickAction());
+        
+        $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
+        $this->datagrid->setRowClickAction($action);
+        $this->assertEquals($action, $this->datagrid->getRowClickAction());
+        $this->assertTrue($this->datagrid->hasRowClickAction());
+    }
+
+    public function testGetRendererName()
+    {
+        // Default on HTTP
+        $this->assertEquals('bootstrapTable', $this->datagrid->getRendererName());
+        
+        // Default on CLI
+        $_SERVER['argv'] = array(
+            'foo.php',
+            'foo' => 'baz',
+            'bar'
+        );
+        $_ENV["FOO_VAR"] = "bar";
+        
+        $request = new \Zend\Console\Request();
+        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent');
+        $mvcEvent->expects($this->any())
+            ->method('getRequest')
+            ->will($this->returnValue($request));
+        $this->datagrid->setMvcEvent($mvcEvent);
+        $this->assertEquals('zendTable', $this->datagrid->getRendererName());
+        
+        // change default
+        $this->datagrid->setRenderer('myRenderer');
+        $this->assertEquals('myRenderer', $this->datagrid->getRendererName());
+        
+        // by HTTP request
+        $_GET['rendererType'] = 'jqGrid';
+        $request = new \Zend\Http\PhpEnvironment\Request();
+        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent');
+        $mvcEvent->expects($this->any())
+            ->method('getRequest')
+            ->will($this->returnValue($request));
+        $this->datagrid->setMvcEvent($mvcEvent);
+        $this->assertEquals('tcpdf', $this->datagrid->getRendererName());
+    }
+
+    public function testGetRenderer()
+    {
+        
+        // $this->datagrid->getRenderer();
+    }
 }
