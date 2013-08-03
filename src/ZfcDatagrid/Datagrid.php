@@ -19,7 +19,6 @@ use Zend\Db\Sql\Select as ZendSelect;
 use Zend\View\Model\JsonModel;
 use Zend\Stdlib\ResponseInterface;
 
-
 class Datagrid implements ServiceLocatorAwareInterface
 {
 
@@ -163,7 +162,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     /**
      * Init method is called automatically with the service creation
      */
-    public function init ()
+    public function init()
     {
         if ($this->getCache() === null) {
             $options = $this->getOptions();
@@ -177,7 +176,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return boolean
      */
-    public function isInit ()
+    public function isInit()
     {
         return (bool) $this->isInit;
     }
@@ -187,7 +186,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @param array $config            
      */
-    public function setOptions (array $config)
+    public function setOptions(array $config)
     {
         $this->options = $config;
     }
@@ -197,7 +196,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return array
      */
-    public function getOptions ()
+    public function getOptions()
     {
         return $this->options;
     }
@@ -207,7 +206,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @param string $id            
      */
-    public function setId ($id = null)
+    public function setId($id = null)
     {
         if ($id !== null) {
             $this->id = (string) $id;
@@ -219,7 +218,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return string
      */
-    public function getId ()
+    public function getId()
     {
         if ($this->id === null) {
             $this->id = 'defaultGrid';
@@ -233,7 +232,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @param \Zend\Session\Container $session            
      */
-    public function setSession (SessionContainer $session)
+    public function setSession(SessionContainer $session)
     {
         $this->session = $session;
         
@@ -247,7 +246,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return SessionContainer
      */
-    public function getSession ()
+    public function getSession()
     {
         if (null === $this->session) {
             // Using fully qualified name, to ensure polyfill class alias is used
@@ -257,7 +256,7 @@ class Datagrid implements ServiceLocatorAwareInterface
         return $this->session;
     }
 
-    public function setCache (Cache\Storage\StorageInterface $cache)
+    public function setCache(Cache\Storage\StorageInterface $cache)
     {
         $this->cache = $cache;
     }
@@ -266,17 +265,17 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return Cache\Storage\StorageInterface
      */
-    public function getCache ()
+    public function getCache()
     {
         return $this->cache;
     }
 
-    public function setCacheId ($id)
+    public function setCacheId($id)
     {
         $this->cacheId = (string) $id;
     }
 
-    public function getCacheId ()
+    public function getCacheId()
     {
         if ($this->cacheId === null) {
             $this->cacheId = $this->getSession()
@@ -292,7 +291,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @param ServiceLocatorInterface $serviceLocator            
      */
-    public function setServiceLocator (ServiceLocatorInterface $serviceLocator)
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
     }
@@ -302,12 +301,12 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return ServiceLocatorInterface
      */
-    public function getServiceLocator ()
+    public function getServiceLocator()
     {
         return $this->serviceLocator;
     }
 
-    public function setMvcEvent (MvcEvent $mvcEvent)
+    public function setMvcEvent(MvcEvent $mvcEvent)
     {
         $this->mvcEvent = $mvcEvent;
         $this->request = $mvcEvent->getRequest();
@@ -317,7 +316,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return MvcEvent
      */
-    public function getMvcEvent ()
+    public function getMvcEvent()
     {
         return $this->mvcEvent;
     }
@@ -326,7 +325,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return HttpRequest
      */
-    public function getRequest ()
+    public function getRequest()
     {
         return $this->request;
     }
@@ -336,7 +335,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @param Translator $translator            
      */
-    public function setTranslator (Translator $translator = null)
+    public function setTranslator(Translator $translator = null)
     {
         $this->translator = $translator;
     }
@@ -345,7 +344,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return Translator
      */
-    public function getTranslator ()
+    public function getTranslator()
     {
         return $this->translator;
     }
@@ -354,7 +353,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return boolean
      */
-    public function hasTranslator ()
+    public function hasTranslator()
     {
         if ($this->translator !== null) {
             return true;
@@ -369,23 +368,23 @@ class Datagrid implements ServiceLocatorAwareInterface
      * @param mixed $data            
      * @throws \Exception
      */
-    public function setDataSource ($data)
+    public function setDataSource($data)
     {
         if ($data instanceof DataSource\DataSourceInterface) {
             $this->dataSource = $data;
-        } elseif ($data instanceof QueryBuilder) {
-            $this->dataSource = new DataSource\Doctrine2($data);
         } elseif (is_array($data)) {
             $this->dataSource = new DataSource\PhpArray($data);
+        } elseif ($data instanceof QueryBuilder) {
+            $this->dataSource = new DataSource\Doctrine2($data);
         } elseif ($data instanceof ZendSelect) {
             $args = func_get_args();
             if (count($args) === 1 || (! $args[1] instanceof \Zend\Db\Adapter\Adapter && ! $args[1] instanceof \Zend\Db\Sql\Sql)) {
-                throw new \Exception('The $adapterOrSqlObject is missing');
+                throw new \InvalidArgumentException('For "Zend\Db\Sql\Select" also a "Zend\Db\Adapter\Sql" or "Zend\Db\Sql\Sql" is needed.');
             }
             $this->dataSource = new DataSource\ZendSelect($data);
             $this->dataSource->setAdapter($args[1]);
         } else {
-            throw new \Exception('$data must implement the interface ZfcDatagrid\DataSource\DataSourceInterface');
+            throw new \InvalidArgumentException('$data must implement the interface ZfcDatagrid\DataSource\DataSourceInterface');
         }
     }
 
@@ -393,12 +392,12 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return \ZfcDatagrid\DataSource\DataSourceInterface
      */
-    public function getDataSource ()
+    public function getDataSource()
     {
         return $this->dataSource;
     }
 
-    public function hasDataSource ()
+    public function hasDataSource()
     {
         if ($this->dataSource !== null) {
             return true;
@@ -412,7 +411,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @param integer $count            
      */
-    public function setDefaultItemsPerPage ($count = 25)
+    public function setDefaultItemsPerPage($count = 25)
     {
         $this->defaulItemsPerPage = (int) $count;
     }
@@ -421,7 +420,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return integer
      */
-    public function getDefaultItemsPerPage ()
+    public function getDefaultItemsPerPage()
     {
         return (int) $this->defaulItemsPerPage;
     }
@@ -431,12 +430,12 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @param string $title            
      */
-    public function setTitle ($title)
+    public function setTitle($title)
     {
         $this->title = (string) $title;
     }
 
-    public function getTitle ()
+    public function getTitle()
     {
         return $this->title;
     }
@@ -447,7 +446,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      * @param string $name            
      * @param mixed $value            
      */
-    public function addParameter ($name, $value)
+    public function addParameter($name, $value)
     {
         $this->parameters[$name] = $value;
     }
@@ -456,12 +455,12 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return array
      */
-    public function getParameters ()
+    public function getParameters()
     {
         return $this->parameters;
     }
 
-    public function hasParameters ()
+    public function hasParameters()
     {
         if (count($this->getParamaeters()) > 0) {
             return true;
@@ -470,7 +469,7 @@ class Datagrid implements ServiceLocatorAwareInterface
         return false;
     }
 
-    public function setUrl ($url)
+    public function setUrl($url)
     {
         $this->url = $url;
     }
@@ -479,17 +478,17 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return string
      */
-    public function getUrl ()
+    public function getUrl()
     {
         return $this->url;
     }
 
-    public function setExportRenderers (array $renderers = array())
+    public function setExportRenderers(array $renderers = array())
     {
         $this->exportRenderers = $renderers;
     }
 
-    public function getExportRenderers ()
+    public function getExportRenderers()
     {
         if ($this->exportRenderers === null) {
             $options = $this->getOptions();
@@ -504,22 +503,22 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @param Column\AbstractColumn $col            
      */
-    public function addColumn (Column\AbstractColumn $col)
+    public function addColumn(Column\AbstractColumn $col)
     {
         $this->columns[$col->getUniqueId()] = $col;
     }
 
-    public function getColumns ()
+    public function getColumns()
     {
         return $this->columns;
     }
 
-    public function getColumnByUniqueId ($id)
+    public function getColumnByUniqueId($id)
     {
         return $this->columns[$id];
     }
 
-    public function setUserFilterDisabled ($mode = true)
+    public function setUserFilterDisabled($mode = true)
     {
         $this->isUserFilterEnabled = (bool) ! $mode;
     }
@@ -528,7 +527,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return boolean
      */
-    public function isUserFilterEnabled ()
+    public function isUserFilterEnabled()
     {
         return (bool) $this->isUserFilterEnabled;
     }
@@ -538,7 +537,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @param Column\Action\AbstractAction $action            
      */
-    public function setRowClickAction (Column\Action\AbstractAction $action)
+    public function setRowClickAction(Column\Action\AbstractAction $action)
     {
         $this->rowClickAction = $action;
     }
@@ -547,12 +546,12 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return null Column\Action\AbstractAction
      */
-    public function getRowClickAction ()
+    public function getRowClickAction()
     {
         return $this->rowClickAction;
     }
 
-    public function hasRowClickAction ()
+    public function hasRowClickAction()
     {
         if (is_object($this->rowClickAction)) {
             return true;
@@ -565,7 +564,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return array
      */
-    private function getPreparedData ()
+    private function getPreparedData()
     {
         return $this->preparedData;
     }
@@ -577,7 +576,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @param string $name            
      */
-    public function setRenderer ($name = null)
+    public function setRenderer($name = null)
     {
         $this->forceRenderer = $name;
     }
@@ -587,7 +586,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return \ZfcDatagrid\Renderer\AbstractRenderer
      */
-    public function getRenderer ()
+    public function getRenderer()
     {
         if ($this->renderer === null) {
             
@@ -626,7 +625,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return string
      */
-    public function getRendererName ()
+    public function getRendererName()
     {
         $options = $this->getOptions();
         $parameterName = $options['generalParameterNames']['rendererType'];
@@ -658,7 +657,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      * - grid
      * - ...
      */
-    public function execute ()
+    public function execute()
     {
         if ($this->isInit() !== true) {
             throw new \Exception('The init() method has to be called, before you can call execute()!');
@@ -768,7 +767,7 @@ class Datagrid implements ServiceLocatorAwareInterface
         $this->response = $renderer->execute();
     }
 
-    public function isExecuted ()
+    public function isExecuted()
     {
         return (bool) $this->isExecuted;
     }
@@ -778,7 +777,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      * @throws \Exception
      * @return Paginator
      */
-    public function getPaginator ()
+    public function getPaginator()
     {
         if ($this->paginator === null) {
             throw new \Exception('Paginator is only available, after the grid has been executed!');
@@ -792,12 +791,12 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @param unknown $name            
      */
-    public function setToolbarTemplate ($name)
+    public function setToolbarTemplate($name)
     {
         $this->toolbarTemplate = (string) $name;
     }
 
-    public function getToolbarTemplate ()
+    public function getToolbarTemplate()
     {
         return $this->toolbarTemplate;
     }
@@ -807,7 +806,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @param ViewModel $viewModel            
      */
-    public function setViewModel (ViewModel $viewModel)
+    public function setViewModel(ViewModel $viewModel)
     {
         if ($this->viewModel !== null) {
             throw new \Exception('A viewModel is already set (did you already called execute()?)');
@@ -820,7 +819,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return ViewModel
      */
-    public function getViewModel ()
+    public function getViewModel()
     {
         if ($this->viewModel === null) {
             $this->viewModel = new ViewModel();
@@ -833,7 +832,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @return Ambigous <\Zend\Stdlib\ResponseInterface, \Zend\Http\Response\Stream, \Zend\View\Model\ViewModel>
      */
-    public function getResponse ()
+    public function getResponse()
     {
         if (! $this->isExecuted()) {
             $this->execute();
@@ -841,15 +840,16 @@ class Datagrid implements ServiceLocatorAwareInterface
         
         return $this->response;
     }
-    
+
     /**
      * Is this a HTML "init" response?
      * YES: loading the HTML for the grid
      * NO: AJAX loading of data or it's an export
-     * 
+     *
      * @return boolean
      */
-    public function isIHtmlInitReponse(){
+    public function isIHtmlInitReponse()
+    {
         if (! $this->getResponse() instanceof JsonModel && ! $this->getResponse() instanceof ResponseInterface) {
             return true;
         }
