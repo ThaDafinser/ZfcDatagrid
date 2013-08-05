@@ -1,5 +1,5 @@
 <?php
-namespace ZfcDatagrid\Datasource;
+namespace ZfcDatagrid\DataSource;
 
 use Zend\Paginator\Adapter\AdapterInterface;
 use Doctrine\ORM\QueryBuilder;

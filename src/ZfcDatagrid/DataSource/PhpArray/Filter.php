@@ -1,5 +1,5 @@
 <?php
-namespace ZfcDatagrid\Datasource\PhpArray;
+namespace ZfcDatagrid\DataSource\PhpArray;
 
 use ZfcDatagrid\Filter as DatagridFilter;
 

@@ -2,9 +2,9 @@
 namespace ZfcDatagrid\DataSource;
 
 use ZfcDatagrid\Filter;
-use ZfcDatagrid\Datasource\Doctrine2Paginator as PaginatorAdapter;
+use ZfcDatagrid\DataSource\Doctrine2Paginator as PaginatorAdapter;
 use ZfcDatagrid\Column;
-use Doctrine\ORM;
+use Doctrine\ORM;  
 use Doctrine\ORM\Query\Expr;
 
 class Doctrine2 extends AbstractDataSource
