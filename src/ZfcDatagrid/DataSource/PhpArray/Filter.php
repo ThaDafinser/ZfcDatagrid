@@ -22,6 +22,10 @@ class Filter
         $this->filter = $filter;
     }
 
+    /**
+     * 
+     * @return \ZfcDatagrid\Filter
+     */
     public function getFilter()
     {
         return $this->filter;

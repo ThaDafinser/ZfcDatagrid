@@ -3,8 +3,10 @@ namespace ZfcDatagridTest\DataSource;
 
 use PHPUnit_Framework_TestCase;
 use ZfcDatagrid\DataSource\ZendSelect;
+use ZfcDatagrid\Filter;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Select;
 
 /**
  * @group DataSource
@@ -55,7 +57,8 @@ class ZendSelectTest extends DataSourceTestCase
         $this->adapter = new Adapter($this->mockDriver, $this->mockPlatform);
         
         $this->sql = new Sql($this->adapter, 'foo');
-        $select = $this->getMock('Zend\Db\Sql\Select');
+        
+        $select = new Select();
         
         $this->source = new ZendSelect($select);
         $this->source->setAdapter($this->sql);
@@ -63,6 +66,8 @@ class ZendSelectTest extends DataSourceTestCase
             $this->colVolumne,
             $this->colEdition
         ));
+        
+        parent::setUp();
     }
 
     public function testConstruct()
@@ -92,27 +97,43 @@ class ZendSelectTest extends DataSourceTestCase
 
     public function testAdapter()
     {
-        $select = $this->getMock('Zend\Db\Sql\Select');
-        
-        $source = new ZendSelect($select);
-        $source->setAdapter($this->sql);
+        $source = clone $this->source;
         
         $this->assertInstanceOf('Zend\Db\Sql\Sql', $source->getAdapter());
         $this->assertEquals($this->sql, $source->getAdapter());
         
-        $source = new ZendSelect($select);
         $source->setAdapter($this->adapter);
-        
         $this->assertInstanceOf('Zend\Db\Sql\Sql', $source->getAdapter());
         
         $this->setExpectedException('InvalidArgumentException');
-        
-        $source = new ZendSelect($select);
         $source->setAdapter('something');
     }
 
     public function testExecute()
     {
+        $source = clone $this->source;
         
+        $source->addSortCondition($this->colVolumne);
+        $source->addSortCondition($this->colEdition, 'DESC');
+        $source->execute();
+        
+        $this->assertInstanceOf('Zend\Paginator\Adapter\DbSelect', $source->getPaginatorAdapter());
+    }
+
+    public function testFilter()
+    {
+        $source = clone $this->source;
+        
+        /*
+         * LIKE
+         */
+        $filter = new Filter();
+        $filter->setFromColumn($this->colVolumne, '~7');
+        
+        $source->addFilter($filter);
+        $source->execute();
+        
+//         $this->assertEquals(2, $source->getPaginatorAdapter()
+//             ->count());
     }
 }

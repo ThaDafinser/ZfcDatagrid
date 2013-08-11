@@ -1,7 +1,6 @@
 <?php
 namespace ZfcDatagrid\DataSource;
 
-use ZfcDatagrid\Filter;
 use Zend\Paginator\Adapter\ArrayAdapter as PaginatorAdapter;
 
 class PhpArray extends AbstractDataSource

@@ -99,11 +99,11 @@ class ZendSelect extends AbstractDataSource
         /**
          * Step 2) Apply sorting
          */
-        if (count($this->sortConditions) > 0) {
+        if (count($this->getSortConditions()) > 0) {
             // Minimum one sort condition given -> so reset the default orderBy
             $select->reset(Sql\Select::ORDER);
             
-            foreach ($this->sortConditions as $sortCondition) {
+            foreach ($this->getSortConditions() as $sortCondition) {
                 $column = $sortCondition['column'];
                 $select->order($column->getUniqueId() . ' ' . $sortCondition['sortDirection']);
             }
@@ -126,77 +126,81 @@ class ZendSelect extends AbstractDataSource
         /**
          * Step 3) Apply filters
          */
-        foreach ($this->filters as $filter) {
+        foreach ($this->getFilters() as $filter) {
             /* @var $filter \ZfcDatagrid\Filter */
             if ($filter->isColumnFilter() === true) {
-                $values = $filter->getValues();
                 
                 $column = $filter->getColumn();
                 $colString = $column->getUniqueId();
                 
-                switch ($filter->getOperator()) {
-                    
-                    case Filter::LIKE:
-                        $select->where->like($colString, '%' . $values[0] . '%');
-                        break;
-                    
-                    case Filter::LIKE_LEFT:
-                        $select->where->like($colString, '%' . $values[0]);
-                        break;
-                    
-                    case Filter::LIKE_RIGHT:
-                        $select->where->like($colString, $values[0] . '%');
-                        break;
-                    
-                    case Filter::NOT_LIKE:
-                        $select->where->literal($qi($colString) . ' NOT LIKE ?', array(
-                            '%' . $values[0] . '%'
-                        ));
-                        break;
-                    
-                    case Filter::NOT_LIKE_LEFT:
-                        $select->where->literal($qi($colString) . 'NOT LIKE ?', array(
-                            '%' . $values[0]
-                        ));
-                        break;
-                    
-                    case Filter::NOT_LIKE_RIGHT:
-                        $select->where->literal($qi($colString) . 'NOT LIKE ?', array(
-                            $values[0] . '%'
-                        ));
-                        break;
-                    
-                    case Filter::EQUAL:
-                        $select->where->equalTo($colString, $values[0]);
-                        break;
-                    
-                    case Filter::NOT_EQUAL:
-                        $select->where->notEqualTo($colString, $values[0]);
-                        break;
-                    
-                    case Filter::GREATER_EQUAL:
-                        $select->where->greaterThanOrEqualTo($colString, $values[0]);
-                        break;
-                    
-                    case Filter::GREATER:
-                        $select->where->greaterThan($colString, $values[0]);
-                        break;
-                    
-                    case Filter::LESS_EQUAL:
-                        $select->where->lessThanOrEqualTo($colString, $values[0]);
-                        break;
-                    
-                    case Filter::LESS:
-                        $select->where->lessThan($colString, $values[0]);
-                        break;
-                    
-                    case Filter::BETWEEN:
-                        $select->where->between($colString, $values[0], $values[1]);
-                        break;
-                    
-                    default:
-                        throw new \Exception('This operator is currently not supported: ' . $filter->getOperator());
-                        break;
+                $values = $filter->getValues();
+                foreach ($values as $value) {
+                    switch ($filter->getOperator()) {
+                        
+                        case Filter::LIKE:
+                            $select->where->like($colString, '%' . $value . '%');
+                            break;
+                        
+                        case Filter::LIKE_LEFT:
+                            $select->where->like($colString, '%' . $value);
+                            break;
+                        
+                        case Filter::LIKE_RIGHT:
+                            $select->where->like($colString, $value . '%');
+                            break;
+                        
+                        case Filter::NOT_LIKE:
+                            $select->where->literal($qi($colString) . ' NOT LIKE ?', array(
+                                '%' . $value . '%'
+                            ));
+                            break;
+                        
+                        case Filter::NOT_LIKE_LEFT:
+                            $select->where->literal($qi($colString) . 'NOT LIKE ?', array(
+                                '%' . $value
+                            ));
+                            break;
+                        
+                        case Filter::NOT_LIKE_RIGHT:
+                            $select->where->literal($qi($colString) . 'NOT LIKE ?', array(
+                                $value . '%'
+                            ));
+                            break;
+                        
+                        case Filter::EQUAL:
+                            $select->where->equalTo($colString, $value);
+                            break;
+                        
+                        case Filter::NOT_EQUAL:
+                            $select->where->notEqualTo($colString, $value);
+                            break;
+                        
+                        case Filter::GREATER_EQUAL:
+                            $select->where->greaterThanOrEqualTo($colString, $value);
+                            break;
+                        
+                        case Filter::GREATER:
+                            $select->where->greaterThan($colString, $value);
+                            break;
+                        
+                        case Filter::LESS_EQUAL:
+                            $select->where->lessThanOrEqualTo($colString, $value);
+                            break;
+                        
+                        case Filter::LESS:
+                            $select->where->lessThan($colString, $value);
+                            break;
+                        
+                        case Filter::BETWEEN:
+                            $min = min($values);
+                            $max = max($values);
+                            $select->where->between($colString, $min, $max);
+                            break;
+                        
+                        default:
+                            throw new \Exception('This operator is currently not supported: ' . $filter->getOperator());
+                            break;
+                    }
                 }
             }
         }
@@ -204,6 +208,6 @@ class ZendSelect extends AbstractDataSource
         /**
          * Step 4) Pagination
          */
-        $this->paginatorAdapter = new PaginatorAdapter($select, $this->sqlObject);
+        $this->setPaginatorAdapter(new PaginatorAdapter($select, $this->sqlObject));
     }
 }
