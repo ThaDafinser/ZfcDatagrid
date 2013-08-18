@@ -50,24 +50,6 @@ class PhpArray extends AbstractDataSource
             $data = $this->sortArrayMultiple($data, $this->getSortConditions());
         }
         
-        // if (count($this->sortConditions) > 0) {
-        // $sortConditions = $this->sortConditions;
-        
-        // // @todo UGLY SOLUTION!!!
-        // if (count($sortConditions) === 1) {
-        // $sort1 = $this->getSortArrayParameter($sortConditions[0]);
-        
-        // $data = $this->sortArrayMultiple($data, $sort1[0], $sort1[1]);
-        // } elseif (count($sortConditions) === 2) {
-        // $sort1 = $this->getSortArrayParameter($sortConditions[0]);
-        // $sort2 = $this->getSortArrayParameter($sortConditions[1]);
-        
-        // $data = $this->sortArrayMultiple($data, $sort1[0], $sort1[1], $sort2[0], $sort2[1]);
-        // } else {
-        // throw new \Exception('Too much column sorts defined!');
-        // }
-        // }
-        
         /**
          * Step 2) Apply filters
          */

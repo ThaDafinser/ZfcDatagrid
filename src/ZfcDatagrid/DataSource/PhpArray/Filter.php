@@ -13,17 +13,16 @@ class Filter
     private $filter;
 
     /**
-     *
-     * @param string $uniqueId            
-     * @param array $valuesToFilter            
+     * 
+     * @param \ZfcDatagrid\Filter $filter
      */
-    public function __construct(\ZfcDatagrid\Filter $filter)
+    public function __construct(DatagridFilter $filter)
     {
         $this->filter = $filter;
     }
 
     /**
-     * 
+     *
      * @return \ZfcDatagrid\Filter
      */
     public function getFilter()
@@ -31,7 +30,12 @@ class Filter
         return $this->filter;
     }
 
-    private function getRowValue($row)
+    /**
+     *
+     * @param array $row            
+     * @return Ambigous <string, unknown>
+     */
+    private function getRowValue(array $row)
     {
         $rowValue = $row[$this->getFilter()
             ->getColumn()
@@ -44,7 +48,14 @@ class Filter
         return $rowValue;
     }
 
-    public function applyFilter($row)
+    /**
+     * Does the value get filtered?
+     *
+     * @param array $row            
+     * @throws \Exception
+     * @return boolean
+     */
+    public function applyFilter(array $row)
     {
         $return = false;
         

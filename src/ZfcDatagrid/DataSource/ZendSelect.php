@@ -109,99 +109,17 @@ class ZendSelect extends AbstractDataSource
             }
         }
         
-        $adapter = $this->sqlObject->getAdapter();
-        $qi = function ($name) use($adapter)
-        {
-            return $adapter->getPlatform()->quoteIdentifier($name);
-        };
-        $qv = function ($value) use($adapter)
-        {
-            return $adapter->getPlatform()->quoteValue($value);
-        };
-        $fp = function ($name) use($adapter)
-        {
-            return $adapter->getDriver()->formatParameterName($name);
-        };
-        
         /**
          * Step 3) Apply filters
          */
+        $filterColumn = new ZendSelect\Filter($this->getAdapter(), $select);
         foreach ($this->getFilters() as $filter) {
+            
             /* @var $filter \ZfcDatagrid\Filter */
             if ($filter->isColumnFilter() === true) {
+                $filterColumn->applyFilter($filter);
                 
-                $column = $filter->getColumn();
-                $colString = $column->getUniqueId();
                 
-                $values = $filter->getValues();
-                foreach ($values as $value) {
-                    switch ($filter->getOperator()) {
-                        
-                        case Filter::LIKE:
-                            $select->where->like($colString, '%' . $value . '%');
-                            break;
-                        
-                        case Filter::LIKE_LEFT:
-                            $select->where->like($colString, '%' . $value);
-                            break;
-                        
-                        case Filter::LIKE_RIGHT:
-                            $select->where->like($colString, $value . '%');
-                            break;
-                        
-                        case Filter::NOT_LIKE:
-                            $select->where->literal($qi($colString) . ' NOT LIKE ?', array(
-                                '%' . $value . '%'
-                            ));
-                            break;
-                        
-                        case Filter::NOT_LIKE_LEFT:
-                            $select->where->literal($qi($colString) . 'NOT LIKE ?', array(
-                                '%' . $value
-                            ));
-                            break;
-                        
-                        case Filter::NOT_LIKE_RIGHT:
-                            $select->where->literal($qi($colString) . 'NOT LIKE ?', array(
-                                $value . '%'
-                            ));
-                            break;
-                        
-                        case Filter::EQUAL:
-                            $select->where->equalTo($colString, $value);
-                            break;
-                        
-                        case Filter::NOT_EQUAL:
-                            $select->where->notEqualTo($colString, $value);
-                            break;
-                        
-                        case Filter::GREATER_EQUAL:
-                            $select->where->greaterThanOrEqualTo($colString, $value);
-                            break;
-                        
-                        case Filter::GREATER:
-                            $select->where->greaterThan($colString, $value);
-                            break;
-                        
-                        case Filter::LESS_EQUAL:
-                            $select->where->lessThanOrEqualTo($colString, $value);
-                            break;
-                        
-                        case Filter::LESS:
-                            $select->where->lessThan($colString, $value);
-                            break;
-                        
-                        case Filter::BETWEEN:
-                            $min = min($values);
-                            $max = max($values);
-                            $select->where->between($colString, $min, $max);
-                            break;
-                        
-                        default:
-                            throw new \Exception('This operator is currently not supported: ' . $filter->getOperator());
-                            break;
-                    }
-                }
             }
         }
         
