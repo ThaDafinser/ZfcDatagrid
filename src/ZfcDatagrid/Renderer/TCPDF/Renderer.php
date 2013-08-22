@@ -42,6 +42,13 @@ class Renderer extends AbstractRenderer
         $this->initPdf();
         
         $pdf = $this->getPdf();
+        
+        //Check for PDF image header
+        $headerData = $pdf->getHeaderData();
+        if($headerData['header_logo'] == ''){
+            $headerData['header_logo'] = './myImage.jpg';
+            $pdf->setHeaderData();
+        }
         $pdf->AddPage();
         
         $columns = $this->getColumnsToExport();
@@ -142,7 +149,8 @@ class Renderer extends AbstractRenderer
             '',
             13
         ));
-        $pdf->setHeaderData('/' . $header['logo'], $header['logoWidth'], $this->getTitle());
+        
+        $pdf->setHeaderData($header['logo'], $header['logoWidth'], $this->getTitle());
         
         $this->pdf = $pdf;
     }
