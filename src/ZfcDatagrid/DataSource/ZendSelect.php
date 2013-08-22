@@ -1,7 +1,6 @@
 <?php
 namespace ZfcDatagrid\DataSource;
 
-use ZfcDatagrid\Filter;
 use ZfcDatagrid\Column;
 use Zend\Paginator\Adapter\DbSelect as PaginatorAdapter;
 use Zend\Db\Sql;

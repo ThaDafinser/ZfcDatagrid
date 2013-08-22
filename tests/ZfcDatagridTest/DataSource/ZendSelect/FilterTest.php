@@ -73,7 +73,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Zend\Db\Sql\Select', $this->filterSelect->getSelect());
         $this->assertInstanceOf('Zend\Db\Sql\Sql', $this->filterSelect->getSql());
         
-        //Test two filters
+        // Test two filters
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '~myValue,123');
         
@@ -92,6 +92,25 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(2, count($predicates));
     }
 
+    /**
+     *
+     * @param unknown $predicates            
+     * @param number $part            
+     *
+     * @return \Zend\Db\Sql\Predicate\Predicate
+     */
+    private function getWherePart($predicates, $part = 0)
+    {
+        /* @var $predicateSet \Zend\Db\Sql\Predicate\PredicateSet */
+        $predicateSet = $predicates[0][1];
+        
+        $pred = $predicateSet->getPredicates();
+        $where = $pred[$part][1];
+        $wherePred = $where->getPredicates();
+        
+        return $wherePred[0][1];
+    }
+
     public function testLike()
     {
         $filter = new \ZfcDatagrid\Filter();
@@ -107,45 +126,36 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $predicates = $where->getPredicates();
         $this->assertEquals(1, count($predicates));
         
-        //First nesting
+        // First nesting
         $this->assertEquals(2, count($predicates[0]));
         
-        /* @var $predicateSet \Zend\Db\Sql\Predicate\PredicateSet */
-        $predicateSet = $predicates[0][1];
-        
-        $where = $predicateSet->getPredicates()[0][1];
-        $like = $where->getPredicates()[0][1];
+        $like = $this->getWherePart($predicates, 0);
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Like', $like);
         $this->assertEquals('%myValue%', $like->getLike());
-
-        $where = $predicateSet->getPredicates()[1][1];
-        $like = $where->getPredicates()[0][1];
+        
+        $like = $this->getWherePart($predicates, 1);
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Like', $like);
         $this->assertEquals('%123%', $like->getLike());
     }
-    
+
     public function testLikeLeft()
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '~%myValue,123');
-    
+        
         $filterSelect = clone $this->filterSelect;
         $filterSelect->applyFilter($filter);
-    
+        
         $select = $filterSelect->getSelect();
         /* @var $where \Zend\Db\Sql\Where */
         $where = $select->getRawState('where');
-    
+        
         $predicates = $where->getPredicates();
-    
-        //First nesting
+        
+        // First nesting
         $this->assertEquals(2, count($predicates[0]));
-    
-        /* @var $predicateSet \Zend\Db\Sql\Predicate\PredicateSet */
-        $predicateSet = $predicates[0][1];
-    
-        $where = $predicateSet->getPredicates()[0][1];
-        $like = $where->getPredicates()[0][1];
+        
+        $like = $this->getWherePart($predicates, 0);
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Like', $like);
     }
 }

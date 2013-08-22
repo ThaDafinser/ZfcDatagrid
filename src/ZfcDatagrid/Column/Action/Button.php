@@ -42,6 +42,6 @@ class Button extends AbstractAction
         
         $attributes = implode(' ', $attributes);
         
-        return '<a href="' . $this->getLink() . '" ' . $attributes . '>' . $this->getLabel() . '</a>';
+        return '<a href="' . $this->getLink() . '" title="' . $this->getTitle() . '" ' . $attributes . '>' . $this->getLabel() . '</a>';
     }
 }

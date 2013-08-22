@@ -1,9 +1,6 @@
 <?php
 namespace ZfcDatagrid\DataSource;
 
-use ZfcDatagrid\Filter;
-use ZfcDatagrid\Column\AbstractColumn;
-
 interface DataSourceInterface
 {
 

@@ -155,7 +155,9 @@ class Datagrid implements ServiceLocatorAwareInterface
 
     protected $isInit = false;
 
-    protected $isExecuted = false;
+    protected $isDataLoaded = false;
+
+    protected $isRendered = false;
 
     protected $forceRenderer;
 
@@ -270,11 +272,21 @@ class Datagrid implements ServiceLocatorAwareInterface
         return $this->cache;
     }
 
+    /**
+     * Set the cache id
+     *
+     * @param string $id            
+     */
     public function setCacheId($id)
     {
         $this->cacheId = (string) $id;
     }
 
+    /**
+     * Get the cache id
+     *
+     * @return string
+     */
     public function getCacheId()
     {
         if ($this->cacheId === null) {
@@ -397,6 +409,11 @@ class Datagrid implements ServiceLocatorAwareInterface
         return $this->dataSource;
     }
 
+    /**
+     * Datasource defined?
+     *
+     * @return boolean
+     */
     public function hasDataSource()
     {
         if ($this->dataSource !== null) {
@@ -469,6 +486,11 @@ class Datagrid implements ServiceLocatorAwareInterface
         return $this->parameters;
     }
 
+    /**
+     * Has parameters?
+     *
+     * @return boolean
+     */
     public function hasParameters()
     {
         if (count($this->getParameters()) > 0) {
@@ -478,6 +500,11 @@ class Datagrid implements ServiceLocatorAwareInterface
         return false;
     }
 
+    /**
+     * Set the base url
+     *
+     * @param string $url            
+     */
     public function setUrl($url)
     {
         $this->url = $url;
@@ -492,11 +519,21 @@ class Datagrid implements ServiceLocatorAwareInterface
         return $this->url;
     }
 
+    /**
+     * Set the export renderers (overwrite the config)
+     *
+     * @param array $renderers            
+     */
     public function setExportRenderers(array $renderers = array())
     {
         $this->exportRenderers = $renderers;
     }
 
+    /**
+     * Get the export renderers
+     *
+     * @return array
+     */
     public function getExportRenderers()
     {
         if ($this->exportRenderers === null) {
@@ -540,6 +577,10 @@ class Datagrid implements ServiceLocatorAwareInterface
         return null;
     }
 
+    /**
+     *
+     * @param boolean $mode            
+     */
     public function setUserFilterDisabled($mode = true)
     {
         $this->isUserFilterEnabled = (bool) ! $mode;
@@ -573,6 +614,10 @@ class Datagrid implements ServiceLocatorAwareInterface
         return $this->rowClickAction;
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function hasRowClickAction()
     {
         if (is_object($this->rowClickAction)) {
@@ -595,7 +640,37 @@ class Datagrid implements ServiceLocatorAwareInterface
     }
 
     /**
-     * Return the current renderer and give him some knowledge about the rest
+     * Get the current renderer name
+     *
+     * @return string
+     */
+    public function getRendererName()
+    {
+        $options = $this->getOptions();
+        $parameterName = $options['generalParameterNames']['rendererType'];
+        
+        if ($this->forceRenderer !== null) {
+            // A special renderer was given -> use is
+            $rendererName = $this->forceRenderer;
+        } else {
+            // DEFAULT
+            if ($this->getRequest() instanceof ConsoleRequest) {
+                $rendererName = $options['settings']['default']['renderer']['console'];
+            } else {
+                $rendererName = $options['settings']['default']['renderer']['http'];
+            }
+        }
+        
+        // From request
+        if ($this->getRequest() instanceof HttpRequest && $this->getRequest()->getQuery($parameterName) != '') {
+            $rendererName = $this->getRequest()->getQuery($parameterName);
+        }
+        
+        return $rendererName;
+    }
+
+    /**
+     * Return the current renderer
      *
      * @return \ZfcDatagrid\Renderer\AbstractRenderer
      */
@@ -623,6 +698,8 @@ class Datagrid implements ServiceLocatorAwareInterface
                 $renderer->setTitle($this->getTitle());
                 $renderer->setColumns($this->getColumns());
                 $renderer->setCacheId($this->getCacheId());
+                $renderer->setCacheData($this->getCache()
+                    ->getItem($this->getCacheId()));
                 
                 $this->renderer = $renderer;
             } else {
@@ -633,61 +710,32 @@ class Datagrid implements ServiceLocatorAwareInterface
         return $this->renderer;
     }
 
-    /**
-     * Get the current renderer name
-     *
-     * @return string
-     */
-    public function getRendererName()
+    public function isDataLoaded()
     {
-        $options = $this->getOptions();
-        $parameterName = $options['generalParameterNames']['rendererType'];
-        
-        if ($this->forceRenderer !== null) {
-            // A special renderer was given -> use is
-            $rendererName = $this->forceRenderer;
-        } else {
-            // DEFAULT
-            if ($this->getRequest() instanceof ConsoleRequest) {
-                $rendererName = $options['settings']['default']['renderer']['console'];
-            } else {
-                $rendererName = $options['settings']['default']['renderer']['http'];
-            }
-        }
-        
-        //From request
-        if ($this->getRequest() instanceof HttpRequest && $this->getRequest()->getQuery($parameterName) != '') {
-            $rendererName = $this->getRequest()->getQuery($parameterName);
-        }
-        
-        return $rendererName;
+        return (bool) $this->isDataLoaded;
     }
 
     /**
-     * Prepare all variables for the view
-     * - title
-     * - data
-     * - grid
-     * - ...
+     * Load the data
      */
-    public function execute()
+    public function loadData()
     {
+        if ($this->isDataLoaded === true) {
+            return true;
+        }
+        
         if ($this->isInit() !== true) {
-            throw new \Exception('The init() method has to be called, before you can call execute()!');
+            throw new \Exception('The init() method has to be called, before you can call loadData()!');
         }
         
         if ($this->hasDataSource() === false) {
-            throw new \Exception('No datasource defined! So no grid to display...');
+            throw new \Exception('No datasource defined! Please call "setDataSource()" first"');
         }
         
         /**
-         * Read cache
+         * Apply cache
          */
         $renderer = $this->getRenderer();
-        $renderer->setCacheData($this->getCache()
-            ->getItem($this->getCacheId()));
-        
-        $this->isExecuted = true;
         
         /**
          * Step 1) Apply needed columns + filters + sort
@@ -714,6 +762,7 @@ class Datagrid implements ServiceLocatorAwareInterface
                 $this->getDataSource()->addFilter($filter);
             }
         }
+        
         /**
          * Save cache
          */
@@ -769,20 +818,49 @@ class Datagrid implements ServiceLocatorAwareInterface
         $prepareData->prepare();
         $this->preparedData = $prepareData->getData();
         
+        $this->isDataLoaded = true;
+    }
+
+    /**
+     * @deprecated use render() instead!
+     */
+    public function execute(){
+        if($this->isRendered() === false){
+            $this->render();
+        }
+    }
+    /**
+     * Render the grid
+     */
+    public function render()
+    {
+        if($this->isDataLoaded() === false){
+            $this->loadData();
+        }
+        
         /**
          * Step 4) Render the data to the defined output format (HTML, PDF...)
          * - Styling the values based on column (and value)
          */
+        $renderer = $this->getRenderer();
+        $renderer->setTitle($this->getTitle());
         $renderer->setPaginator($this->getPaginator());
         $renderer->setData($this->getPreparedData());
         $renderer->prepareViewModel($this);
         
         $this->response = $renderer->execute();
+        
+        $this->isRendered = true;
     }
 
-    public function isExecuted()
+    /**
+     * Is already rendered?
+     *
+     * @return boolean
+     */
+    public function isRendered()
     {
-        return (bool) $this->isExecuted;
+        return (bool) $this->isRendered;
     }
 
     /**
@@ -793,7 +871,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function getPaginator()
     {
         if ($this->paginator === null) {
-            throw new \Exception('Paginator is only available, after the grid has been executed!');
+            throw new \Exception('Paginator is only available after calling "loadData()"');
         }
         
         return $this->paginator;
@@ -831,7 +909,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function setViewModel(ViewModel $viewModel)
     {
         if ($this->viewModel !== null) {
-            throw new \Exception('A viewModel is already set (did you already called execute()?)');
+            throw new \Exception('A viewModel is already set (did you already called render()?)');
         }
         
         $this->viewModel = $viewModel;
@@ -856,8 +934,8 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function getResponse()
     {
-        if (! $this->isExecuted()) {
-            $this->execute();
+        if (! $this->isRendered()) {
+            $this->render();
         }
         
         return $this->response;
