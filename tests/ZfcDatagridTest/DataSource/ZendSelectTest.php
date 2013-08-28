@@ -1,6 +1,11 @@
 <?php
 namespace ZfcDatagridTest\DataSource;
 
+/**
+ * All copyright here goes to Doctrine2!
+ *
+ * Copied from: https://github.com/doctrine/doctrine2/blob/master/tests/Doctrine/Tests/OrmTestCase.php
+ */
 use PHPUnit_Framework_TestCase;
 use ZfcDatagrid\DataSource\ZendSelect;
 use ZfcDatagrid\Filter;
@@ -133,7 +138,7 @@ class ZendSelectTest extends DataSourceTestCase
         $source->addFilter($filter);
         $source->execute();
         
-//         $this->assertEquals(2, $source->getPaginatorAdapter()
-//             ->count());
+        // $this->assertEquals(2, $source->getPaginatorAdapter()
+        // ->count());
     }
 }

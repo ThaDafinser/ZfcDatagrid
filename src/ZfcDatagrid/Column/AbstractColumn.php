@@ -419,6 +419,12 @@ abstract class AbstractColumn implements ColumnInterface
         return (bool) $this->translationEnabled;
     }
 
+    /**
+     * Replace the column values with the applied values
+     * 
+     * @param array $values
+     * @param boolean $notReplacedGetEmpty
+     */
     public function setReplaceValues (array $values, $notReplacedGetEmpty = true)
     {
         $this->replaceValues = $values;
@@ -428,6 +434,10 @@ abstract class AbstractColumn implements ColumnInterface
         $this->setFilterSelectOptions($values);
     }
 
+    /**
+     * 
+     * @return boolean
+     */
     public function hasReplaceValues ()
     {
         if (count($this->replaceValues) > 0)
@@ -436,11 +446,19 @@ abstract class AbstractColumn implements ColumnInterface
         return false;
     }
 
+    /**
+     * 
+     * @return array
+     */
     public function getReplaceValues ()
     {
         return $this->replaceValues;
     }
 
+    /**
+     * 
+     * @return boolean
+     */
     public function notReplacedGetEmpty ()
     {
         return $this->notReplacedGetEmpty;

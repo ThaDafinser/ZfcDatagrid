@@ -4,7 +4,7 @@ namespace ZfcDatagrid\DataSource;
 use ZfcDatagrid\Filter;
 use ZfcDatagrid\DataSource\Doctrine2Paginator as PaginatorAdapter;
 use ZfcDatagrid\Column;
-use Doctrine\ORM;  
+use Doctrine\ORM;
 use Doctrine\ORM\Query\Expr;
 
 class Doctrine2 extends AbstractDataSource
@@ -21,23 +21,29 @@ class Doctrine2 extends AbstractDataSource
      *
      * @param mixed $data            
      */
-    public function __construct ($data)
+    public function __construct($data)
     {
         if ($data instanceof ORM\QueryBuilder) {
             $this->queryBuilder = $data;
         } else {
-            throw new \Exception("Unknown data input..." . get_class($data));
+            $return = $data;
+            if (is_object($data)) {
+                $return = get_class($return);
+            }
+            throw new \InvalidArgumentException("Unknown data input..." . $return);
         }
     }
-    
+
     /**
+     *
      * @return ORM\QueryBuilder
      */
-    public function getData(){
+    public function getData()
+    {
         return $this->queryBuilder;
     }
 
-    public function execute ()
+    public function execute()
     {
         $queryBuilder = $this->queryBuilder;
         
@@ -117,7 +123,7 @@ class Doctrine2 extends AbstractDataSource
      * @throws \Exception
      * @return \Doctrine\ORM\Query\Expr
      */
-    private function getWhereExpression ($operator, $colString, $values)
+    private function getWhereExpression($operator, $colString, $values)
     {
         $expr = new Expr();
         

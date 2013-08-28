@@ -184,6 +184,31 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($data, $prepare->getData());
     }
 
+    public function testPrepareReplaceEmpty()
+    {
+        $data = $this->data;
+        
+        $col2 = clone $this->col2;
+        $col2->setReplaceValues(array(
+            'y' => 'yes',
+        ), false);
+        $prepare = new PrepareData($data, array(
+            $this->colId,
+            $this->col1,
+            $col2
+        ));
+        
+        $data[0]['idConcated'] = '1';
+        $data[1]['idConcated'] = '2';
+        $data[2]['idConcated'] = '3';
+        
+        $data[0]['col2'] = 'n';
+        $data[1]['col2'] = '';
+        $data[2]['col2'] = 'yes';
+        
+        $this->assertEquals($data, $prepare->getData());
+    }
+
     public function testPrepareReplaceTranslate()
     {
         $data = $this->data;
@@ -277,18 +302,18 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
         $data[1]['col2'] = '';
         
         $data[0]['col3'] = array(
-            'Tag 1', //replaced
-            'Tag 2' //translated
-        );
+            'Tag 1', // replaced
+            'Tag 2' // translated
+                );
         
         $data[1]['col3'] = array(
-            'tag3', 
-            'Tag 1' //translated
-        );
+            'tag3',
+            'Tag 1' // translated
+                );
         
         $data[2]['col3'] = array(
-            'Tag 2', //replaced
-            'tag5' 
+            'Tag 2', // replaced
+            'tag5'
         );
         
         $this->assertEquals($data, $prepare->getData());
