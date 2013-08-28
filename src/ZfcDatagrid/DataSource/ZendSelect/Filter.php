@@ -86,7 +86,7 @@ class Filter
                     break;
                 
                 case DatagridFilter::NOT_LIKE:
-                    $wheres[] = $where->literal($qi($colString) . ' NOT LIKE ?', array(
+                    $wheres[] = $where->literal($qi($colString) . 'NOT LIKE ?', array(
                         '%' . $value . '%'
                     ));
                     break;

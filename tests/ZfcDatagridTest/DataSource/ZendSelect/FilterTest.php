@@ -7,6 +7,7 @@ use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Predicate\Like;
+use Zend\Db\Sql\Predicate\Operator;
 
 /**
  * @group DataSource
@@ -97,7 +98,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      * @param unknown $predicates            
      * @param number $part            
      *
-     * @return \Zend\Db\Sql\Predicate\Predicate
+     * @return \Zend\Db\Sql\Predicate\Expression
      */
     private function getWherePart($predicates, $part = 0)
     {
@@ -126,9 +127,6 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $predicates = $where->getPredicates();
         $this->assertEquals(1, count($predicates));
         
-        // First nesting
-        $this->assertEquals(2, count($predicates[0]));
-        
         $like = $this->getWherePart($predicates, 0);
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Like', $like);
         $this->assertEquals('%myValue%', $like->getLike());
@@ -152,10 +150,251 @@ class FilterTest extends PHPUnit_Framework_TestCase
         
         $predicates = $where->getPredicates();
         
-        // First nesting
-        $this->assertEquals(2, count($predicates[0]));
+        $like = $this->getWherePart($predicates, 0);
+        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Like', $like);
+        $this->assertEquals('%myValue', $like->getLike());
+        
+        $like = $this->getWherePart($predicates, 1);
+        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Like', $like);
+        $this->assertEquals('%123', $like->getLike());
+    }
+
+    public function testLikeRight()
+    {
+        $filter = new \ZfcDatagrid\Filter();
+        $filter->setFromColumn($this->column, '~myValue%');
+        
+        $filterSelect = clone $this->filterSelect;
+        $filterSelect->applyFilter($filter);
+        
+        $select = $filterSelect->getSelect();
+        /* @var $where \Zend\Db\Sql\Where */
+        $where = $select->getRawState('where');
+        
+        $predicates = $where->getPredicates();
         
         $like = $this->getWherePart($predicates, 0);
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Like', $like);
+        $this->assertEquals('myValue%', $like->getLike());
+    }
+
+    public function testNotLike()
+    {
+        $filter = new \ZfcDatagrid\Filter();
+        $filter->setFromColumn($this->column, '!~myValue');
+        
+        $filterSelect = clone $this->filterSelect;
+        $filterSelect->applyFilter($filter);
+        
+        $select = $filterSelect->getSelect();
+        /* @var $where \Zend\Db\Sql\Where */
+        $where = $select->getRawState('where');
+        
+        $predicates = $where->getPredicates();
+        
+        $notLike = $this->getWherePart($predicates, 0);
+        $parameters = $notLike->getParameters();
+        
+        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Expression', $notLike);
+        $this->assertEquals('NOT LIKE ?', $notLike->getExpression());
+        $this->assertEquals('%myValue%', $parameters[0]);
+    }
+
+    public function testNotLikeLeft()
+    {
+        $filter = new \ZfcDatagrid\Filter();
+        $filter->setFromColumn($this->column, '!~%myValue');
+        
+        $filterSelect = clone $this->filterSelect;
+        $filterSelect->applyFilter($filter);
+        
+        $select = $filterSelect->getSelect();
+        /* @var $where \Zend\Db\Sql\Where */
+        $where = $select->getRawState('where');
+        
+        $predicates = $where->getPredicates();
+        
+        $notLike = $this->getWherePart($predicates, 0);
+        $parameters = $notLike->getParameters();
+        
+        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Expression', $notLike);
+        $this->assertEquals('NOT LIKE ?', $notLike->getExpression());
+        $this->assertEquals('%myValue', $parameters[0]);
+    }
+
+    public function testNotLikeRight()
+    {
+        $filter = new \ZfcDatagrid\Filter();
+        $filter->setFromColumn($this->column, '!~myValue%');
+        
+        $filterSelect = clone $this->filterSelect;
+        $filterSelect->applyFilter($filter);
+        
+        $select = $filterSelect->getSelect();
+        /* @var $where \Zend\Db\Sql\Where */
+        $where = $select->getRawState('where');
+        
+        $predicates = $where->getPredicates();
+        
+        $notLike = $this->getWherePart($predicates, 0);
+        $parameters = $notLike->getParameters();
+        
+        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Expression', $notLike);
+        $this->assertEquals('NOT LIKE ?', $notLike->getExpression());
+        $this->assertEquals('myValue%', $parameters[0]);
+    }
+
+    public function testEqual()
+    {
+        $filter = new \ZfcDatagrid\Filter();
+        $filter->setFromColumn($this->column, '=myValue');
+        
+        $filterSelect = clone $this->filterSelect;
+        $filterSelect->applyFilter($filter);
+        
+        $select = $filterSelect->getSelect();
+        /* @var $where \Zend\Db\Sql\Where */
+        $where = $select->getRawState('where');
+        
+        $predicates = $where->getPredicates();
+        
+        $operator = $this->getWherePart($predicates, 0);
+        
+        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Operator', $operator);
+        $this->assertEquals(Operator::OP_EQ, $operator->getOperator());
+        $this->assertEquals('myCol', $operator->getLeft());
+        $this->assertEquals('myValue', $operator->getRight());
+    }
+
+    public function testNotEqual()
+    {
+        $filter = new \ZfcDatagrid\Filter();
+        $filter->setFromColumn($this->column, '!=myValue');
+        
+        $filterSelect = clone $this->filterSelect;
+        $filterSelect->applyFilter($filter);
+        
+        $select = $filterSelect->getSelect();
+        /* @var $where \Zend\Db\Sql\Where */
+        $where = $select->getRawState('where');
+        
+        $predicates = $where->getPredicates();
+        
+        $operator = $this->getWherePart($predicates, 0);
+        
+        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Operator', $operator);
+        $this->assertEquals(Operator::OP_NE, $operator->getOperator());
+        $this->assertEquals('myCol', $operator->getLeft());
+        $this->assertEquals('myValue', $operator->getRight());
+    }
+
+    public function testGreaterEqual()
+    {
+        $filter = new \ZfcDatagrid\Filter();
+        $filter->setFromColumn($this->column, '>=myValue');
+        
+        $filterSelect = clone $this->filterSelect;
+        $filterSelect->applyFilter($filter);
+        
+        $select = $filterSelect->getSelect();
+        /* @var $where \Zend\Db\Sql\Where */
+        $where = $select->getRawState('where');
+        
+        $predicates = $where->getPredicates();
+        
+        $operator = $this->getWherePart($predicates, 0);
+        
+        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Operator', $operator);
+        $this->assertEquals(Operator::OP_GTE, $operator->getOperator());
+        $this->assertEquals('myCol', $operator->getLeft());
+        $this->assertEquals('myValue', $operator->getRight());
+    }
+
+    public function testGreater()
+    {
+        $filter = new \ZfcDatagrid\Filter();
+        $filter->setFromColumn($this->column, '>myValue');
+        
+        $filterSelect = clone $this->filterSelect;
+        $filterSelect->applyFilter($filter);
+        
+        $select = $filterSelect->getSelect();
+        /* @var $where \Zend\Db\Sql\Where */
+        $where = $select->getRawState('where');
+        
+        $predicates = $where->getPredicates();
+        
+        $operator = $this->getWherePart($predicates, 0);
+        
+        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Operator', $operator);
+        $this->assertEquals(Operator::OP_GT, $operator->getOperator());
+        $this->assertEquals('myCol', $operator->getLeft());
+        $this->assertEquals('myValue', $operator->getRight());
+    }
+
+    public function testLessEqual()
+    {
+        $filter = new \ZfcDatagrid\Filter();
+        $filter->setFromColumn($this->column, '<=myValue');
+        
+        $filterSelect = clone $this->filterSelect;
+        $filterSelect->applyFilter($filter);
+        
+        $select = $filterSelect->getSelect();
+        /* @var $where \Zend\Db\Sql\Where */
+        $where = $select->getRawState('where');
+        
+        $predicates = $where->getPredicates();
+        
+        $operator = $this->getWherePart($predicates, 0);
+        
+        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Operator', $operator);
+        $this->assertEquals(Operator::OP_LTE, $operator->getOperator());
+        $this->assertEquals('myCol', $operator->getLeft());
+        $this->assertEquals('myValue', $operator->getRight());
+    }
+
+    public function testLess()
+    {
+        $filter = new \ZfcDatagrid\Filter();
+        $filter->setFromColumn($this->column, '<myValue');
+        
+        $filterSelect = clone $this->filterSelect;
+        $filterSelect->applyFilter($filter);
+        
+        $select = $filterSelect->getSelect();
+        /* @var $where \Zend\Db\Sql\Where */
+        $where = $select->getRawState('where');
+        
+        $predicates = $where->getPredicates();
+        
+        $operator = $this->getWherePart($predicates, 0);
+        
+        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Operator', $operator);
+        $this->assertEquals(Operator::OP_LT, $operator->getOperator());
+        $this->assertEquals('myCol', $operator->getLeft());
+        $this->assertEquals('myValue', $operator->getRight());
+    }
+
+    public function testBetween()
+    {
+        $filter = new \ZfcDatagrid\Filter();
+        $filter->setFromColumn($this->column, '3 <> myValue');
+        
+        $filterSelect = clone $this->filterSelect;
+        $filterSelect->applyFilter($filter);
+        
+        $select = $filterSelect->getSelect();
+        /* @var $where \Zend\Db\Sql\Where */
+        $where = $select->getRawState('where');
+        
+        $predicates = $where->getPredicates();
+        
+        $operator = $this->getWherePart($predicates, 0);
+        
+        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Between', $operator);
+        $this->assertEquals('myCol', $operator->getIdentifier());
+        $this->assertEquals('3', $operator->getMinValue());
+        $this->assertEquals('myValue', $operator->getMaxValue());
     }
 }
