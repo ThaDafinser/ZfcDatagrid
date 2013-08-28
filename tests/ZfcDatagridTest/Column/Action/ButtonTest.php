@@ -16,6 +16,7 @@ class ButtonTest extends PHPUnit_Framework_TestCase
         $button = new Button();
         
         $this->assertEquals(array(
+            'href' => '#',
             'class' => 'btn'
         ), $button->getAttributes());
     }
@@ -27,7 +28,7 @@ class ButtonTest extends PHPUnit_Framework_TestCase
         $button->setLabel('My label');
         $this->assertEquals('My label', $button->getLabel());
         
-        $html = '<a href="#" title="" class="btn">My label</a>';
-        $this->assertEquals($html, $button->toHtml());
+        $html = '<a href="#" class="btn">My label</a>';
+        $this->assertEquals($html, $button->toHtml(array()));
     }
 }

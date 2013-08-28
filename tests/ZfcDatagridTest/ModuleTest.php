@@ -39,6 +39,6 @@ class ModuleTest extends PHPUnit_Framework_TestCase{
         $console = $this->getMock('Zend\Console\Adapter\AbstractAdapter');
         
         $this->assertTrue(is_array($module->getConsoleUsage($console)));
-        $this->assertCount(2, $module->getConsoleUsage($console));
+        $this->assertCount(8, $module->getConsoleUsage($console));
     }
 }

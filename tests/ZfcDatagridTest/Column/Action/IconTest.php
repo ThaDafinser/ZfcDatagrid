@@ -11,44 +11,47 @@ use ZfcDatagrid\Column\Action\Icon;
 class IconTest extends PHPUnit_Framework_TestCase
 {
 
-    public function testConstruct ()
+    public function testConstruct()
     {
         $icon = new Icon();
         
-        $this->assertEquals(array(), $icon->getAttributes());
+        $this->assertEquals(array(
+            'href' => '#'
+        ), $icon->getAttributes());
     }
-    
-    public function testIconClass(){
-        $icon = new Icon();
 
+    public function testIconClass()
+    {
+        $icon = new Icon();
+        
         $this->assertFalse($icon->hasIconClass());
         
         $icon->setIconClass('icon-add');
         $this->assertEquals('icon-add', $icon->getIconClass());
         $this->assertTrue($icon->hasIconClass());
         
-        $this->assertEquals('<i title="" class="icon-add"></i>', $icon->toHtml());;
+        $this->assertEquals('<a href="#"><i class="icon-add"></i></a>', $icon->toHtml(array()));
     }
-    
-    public function testIconLink ()
+
+    public function testIconLink()
     {
         $icon = new Icon();
-    
+        
         $this->assertFalse($icon->hasIconLink());
-    
+        
         $icon->setIconLink('/images/21/add.png');
         $this->assertEquals('/images/21/add.png', $icon->getIconLink());
         $this->assertTrue($icon->hasIconLink());
         
-        $this->assertEquals('<img src="/images/21/add.png" />', $icon->toHtml());
+        $this->assertEquals('<a href="#"><img src="/images/21/add.png" /></a>', $icon->toHtml(array()));
     }
 
-    public function testException ()
+    public function testException()
     {
         $icon = new Icon();
         
         $this->setExpectedException('InvalidArgumentException');
         
-        $icon->toHtml();
+        $icon->toHtml(array());
     }
 }

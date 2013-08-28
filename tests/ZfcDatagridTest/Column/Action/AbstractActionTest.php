@@ -17,13 +17,13 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
      */
     private $column;
 
-    public function setUp ()
+    public function setUp()
     {
         $this->column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $this->column->setUniqueId('colName');
     }
 
-    public function testLink ()
+    public function testLink()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
         $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
@@ -34,25 +34,29 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('/my/page/is/cool', $action->getLink());
     }
 
-    public function testAttributes ()
+    public function testAttributes()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
         $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
         
-        $this->assertEquals(array(), $action->getAttributes());
+        $this->assertCount(1, $action->getAttributes());
+        $this->assertEquals(array(
+            'href' => '#'
+        ), $action->getAttributes());
         
         $this->assertEquals('', $action->getAttribute('something'));
         
         $action->setAttribute('class', 'error');
-        $this->assertCount(1, $action->getAttributes());
+        $this->assertCount(2, $action->getAttributes());
         $this->assertEquals(array(
+            'href' => '#',
             'class' => 'error'
         ), $action->getAttributes());
         
         $this->assertEquals('error', $action->getAttribute('class'));
     }
 
-    public function testTitle ()
+    public function testTitle()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
         $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
@@ -63,7 +67,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('This is my action', $action->getTitle());
     }
 
-    public function testAddClass ()
+    public function testAddClass()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
         $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
@@ -77,7 +81,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('cssClass cssClass2', $action->getAttribute('class'));
     }
 
-    public function testShowOnValue ()
+    public function testShowOnValue()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
         $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
@@ -89,7 +93,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($action->hasShowOnValues());
     }
 
-    public function testIsDisplayed ()
+    public function testIsDisplayed()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
         $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
@@ -110,7 +114,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         )));
     }
 
-    public function testIsDisplayedNotEqual ()
+    public function testIsDisplayedNotEqual()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
         $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
@@ -126,7 +130,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         )));
     }
 
-    public function testIsDisplayedException ()
+    public function testIsDisplayedException()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
         $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');

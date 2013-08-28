@@ -51,16 +51,21 @@ abstract class AbstractAction
     {
         return $this->getAttribute('href');
     }
-    
+
     /**
      * This is needed public for rowClickAction...
-     * 
-     * @param array $row
+     *
+     * @param array $row            
      * @return string
      */
-    public function getLinkReplaced(array $row){
+    public function getLinkReplaced(array $row)
+    {
+        $link = $this->getLink();
+        
         // Replace placeholders
-        $link = str_replace(self::ROW_ID_PLACEHOLDER, $row['idConcated'], $this->getLink());
+        if (strpos($this->getLink(), self::ROW_ID_PLACEHOLDER) !== false) {
+            $link = str_replace(self::ROW_ID_PLACEHOLDER, $row['idConcated'], $link);
+        }
         
         foreach ($this->getLinkColumnPlaceholders() as $col) {
             $link = str_replace(':' . $col->getUniqueId() . ':', $row[$col->getUniqueId()], $link);

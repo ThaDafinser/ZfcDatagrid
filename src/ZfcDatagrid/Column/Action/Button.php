@@ -8,6 +8,8 @@ class Button extends AbstractAction
 
     public function __construct()
     {
+        parent::__construct();
+        
         $this->addClass('btn');
     }
 
