@@ -15,30 +15,27 @@ class Object implements DataPopulationInterface
      */
     private $object;
 
+    /**
+     * 
+     * @var array
+     */
     private $parameters = array();
-
-    public function __construct ()
-    {}
 
     /**
      *
      * @param ObjectAwareInterface $object            
      * @throws \Exception
      */
-    public function setObject ($object)
+    public function setObject(ObjectAwareInterface $object)
     {
-        if (! $object instanceof ObjectAwareInterface) {
-            throw new \Exception('The provided object must implement the interfae "ZfcDatagrid\Column\DataPopulation\ObjectAwareInterface"');
-        }
-        
         $this->object = $object;
     }
 
     /**
      *
-     * @return mixed
+     * @return ObjectAwareInterface
      */
-    public function getObject ()
+    public function getObject()
     {
         return $this->object;
     }
@@ -48,17 +45,30 @@ class Object implements DataPopulationInterface
      * @param string $objectParameterName            
      * @param AbstractColumn $column            
      */
-    public function addObjectParameterColumn ($objectParameterName, Column\AbstractColumn $column)
+    public function addObjectParameterColumn($objectParameterName, Column\AbstractColumn $column)
     {
-        $this->parameters[] = array('objectParameterName' => $objectParameterName, 'column' => $column);
+        $this->parameters[] = array(
+            'objectParameterName' => $objectParameterName,
+            'column' => $column
+        );
     }
 
-    public function getParameters ()
+    /**
+     * 
+     * @return array
+     */
+    public function getParameters()
     {
         return $this->parameters;
     }
 
-    public function setParameterValue ($name, $value)
+    /**
+     * Directly apply a parameter
+     * 
+     * @param string $name
+     * @param mixed $value
+     */
+    public function setParameterValue($name, $value)
     {
         $this->getObject()->setParameterFromColumn($name, $value);
     }
@@ -67,8 +77,8 @@ class Object implements DataPopulationInterface
      *
      * @return string
      */
-    public function toString ()
+    public function toString()
     {
-        return $this->getObject ()->toString();
+        return $this->getObject()->toString();
     }
 }

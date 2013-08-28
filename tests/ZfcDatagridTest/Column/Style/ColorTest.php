@@ -4,7 +4,6 @@ namespace ZfcDatagridTest\Column\Style;
 use ZfcDatagrid\Column\Style\Color;
 use PHPUnit_Framework_TestCase;
 
-
 /**
  * @group Column
  * @covers ZfcDatagrid\Column\Style\Color
@@ -12,9 +11,10 @@ use PHPUnit_Framework_TestCase;
 class ColorTest extends PHPUnit_Framework_TestCase
 {
 
-    public function testConstruct(){
+    public function testConstruct()
+    {
         $style = new Color(Color::$RED);
-
+        
         $this->assertEquals(255, $style->getRed());
         $this->assertEquals(0, $style->getGreen());
         $this->assertEquals(0, $style->getBlue());
@@ -38,8 +38,9 @@ class ColorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(30, $style->getBlue());
         $this->assertEquals('32461e', $style->getRgbHexString());
     }
-    
-    public function testSetRgb(){
+
+    public function testSetRgb()
+    {
         $style = new Color(0, 0, 0);
         
         $style->setRgb(20, 10, 5);
@@ -55,9 +56,16 @@ class ColorTest extends PHPUnit_Framework_TestCase
         
         $style->setBlue(55);
         $this->assertEquals(55, $style->getBlue());
+        
+        $this->assertEquals(array(
+            'red' => 33,
+            'green' => 44,
+            'blue' => 55
+        ), $style->getRgbArray());
     }
-    
-    public function testRgbHexString(){
+
+    public function testRgbHexString()
+    {
         $style = new Color(0, 0, 0);
         
         $this->assertEquals('000000', $style->getRgbHexString());
