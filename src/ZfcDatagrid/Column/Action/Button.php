@@ -6,7 +6,7 @@ class Button extends AbstractAction
 
     protected $label = '';
 
-    public function __construct ()
+    public function __construct()
     {
         $this->addClass('btn');
     }
@@ -15,7 +15,7 @@ class Button extends AbstractAction
      *
      * @param string $name            
      */
-    public function setLabel ($name)
+    public function setLabel($name)
     {
         $this->label = (string) $name;
     }
@@ -24,7 +24,7 @@ class Button extends AbstractAction
      *
      * @return string
      */
-    public function getLabel ()
+    public function getLabel()
     {
         return $this->label;
     }
@@ -33,15 +33,13 @@ class Button extends AbstractAction
      *
      * @return string
      */
-    public function toHtml ()
+    protected function getHtmlType()
     {
-        $attributes = array();
-        foreach ($this->getAttributes() as $attrKey => $attrValue) {
-            $attributes[] = $attrKey . '="' . $attrValue . '"';
+        $attributes = $this->getAttributes();
+        if ($this->getLabel() == '') {
+            throw new \InvalidArgumentException('A lable is required for this action type, please call $action->setLabel()!');
         }
         
-        $attributes = implode(' ', $attributes);
-        
-        return '<a href="' . $this->getLink() . '" title="' . $this->getTitle() . '" ' . $attributes . '>' . $this->getLabel() . '</a>';
+        return $this->getLabel();
     }
 }

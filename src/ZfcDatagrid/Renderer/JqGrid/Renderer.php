@@ -192,7 +192,7 @@ class Renderer extends AbstractRenderer
                         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
                         
                         if ($action->isDisplayed($row) === true) {
-                            $actions[] = $action->toHtml();
+                            $actions[] = $action->toHtml($row);
                         }
                     }
                     

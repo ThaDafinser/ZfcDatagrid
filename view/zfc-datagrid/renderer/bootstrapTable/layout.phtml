@@ -6,7 +6,7 @@ use ZfcDatagrid\Column\Style;
 
 <form name="form_<?= $this->gridId; ?>" method="post" action="<?= $this->url(null, array(), array(), true); ?>">
 
-    <input type="submit" class="hidden" name="hiddenSubmit" />
+    <input type="submit" style="width: 0px; height:0px; margin: 0; padding: 0; border: 0;" name="hiddenSubmit" />
     <input type="hidden" name="<?= $this->parameterNames['sortColumns']; ?>" value="<?= $this->activeParameters[$this->parameterNames['sortColumns']]; ?>" />
     <input type="hidden" name="<?= $this->parameterNames['sortDirections']; ?>" value="<?= $this->activeParameters[$this->parameterNames['sortDirections']]; ?>" />
 
@@ -19,10 +19,8 @@ $orderOnclick = 'document.forms[\'form_'.$this->gridId.'\'].elements[\'' . $this
 $orderOnclick .= 'document.forms[\'form_'.$this->gridId.'\'].elements[\'' . $this->parameterNames['sortDirections'] . '\'].value = \'%s\';';
 $orderOnclick.= 'document.forms[\'form_'.$this->gridId.'\'].submit(); return false;';
 
-$link = '#';
 $classes = array('table', 'table-striped', 'table-bordered');
-if($this->rowClickAction){
-    $link = $this->rowClickAction->getLink();
+if($this->rowClickAction !== null){
     $classes[] = 'table-hover';
 }
 ?>
@@ -131,7 +129,7 @@ if($this->rowClickAction){
     <!-- Start table BODY -->
     <tbody>
         <?php foreach($this->data as $row): ?>
-            <?php echo $this->bootstrapTableRow($row, $this->columns, $link); ?>
+            <?php echo $this->bootstrapTableRow($row, $this->columns, $this->rowClickAction); ?>
         <?php endforeach; ?>
     </tbody>
 </table>

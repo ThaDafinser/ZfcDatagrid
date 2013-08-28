@@ -1,4 +1,6 @@
 <?php 
+use ZfcDatagrid\Column\Action\Button;
+
 $parameterNames = $this->optionsRenderer['parameterNames'];
 
 // $sortColumns = explode(',', $this->activeParameters[$parameterNames['sortColumns']]);
@@ -25,8 +27,15 @@ foreach($this->parameters as $name => $value){
 }
 
 $tableClasses = array();
+
+$rowClickLink = '';
 if($this->rowClickAction){
     $tableClasses[] = 'clickable';
+    
+    $rowClickLink = $this->rowClickAction->getLink();
+    if(count($this->rowClickAction->getLinkColumnPlaceholders()) > 0){
+        throw new \Exception('Currently the row click action cannot bet used with Column parameters, except the rowId...');
+    }
 }
 ?>
 
@@ -99,13 +108,13 @@ var grid_<?= $this->gridId; ?> = $('#<?= $this->gridId; ?>').jqGrid({
         id : 'idConcated'
     },
 
-    onSelectRow: function(rowId, status, e){
-    	<?php if($this->rowClickAction): ?>
-             <?php if($this->rowClickAction->getAttribute('onclick') != ''): ?>
-                 <?= $this->rowClickAction->getAttribute('onclick'); ?>
-             <?php endif; ?>
-        <?php endif; ?>
-    },
+    <?php if($rowClickLink != ''): ?>
+        onSelectRow: function(rowId, status, e){
+            var rowClickLink = '<?= $rowClickLink; ?>';
+            rowClickLink = rowClickLink.replace('<?= Button::ROW_ID_PLACEHOLDER; ?>', rowId);
+            window.location.href = rowClickLink;
+        },
+    <?php endif; ?>
 
     beforeSelectRow: function (rowId, e) {
     	var colModel = grid_<?= $this->gridId; ?>.jqGrid('getGridParam','colModel');

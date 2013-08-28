@@ -5,6 +5,7 @@ use Zend\View\Helper\AbstractHelper;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Style;
 use ZfcDatagrid\Column\Type;
+use ZfcDatagrid\Column\Action\AbstractAction;
 
 /**
  * View Helper
@@ -38,7 +39,7 @@ class TableRow extends AbstractHelper
         return '<td ' . $attr . '>' . $dataValue . '</td>';
     }
 
-    public function __invoke ($row, $columns, $rowClickLink)
+    public function __invoke ($row, $columns, AbstractAction $rowClickAction = null)
     {
         $return = $this->getTr($row);
         
@@ -100,15 +101,15 @@ class TableRow extends AbstractHelper
                     /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
                     
                     if ($action->isDisplayed($row) === true) {
-                        $actions[] = $action->toHtml();
+                        $actions[] = $action->toHtml($row);
                     }
                 }
                 
                 $value = implode(' ', $actions);
             }
             
-            if ($column instanceof Column\Standard && $rowClickLink != '#') {
-                $value = '<a href="' . $rowClickLink . '">' . $value . '</a>';
+            if ($column instanceof Column\Standard && $rowClickAction instanceof AbstractAction) {
+                $value = '<a href="' . $rowClickAction->getLinkReplaced($row) . '">' . $value . '</a>';
             }
             
             $attributes = array(

@@ -33,9 +33,9 @@ class PersonController extends AbstractActionController
              */
             $colEmail = new Column\Standard('email');
             $colEmail->setLabel('E-Mail');
+            $colEmail->setHidden(true);
+            $dataGrid->addColumn($colEmail);
             
-//             $colEmail->setHidden();
-        
             $dataPopulation = new Column\DataPopulation\Object();
             $dataPopulation->setObject(new Column\DataPopulation\Object\Gravatar());
             $dataPopulation->addObjectParameterColumn('email', $colEmail);
@@ -63,8 +63,6 @@ class PersonController extends AbstractActionController
         $col->setWidth(15);
         $col->setSortDefault(2, 'DESC');
         $dataGrid->addColumn($col);
-        
-        $dataGrid->addColumn($colEmail);
         
         $col = new Column\Standard('gender');
         $col->setLabel('Gender');
@@ -124,7 +122,7 @@ class PersonController extends AbstractActionController
         
         $action = new Column\Action\Button();
         $action->setLabel('test');
-        $action->setAttribute('href', '/test');
+        $action->setAttribute('href', '/someAction/id/'.$action->getRowIdPlaceholder());
         
         $col = new Column\Action();
         $col->setLabel('Actions');

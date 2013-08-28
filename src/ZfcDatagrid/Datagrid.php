@@ -118,7 +118,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @var Column\Action\AbstractAction
      */
-    protected $rowClickAction = null;
+    protected $rowClickAction;
 
     /**
      * The prepared data
@@ -556,7 +556,7 @@ class Datagrid implements ServiceLocatorAwareInterface
 
     /**
      *
-     * @return array
+     * @return \ZfcDatagrid\Column\AbstractColumn[]
      */
     public function getColumns()
     {

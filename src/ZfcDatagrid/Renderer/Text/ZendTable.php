@@ -6,6 +6,7 @@ use ZfcDataGrid\Column\Type;
 use Zend\Text\Table\Table as TextTable;
 use Zend\Text\Table;
 use Zend\Console\Request as ConsoleRequest;
+use Zend\Console\Console;
 
 /**
  * For CLI or E-Mail useful
@@ -18,20 +19,19 @@ class ZendTable extends AbstractRenderer
      *
      * @var integer
      */
-    private $maxConsoleWidth = 78;
+    private $consoleWidth;
 
-    public function getName ()
+    public function getName()
     {
         return 'zendTable';
     }
-    
 
-    public function isExport ()
+    public function isExport()
     {
         return false;
     }
-    
-    public function isHtml ()
+
+    public function isHtml()
     {
         return false;
     }
@@ -42,7 +42,7 @@ class ZendTable extends AbstractRenderer
      *      
      * @return array
      */
-    public function getSortConditions ()
+    public function getSortConditions()
     {
         $request = $this->getRequest();
         if (! $request instanceof ConsoleRequest) {
@@ -101,7 +101,7 @@ class ZendTable extends AbstractRenderer
      *      
      * @return array
      */
-    public function getFilters ()
+    public function getFilters()
     {
         $request = $this->getRequest();
         if (! $request instanceof ConsoleRequest) {
@@ -116,7 +116,7 @@ class ZendTable extends AbstractRenderer
      *
      * @return integer
      */
-    public function getCurrentPageNumber ()
+    public function getCurrentPageNumber()
     {
         $request = $this->getRequest();
         if (! $request instanceof ConsoleRequest) {
@@ -132,7 +132,7 @@ class ZendTable extends AbstractRenderer
         return (int) 1;
     }
 
-    public function getItemsPerPage ($defaultItems = 25)
+    public function getItemsPerPage($defaultItems = 25)
     {
         $request = $this->getRequest();
         if (! $request instanceof ConsoleRequest) {
@@ -148,8 +148,7 @@ class ZendTable extends AbstractRenderer
         return (int) $defaultItems;
     }
 
-
-    public function execute ()
+    public function execute()
     {
         $viewModel = $this->getViewModel();
         
@@ -165,7 +164,7 @@ class ZendTable extends AbstractRenderer
      *
      * @return \Zend\Text\Table\Table
      */
-    private function getTable ()
+    private function getTable()
     {
         $paginator = $this->getPaginator();
         $translator = $this->getTranslator();
@@ -265,7 +264,7 @@ class ZendTable extends AbstractRenderer
         return $table;
     }
 
-    private function getColumnWidth ()
+    private function getColumnWidth()
     {
         $return = array();
         
@@ -276,7 +275,7 @@ class ZendTable extends AbstractRenderer
             }
         }
         
-        $maxWidth = $this->maxConsoleWidth - count($displayColumns);
+        $maxWidth = $this->getWidthAvailable() - count($displayColumns);
         $oneColWidth = floor($maxWidth / count($displayColumns));
         foreach ($displayColumns as &$col) {
             $return[] = (int) $oneColWidth * $col;
@@ -290,5 +289,23 @@ class ZendTable extends AbstractRenderer
         }
         
         return $return;
+    }
+
+    /**
+     * Get the console width
+     * 
+     * @return number
+     */
+    private function getWidthAvailable()
+    {
+        if ($this->consoleWidth !== null) {
+            return $this->consoleWidth;
+        }
+        
+        $console = Console::getInstance();
+        //Minus 2, because of the table!
+        $this->consoleWidth = $console->getWidth() - 2;
+        
+        return $this->consoleWidth;
     }
 }

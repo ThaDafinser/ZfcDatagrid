@@ -9,7 +9,7 @@ use Zend\Console\Adapter\AdapterInterface as Console;
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface, ConsoleUsageProviderInterface
 {
 
-    public function getAutoloaderConfig ()
+    public function getAutoloaderConfig()
     {
         return array(
             'Zend\Loader\StandardAutoloader' => array(
@@ -20,16 +20,35 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, Co
         );
     }
 
-    public function getConfig ()
+    public function getConfig()
     {
         return include __DIR__ . '/../../config/module.config.php';
     }
 
-    public function getConsoleUsage (Console $console)
+    public function getConsoleUsage(Console $console)
     {
         return array(
-            'datagrid person [--page=] [--items=] [-sortBy=] [-sortDir=]' => 'Show person datagrid',
-            'datagrid category' => 'Show category datagrid'
+            'Display the example console datagrid',
+            'datagrid person' => 'Show person datagrid',
+            'datagrid category' => 'Show category datagrid',
+            
+            'Options:',
+            array(
+                '--page=NUMBER',
+                'Number of the page to display [1...n]'
+            ),
+            array(
+                '--itmes=NUMBER',
+                'How much items to display per page [1...n]'
+            ),
+            array(
+                '--sortBy=COLUMN',
+                'Unique id of the column(s) to sort (split with: ,)'
+            ),
+            array(
+                '--sortDir=DIRECTION',
+                'Sort direction of the columns [ASC|DESC] (split with: ,)'
+            )
         );
     }
 }

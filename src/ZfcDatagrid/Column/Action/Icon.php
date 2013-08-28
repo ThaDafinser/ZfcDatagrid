@@ -19,11 +19,19 @@ class Icon extends AbstractAction
         $this->iconClass = (string) $name;
     }
 
+    /**
+     *
+     * @return string
+     */
     public function getIconClass()
     {
         return $this->iconClass;
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function hasIconClass()
     {
         if ($this->getIconClass() != '') {
@@ -34,13 +42,13 @@ class Icon extends AbstractAction
     }
 
     /**
-     * Set the icon link (used for export, or also HTML, if no icon class is provided)
+     * Set the icon link (is used, if no icon class is provided)
      *
-     * @param string $http            
+     * @param string $httpLink            
      */
-    public function setIconLink($http)
+    public function setIconLink($httpLink)
     {
-        $this->iconLink = (string) $http;
+        $this->iconLink = (string) $httpLink;
     }
 
     /**
@@ -53,6 +61,10 @@ class Icon extends AbstractAction
         return $this->iconLink;
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function hasIconLink()
     {
         if ($this->getIconLink() != '') {
@@ -62,25 +74,23 @@ class Icon extends AbstractAction
         return false;
     }
 
-    public function toHtml()
+    /**
+     *
+     * @return string
+     */
+    protected function getHtmlType()
     {
+        $innerHtml = '';
         if ($this->hasIconClass() === true) {
             // a css class is provided, so use it
-            $this->addClass($this->getIconClass());
-            
-            $attributes = array();
-            foreach ($this->getAttributes() as $attrKey => $attrValue) {
-                $attributes[] = $attrKey . '="' . $attrValue . '"';
-            }
-            
-            $attributes = implode(' ', $attributes);
-            
-            return '<i title="' . $this->getTitle() . '" ' . $attributes . '></i>';
+            $innerHtml = '<i class="' . $this->getIconClass() . '"></i>';
         } elseif ($this->hasIconLink() === true) {
             // no css class -> use the icon link instead
-            return '<img src="' . $this->getIconLink() . '" />';
+            $innerHtml = '<img src="' . $this->getIconLink() . '" />';
         } else {
             throw new \InvalidArgumentException('Either a link or a class for the icon is required');
         }
+        
+        return $innerHtml;
     }
 }

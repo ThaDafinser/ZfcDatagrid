@@ -70,7 +70,7 @@ abstract class AbstractRenderer implements RendererInterface
      */
     protected $translator;
 
-    public function setOptions (array $options)
+    public function setOptions(array $options)
     {
         $this->options = $options;
     }
@@ -79,7 +79,7 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @return array
      */
-    public function getOptions ()
+    public function getOptions()
     {
         return $this->options;
     }
@@ -88,7 +88,7 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @return array
      */
-    public function getOptionsRenderer ()
+    public function getOptionsRenderer()
     {
         $options = $this->getOptions();
         if (isset($options['renderer'][$this->getName()])) {
@@ -98,7 +98,7 @@ abstract class AbstractRenderer implements RendererInterface
         }
     }
 
-    public function setViewModel (ViewModel $viewModel)
+    public function setViewModel(ViewModel $viewModel)
     {
         $this->viewModel = $viewModel;
     }
@@ -107,17 +107,17 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @return \Zend\View\Model\ViewModel
      */
-    public function getViewModel ()
+    public function getViewModel()
     {
         return $this->viewModel;
     }
 
-    public function setTemplate ($name)
+    public function setTemplate($name)
     {
         $this->template = (string) $name;
     }
 
-    public function getTemplate ()
+    public function getTemplate()
     {
         if ($this->template === null) {
             $this->template = $this->getTemplatePathDefault('layout');
@@ -133,7 +133,7 @@ abstract class AbstractRenderer implements RendererInterface
      *            layout or toolbar
      * @return string
      */
-    public function getTemplatePathDefault ($type = 'layout')
+    public function getTemplatePathDefault($type = 'layout')
     {
         $options = $this->getOptions();
         if (isset($options['renderer'][$this->getName()]['templates'][$type])) {
@@ -149,12 +149,12 @@ abstract class AbstractRenderer implements RendererInterface
         throw new \Exception('not defined: "' . $type . '"');
     }
 
-    public function setToolbarTemplate ($name)
+    public function setToolbarTemplate($name)
     {
         $this->templateToolbar = (string) $name;
     }
 
-    public function getToolbarTemplate ()
+    public function getToolbarTemplate()
     {
         if ($this->templateToolbar === null) {
             $this->templateToolbar = $this->getTemplatePathDefault('toolbar');
@@ -169,7 +169,7 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @param \Zend\Paginator\Paginator $paginator            
      */
-    public function setPaginator (Paginator $paginator)
+    public function setPaginator(Paginator $paginator)
     {
         $this->paginator = $paginator;
     }
@@ -178,7 +178,7 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @return \Zend\Paginator\Paginator
      */
-    public function getPaginator ()
+    public function getPaginator()
     {
         return $this->paginator;
     }
@@ -188,7 +188,7 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @param array $columns            
      */
-    public function setColumns (array $columns)
+    public function setColumns(array $columns)
     {
         $this->columns = $columns;
     }
@@ -196,9 +196,9 @@ abstract class AbstractRenderer implements RendererInterface
     /**
      * Get all columns
      *
-     * @return array
+     * @return \ZfcDatagrid\Column\AbstractColumn[]
      */
-    public function getColumns ()
+    public function getColumns()
     {
         return $this->columns;
     }
@@ -208,7 +208,7 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @param array $columns            
      */
-    protected function calculateColumnWidthPercent (array $columns)
+    protected function calculateColumnWidthPercent(array $columns)
     {
         $widthAllColumn = 0;
         foreach ($columns as $column) {
@@ -231,7 +231,7 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @return float
      */
-    protected function getPaperWidth ()
+    protected function getPaperWidth()
     {
         $optionsRenderer = $this->getOptionsRenderer();
         
@@ -268,22 +268,22 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @param array $data            
      */
-    public function setData (array $data)
+    public function setData(array $data)
     {
         $this->data = $data;
     }
 
-    public function getData ()
+    public function getData()
     {
         return $this->data;
     }
 
-    public function setCacheData (array $cacheData = null)
+    public function setCacheData(array $cacheData = null)
     {
         $this->cacheData = $cacheData;
     }
 
-    private function getCacheSortConditions ()
+    private function getCacheSortConditions()
     {
         if (! isset($this->cacheData['sortConditions'])) {
             throw new \Exception('Sort conditions from cache are missing!');
@@ -291,7 +291,7 @@ abstract class AbstractRenderer implements RendererInterface
         return $this->cacheData['sortConditions'];
     }
 
-    private function getCacheFilters ()
+    private function getCacheFilters()
     {
         if (! isset($this->cacheData['filters'])) {
             throw new \Exception('Filters from cache are missing!');
@@ -304,7 +304,7 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @see \ZfcDatagrid\Renderer\RendererInterface::setMvcEvent()
      */
-    public function setMvcEvent (MvcEvent $mvcEvent)
+    public function setMvcEvent(MvcEvent $mvcEvent)
     {
         $this->mvcEvent = $mvcEvent;
     }
@@ -314,12 +314,12 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @return MvcEvent
      */
-    public function getMvcEvent ()
+    public function getMvcEvent()
     {
         return $this->mvcEvent;
     }
 
-    public function setTranslator (Translator $translator)
+    public function setTranslator(Translator $translator)
     {
         $this->translator = $translator;
     }
@@ -328,27 +328,27 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @return \Zend\I18n\Translator\Translator
      */
-    public function getTranslator ()
+    public function getTranslator()
     {
         return $this->translator;
     }
 
-    public function setTitle ($title)
+    public function setTitle($title)
     {
         $this->title = $title;
     }
 
-    public function getTitle ()
+    public function getTitle()
     {
         return $this->title;
     }
 
-    public function setCacheId ($cacheId)
+    public function setCacheId($cacheId)
     {
         $this->cacheId = $cacheId;
     }
 
-    public function getCacheId ()
+    public function getCacheId()
     {
         return $this->cacheId;
     }
@@ -359,7 +359,7 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @return string
      */
-    public function getFilename ()
+    public function getFilename()
     {
         $title = $this->getTitle();
         
@@ -380,7 +380,7 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @return \Zend\Stdlib\RequestInterface
      */
-    public function getRequest ()
+    public function getRequest()
     {
         return $this->getMvcEvent()->getRequest();
     }
@@ -389,7 +389,7 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @return array
      */
-    public function getSortConditions ()
+    public function getSortConditions()
     {
         if (is_array($this->sortConditions)) {
             // set from cache! (for export)
@@ -411,7 +411,7 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @return array
      */
-    public function getSortConditionsDefault ()
+    public function getSortConditionsDefault()
     {
         $sortConditions = array();
         foreach ($this->getColumns() as $column) {
@@ -437,7 +437,7 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @return array
      */
-    public function getFilters ()
+    public function getFilters()
     {
         if (is_array($this->filters)) {
             // set from cache! (for export)
@@ -459,7 +459,7 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @return array
      */
-    public function getFiltersDefault ()
+    public function getFiltersDefault()
     {
         $filters = array();
         if ($this->getRequest() instanceof ConsoleRequest || ($this->getRequest() instanceof HttpRequest && ! $this->getRequest()->isPost())) {
@@ -485,7 +485,7 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @return integer
      */
-    public function getCurrentPageNumber ()
+    public function getCurrentPageNumber()
     {
         return (int) $this->currentPageNumber;
     }
@@ -495,7 +495,7 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @return integer
      */
-    public function getItemsPerPage ($defaultItems = 25)
+    public function getItemsPerPage($defaultItems = 25)
     {
         if ($this->isExport() === true) {
             return (int) - 1;
@@ -511,7 +511,7 @@ abstract class AbstractRenderer implements RendererInterface
      *      
      * @see \ZfcDatagrid\Renderer\RendererInterface::prepareViewModel()
      */
-    public function prepareViewModel (Datagrid $grid)
+    public function prepareViewModel(Datagrid $grid)
     {
         $viewModel = $this->getViewModel();
         
@@ -540,9 +540,7 @@ abstract class AbstractRenderer implements RendererInterface
         $viewModel->setVariable('data', $this->getData());
         $viewModel->setVariable('filters', $this->getFilters());
         
-        if ($grid->hasRowClickAction() === true) {
-            $viewModel->setVariable('rowClickAction', $grid->getRowClickAction());
-        }
+        $viewModel->setVariable('rowClickAction', $grid->getRowClickAction());
         
         $viewModel->setVariable('isUserFilterEnabled', $grid->isUserFilterEnabled());
         
