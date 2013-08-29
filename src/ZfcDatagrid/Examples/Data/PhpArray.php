@@ -85,7 +85,7 @@ class PhpArray implements ServiceLocatorAwareInterface
         );
         $row5 = array(
             'id' => 5,
-            'displayName' => 'Anna Marie Franz',
+            'displayName' => 'Anna Marie \' Franz',
             'familyName' => 'Franz',
             'givenName' => 'Anna Marie',
             'email' => 'unknown@test.com',

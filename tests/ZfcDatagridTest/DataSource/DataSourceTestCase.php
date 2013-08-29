@@ -2,6 +2,7 @@
 namespace ZfcDatagridTest\DataSource;
 
 use PHPUnit_Framework_TestCase;
+use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Type;
 
 class DataSourceTestCase extends PHPUnit_Framework_TestCase
@@ -17,7 +18,7 @@ class DataSourceTestCase extends PHPUnit_Framework_TestCase
      *
      * @var \ZfcDatagrid\Column\AbstractColumn
      */
-    protected  $colVolumne;
+    protected $colVolumne;
 
     /**
      *
@@ -25,12 +26,19 @@ class DataSourceTestCase extends PHPUnit_Framework_TestCase
      */
     protected $colEdition;
 
+    /**
+     *
+     * @var \ZfcDatagrid\Column\AbstractColumn
+     */
+    protected $colUserDisplayName;
+
     public function setUp()
     {
         $data = array();
         $data[] = array(
             'volume' => 67,
-            'edition' => 2
+            'edition' => 2,
+            'unneededCol' => 'something'
         );
         $data[] = array(
             'volume' => 86,
@@ -51,14 +59,15 @@ class DataSourceTestCase extends PHPUnit_Framework_TestCase
         );
         $data[] = array(
             'volume' => 67,
-            'edition' => 7
+            'edition' => 7,
+            'user' => array(
+                'displayName' => 'Martin'
+            )
         );
         
         $this->data = $data;
         
-        $col1 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
-        $col1->setUniqueId('volume');
-        $col1->setSelect('volume');
+        $col1 = new Column\Standard('volume');
         $col1->setType(new Type\Number());
         $this->colVolumne = $col1;
         
@@ -66,5 +75,8 @@ class DataSourceTestCase extends PHPUnit_Framework_TestCase
         $col2->setUniqueId('edition');
         $col2->setSelect('edition');
         $this->colEdition = $col2;
+        
+        $col3 = new Column\Standard('displayName', 'user');
+        $this->colUserDisplayName = $col3;
     }
 }

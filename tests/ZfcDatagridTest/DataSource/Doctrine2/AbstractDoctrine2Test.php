@@ -146,6 +146,8 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
     public function setUp()
     {
         $this->em = $this->_getTestEntityManager();
+        
+        parent::setUp();
     }
     
 }

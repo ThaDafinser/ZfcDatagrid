@@ -61,6 +61,12 @@ class Filter
 
     private $displayColumnValue;
 
+    /**
+     * Apply a filter based on a column
+     *
+     * @param Column\AbstractColumn $column            
+     * @param unknown $inputFilterValue            
+     */
     public function setFromColumn(Column\AbstractColumn $column, $inputFilterValue)
     {
         $this->column = $column;
@@ -169,12 +175,11 @@ class Filter
         } elseif (strpos($inputFilterValue, '<>') !== false) {
             $operator = self::BETWEEN;
             $value = explode('<>', $inputFilterValue);
-            if (count($value) != 2) {
-                $value = array(
-                    $value[0],
-                    $value[1]
-                );
-            }
+        }
+        
+        if ($value === false) {
+            // NO VALUE applied...maybe only "="
+            $value = '';
         }
         
         /*
@@ -189,6 +194,10 @@ class Filter
         $this->operator = $operator;
         
         if ($operator == self::BETWEEN) {
+            $value = array(
+                min($value),
+                max($value)
+            );
             $this->displayColumnValue = sprintf($operator, $value[0], $value[1]);
         } else {
             $this->displayColumnValue = sprintf($operator, implode(',', $value));

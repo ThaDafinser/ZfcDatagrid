@@ -87,7 +87,7 @@ abstract class AbstractDataSource implements DataSourceInterface
 
     /**
      *
-     * @return array
+     * @return \ZfcDatagrid\Filter[]
      */
     public function getFilters ()
     {

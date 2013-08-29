@@ -361,10 +361,10 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $filter->setFromColumn($this->column, '2<>3 <>4');
         
         $this->assertEquals(Filter::BETWEEN, $filter->getOperator());
-        $this->assertEquals('2 <> 3', $filter->getDisplayColumnValue());
+        $this->assertEquals('2 <> 4', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
             '2',
-            '3'
+            '4'
         ), $filter->getValues());
     }
 }

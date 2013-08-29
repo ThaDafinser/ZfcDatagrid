@@ -1,11 +1,11 @@
 <?php
-namespace ZfcDatagrid\DataSource;
+namespace ZfcDatagrid\DataSource\Doctrine2;
 
 use Zend\Paginator\Adapter\AdapterInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query;
 
-class Doctrine2Paginator implements AdapterInterface
+class Paginator implements AdapterInterface
 {
 
     /**

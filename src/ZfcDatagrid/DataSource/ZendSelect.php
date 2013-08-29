@@ -72,27 +72,23 @@ class ZendSelect extends AbstractDataSource
 
     public function execute()
     {
-        if ($this->sqlObject === null || ! $this->sqlObject instanceof \Zend\Db\Sql\Sql) {
+        if ($this->getAdapter() === null || ! $this->getAdapter() instanceof \Zend\Db\Sql\Sql) {
             throw new \Exception('Object "Zend\Db\Sql\Sql" is missing, please call setAdapter() first!');
         }
         
-        $select = $this->select;
+        $select = $this->getData();
         
         /**
          * Step 1) Apply needed columns
          */
         $selectColumns = array();
-        foreach ($this->columns as $column) {
+        foreach ($this->getColumns() as $column) {
+            
             if ($column instanceof Column\Standard && ! $column->hasDataPopulation()) {
-                // $colString = $column->getSelectPart1();
-                // if ($column->getSelectPart2() != '') {
-                $colString = $column->getSelectPart2();
-                // }
-                // $colString .= ' as ' . $column->getUniqueId();
-                
-                $selectColumns[$column->getUniqueId()] = $colString;
+                $selectColumns[$column->getUniqueId()] = $column->getSelectPart2();
             }
         }
+        // @note Table "Prefix" should be set automatically, so $column->getSelectPart1() is not needed...
         $select->columns($selectColumns);
         
         /**
@@ -117,14 +113,12 @@ class ZendSelect extends AbstractDataSource
             /* @var $filter \ZfcDatagrid\Filter */
             if ($filter->isColumnFilter() === true) {
                 $filterColumn->applyFilter($filter);
-                
-                
             }
         }
         
         /**
          * Step 4) Pagination
          */
-        $this->setPaginatorAdapter(new PaginatorAdapter($select, $this->sqlObject));
+        $this->setPaginatorAdapter(new PaginatorAdapter($select, $this->getAdapter()));
     }
 }

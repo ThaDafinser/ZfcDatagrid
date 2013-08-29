@@ -64,10 +64,10 @@ class Filter
             return $adapter->getPlatform()->quoteValue($value);
         };
         
-        $wheres = array();
-        
         $colString = $filter->getColumn()->getUniqueId();
         $values = $filter->getValues();
+        
+        $wheres = array();
         foreach ($values as $value) {
             $where = new Where();
             
@@ -128,9 +128,7 @@ class Filter
                     break;
                 
                 case DatagridFilter::BETWEEN:
-                    $min = min($values);
-                    $max = max($values);
-                    $wheres[] = $where->between($colString, $min, $max);
+                    $wheres[] = $where->between($colString, $values[0], $values[1]);
                     break 2;
                 
                 default:
@@ -139,8 +137,9 @@ class Filter
             }
         }
         
-        $set = new PredicateSet($wheres, PredicateSet::OP_OR);
-        
-        $select->where->andPredicate($set);
+        if (count($wheres) > 0) {
+            $set = new PredicateSet($wheres, PredicateSet::OP_OR);
+            $select->where->andPredicate($set);
+        }
     }
 }

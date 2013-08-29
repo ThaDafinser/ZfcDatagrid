@@ -7,6 +7,7 @@ use ZfcDatagrid\Filter;
 
 /**
  * @group DataSource
+ *
  * @covers ZfcDatagrid\DataSource\PhpArray
  */
 class PhpArrayTest extends DataSourceTestCase
@@ -45,6 +46,8 @@ class PhpArrayTest extends DataSourceTestCase
     public function testExecute()
     {
         $source = new PhpArray($this->data);
+        // $source = clone $this->source;
+        
         $source->addSortCondition($this->colVolumne);
         $source->addSortCondition($this->colEdition, 'DESC');
         $source->execute();
@@ -54,13 +57,15 @@ class PhpArrayTest extends DataSourceTestCase
 
     public function testFilter()
     {
+        $source = clone $this->source;
+        
         /*
          * LIKE
          */
         $filter = new Filter();
         $filter->setFromColumn($this->colVolumne, '~7');
         
-        $source = new PhpArray($this->data);
+        // $source = new PhpArray($this->data);
         $source->addFilter($filter);
         $source->execute();
         

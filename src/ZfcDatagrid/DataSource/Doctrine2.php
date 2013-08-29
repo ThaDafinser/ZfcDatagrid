@@ -2,7 +2,7 @@
 namespace ZfcDatagrid\DataSource;
 
 use ZfcDatagrid\Filter;
-use ZfcDatagrid\DataSource\Doctrine2Paginator as PaginatorAdapter;
+use ZfcDatagrid\DataSource\Doctrine2\Paginator as PaginatorAdapter;
 use ZfcDatagrid\Column;
 use Doctrine\ORM;
 use Doctrine\ORM\Query\Expr;
@@ -45,13 +45,13 @@ class Doctrine2 extends AbstractDataSource
 
     public function execute()
     {
-        $queryBuilder = $this->queryBuilder;
+        $queryBuilder = $this->getData();
         
         /**
          * Step 1) Apply needed columns
          */
         $selectColumns = array();
-        foreach ($this->columns as $column) {
+        foreach ($this->getColumns() as $column) {
             if ($column instanceof Column\Standard && ! $column->hasDataPopulation()) {
                 $colString = $column->getSelectPart1();
                 if ($column->getSelectPart2() != '') {
@@ -68,11 +68,11 @@ class Doctrine2 extends AbstractDataSource
         /**
          * Step 2) Apply sorting
          */
-        if (count($this->sortConditions) > 0) {
+        if (count($this->getSortConditions()) > 0) {
             // Minimum one sort condition given -> so reset the default orderBy
             $queryBuilder->resetDQLPart('orderBy');
             
-            foreach ($this->sortConditions as $sortCondition) {
+            foreach ($this->getSortConditions() as $sortCondition) {
                 $column = $sortCondition['column'];
                 $queryBuilder->add('orderBy', new Expr\OrderBy($column->getUniqueId(), $sortCondition['sortDirection']), true);
             }
@@ -81,109 +81,16 @@ class Doctrine2 extends AbstractDataSource
         /**
          * Step 3) Apply filters
          */
-        $whereExpressions = array();
-        foreach ($this->filters as $filter) {
-            /* @var $filter \ZfcDatagrid\Filter */
+        $filterColumn = new Doctrine2\Filter($queryBuilder);
+        foreach ($this->getFilters() as $filter) {
             if ($filter->isColumnFilter() === true) {
-                $values = $filter->getValues();
-                
-                $column = $filter->getColumn();
-                $colString = $column->getSelectPart1();
-                if ($column->getSelectPart2() != '') {
-                    $colString .= '.' . $column->getSelectPart2();
-                }
-                
-                $whereExpressions[] = $this->getWhereExpression($filter->getOperator(), $colString, $values, $queryBuilder->expr());
+                $filterColumn->applyFilter($filter);
             }
-        }
-        
-        if (count($whereExpressions) > 0) {
-            // Maybe WHERE are already existing...so keep it!
-            $where = $queryBuilder->getDQLPart('where');
-            
-            $or = $queryBuilder->expr()->andX();
-            $or->add($where);
-            $or->addMultiple($whereExpressions);
-            
-            $queryBuilder->where($or);
         }
         
         /**
          * Step 4) Pagination
          */
         $this->setPaginatorAdapter(new PaginatorAdapter($queryBuilder));
-    }
-
-    /**
-     * getWhereExpression
-     *
-     * @param string $operator            
-     * @param string $colString            
-     * @param array $values            
-     * @throws \Exception
-     * @return \Doctrine\ORM\Query\Expr
-     */
-    private function getWhereExpression($operator, $colString, $values)
-    {
-        $expr = new Expr();
-        
-        switch ($operator) {
-            
-            case Filter::LIKE:
-                return $expr->like($colString, $expr->literal('%' . $values[0] . '%'));
-                break;
-            
-            case Filter::LIKE_LEFT:
-                return $expr->like($colString, $expr->literal('%' . $values[0]));
-                break;
-            
-            case Filter::LIKE_RIGHT:
-                return $expr->like($colString, $expr->literal($values[0] . '%'));
-                break;
-            
-            case Filter::NOT_LIKE:
-                return $expr->notLike($colString, $expr->literal('%' . $values[0] . '%'));
-                break;
-            
-            case Filter::NOT_LIKE_LEFT:
-                return $expr->notLike($colString, $expr->literal('%' . $values[0]));
-                break;
-            
-            case Filter::NOT_LIKE_RIGHT:
-                return $expr->notLike($colString, $expr->literal($values[0] . '%'));
-                break;
-            
-            case Filter::EQUAL:
-                return $expr->eq($colString, $expr->literal($values[0]));
-                break;
-            
-            case Filter::NOT_EQUAL:
-                return $expr->neq($colString, $expr->literal($values[0]));
-                break;
-            
-            case Filter::GREATER_EQUAL:
-                return $expr->gte($colString, $expr->literal($values[0]));
-                break;
-            
-            case Filter::GREATER:
-                return $expr->gt($colString, $expr->literal($values[0]));
-                break;
-            
-            case Filter::LESS_EQUAL:
-                return $expr->lte($colString, $expr->literal($values[0]));
-                break;
-            
-            case Filter::LESS:
-                return $expr->lt($colString, $expr->literal($values[0]));
-                break;
-            
-            case Filter::BETWEEN:
-                return $expr->between($colString, $values[0], $values[1]);
-                break;
-            
-            default:
-                throw new \Exception('This operator is currently not supported: ' . $operator);
-                break;
-        }
     }
 }

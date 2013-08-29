@@ -45,6 +45,8 @@ class ZendSelectTest extends DataSourceTestCase
      */
     public function setUp()
     {
+        parent::setUp();
+        
         $this->mockDriver = $this->getMock('Zend\Db\Adapter\Driver\DriverInterface');
         $this->mockConnection = $this->getMock('Zend\Db\Adapter\Driver\ConnectionInterface');
         $this->mockDriver->expects($this->any())
@@ -71,8 +73,6 @@ class ZendSelectTest extends DataSourceTestCase
             $this->colVolumne,
             $this->colEdition
         ));
-        
-        parent::setUp();
     }
 
     public function testConstruct()

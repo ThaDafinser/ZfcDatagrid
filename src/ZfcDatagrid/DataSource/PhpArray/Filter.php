@@ -13,8 +13,8 @@ class Filter
     private $filter;
 
     /**
-     * 
-     * @param \ZfcDatagrid\Filter $filter
+     *
+     * @param \ZfcDatagrid\Filter $filter            
      */
     public function __construct(DatagridFilter $filter)
     {
@@ -33,19 +33,41 @@ class Filter
     /**
      *
      * @param array $row            
-     * @return Ambigous <string, unknown>
+     * @param mixed $filterValue            
+     * @param string $filterType            
+     * @return mixed
      */
-    private function getRowValue(array $row)
+    private function getRowValue(array $row, $filterValue, $filterType = DatagridFilter::LIKE)
     {
         $rowValue = $row[$this->getFilter()
             ->getColumn()
             ->getUniqueId()];
         
-        if (! is_array($rowValue)) {
-            $rowValue = (string) $rowValue;
+        $rowValue = $this->getFilter()
+            ->getColumn()
+            ->getType()
+            ->getFilterValue($rowValue);
+        
+        switch ($filterType) {
+            
+            case DatagridFilter::LIKE:
+            case DatagridFilter::LIKE_LEFT:
+            case DatagridFilter::LIKE_RIGHT:
+            case DatagridFilter::NOT_LIKE:
+            case DatagridFilter::NOT_LIKE_LEFT:
+            case DatagridFilter::NOT_LIKE_RIGHT:
+                $rowValue = (string) $rowValue;
+                $filterValue = (string) $filterValue;
+                break;
         }
         
-        return $rowValue;
+        return array($rowValue, $filterValue);
+        
+        // if (! is_array($rowValue)) {
+        // $rowValue = (string) $rowValue;
+        // }
+        
+        // return $rowValue;
     }
 
     /**
@@ -61,7 +83,8 @@ class Filter
         
         $filters = $this->getFilter()->getValues();
         foreach ($filters as $filter) {
-            $value = $this->getRowValue($row);
+            list ($value, $filter) = $this->getRowValue($row, $filter, $this->getFilter()
+                ->getOperator());
             
             switch ($this->getFilter()->getOperator()) {
                 
@@ -165,9 +188,7 @@ class Filter
                     break;
                 
                 case DatagridFilter::BETWEEN:
-                    $min = min($filters);
-                    $max = max($filters);
-                    if ($value >= $min && $value <= $max) {
+                    if ($value >= $filters[0] && $value <= $filters[1]) {
                         $return = true;
                         break 2;
                     }
