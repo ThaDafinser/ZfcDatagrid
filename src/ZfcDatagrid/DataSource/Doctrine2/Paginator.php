@@ -76,7 +76,7 @@ class Paginator implements AdapterInterface
             return false;
         }
         
-        if ($parts['groupBy'] !== null && count($parts['groupBy']) > 1) {
+        if (count($parts['groupBy']) > 1) {
             return false;
         }
         
