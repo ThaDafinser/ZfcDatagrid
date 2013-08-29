@@ -397,4 +397,24 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('3', $operator->getMinValue());
         $this->assertEquals('myValue', $operator->getMaxValue());
     }
+
+    public function testException()
+    {
+        $filter = $this->getMock('ZfcDatagrid\Filter');
+        $filter->expects($this->any())
+            ->method('getColumn')
+            ->will($this->returnValue($this->column));
+        $filter->expects($this->any())
+            ->method('getValues')
+            ->will($this->returnValue(array(
+            1
+        )));
+        $filter->expects($this->any())
+            ->method('getOperator')
+            ->will($this->returnValue(' () '));
+        
+        $this->setExpectedException('InvalidArgumentException');
+        $filterSelect = clone $this->filterSelect;
+        $filterSelect->applyFilter($filter);
+    }
 }

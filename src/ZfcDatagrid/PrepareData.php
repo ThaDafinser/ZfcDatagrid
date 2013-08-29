@@ -130,15 +130,11 @@ class PrepareData
                 if ($column->hasDataPopulation() === true) {
                     // @todo improve the interface...
                     $dataPopulation = $column->getDataPopulation();
-                    if ($dataPopulation instanceof Column\DataPopulation\Object) {
-                        
-                        foreach ($dataPopulation->getParameters() as $parameter) {
-                            $dataPopulation->setParameterValue($parameter['objectParameterName'], $row[$parameter['column']->getUniqueId()]);
-                        }
-                        $row[$column->getUniqueId()] = $dataPopulation->toString();
-                    } else {
-                        throw new \Exception('@todo');
+                    
+                    foreach ($dataPopulation->getParameters() as $parameter) {
+                        $dataPopulation->setParameterValue($parameter['objectParameterName'], $row[$parameter['column']->getUniqueId()]);
                     }
+                    $row[$column->getUniqueId()] = $dataPopulation->toString();
                 }
                 
                 if (! isset($row[$column->getUniqueId()])) {

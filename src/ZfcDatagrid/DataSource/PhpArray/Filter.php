@@ -195,7 +195,7 @@ class Filter
                     break;
                 
                 default:
-                    throw new \Exception('This filter mode is not supported for PhpArray source: "' . $this->getFilter()->getOperator() . '"');
+                    throw new \InvalidArgumentException('This filter mode is not supported for PhpArray source: "' . $this->getFilter()->getOperator() . '"');
                     break;
             }
         }

@@ -4,6 +4,7 @@ namespace ZfcDatagridTest;
 use PHPUnit_Framework_TestCase;
 use ZfcDatagrid\PrepareData;
 use ZfcDatagrid\Column\Type;
+use ZfcDatagrid\Column\DataPopulation\Object;
 
 /**
  * @covers ZfcDatagrid\PrepareData
@@ -190,7 +191,7 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
         
         $col2 = clone $this->col2;
         $col2->setReplaceValues(array(
-            'y' => 'yes',
+            'y' => 'yes'
         ), false);
         $prepare = new PrepareData($data, array(
             $this->colId,
@@ -315,6 +316,43 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
             'Tag 2', // replaced
             'tag5'
         );
+        
+        $this->assertEquals($data, $prepare->getData());
+    }
+
+    public function testPrepareDataPopulation()
+    {
+        $data = $this->data;
+        
+        $mock = $this->getMock('ZfcDatagrid\Column\DataPopulation\Object\Gravatar');
+        $mock->expects($this->any())
+            ->method('toString')
+            ->will($this->returnValue('myReturn'));
+        
+        $object = new Object();
+        $object->setObject($mock);
+        $object->addObjectParameterColumn('email', $this->col1);
+        
+        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col->setUniqueId('colPopulation');
+        $col->setDataPopulation($object);
+        
+        $prepare = new PrepareData($data, array(
+            $this->colId,
+            $this->col1,
+            $this->col2,
+            $col
+        ));
+        
+        $data[0]['idConcated'] = '1';
+        $data[1]['idConcated'] = '2';
+        $data[2]['idConcated'] = '3';
+        
+        $data[1]['col2'] = '';
+        
+        $data[0]['colPopulation'] = 'myReturn';
+        $data[1]['colPopulation'] = 'myReturn';
+        $data[2]['colPopulation'] = 'myReturn';
         
         $this->assertEquals($data, $prepare->getData());
     }

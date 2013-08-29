@@ -315,4 +315,24 @@ class FilterTest extends AbstractDoctrine2Test
         $this->assertEquals('123', $parameters[0]->getValue());
         $this->assertEquals('789', $parameters[1]->getValue());
     }
+
+    public function testException()
+    {
+        $filter = $this->getMock('ZfcDatagrid\Filter');
+        $filter->expects($this->any())
+            ->method('getColumn')
+            ->will($this->returnValue($this->colVolumne));
+        $filter->expects($this->any())
+            ->method('getValues')
+            ->will($this->returnValue(array(
+            1
+        )));
+        $filter->expects($this->any())
+            ->method('getOperator')
+            ->will($this->returnValue(' () '));
+        
+        $this->setExpectedException('InvalidArgumentException');
+        $filterDoctrine2 = clone $this->filterDoctrine2;
+        $filterDoctrine2->applyFilter($filter);
+    }
 }

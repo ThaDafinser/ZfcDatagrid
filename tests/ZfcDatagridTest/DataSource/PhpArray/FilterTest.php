@@ -419,15 +419,21 @@ class FilterTest extends PHPUnit_Framework_TestCase
     public function testException()
     {
         $filter = $this->getMock('ZfcDatagrid\Filter');
-           
+        $filter->expects($this->any())
+            ->method('getColumn')
+            ->will($this->returnValue($this->column));
+        $filter->expects($this->any())
+            ->method('getValues')
+            ->will($this->returnValue(array(
+            1
+        )));
         $filter->expects($this->any())
             ->method('getOperator')
-            ->will($this->returnValue('not allowed'));
+            ->will($this->returnValue(' () '));
+        
+        $this->setExpectedException('InvalidArgumentException');
         
         $filterArray = new FilterArray($filter);
-        
-        $this->setExpectedException('Exception');
-        
         $filterArray->applyFilter(array(
             'myCol' => '15'
         ));

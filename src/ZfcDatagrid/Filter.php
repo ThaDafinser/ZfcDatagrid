@@ -216,6 +216,10 @@ class Filter
         $this->value = $value;
     }
 
+    /**
+     * 
+     * @return boolean
+     */
     public function isColumnFilter()
     {
         if ($this->getColumn() instanceof Column\AbstractColumn) {
@@ -243,6 +247,10 @@ class Filter
         return $this->value;
     }
 
+    /**
+     * 
+     * @return string
+     */
     public function getOperator()
     {
         return $this->operator;

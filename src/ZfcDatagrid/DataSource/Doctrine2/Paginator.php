@@ -1,9 +1,16 @@
 <?php
+/**
+ * This is just a proxy to detect if we can use the "fast" Pagination
+ * or if we use the "safe" variant by Doctrine2
+ *
+ */
 namespace ZfcDatagrid\DataSource\Doctrine2;
 
 use Zend\Paginator\Adapter\AdapterInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\Tools\Pagination\Paginator as Doctrine2Paginator;
+use ZfcDatagrid\DataSource\Doctrine2\PaginatorFast as ZfcDatagridPaginator;
 
 class Paginator implements AdapterInterface
 {
@@ -12,7 +19,7 @@ class Paginator implements AdapterInterface
      *
      * @var QueryBuilder
      */
-    protected $queryBuilder = null;
+    protected $qb = null;
 
     /**
      * Total item count
@@ -23,27 +30,100 @@ class Paginator implements AdapterInterface
 
     /**
      *
-     * @param QueryBuilder $queryBuilder            
+     * @var \Doctrine\ORM\Tools\Pagination\Paginator
      */
-    public function __construct (QueryBuilder $queryBuilder)
+    private $paginator;
+
+    /**
+     *
+     * @param QueryBuilder $qb            
+     */
+    public function __construct(QueryBuilder $qb)
     {
-        $this->queryBuilder = $queryBuilder;
+        $this->qb = $qb;
+    }
+
+    /**
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getQueryBuilder()
+    {
+        return $this->qb;
+    }
+
+    /**
+     * Test which pagination solution to use
+     *
+     * @return boolean
+     */
+    private function useCustomPaginator()
+    {
+        $qb = $this->getQueryBuilder();
+        $platform = $qb->getEntityManager()
+            ->getConnection()
+            ->getDatabasePlatform();
+        
+        if ($platform->getName() != 'mysql') {
+            // Only tested mysql currently so all other i don't know, if my implementation is good...
+            return false;
+        }
+        
+        $parts = $qb->getDQLParts();
+        
+        if ($parts['having'] !== null || $parts['distinct'] === true) {
+            // never tried having in such queries...
+            return false;
+        }
+        
+        if ($parts['groupBy'] !== null && count($parts['groupBy']) > 1) {
+            return false;
+        }
+        
+        // @todo maybe more detection needed :-/
+        
+        return true;
+    }
+
+    /**
+     *
+     * @return \Doctrine\ORM\Tools\Pagination\Paginator
+     */
+    private function getPaginator()
+    {
+        if ($this->paginator !== null) {
+            return $this->paginator;
+        }
+        
+        if ($this->useCustomPaginator() === true) {
+            $this->paginator = new ZfcDatagridPaginator($this->getQueryBuilder());
+        } else {
+            // Doctrine2Paginator as fallback...they are using 3 queries
+            $this->paginator = new Doctrine2Paginator($this->getQueryBuilder());
+        }
+        
+        return $this->paginator;
     }
 
     /**
      * Returns an array of items for a page.
      *
-     * @param integer $offset
-     *            Page offset
-     * @param integer $itemCountPerPage
-     *            Number of items per page
+     * @param integer $offset            
+     * @param integer $itemCountPerPage            
      * @return array
      */
-    public function getItems ($offset, $itemCountPerPage)
+    public function getItems($offset, $itemCountPerPage)
     {
-        $queryBuilder = $this->queryBuilder;
-        $queryBuilder->setFirstResult($offset)->setMaxResults($itemCountPerPage);
-        return $queryBuilder->getQuery()->getArrayResult();
+        $paginator = $this->getPaginator();
+        if ($paginator instanceof Doctrine2Paginator) {
+            $this->getQueryBuilder()
+                ->setFirstResult($offset)
+                ->setMaxResults($itemCountPerPage);
+            
+            return $paginator->getIterator()->getArrayCopy();
+        } else {
+            return $paginator->getItems($offset, $itemCountPerPage);
+        }
     }
 
     /**
@@ -51,72 +131,8 @@ class Paginator implements AdapterInterface
      *
      * @return integer
      */
-    public function count ()
+    public function count()
     {
-        if ($this->rowCount !== null) {
-            return $this->rowCount;
-        }
-        
-        $queryBuilder = $this->queryBuilder;
-        $queryBuilder = clone $queryBuilder;
-        
-        $queryBuilder->setFirstResult(null)
-            ->setMaxResults(null)
-            ->resetDQLParts(array(
-            'orderBy',
-            'groupBy'
-        ));
-        
-        $AST = $queryBuilder->getQuery()->getAST();
-        
-        $hasExpr = false;
-        foreach ($AST->selectClause->selectExpressions as $selectExpressions) {
-            if ($selectExpressions->expression instanceof Query\AST\AggregateExpression) {
-                $hasExpr = true;
-            }
-        }
-        
-        if ($hasExpr === true) {
-            $result = $queryBuilder->getQuery()->getResult(Query::HYDRATE_ARRAY);
-            $this->rowCount = count($result);
-        } else {
-            $queryBuilder->resetDQLPart('select');
-            
-            $fromPart = $queryBuilder->getDQLPart('from');
-            $queryBuilder->select('COUNT(DISTINCT ' . $fromPart[0]->getAlias() . ')');
-            
-            try {
-                $this->rowCount = $queryBuilder->getQuery()->getSingleScalarResult();
-            } catch (\Exception $e) {
-                // when the result is non unique its most likely that a group by was used
-                // if so, we just get the complete result and count the number of results
-                $result = $queryBuilder->getQuery()->getResult();
-                $this->rowCount = count($result);
-            }
-        }
-        
-        return $this->rowCount;
-        
-        // $select = clone $this->select;
-        // $select->reset(Select::COLUMNS);
-        // $select->reset(Select::LIMIT);
-        // $select->reset(Select::OFFSET);
-        // $select->reset(Select::ORDER);
-        // $select->reset(Select::GROUP);
-        
-        // // get join information, clear, and repopulate without columns
-        // $joins = $select->getRawState(Select::JOINS);
-        // $select->reset(Select::JOINS);
-        // foreach ($joins as $join) {
-        // $select->join($join['name'], $join['on'], array(), $join['type']);
-        // }
-        
-        // $select->columns(array('c' => new Expression('COUNT(1)')));
-        
-        // $statement = $this->sql->prepareStatementForSqlObject($select);
-        // $result = $statement->execute();
-        // $row = $result->current();
-        
-        // $this->rowCount = $row['c'];
+        return $this->getPaginator()->count();
     }
 }

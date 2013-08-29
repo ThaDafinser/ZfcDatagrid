@@ -16,7 +16,7 @@ class Object implements DataPopulationInterface
     private $object;
 
     /**
-     * 
+     *
      * @var array
      */
     private $parameters = array();
@@ -41,7 +41,8 @@ class Object implements DataPopulationInterface
     }
 
     /**
-     *
+     * Apply a dynamic parameter based on row/column value
+     * 
      * @param string $objectParameterName            
      * @param AbstractColumn $column            
      */
@@ -54,7 +55,7 @@ class Object implements DataPopulationInterface
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getParameters()
@@ -63,10 +64,10 @@ class Object implements DataPopulationInterface
     }
 
     /**
-     * Directly apply a parameter
-     * 
-     * @param string $name
-     * @param mixed $value
+     * Directly apply a "static" parameter
+     *
+     * @param string $name            
+     * @param mixed $value            
      */
     public function setParameterValue($name, $value)
     {

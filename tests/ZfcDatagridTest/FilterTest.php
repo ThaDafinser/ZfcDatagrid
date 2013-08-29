@@ -26,6 +26,8 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new Filter();
         
+        $this->assertFalse($filter->isColumnFilter());
+        
         $filter->setFromColumn($this->column, 'test');
         $this->assertEquals($this->column, $filter->getColumn());
         $this->assertEquals(Filter::LIKE, $filter->getOperator());
@@ -35,6 +37,22 @@ class FilterTest extends PHPUnit_Framework_TestCase
             'test'
         ), $filter->getValues());
         
+        $this->assertTrue($filter->isColumnFilter());
+    }
+    
+    public function testEqualEmpty()
+    {
+        $filter = new Filter();
+    
+        $filter->setFromColumn($this->column, '=');
+        $this->assertEquals($this->column, $filter->getColumn());
+        $this->assertEquals(Filter::EQUAL, $filter->getOperator());
+        $this->assertEquals('= ', $filter->getDisplayColumnValue());
+        $this->assertTrue(is_array($filter->getValues()));
+        $this->assertEquals(array(
+            ''
+        ), $filter->getValues());
+    
         $this->assertTrue($filter->isColumnFilter());
     }
 
