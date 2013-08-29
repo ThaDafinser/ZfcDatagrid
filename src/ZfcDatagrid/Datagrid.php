@@ -944,11 +944,11 @@ class Datagrid implements ServiceLocatorAwareInterface
     /**
      * Is this a HTML "init" response?
      * YES: loading the HTML for the grid
-     * NO: AJAX loading of data or it's an export
+     * NO: AJAX loading OR it's an export
      *
      * @return boolean
      */
-    public function isIHtmlInitReponse()
+    public function isHtmlInitReponse()
     {
         if (! $this->getResponse() instanceof JsonModel && ! $this->getResponse() instanceof ResponseInterface) {
             return true;
