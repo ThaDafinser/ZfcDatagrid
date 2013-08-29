@@ -158,6 +158,10 @@ class Number extends AbstractType
             return $val;
         }
         
+        if($formattedValue === false){
+            return $val;
+        }
+        
         return $formattedValue;
     }
 
