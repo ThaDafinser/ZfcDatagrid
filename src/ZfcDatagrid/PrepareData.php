@@ -184,9 +184,7 @@ class PrepareData
                 
                 // TRIM
                 if (is_array($row[$column->getUniqueId()])) {
-                    foreach ($row[$column->getUniqueId()] as &$value) {
-                        $value = trim($value);
-                    }
+                    $value = $this->array_trim($row[$column->getUniqueId()]);
                 } else {
                     $row[$column->getUniqueId()] = trim($row[$column->getUniqueId()]);
                 }
@@ -199,5 +197,13 @@ class PrepareData
         }
         
         return $data;
+    }
+    
+    protected function array_trim(array $array)
+    {
+        foreach ($array as $key => &$value)
+            $value = (is_array($value)) ? $this->array_trim($value) : trim($value);
+            
+        return $array;
     }
 }
