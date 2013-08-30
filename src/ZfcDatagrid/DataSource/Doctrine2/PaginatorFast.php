@@ -88,9 +88,6 @@ class PaginatorFast implements AdapterInterface
         if (count($groupParts) == 1) {
             $groupPart = $groupParts[0];
             
-            var_dump($groupParts);
-            echo $groupPart;
-            exit();
             $qb->resetDQLPart('groupBy');
             $qb->select('COUNT(DISTINCT ' . $groupPart . ')');
             
