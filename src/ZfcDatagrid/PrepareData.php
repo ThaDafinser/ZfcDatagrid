@@ -184,7 +184,7 @@ class PrepareData
                 
                 // TRIM
                 if (is_array($row[$column->getUniqueId()])) {
-                    foreach ($row[$column->getUniqueId()] as &$value) {
+                    array_walk_recursive($row[$column->getUniqueId()], function(&$value) {
                         $value = trim($value);
                     }
                 } else {
