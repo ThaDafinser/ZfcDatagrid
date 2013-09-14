@@ -46,7 +46,7 @@ class Filter
         
         $wheres = array();
         foreach ($values as $key => $value) {
-            $valueParameterName = ':' . str_replace('.', '', $colString . $key);
+            $valueParameterName = ':' . str_replace('.', '', $column->getUniqueId() . $key);
             
             switch ($filter->getOperator()) {
                 
