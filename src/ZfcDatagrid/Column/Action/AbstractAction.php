@@ -246,36 +246,46 @@ abstract class AbstractAction
      */
     public function isDisplayed(array $row)
     {
+        $isDisplayed = true;
+
         if ($this->hasShowOnValues() === true) {
             foreach ($this->getShowOnValues() as $rule) {
                 $value = '';
                 if (isset($row[$rule['column']->getUniqueId()])) {
                     $value = $row[$rule['column']->getUniqueId()];
                 }
-                
-                switch ($rule['operator']) {
-                    case Filter::EQUAL:
-                        if ($rule['value'] == $value) {
-                            return true;
-                        }
-                        break;
-                    
-                    case Filter::NOT_EQUAL:
-                        if ($rule['value'] != $value) {
-                            return true;
-                        }
-                        break;
-                    
-                    default:
-                        throw new \Exception('currently not implemented filter type: "' . $rule['operator'] . '"');
-                        break;
-                }
+
+                $isDisplayed = $isDisplayed && $this->_ruleIsValid($value, $rule['value'], $rule['operator']);
             }
-            
-            return false;
         }
         
-        return true;
+        return $isDisplayed;
+    }
+
+    /**
+     * Check if the rule (showOnValues) is valid
+     *
+     * @param string $currentValue
+     * @param string $expectedValue
+     * @param string $operator
+     * @return bool
+     * @throws \Exception
+     */
+    private function _ruleIsValid($currentValue, $expectedValue, $operator)
+    {
+        switch ($operator) {
+            case Filter::EQUAL:
+                return $expectedValue == $currentValue;
+                break;
+
+            case Filter::NOT_EQUAL:
+                return $expectedValue != $currentValue;
+                break;
+
+            default:
+                throw new \Exception('currently not implemented filter type: "' . $operator . '"');
+                break;
+        }
     }
 
     /**

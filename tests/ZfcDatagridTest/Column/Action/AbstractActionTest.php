@@ -21,6 +21,9 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
     {
         $this->column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $this->column->setUniqueId('colName');
+
+        $this->column2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $this->column2->setUniqueId('colName2');
     }
 
     public function testLink()
@@ -176,5 +179,36 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         $action->isDisplayed(array(
             $this->column->getUniqueId() => '32'
         ));
+    }
+
+    public function testIsDisplayedWithSeveralShowOnValue()
+    {
+        /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
+        $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
+
+        $this->assertTrue($action->isDisplayed(array(
+            $this->column->getUniqueId() => '23'
+        )));
+        $this->assertTrue($action->isDisplayed(array(
+            $this->column2->getUniqueId() => ''
+        )));
+
+        $action->addShowOnValue($this->column, '23', Filter::EQUAL);
+        $action->addShowOnValue($this->column2, '', Filter::NOT_EQUAL);
+
+        $this->assertTrue($action->isDisplayed(array(
+            $this->column->getUniqueId() => '23',
+            $this->column2->getUniqueId() => '23'
+        )));
+
+        $this->assertFalse($action->isDisplayed(array(
+            $this->column->getUniqueId() => '',
+            $this->column2->getUniqueId() => '23'
+        )));
+
+        $this->assertFalse($action->isDisplayed(array(
+            $this->column->getUniqueId() => '23',
+            $this->column2->getUniqueId() => ''
+        )));
     }
 }
