@@ -4,14 +4,14 @@ use ZfcDatagrid\Column\Type;
 use ZfcDatagrid\Column\Style;
 ?>
 
-<form name="form_<?= $this->gridId; ?>" method="post" action="<?= $this->url(null, array(), array(), true); ?>">
+<form name="form_<?php echo $this->gridId; ?>" method="post" action="<?php echo $this->url(null, array(), array(), true); ?>">
 
     <input type="submit" style="width: 0px; height:0px; margin: 0; padding: 0; border: 0;" name="hiddenSubmit" />
-    <input type="hidden" name="<?= $this->parameterNames['sortColumns']; ?>" value="<?= $this->activeParameters[$this->parameterNames['sortColumns']]; ?>" />
-    <input type="hidden" name="<?= $this->parameterNames['sortDirections']; ?>" value="<?= $this->activeParameters[$this->parameterNames['sortDirections']]; ?>" />
+    <input type="hidden" name="<?php echo $this->parameterNames['sortColumns']; ?>" value="<?php echo $this->activeParameters[$this->parameterNames['sortColumns']]; ?>" />
+    <input type="hidden" name="<?php echo $this->parameterNames['sortDirections']; ?>" value="<?php echo $this->activeParameters[$this->parameterNames['sortDirections']]; ?>" />
 
     
-<?= $this->toolbar; ?>
+<?php echo $this->toolbar; ?>
 
 <?php 
 
@@ -25,9 +25,9 @@ if($this->rowClickAction !== null){
 }
 ?>
 
-<?= $this->partial($this->templateToolbar);?>
+<?php echo $this->partial($this->templateToolbar);?>
 
-<table class="<?= implode(' ', $classes); ?>">
+<table class="<?php echo implode(' ', $classes); ?>">
     <thead>
         <tr>
             <?php 
@@ -56,7 +56,7 @@ if($this->rowClickAction !== null){
                     $styles[] = 'text-align: right';
                 }
                 ?>
-                <th id="<?= $this->escapehtmlattr($id); ?>" class="<?= implode(',', $classes); ?>" style="<?= implode(';', $styles); ?>">
+                <th id="<?php echo $this->escapehtmlattr($id); ?>" class="<?php echo implode(',', $classes); ?>" style="<?php echo implode(';', $styles); ?>">
                     
                     <?php if($column->isUserSortEnabled() === true): 
                         if($column->isSortActive() === true && $column->getSortActiveDirection() === 'ASC'){
@@ -65,7 +65,7 @@ if($this->rowClickAction !== null){
                             $direction = 'ASC';
                         }
                         ?>
-                        <a href="<?= 
+                        <a href="<?php echo 
                             $this->url(null, 
                                 array(),
                                 array(
@@ -77,11 +77,11 @@ if($this->rowClickAction !== null){
                                 ),
                                 true
                             );?>
-                        " onclick="<?= sprintf($orderOnclick, $column->getUniqueId(), $direction); ?>">
-                            <?= $this->escapeHtml($label); ?>
+                        " onclick="<?php echo sprintf($orderOnclick, $column->getUniqueId(), $direction); ?>">
+                            <?php echo $this->escapeHtml($label); ?>
                         </a>
                     <?php else: ?>
-                        <?= $this->escapeHtml($label); ?>
+                        <?php echo $this->escapeHtml($label); ?>
                     <?php endif; ?>
                     
                     <?php 
@@ -116,8 +116,8 @@ if($this->rowClickAction !== null){
                         $htmlFilter = '<input type="text" name="toolbarFilters['.$column->getUniqueId().']" style="width: 80%" value="'.$column->getFilterActiveValue().'" />';
                     }
                     ?>
-                    <td class="<?= implode(',', $classes); ?>">
-                        <?= $htmlFilter; ?>
+                    <td class="<?php echo implode(',', $classes); ?>">
+                        <?php echo $htmlFilter; ?>
                     </td>
                     <?php
                 }
@@ -143,16 +143,16 @@ $paginatorOnclick.= 'document.forms[\'form_'.$this->gridId.'\'].submit(); return
 <!-- Start Pagination -->
 <div class="row-fluid">
     <div class="span4">
-        <?= $this->translate('Page').' '.$this->paginator->getCurrentPageNumber().' '.$this->translate('of').' '.$this->paginator->count(); ?>
+        <?php echo $this->translate('Page').' '.$this->paginator->getCurrentPageNumber().' '.$this->translate('of').' '.$this->paginator->count(); ?>
     </div>
     <div class="span4">
         <div class="pagination">
         
-            <input type="hidden" name="<?= $this->parameterNames['currentPage']; ?>" value="<?= $pages->current; ?>" />
+            <input type="hidden" name="<?php echo $this->parameterNames['currentPage']; ?>" value="<?php echo $pages->current; ?>" />
             
             <ul>
                 <?php if($pages->current > 1):?>
-                    <li><a href="<?= 
+                    <li><a href="<?php echo 
                             $this->url(null, 
                                 array(),
                                 array(
@@ -163,7 +163,7 @@ $paginatorOnclick.= 'document.forms[\'form_'.$this->gridId.'\'].submit(); return
                                 ),
                                 true
                             );?>
-                        "  onclick="<?= sprintf($paginatorOnclick, $pages->current - 1);?>">
+                        "  onclick="<?php echo sprintf($paginatorOnclick, $pages->current - 1);?>">
                             &laquo;
                         </a>
                     </li>
@@ -195,16 +195,16 @@ $paginatorOnclick.= 'document.forms[\'form_'.$this->gridId.'\'].submit(); return
                         $url = '#';
                     }
                     ?>
-                    <li <?= $add; ?>>
-                        <a href="<?= $url; ?>" onclick="<?= sprintf($paginatorOnclick, $page);?>">
-                            <?= $page; ?>
+                    <li <?php echo $add; ?>>
+                        <a href="<?php echo $url; ?>" onclick="<?php echo sprintf($paginatorOnclick, $page);?>">
+                            <?php echo $page; ?>
                         </a>
                     </li>
                 <?php endforeach; ?>
                 
                 <?php if($pages->current < $pages->pageCount): ?>
                     <li>
-                        <a href="<?= 
+                        <a href="<?php echo 
                             $this->url($this->matchedRouteName, 
                                 array(),
                                 array(
@@ -215,7 +215,7 @@ $paginatorOnclick.= 'document.forms[\'form_'.$this->gridId.'\'].submit(); return
                                 ),
                                 true
                             );?>
-                        " onclick="<?= sprintf($paginatorOnclick, $pages->current + 1);?>">
+                        " onclick="<?php echo sprintf($paginatorOnclick, $pages->current + 1);?>">
                             &raquo;
                         </a>
                     </li>
@@ -230,7 +230,7 @@ $paginatorOnclick.= 'document.forms[\'form_'.$this->gridId.'\'].submit(); return
         </div>
     </div>
     <div class="span4 text-right">
-        <?= $this->translate('Showing').' '.$this->paginator->getCurrentItemCount().' '.$this->translate('of').' '.$this->paginator->getTotalItemCount().' '.$this->translate('items'); ?>
+        <?php echo $this->translate('Showing').' '.$this->paginator->getCurrentItemCount().' '.$this->translate('of').' '.$this->paginator->getTotalItemCount().' '.$this->translate('items'); ?>
     </div>
 </div><!-- End Pagination -->
 </form>
