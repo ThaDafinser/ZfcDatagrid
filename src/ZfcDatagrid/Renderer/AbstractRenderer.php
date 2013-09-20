@@ -60,10 +60,25 @@ abstract class AbstractRenderer implements RendererInterface
      */
     protected $viewModel;
 
+    /**
+     * 
+     * @var string
+     */
     protected $template;
 
+    /**
+     * 
+     * @var string
+     */
     protected $templateToolbar;
-
+    
+    /**
+     * The parameters array for the partially rendered toolbar
+     * 
+     * @var array
+     */
+    protected $templateToolbarParams;
+    
     /**
      *
      * @var Translator
@@ -163,6 +178,32 @@ abstract class AbstractRenderer implements RendererInterface
         return $this->templateToolbar;
     }
 
+    /**
+     * Set the parameters array for the partially rendered toolbar
+     * 
+     * @param array $params
+     * @throws \Exception
+     * @return \ZfcDatagrid\Renderer\AbstractRenderer
+     */
+    public function setToolbarTemplateParams($params)
+    {
+        if (!is_array($params)) {
+            throw new \Exception('Toolbar template parameters should be an array!');
+        }
+        $this->templateToolbarParams = $params;
+        return $this;
+    }
+    
+    /**
+     * Get the parameters array for the partially rendered toolbar
+     * 
+     * @return array
+     */
+    public function getToolbarTemplateParams()
+    {
+        return $this->templateToolbarParams;
+    }
+    
     /**
      * Paginator is here to retreive the totalItemCount, count pages, current page
      * NOT FOR THE ACTUAL DATA!!!!
@@ -521,6 +562,7 @@ abstract class AbstractRenderer implements RendererInterface
         $viewModel->setVariable('overwriteUrl', $grid->getUrl());
         
         $viewModel->setVariable('templateToolbar', $this->getToolbarTemplate());
+        $viewModel->setVariable('templateToolbarParams', $this->getToolbarTemplateParams());
         $viewModel->setVariable('rendererName', $this->getName());
         
         $options = $this->getOptions();

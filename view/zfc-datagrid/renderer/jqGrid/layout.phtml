@@ -39,7 +39,7 @@ if($this->rowClickAction){
 }
 ?>
 
-<?php echo $this->partial($this->templateToolbar);?>
+<?php echo $this->partial($this->templateToolbar, $this->templateToolbarParams);?>
 
 <table id="<?php echo $this->gridId; ?>" class="<?php echo implode(' ', $tableClasses); ?>"></table>
 <div id="<?php echo $this->gridId; ?>_pager"></div>
