@@ -145,8 +145,19 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     protected $exportRenderers;
 
+    /**
+     * 
+     * @var string
+     */
     protected $toolbarTemplate;
 
+    /**
+     * The parameters array for the partially rendered toolbar
+     * 
+     * @var array
+     */
+    protected $toolbarTemplateParams;
+    
     /**
      *
      * @var ViewModel
@@ -692,6 +703,7 @@ class Datagrid implements ServiceLocatorAwareInterface
                 $renderer->setMvcEvent($this->getMvcEvent());
                 if ($this->getToolbarTemplate() !== null) {
                     $renderer->setToolbarTemplate($this->getToolbarTemplate());
+                    $renderer->setToolbarTemplateParams($this->getToolbarTemplateParams());
                 }
                 $renderer->setViewModel($this->getViewModel());
                 $renderer->setTranslator($this->getTranslator());
@@ -899,6 +911,33 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function getToolbarTemplate()
     {
         return $this->toolbarTemplate;
+    }
+
+    /**
+     * Set the parameters array for the partially rendered toolbar
+     * 
+     * @param array $params
+     * @throws \Exception
+     * @return \ZfcDatagrid\Datagrid
+     */
+    public function setToolbarTemplateParams($params)
+    {
+        if (!is_array($params)) {
+            throw new \Exception('Toolbar template parameters should be an array!');
+        }
+        $this->toolbarTemplateParams = $params;
+        
+        return $this;
+    }
+
+    /**
+     * Set the parameters array for the partially rendered toolbar
+     * 
+     * @return array:
+     */
+    public function getToolbarTemplateParams()
+    {
+        return $this->toolbarTemplateParams;
     }
 
     /**
