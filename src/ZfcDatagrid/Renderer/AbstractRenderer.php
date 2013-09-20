@@ -195,7 +195,7 @@ abstract class AbstractRenderer implements RendererInterface
     }
     
     /**
-     * Set the parameters array for the partially rendered toolbar
+     * Get the parameters array for the partially rendered toolbar
      * 
      * @return array
      */

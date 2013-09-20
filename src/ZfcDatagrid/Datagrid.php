@@ -931,7 +931,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     }
 
     /**
-     * Set the parameters array for the partially rendered toolbar
+     * Get the parameters array for the partially rendered toolbar
      * 
      * @return array:
      */
