@@ -1,6 +1,4 @@
 <?php
-use Zend\ServiceManager\ServiceManager;
-
 return array(
     
     'ZfcDatagrid' => array(
