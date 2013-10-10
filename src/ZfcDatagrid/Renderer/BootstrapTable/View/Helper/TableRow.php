@@ -93,7 +93,10 @@ class TableRow extends AbstractHelper
             }
             
             if ($column instanceof Column\Image) {
-                $value = ' <a href="#" class="thumbnail"><img src="' . $value . '" /></a>';
+	            /* @var Column\Image $column */
+                $value = ' <a href="#" class="thumbnail">
+                    <img src="' . $value . '" ' . $column->getImageStyleTag() . ' />
+                </a>';
             } elseif ($column instanceof Column\Action) {
                 /* @var $column \ZfcDatagrid\Column\Action */
                 $actions = array();
