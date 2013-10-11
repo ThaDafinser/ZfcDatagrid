@@ -71,6 +71,7 @@ class PaginatorFast implements AdapterInterface
         
         $qbOriginal = $this->getQueryBuilder();
         $qb = clone $qbOriginal;
+        
         $dqlParts = $qb->getDQLParts();
         $groupParts = $dqlParts['groupBy'];
         $selectParts = $dqlParts['select'];
@@ -85,12 +86,26 @@ class PaginatorFast implements AdapterInterface
             'select'
         ));
         
-        if (count($groupParts) == 1) {
+        if (count($groupParts) > 1) {
+            /*
+             * UGLY WORKAROUND!!! @todo
+             */
+            // more than one group part...tricky!
+            // @todo finde something better...
+            $qb->resetDQLPart('groupBy');
+            $qb->select('CONCAT(' . implode(',', $groupParts) . ') as uniqueParts');
+            
+            $items = array();
+            $result = $qb->getQuery()->getResult();
+            foreach ($result as $row) {
+                $items[] = $row['uniqueParts'];
+            }
+            $uniqueItems = array_unique($items);
+            
+            $this->rowCount = count($uniqueItems);
+        } elseif (count($groupParts) == 1) {
             $groupPart = $groupParts[0];
             
-            var_dump($groupParts);
-            echo $groupPart;
-            exit();
             $qb->resetDQLPart('groupBy');
             $qb->select('COUNT(DISTINCT ' . $groupPart . ')');
             
