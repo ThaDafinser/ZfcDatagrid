@@ -14,7 +14,7 @@ class Doctrine2 extends AbstractDataSource
      *
      * @var ORM\QueryBuilder
      */
-    private $queryBuilder;
+    private $qb;
 
     /**
      * Data source
@@ -24,7 +24,7 @@ class Doctrine2 extends AbstractDataSource
     public function __construct($data)
     {
         if ($data instanceof ORM\QueryBuilder) {
-            $this->queryBuilder = $data;
+            $this->qb = $data;
         } else {
             $return = $data;
             if (is_object($data)) {
@@ -40,12 +40,12 @@ class Doctrine2 extends AbstractDataSource
      */
     public function getData()
     {
-        return $this->queryBuilder;
+        return $this->qb;
     }
 
     public function execute()
     {
-        $queryBuilder = $this->getData();
+        $qb = $this->getData();
         
         /**
          * Step 1) Apply needed columns
@@ -62,26 +62,28 @@ class Doctrine2 extends AbstractDataSource
                 $selectColumns[] = $colString;
             }
         }
-        $queryBuilder->resetDQLPart('select');
-        $queryBuilder->select($selectColumns);
+        $qb->resetDQLPart('select');
+        $qb->select($selectColumns);
         
         /**
          * Step 2) Apply sorting
          */
         if (count($this->getSortConditions()) > 0) {
             // Minimum one sort condition given -> so reset the default orderBy
-            $queryBuilder->resetDQLPart('orderBy');
+            $qb->resetDQLPart('orderBy');
             
             foreach ($this->getSortConditions() as $sortCondition) {
+                /* @var $column \ZfcDatagrid\Column\AbstractColumn */
                 $column = $sortCondition['column'];
-                $queryBuilder->add('orderBy', new Expr\OrderBy($column->getUniqueId(), $sortCondition['sortDirection']), true);
+                
+                $qb->add('orderBy', new Expr\OrderBy($column->getUniqueId(), $sortCondition['sortDirection']), true);
             }
         }
         
         /**
          * Step 3) Apply filters
          */
-        $filterColumn = new Doctrine2\Filter($queryBuilder);
+        $filterColumn = new Doctrine2\Filter($qb);
         foreach ($this->getFilters() as $filter) {
             if ($filter->isColumnFilter() === true) {
                 $filterColumn->applyFilter($filter);
@@ -91,6 +93,6 @@ class Doctrine2 extends AbstractDataSource
         /**
          * Step 4) Pagination
          */
-        $this->setPaginatorAdapter(new PaginatorAdapter($queryBuilder));
+        $this->setPaginatorAdapter(new PaginatorAdapter($qb));
     }
 }
