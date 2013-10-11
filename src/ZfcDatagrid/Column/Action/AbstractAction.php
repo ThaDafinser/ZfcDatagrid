@@ -22,6 +22,8 @@ abstract class AbstractAction
      */
     protected $htmlAttributes = array();
 
+    protected $showOnValueOperator = 'OR';
+
     /**
      *
      * @var array
@@ -201,18 +203,37 @@ abstract class AbstractAction
     }
 
     /**
+     * Display the values with AND or OR (if multiple showOnValues are defined)
+     *
+     * @param string $operator            
+     */
+    public function setShowOnValueOperator($operator = 'OR')
+    {
+        if ($operator != 'AND' && $operator != 'OR') {
+            throw new \InvalidArgumentException('not allowed operator: "' . $operator . '" (AND / OR is allowed)');
+        }
+        
+        $this->showOnValueOperator = (string) $operator;
+    }
+
+    public function getShowOnValueOperator()
+    {
+        return $this->showOnValueOperator;
+    }
+
+    /**
      * Show this action only on the values defined
      *
      * @param Column\AbstractColumn $col            
      * @param string $value            
-     * @param string $operator            
+     * @param string $comparison            
      */
-    public function addShowOnValue(Column\AbstractColumn $col, $value = null, $operator = Filter::EQUAL)
+    public function addShowOnValue(Column\AbstractColumn $col, $value = null, $comparison = Filter::EQUAL)
     {
         $this->showOnValues[] = array(
             'column' => $col,
             'value' => $value,
-            'operator' => $operator
+            'comparison' => $comparison
         );
     }
 
@@ -247,35 +268,63 @@ abstract class AbstractAction
     public function isDisplayed(array $row)
     {
         if ($this->hasShowOnValues() === true) {
+            
+            $isDisplayed = false;
+            
             foreach ($this->getShowOnValues() as $rule) {
+                
                 $value = '';
                 if (isset($row[$rule['column']->getUniqueId()])) {
                     $value = $row[$rule['column']->getUniqueId()];
                 }
                 
-                switch ($rule['operator']) {
-                    case Filter::EQUAL:
-                        if ($rule['value'] == $value) {
-                            return true;
-                        }
+                $isDisplayedMatch = $this->isShownOnValue($value, $rule['value'], $rule['comparison']);
+                
+                if ($this->getShowOnValueOperator() == 'OR' && $isDisplayedMatch === true) {
+                    // For OR one match is enough
+                    $isDisplayed = true;
+                    break;
+                } else {
+                    // AND
+                    if ($isDisplayedMatch !== true) {
+                        // one time no match is enough
+                        $isDisplayed = false;
                         break;
-                    
-                    case Filter::NOT_EQUAL:
-                        if ($rule['value'] != $value) {
-                            return true;
-                        }
-                        break;
-                    
-                    default:
-                        throw new \Exception('currently not implemented filter type: "' . $rule['operator'] . '"');
-                        break;
+                    } else {
+                        $isDisplayed = true;
+                    }
                 }
             }
             
-            return false;
+            return $isDisplayed;
         }
         
         return true;
+    }
+
+    /**
+     *
+     * @param mixed $currentValue            
+     * @param mixed $expectedValue            
+     * @param string $operator            
+     * @throws \Exception
+     * @return boolean
+     */
+    private function isShownOnValue($currentValue, $expectedValue, $operator = Filter::EQUAL)
+    {
+        switch ($operator) {
+            case Filter::EQUAL:
+                return $expectedValue == $currentValue;
+                break;
+            
+            case Filter::NOT_EQUAL:
+                return $expectedValue != $currentValue;
+                break;
+            
+            default:
+                throw new \Exception('currently not implemented filter type: "' . $operator . '"');
+                break;
+        }
     }
 
     /**
