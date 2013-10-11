@@ -26,19 +26,19 @@ class CategoryController extends AbstractActionController
             ->get('zfcDatagrid.examples.data.phpArray')
             ->getCategorys());
         
-        $col = new Column\Standard('id');
+        $col = new Column\Select('id');
         $col->setIdentity();
         $dataGrid->addColumn($col);
         
-        $colParentId = new Column\Standard('parentId');
+        $colParentId = new Column\Select('parentId');
         $colParentId->setHidden(true);
         $dataGrid->addColumn($colParentId);
         
-        $colHasChildren = new Column\Standard('hasChildren');
+        $colHasChildren = new Column\Select('hasChildren');
         $colHasChildren->setHidden(true);
         $dataGrid->addColumn($colHasChildren);
         
-        $colTags = new Column\Standard('tags');
+        $colTags = new Column\Select('tags');
         $colTags->setLabel('Tags');
         $colTags->setHidden(true);
         $colTags->setWidth(30);
@@ -61,7 +61,7 @@ class CategoryController extends AbstractActionController
         $col->addAction($toggle);
         $dataGrid->addColumn($col);
         
-        $col = new Column\Standard('name');
+        $col = new Column\Select('name');
         $col->setLabel('Name');
         $col->setWidth(50);
         $col->setSortDefault(1);

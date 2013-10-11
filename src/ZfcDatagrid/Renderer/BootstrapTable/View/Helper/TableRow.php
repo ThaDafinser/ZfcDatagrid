@@ -110,7 +110,8 @@ class TableRow extends AbstractHelper
                 $value = implode(' ', $actions);
             }
             
-            if ($column instanceof Column\Standard && $rowClickAction instanceof AbstractAction) {
+            //"rowClick" action
+            if ($column instanceof Column\Select && $rowClickAction instanceof AbstractAction) {
                 $value = '<a href="' . $rowClickAction->getLinkReplaced($row) . '">' . $value . '</a>';
             }
             

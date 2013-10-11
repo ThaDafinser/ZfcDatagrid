@@ -188,7 +188,7 @@ class Renderer extends AbstractRenderer
                 
                 switch (get_class($column)) {
                     
-                    case 'ZfcDatagrid\Column\Standard':
+                    case 'ZfcDatagrid\Column\Select':
                         $columnsToExport[] = $column;
                         break;
                     
@@ -254,7 +254,7 @@ class Renderer extends AbstractRenderer
             $height = 1;
             switch (get_class($column)) {
                 
-                case 'ZfcDatagrid\Column\Standard':
+                case 'ZfcDatagrid\Column\Select':
                     if ($row[$column->getUniqueId()] != '') {
                         // Old Version...
                         // $count = $pdf->getNumLines($row[$column->getUniqueId()], $column->getWidth());
@@ -355,7 +355,7 @@ class Renderer extends AbstractRenderer
             $text = '';
             switch (get_class($column)) {
                 
-                case 'ZfcDatagrid\Column\Standard':
+                case 'ZfcDatagrid\Column\Select':
                     $text = $row[$column->getUniqueId()];
                     break;
                 

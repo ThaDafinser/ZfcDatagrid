@@ -34,7 +34,7 @@ class MinimalController extends AbstractActionController
         $dataGrid->setRenderer('jqgrid');
         $dataGrid->setDataSource($data);
         
-        $col = new Column\Standard('displayName');
+        $col = new Column\Select('displayName');
         $col->setLabel('Name');
         $dataGrid->addColumn($col);
         

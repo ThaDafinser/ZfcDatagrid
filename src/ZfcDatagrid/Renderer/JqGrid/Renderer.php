@@ -182,7 +182,7 @@ class Renderer extends AbstractRenderer
         
         foreach ($data as &$row) {
             foreach ($this->getColumns() as $column) {
-                if ($column instanceof Column\Standard) {
+                if ($column instanceof Column\Select) {
 //                     $row[$column->getUniqueId()] = nl2br($row[$column->getUniqueId()], true);
                 } elseif ($column instanceof Column\Action) {
                     /* @var $column \ZfcDatagrid\Column\Action */

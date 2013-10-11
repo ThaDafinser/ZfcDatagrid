@@ -3,6 +3,8 @@ namespace ZfcDatagrid\Column;
 
 /**
  * Display icons
+ * 
+ * @deprecated
  */
 class Icon extends AbstractColumn
 {

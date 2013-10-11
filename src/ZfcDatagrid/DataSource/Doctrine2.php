@@ -52,7 +52,7 @@ class Doctrine2 extends AbstractDataSource
          */
         $selectColumns = array();
         foreach ($this->getColumns() as $column) {
-            if ($column instanceof Column\Standard && ! $column->hasDataPopulation()) {
+            if ($column instanceof Column\Select && ! $column->hasDataPopulation()) {
                 $colString = $column->getSelectPart1();
                 if ($column->getSelectPart2() != '') {
                     $colString .= '.' . $column->getSelectPart2();

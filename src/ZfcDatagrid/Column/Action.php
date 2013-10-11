@@ -37,6 +37,4 @@ class Action extends AbstractColumn
     {
         return $this->actions;
     }
-    
-    
 }

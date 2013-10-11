@@ -24,7 +24,7 @@ class PersonDoctrine2Controller extends AbstractActionController
             ->get('zfcDatagrid.examples.data.doctrine2')
             ->getPersons());
         
-        $col = new Column\Standard('id', 'p');
+        $col = new Column\Select('id', 'p');
         $col->setIdentity();
         $dataGrid->addColumn($col);
         
@@ -36,7 +36,7 @@ class PersonDoctrine2Controller extends AbstractActionController
              *
              * @note Could be whatever you want -> Grab data from everywhere you want with dynamic parameters :-)
              */
-            $colEmail = new Column\Standard('email', 'p');
+            $colEmail = new Column\Select('email', 'p');
             $colEmail->setLabel('E-Mail');
             $colEmail->setHidden();
             
@@ -50,19 +50,19 @@ class PersonDoctrine2Controller extends AbstractActionController
             $dataGrid->addColumn($col);
         }
         
-        $col = new Column\Standard('displayName', 'p');
+        $col = new Column\Select('displayName', 'p');
         $col->setLabel('Displayname');
         $col->setWidth(25);
         $col->setSortDefault(1, 'ASC');
         $col->addStyle(new Style\Bold());
         $dataGrid->addColumn($col);
         
-        $col = new Column\Standard('familyName', 'p');
+        $col = new Column\Select('familyName', 'p');
         $col->setLabel('Familyname');
         $col->setWidth(15);
         $dataGrid->addColumn($col);
         
-        $col = new Column\Standard('givenName', 'p');
+        $col = new Column\Select('givenName', 'p');
         $col->setLabel('Givenname');
         $col->setWidth(15);
         $col->setSortDefault(2, 'DESC');
@@ -70,7 +70,7 @@ class PersonDoctrine2Controller extends AbstractActionController
         
         $dataGrid->addColumn($colEmail);
         
-        $col = new Column\Standard('gender', 'p');
+        $col = new Column\Select('gender', 'p');
         $col->setLabel('Gender');
         $col->setWidth(10);
         $col->setReplaceValues(array(
@@ -81,7 +81,7 @@ class PersonDoctrine2Controller extends AbstractActionController
         $dataGrid->addColumn($col);
         
         {
-            $col = new Column\Standard('age', 'p');
+            $col = new Column\Select('age', 'p');
             $col->setLabel('Age');
             $col->setWidth(5);
             $col->setType(new Type\Number());
@@ -99,14 +99,14 @@ class PersonDoctrine2Controller extends AbstractActionController
             $colType->addAttribute(\NumberFormatter::FRACTION_DIGITS, 2);
             $colType->setSuffix(' kg');
             
-            $col = new Column\Standard('weight', 'p');
+            $col = new Column\Select('weight', 'p');
             $col->setLabel('Weight');
             $col->setWidth(10);
             $col->setType($colType);
             $dataGrid->addColumn($col);
         }
         
-        $col = new Column\Standard('birthday', 'p');
+        $col = new Column\Select('birthday', 'p');
         $col->setLabel('Birthday');
         $col->setWidth(10);
         $col->setType(new Type\DateTime());
@@ -118,7 +118,7 @@ class PersonDoctrine2Controller extends AbstractActionController
             $colType->setSourceTimezone('Europe/Vienna');
             $colType->setOutputTimezone('UTC');
             
-            $col = new Column\Standard('changeDate', 'p');
+            $col = new Column\Select('changeDate', 'p');
             $col->setLabel('Last change');
             $col->setWidth(15);
             $col->setType($colType);
@@ -147,28 +147,28 @@ class PersonDoctrine2Controller extends AbstractActionController
             ->get('zfcDatagrid.examples.data.doctrine2')
             ->getPersons());
         
-        $col = new Column\Standard('id');
+        $col = new Column\Select('id');
         $col->setIdentity();
         $dataGrid->addColumn($col);
         
-        $col = new Column\Standard('displayName');
+        $col = new Column\Select('displayName');
         $col->setLabel('Displayname');
         $col->setWidth(25);
         $col->setSortDefault(1, 'ASC');
         $col->addStyle(new Style\Bold());
         $dataGrid->addColumn($col);
         
-        $col = new Column\Standard('familyName');
+        $col = new Column\Select('familyName');
         $col->setLabel('Familyname');
         $col->setWidth(15);
         $dataGrid->addColumn($col);
         
-        $col = new Column\Standard('givenName');
+        $col = new Column\Select('givenName');
         $col->setLabel('Givenname');
         $col->setWidth(15);
         $dataGrid->addColumn($col);
         
-        $col = new Column\Standard('age');
+        $col = new Column\Select('age');
         $col->setLabel('Age');
         $col->setWidth(10);
         $col->setType(new Type\Number());

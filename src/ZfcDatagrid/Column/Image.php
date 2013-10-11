@@ -3,6 +3,8 @@ namespace ZfcDatagrid\Column;
 
 /**
  * Display images
+ * 
+ * @deprecated
  */
 class Image extends AbstractColumn
 {
