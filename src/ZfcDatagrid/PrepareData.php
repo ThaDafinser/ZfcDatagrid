@@ -127,7 +127,7 @@ class PrepareData
                 /**
                  * Maybe the data come not from another DataSource?
                  */
-                if ($column->hasDataPopulation() === true) {
+                if ($column instanceof Column\ExternalData) {
                     // @todo improve the interface...
                     $dataPopulation = $column->getDataPopulation();
                     

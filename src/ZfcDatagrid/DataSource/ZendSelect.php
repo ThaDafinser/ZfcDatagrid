@@ -84,7 +84,7 @@ class ZendSelect extends AbstractDataSource
         $selectColumns = array();
         foreach ($this->getColumns() as $column) {
             
-            if ($column instanceof Column\Select && ! $column->hasDataPopulation()) {
+            if ($column instanceof Column\Select) {
                 $selectColumns[$column->getUniqueId()] = $column->getSelectPart2();
             }
         }

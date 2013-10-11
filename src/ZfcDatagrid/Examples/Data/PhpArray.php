@@ -42,7 +42,7 @@ class PhpArray implements ServiceLocatorAwareInterface
             'givenName' => 'John',
             'email' => 'unknown@gmail.com',
             'gender' => 'm',
-            'age' => 35,
+            'age' => 111,
             'weight' => 50,
             'birthday' => '1987-10-03 00:00:00',
             'changeDate' => '2001-04-19 14:30:41'
