@@ -47,7 +47,7 @@ class PersonZendController extends AbstractActionController
             $dataPopulation->setObject(new Column\DataPopulation\Object\Gravatar());
             $dataPopulation->addObjectParameterColumn('email', $colEmail);
             
-            $col = new Column\Image('avatar');
+            $col = new Column\ExternalData('avatar');
             $col->setLabel('Avatar');
             $col->setDataPopulation($dataPopulation);
             $dataGrid->addColumn($col);

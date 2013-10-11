@@ -12,6 +12,14 @@ use TCPDF;
 class Renderer extends AbstractRenderer
 {
 
+    private $allowedColumnTypes = array(
+        'ZfcDatagrid\Column\Type\DateTime',
+        'ZfcDatagrid\Column\Type\Image',
+        'ZfcDatagrid\Column\Type\Number',
+        'ZfcDatagrid\Column\Type\PhpArray',
+        'ZfcDatagrid\Column\Type\String'
+    );
+
     private $columnsToExport;
 
     private $columnsPositionX = array();
@@ -43,9 +51,9 @@ class Renderer extends AbstractRenderer
         
         $pdf = $this->getPdf();
         
-        //Check for PDF image header
+        // Check for PDF image header
         $headerData = $pdf->getHeaderData();
-        if($headerData['logo'] == ''){
+        if ($headerData['logo'] == '') {
             $headerData['logo'] = './myImage.jpg';
             $pdf->setHeaderData($headerData);
         }
@@ -165,13 +173,8 @@ class Renderer extends AbstractRenderer
     }
 
     /**
-     * Decide which columns we want to display DO NOT display HTML, actions, .
-     *
-     *
-     *
-     *
-     *
-     * .. After we have all -> resize the width to the paper format
+     * Decide which columns we want to display DO NOT display HTML, actions
+     * After we have all -> resize the width to the paper format
      *
      * @return multitype:\ZfcDatagrid\Column\AbstractColumn
      */
@@ -184,22 +187,9 @@ class Renderer extends AbstractRenderer
         $columnsToExport = array();
         foreach ($this->getColumns() as $column) {
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-            if ($column->isHidden() === false) {
-                
-                switch (get_class($column)) {
-                    
-                    case 'ZfcDatagrid\Column\Select':
-                        $columnsToExport[] = $column;
-                        break;
-                    
-                    case 'ZfcDatagrid\Column\Image':
-                        $columnsToExport[] = $column;
-                        break;
-                    
-                    case 'ZfcDatagrid\Column\Icon':
-                        $columnsToExport[] = $column;
-                        break;
-                }
+            
+            if ($column->isHidden() === false && in_array(get_class($column), $this->allowedColumnTypes)) {
+                $columnsToExport[] = $column;
             }
         }
         
@@ -252,30 +242,23 @@ class Renderer extends AbstractRenderer
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
             
             $height = 1;
-            switch (get_class($column)) {
+            switch (get_class($column->getType())) {
                 
-                case 'ZfcDatagrid\Column\Select':
-                    if ($row[$column->getUniqueId()] != '') {
-                        // Old Version...
-                        // $count = $pdf->getNumLines($row[$column->getUniqueId()], $column->getWidth());
-                        // $height = $count * $size + 4;
-                        
-                        // New Version...
-                        $height = $pdf->getStringHeight($column->getWidth(), $row[$column->getUniqueId()]);
-                        
-                        //include borders top/bottom
-                        $height += 2;
-                    }
-                    break;
-                
-                case 'ZfcDatagrid\Column\Icon':
-                    //"min" height for such a column
+                case 'ZfcDatagrid\Column\Type\Icon':
+                    // "min" height for such a column
                     $height = 10;
                     break;
                 
-                case 'ZfcDatagrid\Column\Image':
-                    //"min" height for such a column
+                case 'ZfcDatagrid\Column\Type\Image':
+                    // "min" height for such a column
                     $height = 15;
+                    break;
+                    
+                default:
+                    $height = $pdf->getStringHeight($column->getWidth(), $row[$column->getUniqueId()]);
+                    
+                    // include borders top/bottom
+                    $height += 2;
                     break;
             }
             
@@ -353,15 +336,11 @@ class Renderer extends AbstractRenderer
             }
             
             $text = '';
-            switch (get_class($column)) {
+            switch (get_class($column->getType())) {
                 
-                case 'ZfcDatagrid\Column\Select':
-                    $text = $row[$column->getUniqueId()];
-                    break;
-                
-                case 'ZfcDatagrid\Column\Icon':
+                case 'ZfcDatagrid\Column\Type\Icon':
                     $text = '';
-                    
+                
                     $link = K_BLANK_IMAGE;
                     if ($column->getIconLink() != '') {
                         $link = $column->getIconLink();
@@ -369,30 +348,34 @@ class Renderer extends AbstractRenderer
                     $pdf->Image($link, $x + 1, $y + 1, 0, 0, '', '', 'L', true);
                     break;
                 
-                case 'ZfcDatagrid\Column\Image':
+                case 'ZfcDatagrid\Column\Type\Image':
                     $text = '';
-                    
+                
                     $link = K_BLANK_IMAGE;
                     if ($row[$column->getUniqueId()] != '') {
                         $link = $row[$column->getUniqueId()];
                     }
-                    list($width, $height) = $this->calcImageSize($pdf, $link, $column->getWidth() - 2, $rowHeight - 2);
+                    list ($width, $height) = $this->calcImageSize($pdf, $link, $column->getWidth() - 2, $rowHeight - 2);
                     // Image($file, $x='', $y='', $w=0, $h=0, $type='', $link='', $align='', $resize=false, $dpi=300, $palign='', $ismask=false, $imgmask=false, $border=0, $fitbox=false, $hidden=false, $fitonpage=false, $alt=false, $altimgs=array()) {
                     $pdf->Image($link, $x + 1, $y + 1, $width, $height, '', '', 'L', true, 300, '', false, false, 0, false, false, true, false, array());
                     break;
+                    
+                default:
+                    $text = $row[$column->getUniqueId()];
+                    break;
             }
             
-            //MultiCell($w, $h, $txt, $border=0, $align='J', $fill=false, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0, $valign='T', $fitcell=false) 
+            // MultiCell($w, $h, $txt, $border=0, $align='J', $fill=false, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0, $valign='T', $fitcell=false)
             $pdf->MultiCell($column->getWidth(), $rowHeight, $text, 1, 'L', false, 1, $x, $y, true, 0);
         }
     }
 
     /**
-     * 
-     * @param TCPDF $pdf
-     * @param string $image
-     * @param number $maxWidth
-     * @param number $maxHeight
+     *
+     * @param TCPDF $pdf            
+     * @param string $image            
+     * @param number $maxWidth            
+     * @param number $maxHeight            
      * @return array
      */
     private function calcImageSize(TCPDF $pdf, $image, $maxWidth, $maxHeight)

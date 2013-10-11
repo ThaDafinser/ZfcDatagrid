@@ -17,6 +17,13 @@ use Zend\Http\Headers;
 class Renderer extends AbstractRenderer
 {
 
+    private $allowedColumnTypes = array(
+        'ZfcDatagrid\Column\Type\DateTime',
+        'ZfcDatagrid\Column\Type\Number',
+        'ZfcDatagrid\Column\Type\PhpArray',
+        'ZfcDatagrid\Column\Type\String'    
+    );
+    
     public function getName ()
     {
         return 'PHPExcel';
@@ -60,7 +67,7 @@ class Renderer extends AbstractRenderer
         $columnsToExport = array();
         foreach ($this->getColumns() as $column) {
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-            if ($column instanceof Column\Select && $column->isHidden() === false) {
+            if ($column->isHidden() === false && in_array(get_class($column), $this->allowedColumnTypes)) {
                 $columnsToExport[] = $column;
             }
         }

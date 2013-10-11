@@ -65,6 +65,10 @@ class TableRow extends AbstractHelper
                     $value = '<pre>' . print_r($value, true) . '</pre>';
                     break;
                     
+                case 'image':
+                    $value = ' <a href="#" class="thumbnail"><img src="' . $value . '" /></a>';
+                    break;
+                    
             }
             
             if ($column->hasStyles() === true) {
@@ -94,9 +98,7 @@ class TableRow extends AbstractHelper
                 }
             }
             
-            if ($column instanceof Column\Image) {
-                $value = ' <a href="#" class="thumbnail"><img src="' . $value . '" /></a>';
-            } elseif ($column instanceof Column\Action) {
+            if ($column instanceof Column\Action) {
                 /* @var $column \ZfcDatagrid\Column\Action */
                 $actions = array();
                 foreach ($column->getActions() as $action) {
