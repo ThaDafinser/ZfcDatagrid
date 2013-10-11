@@ -1,22 +1,44 @@
 <?php
 namespace ZfcDatagrid\Column\Type;
 
-
+/**
+ * Try to render an image
+ */
 class Image extends AbstractType
 {
-    public function getTypeName(){
+
+    protected $width;
+
+    protected $height;
+
+    public function __construct($width = null, $height = null)
+    {
+        $this->setWidth($width);
+        $this->setHeight($height);
+    }
+
+    public function getTypeName()
+    {
         return 'image';
     }
-    
-    /**
-     * Convert the value from the source to the value, which the user will see
-     *
-     * @param string $val
-     * @return string
-     */
-    public function getUserValue($val)
+
+    public function setWidth($width)
     {
-        //@todo size...
-        return '<img src="" />';
+        $this->width = (int) $width;
+    }
+
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    public function setHeight($height)
+    {
+        $this->height = (int) $height;
+    }
+
+    public function getHeight()
+    {
+        return $this->height;
     }
 }
