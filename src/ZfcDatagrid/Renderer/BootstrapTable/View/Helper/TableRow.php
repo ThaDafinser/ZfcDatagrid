@@ -123,7 +123,7 @@ class TableRow extends AbstractHelper
                 'data-uniqueId' => $column->getUniqueId()
             );
             
-            $return .= $this->getTd($column, $value, $attributes);
+            $return .= $this->getTd($value, $attributes);
         }
         
         $return .= $this->getTr($row, false);
