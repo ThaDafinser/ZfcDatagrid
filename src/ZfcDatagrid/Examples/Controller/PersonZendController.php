@@ -50,6 +50,7 @@ class PersonZendController extends AbstractActionController
             $col = new Column\ExternalData('avatar');
             $col->setLabel('Avatar');
             $col->setDataPopulation($dataPopulation);
+            $col->setType(new Type\Image());
             $dataGrid->addColumn($col);
         }
         
