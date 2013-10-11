@@ -151,7 +151,7 @@ abstract class AbstractAction
      * @param array $row            
      * @return string
      */
-    private function getAttributesString(array $row)
+    protected function getAttributesString(array $row)
     {
         $attributes = array();
         foreach ($this->getAttributes() as $attrKey => $attrValue) {

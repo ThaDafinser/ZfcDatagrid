@@ -1,6 +1,4 @@
 <?php
-use Zend\ServiceManager\ServiceManager;
-
 return array(
     
     'ZfcDatagrid' => array(
@@ -188,40 +186,6 @@ return array(
             'zfcDatagrid.examples.data.doctrine2' => 'ZfcDatagrid\Examples\Data\Doctrine2',
             'zfcDatagrid.examples.data.zendSelect' => 'ZfcDatagrid\Examples\Data\ZendSelect'
         ),
-        
-        'factories' => array(
-            
-            'zfcDatagrid' => function  (ServiceManager $serviceManager)
-            {
-                $config = $serviceManager->get('config');
-                $dataGrid = new \ZfcDatagrid\Datagrid();
-                $dataGrid->setOptions($config['ZfcDatagrid']);
-                $dataGrid->setMvcEvent($serviceManager->get('application')
-                    ->getMvcEvent());
-                if ($serviceManager->has('translator') === true) {
-                    $dataGrid->setTranslator($serviceManager->get('translator'));
-                }
-                $dataGrid->init();
-                
-                return $dataGrid;
-            },
-            
-            'zfcDatagrid_dbAdapter' => function  (ServiceManager $serviceManager)
-            {
-                $config = $serviceManager->get('config');
-                return new \Zend\Db\Adapter\Adapter($config['zfcDatagrid_dbAdapter']);
-            },
-            
-            // For the doctrine examples!
-            'doctrine.connection.orm_zfcDatagrid' => new \DoctrineORMModule\Service\DBALConnectionFactory('orm_zfcDatagrid'),
-            'doctrine.configuration.orm_zfcDatagrid' => new \DoctrineORMModule\Service\ConfigurationFactory('orm_zfcDatagrid'),
-            'doctrine.entitymanager.orm_zfcDatagrid' => new \DoctrineORMModule\Service\EntityManagerFactory('orm_zfcDatagrid'),
-            
-            'doctrine.driver.orm_zfcDatagrid' => new \DoctrineModule\Service\DriverFactory('orm_zfcDatagrid'),
-            'doctrine.eventmanager.orm_zfcDatagrid' => new \DoctrineModule\Service\EventManagerFactory('orm_zfcDatagrid'),
-            'doctrine.entity_resolver.orm_zfcDatagrid' => new \DoctrineORMModule\Service\EntityResolverFactory('orm_zfcDatagrid'),
-            'doctrine.sql_logger_collector.orm_zfcDatagrid' => new \DoctrineORMModule\Service\SQLLoggerCollectorFactory('orm_zfcDatagrid')
-        )
     ),
     
     'view_helpers' => array(

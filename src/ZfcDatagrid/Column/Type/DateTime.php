@@ -191,6 +191,6 @@ class DateTime extends AbstractType
         }
         $formatter = new IntlDateFormatter($this->getLocale(), $this->getOutputDateType(), $this->getOutputTimeType(), $this->getOutputTimezone(), IntlDateFormatter::GREGORIAN, $this->getOutputPattern());
         
-        return $formatter->format($date);
+        return $formatter->format($date->getTimestamp());
     }
 }
