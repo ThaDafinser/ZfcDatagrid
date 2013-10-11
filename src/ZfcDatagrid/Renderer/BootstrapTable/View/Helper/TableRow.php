@@ -119,10 +119,11 @@ class TableRow extends AbstractHelper
             
             $attributes = array(
                 'class' => implode(',', $classes),
-                'style' => implode(';', $styles)
+                'style' => implode(';', $styles),
+                'data-uniqueId' => $column->getUniqueId()
             );
             
-            $return .= $this->getTd($value, $attributes);
+            $return .= $this->getTd($column, $value, $attributes);
         }
         
         $return .= $this->getTr($row, false);

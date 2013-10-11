@@ -54,8 +54,7 @@ class Renderer extends AbstractRenderer
         // Check for PDF image header
         $headerData = $pdf->getHeaderData();
         if ($headerData['logo'] == '') {
-            $headerData['logo'] = './myImage.jpg';
-            $pdf->setHeaderData($headerData);
+            $pdf->setHeaderData('./tcpdf_logo.jpg');
         }
         $pdf->AddPage();
         
