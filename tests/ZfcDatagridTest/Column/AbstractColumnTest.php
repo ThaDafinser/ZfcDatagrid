@@ -201,22 +201,22 @@ class AbstractColumnTest extends PHPUnit_Framework_TestCase
         ), $column->getRendererParameters('someRenderer'));
 
         
-        $object = new DataPopulation\Object();
-        $object->setObject(new DataPopulation\Object\Gravatar());
-        $this->assertEquals(false, $column->hasDataPopulation());
-        $column->setDataPopulation($object);
-        $this->assertEquals(true, $column->hasDataPopulation());
-        $this->assertInstanceOf('ZfcDatagrid\Column\DataPopulation\Object', $column->getDataPopulation());
+//         $object = new DataPopulation\Object();
+//         $object->setObject(new DataPopulation\Object\Gravatar());
+//         $this->assertEquals(false, $column->hasDataPopulation());
+//         $column->setDataPopulation($object);
+//         $this->assertEquals(true, $column->hasDataPopulation());
+//         $this->assertInstanceOf('ZfcDatagrid\Column\DataPopulation\Object', $column->getDataPopulation());
     }
     
-    public function testException(){
-        /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-        $column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+//     public function testException(){
+//         /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+//         $column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         
-        $object = new DataPopulation\Object();
-        $this->setExpectedException('Exception');
-        $column->setDataPopulation($object);
-    }
+//         $object = new DataPopulation\Object();
+//         $this->setExpectedException('Exception');
+//         $column->setDataPopulation($object);
+//     }
     
     public function testRowClick(){
         /* @var $column \ZfcDatagrid\Column\AbstractColumn */

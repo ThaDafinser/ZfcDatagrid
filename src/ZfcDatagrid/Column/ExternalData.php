@@ -37,6 +37,10 @@ class ExternalData extends AbstractColumn
      */
     public function getDataPopulation()
     {
+        if($this->dataPopulation === null){ 
+            throw new \InvalidArgumentException('no data population set for Column\ExternalData');
+        }
+        
         return $this->dataPopulation;
     }
 

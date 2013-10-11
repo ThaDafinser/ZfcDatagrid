@@ -320,40 +320,44 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($data, $prepare->getData());
     }
 
-    public function testPrepareDataPopulation()
-    {
-        $data = $this->data;
+//     public function testPrepareDataPopulation()
+//     {
+//         $data = $this->data;
         
-        $mock = $this->getMock('ZfcDatagrid\Column\DataPopulation\Object\Gravatar');
-        $mock->expects($this->any())
-            ->method('toString')
-            ->will($this->returnValue('myReturn'));
+//         $mock = $this->getMock('ZfcDatagrid\Column\DataPopulation\Object\Gravatar');
+//         $mock->expects($this->any())
+//             ->method('toString')
+//             ->will($this->returnValue('myReturn'));
         
-        $object = new Object();
-        $object->setObject($mock);
-        $object->addObjectParameterColumn('email', $this->col1);
+//         $object = new Object();
+//         $object->setObject($mock);
+//         $object->addObjectParameterColumn('email', $this->col1);
         
-        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
-        $col->setUniqueId('colPopulation');
-        $col->setDataPopulation($object);
+//         $col = $this->getMock('ZfcDatagrid\Column\ExternalData');
+//         $col->expects($this->any())
+//             ->method('getUniqueId')
+//             ->will($this->returnValue('colPopulation'));
+//         $col->expects($this->any())
+//         ->method('getDataPopulation')
+//         ->will($this->returnValue($object));
         
-        $prepare = new PrepareData($data, array(
-            $this->colId,
-            $this->col1,
-            $this->col2,
-            $col
-        ));
+//         $prepare = new PrepareData($data, array(
+//             $this->colId,
+//             $this->col1,
+//             $this->col2,
+//             $col
+//         ));
         
-        $data[0]['idConcated'] = '1';
-        $data[1]['idConcated'] = '2';
-        $data[2]['idConcated'] = '3';
+//         $data[0]['idConcated'] = '1';
+//         $data[1]['idConcated'] = '2';
+//         $data[2]['idConcated'] = '3';
         
-        $data[1]['col2'] = '';
+//         $data[1]['col2'] = '';
         
-        $data[0]['colPopulation'] = 'myReturn';
-        $data[1]['colPopulation'] = 'myReturn';
-        $data[2]['colPopulation'] = 'myReturn';
+//         $data[0]['colPopulation'] = 'myReturn';
+//         $data[1]['colPopulation'] = 'myReturn';
+//         $data[2]['colPopulation'] = 'myReturn';
         
-        $this->assertEquals($data, $prepare->getData());
-    }
+//         $this->assertEquals($data, $prepare->getData());
+//     }
 }
