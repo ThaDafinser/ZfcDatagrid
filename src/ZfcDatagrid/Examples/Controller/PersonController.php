@@ -23,6 +23,12 @@ class PersonController extends AbstractActionController
         $col->setIdentity();
         $dataGrid->addColumn($col);
         
+        $action = new Column\Action\Checkbox();
+        
+        $col = new Column\Action('checkboxes');
+        $col->addAction($action);
+        $dataGrid->addColumn($col);
+        
         {
             /**
              * Gravatar example

@@ -136,6 +136,12 @@ abstract class AbstractAction
         
         return '';
     }
+    
+    public function removeAttribute($name){
+        if(isset($this->htmlAttributes[$name])){
+            unset($this->htmlAttributes[$name]);
+        }
+    }
 
     /**
      * Get all HTML attributes
