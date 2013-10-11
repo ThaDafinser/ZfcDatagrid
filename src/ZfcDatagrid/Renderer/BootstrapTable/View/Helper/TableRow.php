@@ -56,6 +56,7 @@ class TableRow extends AbstractHelper
             }
             
             switch ($column->getType()->getTypeName()) {
+                
                 case 'number':
                     $styles[] = 'text-align: right';
                     break;
@@ -63,6 +64,7 @@ class TableRow extends AbstractHelper
                 case 'array':
                     $value = '<pre>' . print_r($value, true) . '</pre>';
                     break;
+                    
             }
             
             if ($column->hasStyles() === true) {

@@ -3,7 +3,7 @@ namespace ZfcDatagrid\Column;
 
 use ZfcDatagrid\Filter;
 
-abstract class AbstractColumn implements ColumnInterface
+abstract class AbstractColumn
 {
 
     protected $label;
