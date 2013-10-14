@@ -218,6 +218,26 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         
         $this->assertEquals(null, $this->datagrid->getColumnByUniqueId('notAvailable'));
     }
+    
+    public function testColumnArray()
+    {
+        $this->assertEquals(array(), $this->datagrid->getColumns());
+    
+        $column = array(
+            'name' => 'Test',
+            'index' => '123',
+            'label' => 'blubb'
+        );
+    
+        $this->datagrid->addColumn($column);
+    
+        $this->assertCount(1, $this->datagrid->getColumns());
+        
+        $col = $this->datagrid->getColumnByUniqueId('123');
+        $this->assertInstanceOf('ZfcDatagrid\Column\Select', $col);
+        $this->assertEquals(null, $this->datagrid->getColumnByUniqueId('notAvailable'));
+        $this->assertEquals('blubb', $col->getLabel());
+    }
 
     public function testUserFilter()
     {

@@ -319,6 +319,7 @@ abstract class AbstractColumn
         } else {
             return false;
         }
+        
     }
 
     public function setFilterDefaultOperation ($operation = Filter::LIKE)

@@ -545,12 +545,79 @@ class Datagrid implements ServiceLocatorAwareInterface
     }
 
     /**
-     * Add a column
+     * Create a column from array instanceof
+     *
+     * @param mixed $column            
+     *
+     * @return Column\AbstractColumn
+     */
+    private function createColumn($column)
+    {
+        if (is_array($column)) {
+            $type = isset($column['type']) ? $column['type'] : 'Select';
+            if (class_exists($type, true)) {
+                $class = $type;
+            } elseif (class_exists('ZfcDatagrid\\Column\\' . $type, true)) {
+                $class = 'ZfcDatagrid\\Column\\' . $type;
+            } else {
+                throw new \Exception('Column type: "' . $type . '" not found!');
+            }
+            
+            if ($class == 'ZfcDatagrid\\Column\\Select') {
+                if (! isset($column['index'])) {
+                    throw new \InvalidArgumentException('For "ZfcDatagrid\\Column\\Select" an index to select must be defined!');
+                }
+                $table = isset($column['table']) ? $column['table'] : null;
+                $instance = new $class($column['index'], $table);
+            } else {
+                $instance = new $class();
+            }
+            
+            foreach ($column as $key => $value) {
+                $method = 'set'.ucfirst($key);
+                if(method_exists($instance, $method)){
+                    $instance->{$method}($value);
+                }
+            }
+            
+            
+            $column = $instance;
+            
+        }
+        
+        if (! $column instanceof Column\AbstractColumn) {
+            throw new \InvalidArgumentException('addColumn supports only array or instanceof Column\AbstractColumn as a parameter');
+        }
+        
+        return $column;
+    }
+
+    /**
+     * Set all columns by an array
+     *
+     * @param array $columns            
+     */
+    public function setColumns(array $columns)
+    {
+        $useColumns = array();
+        
+        foreach ($columns as $column) {
+            $col = $this->createColumn($column);
+            
+            $useColumns[$col->getUniqueId()] = $col;
+        }
+        
+        $this->columns = $useColumns;
+    }
+
+    /**
+     * Add a column by array config or instanceof Column\AbstractColumn
      *
      * @param Column\AbstractColumn $col            
      */
-    public function addColumn(Column\AbstractColumn $col)
+    public function addColumn($col)
     {
+        $col = $this->createColumn($col);
         $this->columns[$col->getUniqueId()] = $col;
     }
 
@@ -822,19 +889,22 @@ class Datagrid implements ServiceLocatorAwareInterface
     }
 
     /**
+     *
      * @deprecated use render() instead!
      */
-    public function execute(){
-        if($this->isRendered() === false){
+    public function execute()
+    {
+        if ($this->isRendered() === false) {
             $this->render();
         }
     }
+
     /**
      * Render the grid
      */
     public function render()
     {
-        if($this->isDataLoaded() === false){
+        if ($this->isDataLoaded() === false) {
             $this->loadData();
         }
         
