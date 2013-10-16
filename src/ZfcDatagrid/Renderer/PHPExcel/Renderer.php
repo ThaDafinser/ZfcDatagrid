@@ -67,7 +67,7 @@ class Renderer extends AbstractRenderer
         $columnsToExport = array();
         foreach ($this->getColumns() as $column) {
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-            if ($column->isHidden() === false && in_array(get_class($column), $this->allowedColumnTypes)) {
+            if ($column->isHidden() === false && in_array(get_class($column->getType()), $this->allowedColumnTypes)) {
                 $columnsToExport[] = $column;
             }
         }

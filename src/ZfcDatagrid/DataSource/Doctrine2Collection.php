@@ -81,8 +81,12 @@ class Doctrine2Collection extends AbstractDataSource
                         $rowExtracted[$column->getUniqueId()] = $dataExtracted[$part1];
                     }
                 } else {
-                    if (isset($dataExtracted[$part2][$part1])) {
-                        $rowExtracted[$column->getUniqueId()] = $dataExtracted[$part2][$part1];
+                    // NESTED
+                    if (isset($dataExtracted[$part1])) {
+                        $dataExtractedNested = $hydrator->extract($dataExtracted[$part1]);
+                        if (isset($dataExtractedNested[$part2])) {
+                            $rowExtracted[$column->getUniqueId()] = $dataExtractedNested[$part2];
+                        }
                     }
                 }
             }

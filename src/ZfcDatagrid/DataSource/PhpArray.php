@@ -129,9 +129,9 @@ class PhpArray extends AbstractDataSource
             
             $dataCol = array();
             foreach ($data as $key => $row) {
-                if(!isset($row[$column])){
+                if (! isset($row[$column])) {
                     $value = '';
-                } else{
+                } else {
                     $value = $row[$column];
                 }
                 $dataCol[$key] = $value;
