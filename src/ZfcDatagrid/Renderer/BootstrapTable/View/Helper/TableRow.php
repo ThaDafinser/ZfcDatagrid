@@ -120,7 +120,7 @@ class TableRow extends AbstractHelper
             $attributes = array(
                 'class' => implode(',', $classes),
                 'style' => implode(';', $styles),
-                'data-uniqueId' => $column->getUniqueId()
+                'data-columnUniqueId' => $column->getUniqueId()
             );
             
             $return .= $this->getTd($value, $attributes);
