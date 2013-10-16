@@ -58,7 +58,7 @@ abstract class AbstractColumn
 
     protected $rowClickEnabled = true;
 
-    public function setLabel ($name)
+    public function setLabel($name)
     {
         $this->label = (string) $name;
     }
@@ -68,33 +68,33 @@ abstract class AbstractColumn
      *
      * @return string null
      */
-    public function getLabel ()
+    public function getLabel()
     {
         return $this->label;
     }
 
-    public function setUniqueId ($id)
+    public function setUniqueId($id)
     {
         $this->uniqueId = $id;
     }
 
-    public function getUniqueId ()
+    public function getUniqueId()
     {
         return $this->uniqueId;
     }
 
-    public function setSelect ($part1, $part2 = null)
+    public function setSelect($part1, $part2 = null)
     {
         $this->selectPart1 = $part1;
         $this->selectPart2 = $part2;
     }
 
-    public function getSelectPart1 ()
+    public function getSelectPart1()
     {
         return $this->selectPart1;
     }
 
-    public function getSelectPart2 ()
+    public function getSelectPart2()
     {
         return $this->selectPart2;
     }
@@ -106,31 +106,32 @@ abstract class AbstractColumn
      *
      * @param number $percent            
      */
-    public function setWidth ($percent)
+    public function setWidth($percent)
     {
         $this->width = (float) $percent;
     }
 
     /**
      * Get the width
+     * 
      * @return number
      */
-    public function getWidth ()
+    public function getWidth()
     {
         return $this->width;
     }
 
-    public function setHidden ($mode = true)
+    public function setHidden($mode = true)
     {
         $this->isHidden = (bool) $mode;
     }
 
-    public function isHidden ()
+    public function isHidden()
     {
         return (bool) $this->isHidden;
     }
 
-    public function setIdentity ($mode = true)
+    public function setIdentity($mode = true)
     {
         $this->isIdentity = (bool) $mode;
         
@@ -138,7 +139,7 @@ abstract class AbstractColumn
         $this->setHidden($mode);
     }
 
-    public function isIdentity ()
+    public function isIdentity()
     {
         return (bool) $this->isIdentity;
     }
@@ -148,7 +149,7 @@ abstract class AbstractColumn
      *
      * @param Type\AbstractType $type            
      */
-    public function setType (Type\AbstractType $type)
+    public function setType(Type\AbstractType $type)
     {
         $this->type = $type;
     }
@@ -157,7 +158,7 @@ abstract class AbstractColumn
      *
      * @return Type\AbstractType
      */
-    public function getType ()
+    public function getType()
     {
         if ($this->type === null) {
             $this->type = new Type\String();
@@ -166,17 +167,17 @@ abstract class AbstractColumn
         return $this->type;
     }
 
-    public function addStyle (Style\AbstractStyle $style)
+    public function addStyle(Style\AbstractStyle $style)
     {
         $this->styles[] = $style;
     }
 
-    public function getStyles ()
+    public function getStyles()
     {
         return $this->styles;
     }
 
-    public function hasStyles ()
+    public function hasStyles()
     {
         if (count($this->styles) > 0) {
             return true;
@@ -190,7 +191,7 @@ abstract class AbstractColumn
      *
      * @param boolean $mode            
      */
-    public function setUserSortDisabled ($mode = true)
+    public function setUserSortDisabled($mode = true)
     {
         $this->userSortEnabled = (bool) ! $mode;
     }
@@ -200,37 +201,19 @@ abstract class AbstractColumn
      *
      * @return boolean
      */
-    public function isUserSortEnabled ()
+    public function isUserSortEnabled()
     {
         return (bool) $this->userSortEnabled;
     }
 
     /**
      * The data will get sorted by this column (by default)
-     * If will be changed by the user per request (POST,GET .
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     * ..)
+     * If will be changed by the user per request (POST,GET....)
      *
      * @param integer $priority            
      * @param string $direction            
      */
-    public function setSortDefault ($priority = 1, $direction = 'ASC')
+    public function setSortDefault($priority = 1, $direction = 'ASC')
     {
         $this->sortDefault = array(
             'priority' => $priority,
@@ -243,7 +226,7 @@ abstract class AbstractColumn
      *
      * @return array
      */
-    public function getSortDefault ()
+    public function getSortDefault()
     {
         return $this->sortDefault;
     }
@@ -253,7 +236,7 @@ abstract class AbstractColumn
      *
      * @return boolean
      */
-    public function hasSortDefault ()
+    public function hasSortDefault()
     {
         if (count($this->sortDefault) > 0) {
             return true;
@@ -262,12 +245,12 @@ abstract class AbstractColumn
         return false;
     }
 
-    public function setSortActive ($direction = 'ASC')
+    public function setSortActive($direction = 'ASC')
     {
         $this->sortActive = $direction;
     }
 
-    public function isSortActive ()
+    public function isSortActive()
     {
         if ($this->sortActive !== null) {
             return true;
@@ -276,7 +259,7 @@ abstract class AbstractColumn
         return false;
     }
 
-    public function getSortActiveDirection ()
+    public function getSortActiveDirection()
     {
         return $this->sortActive;
     }
@@ -285,7 +268,7 @@ abstract class AbstractColumn
      *
      * @param boolean $mode            
      */
-    public function setUserFilterDisabled ($mode = true)
+    public function setUserFilterDisabled($mode = true)
     {
         $this->userFilterEnabled = (bool) ! $mode;
     }
@@ -300,34 +283,33 @@ abstract class AbstractColumn
      *
      * @param string $value            
      */
-    public function setFilterDefaultValue ($value = null)
+    public function setFilterDefaultValue($value = null)
     {
         if ($value != '') {
             $this->filterDefaultValue = (string) $value;
         }
     }
 
-    public function getFilterDefaultValue ()
+    public function getFilterDefaultValue()
     {
         return $this->filterDefaultValue;
     }
 
-    public function hasFilterDefaultValue ()
+    public function hasFilterDefaultValue()
     {
         if ($this->filterDefaultValue != '') {
             return true;
         } else {
             return false;
         }
-        
     }
 
-    public function setFilterDefaultOperation ($operation = Filter::LIKE)
+    public function setFilterDefaultOperation($operation = Filter::LIKE)
     {
         $this->filterDefaultOperation = $operation;
     }
 
-    public function getFilterDefaultOperation ()
+    public function getFilterDefaultOperation()
     {
         if ($this->filterDefaultOperation != '') {
             return $this->filterDefaultOperation;
@@ -336,7 +318,7 @@ abstract class AbstractColumn
         return $this->getType()->getFilterDefaultOperation();
     }
 
-    public function setFilterSelectOptions (array $options = null, $noSelect = true)
+    public function setFilterSelectOptions(array $options = null, $noSelect = true)
     {
         if ($noSelect === true) {
             $nothing = array(
@@ -347,12 +329,12 @@ abstract class AbstractColumn
         $this->filterSelectOptions = $options;
     }
 
-    public function getFilterSelectOptions ()
+    public function getFilterSelectOptions()
     {
         return $this->filterSelectOptions;
     }
 
-    public function hasFilterSelectOptions ()
+    public function hasFilterSelectOptions()
     {
         if (is_array($this->filterSelectOptions)) {
             return true;
@@ -365,7 +347,7 @@ abstract class AbstractColumn
      *
      * @param boolean $mode            
      */
-    public function setFilterActive ($value = '')
+    public function setFilterActive($value = '')
     {
         $this->filterActive = (bool) true;
         $this->filterActiveValue = $value;
@@ -375,12 +357,12 @@ abstract class AbstractColumn
      *
      * @return boolean
      */
-    public function isFilterActive ()
+    public function isFilterActive()
     {
         return $this->filterActive;
     }
 
-    public function getFilterActiveValue ()
+    public function getFilterActiveValue()
     {
         return $this->filterActiveValue;
     }
@@ -389,7 +371,7 @@ abstract class AbstractColumn
      *
      * @return boolean
      */
-    public function isUserFilterEnabled ()
+    public function isUserFilterEnabled()
     {
         return (bool) $this->userFilterEnabled;
     }
@@ -399,7 +381,7 @@ abstract class AbstractColumn
      *
      * @param boolean $mode            
      */
-    public function setTranslationEnabled ($mode = true)
+    public function setTranslationEnabled($mode = true)
     {
         $this->translationEnabled = (bool) $mode;
     }
@@ -409,18 +391,18 @@ abstract class AbstractColumn
      *
      * @return boolean
      */
-    public function isTranslationEnabled ()
+    public function isTranslationEnabled()
     {
         return (bool) $this->translationEnabled;
     }
 
     /**
      * Replace the column values with the applied values
-     * 
-     * @param array $values
-     * @param boolean $notReplacedGetEmpty
+     *
+     * @param array $values            
+     * @param boolean $notReplacedGetEmpty            
      */
-    public function setReplaceValues (array $values, $notReplacedGetEmpty = true)
+    public function setReplaceValues(array $values, $notReplacedGetEmpty = true)
     {
         $this->replaceValues = $values;
         $this->notReplacedGetEmpty = (bool) $notReplacedGetEmpty;
@@ -430,10 +412,10 @@ abstract class AbstractColumn
     }
 
     /**
-     * 
+     *
      * @return boolean
      */
-    public function hasReplaceValues ()
+    public function hasReplaceValues()
     {
         if (count($this->replaceValues) > 0)
             return true;
@@ -442,24 +424,24 @@ abstract class AbstractColumn
     }
 
     /**
-     * 
+     *
      * @return array
      */
-    public function getReplaceValues ()
+    public function getReplaceValues()
     {
         return $this->replaceValues;
     }
 
     /**
-     * 
+     *
      * @return boolean
      */
-    public function notReplacedGetEmpty ()
+    public function notReplacedGetEmpty()
     {
         return $this->notReplacedGetEmpty;
     }
 
-    public function setRendererParameter ($name, $value, $rendererType = 'jqgrid')
+    public function setRendererParameter($name, $value, $rendererType = 'jqgrid')
     {
         if (! isset($this->rendererParameter[$rendererType])) {
             $this->rendererParameter[$rendererType] = array();
@@ -471,7 +453,7 @@ abstract class AbstractColumn
         $this->rendererParameter[$rendererType] = $parameters;
     }
 
-    public function getRendererParameters ($rendererType = 'jqgrid')
+    public function getRendererParameters($rendererType = 'jqgrid')
     {
         if (! isset($this->rendererParameter[$rendererType])) {
             $this->rendererParameter[$rendererType] = array();
@@ -480,12 +462,12 @@ abstract class AbstractColumn
         return $this->rendererParameter[$rendererType];
     }
 
-    public function setRowClickDisabled ($mode = true)
+    public function setRowClickDisabled($mode = true)
     {
         $this->rowClickEnabled = (bool) ! $mode;
     }
 
-    public function isRowClickEnabled ()
+    public function isRowClickEnabled()
     {
         return $this->rowClickEnabled;
     }

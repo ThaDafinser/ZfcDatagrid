@@ -18,6 +18,7 @@ use Zend\Session\Container as SessionContainer;
 use Zend\Db\Sql\Select as ZendSelect;
 use Zend\View\Model\JsonModel;
 use Zend\Stdlib\ResponseInterface;
+use Doctrine\Common\Collections\Collection;
 
 class Datagrid implements ServiceLocatorAwareInterface
 {
@@ -160,6 +161,14 @@ class Datagrid implements ServiceLocatorAwareInterface
     protected $isRendered = false;
 
     protected $forceRenderer;
+
+    private $specialMethods = array(
+        'filterSelectOptions' => 2,
+        'rendererParameter' => 3,
+        'replaceValues' => 2,
+        'select' => 2,
+        'sortDefault' => 2
+    );
 
     /**
      * Init method is called automatically with the service creation
@@ -395,7 +404,14 @@ class Datagrid implements ServiceLocatorAwareInterface
             }
             $this->dataSource = new DataSource\ZendSelect($data);
             $this->dataSource->setAdapter($args[1]);
-        } else {
+        } elseif($data instanceof Collection){
+            $em = func_get_arg(1);
+            if($em === false || ! $em instanceof \Doctrine\ORM\EntityManager){
+                throw new \Exception('If providing a Collection, also the EntityManager is needed as a second parameter');
+            }
+            $this->dataSource = new DataSource\Doctrine2Collection($data);
+            $this->dataSource->setEntityManager($em);
+        }else {
             throw new \InvalidArgumentException('$data must implement the interface ZfcDatagrid\DataSource\DataSourceInterface');
         }
     }
@@ -574,15 +590,30 @@ class Datagrid implements ServiceLocatorAwareInterface
             }
             
             foreach ($column as $key => $value) {
-                $method = 'set'.ucfirst($key);
-                if(method_exists($instance, $method)){
+                $method = 'set' . ucfirst($key);
+                if (method_exists($instance, $method)) {
+                    if (in_array($key, $this->specialMethods)) {
+                        if ($key == 'style') {
+                            $instance->addStyle($value);
+                            break;
+                        }
+                        $count = $this->specialMethods[$key];
+                        
+                        if ($count == 2) {
+                            if(is_array($value) && count($value) === 2){
+                                
+                            }
+                        } else {
+                            throw new \Exception('currently not supported. count arguments: "' . $count . '"');
+                        }
+                    }
+                    
                     $instance->{$method}($value);
+                    break;
                 }
             }
             
-            
             $column = $instance;
-            
         }
         
         if (! $column instanceof Column\AbstractColumn) {
