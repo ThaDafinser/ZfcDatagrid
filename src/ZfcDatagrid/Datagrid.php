@@ -220,6 +220,8 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function setId($id = null)
     {
         if ($id !== null) {
+            $id = preg_replace("/[^a-z0-9_\\\d]/i", '_', $id);
+            
             $this->id = (string) $id;
         }
     }
@@ -404,14 +406,14 @@ class Datagrid implements ServiceLocatorAwareInterface
             }
             $this->dataSource = new DataSource\ZendSelect($data);
             $this->dataSource->setAdapter($args[1]);
-        } elseif($data instanceof Collection){
+        } elseif ($data instanceof Collection) {
             $em = func_get_arg(1);
-            if($em === false || ! $em instanceof \Doctrine\ORM\EntityManager){
+            if ($em === false || ! $em instanceof \Doctrine\ORM\EntityManager) {
                 throw new \Exception('If providing a Collection, also the EntityManager is needed as a second parameter');
             }
             $this->dataSource = new DataSource\Doctrine2Collection($data);
             $this->dataSource->setEntityManager($em);
-        }else {
+        } else {
             throw new \InvalidArgumentException('$data must implement the interface ZfcDatagrid\DataSource\DataSourceInterface');
         }
     }
@@ -600,9 +602,7 @@ class Datagrid implements ServiceLocatorAwareInterface
                         $count = $this->specialMethods[$key];
                         
                         if ($count == 2) {
-                            if(is_array($value) && count($value) === 2){
-                                
-                            }
+                            if (is_array($value) && count($value) === 2) {}
                         } else {
                             throw new \Exception('currently not supported. count arguments: "' . $count . '"');
                         }

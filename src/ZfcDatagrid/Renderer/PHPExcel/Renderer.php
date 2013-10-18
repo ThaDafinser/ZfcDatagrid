@@ -82,7 +82,8 @@ class Renderer extends AbstractRenderer
         $yRow = $optionsRenderer['startRowData'];
         foreach ($columnsToExport as $column) {
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-            $sheet->setCellValueByColumnAndRow($xColumn, $yRow, $column->getLabel());
+            $label = $this->getTranslator()->translate($column->getLabel());
+            $sheet->setCellValueByColumnAndRow($xColumn, $yRow, $label);
             
             // $sheet->getColumnDimension(PHPExcel_Cell::stringFromColumnIndex($xColumn))->setCollapsed(true);
             $sheet->getColumnDimension(PHPExcel_Cell::stringFromColumnIndex($xColumn))->setWidth($column->getWidth());

@@ -191,7 +191,7 @@ class Renderer extends AbstractRenderer
                 $columnsToExport[] = $column;
             }
         }
-        if(count($columnsToExport) === 0){
+        if (count($columnsToExport) === 0) {
             throw new \Exception('No columns to export available');
         }
         
@@ -255,9 +255,14 @@ class Renderer extends AbstractRenderer
                     // "min" height for such a column
                     $height = 15;
                     break;
-                    
+                
                 default:
-                    $height = $pdf->getStringHeight($column->getWidth(), $row[$column->getUniqueId()]);
+                    $value = $row[$column->getUniqueId()];
+                    if (is_array($value)) {
+                        $value = implode(PHP_EOL, $value);
+                    }
+                    
+                    $height = $pdf->getStringHeight($column->getWidth(), $value);
                     
                     // include borders top/bottom
                     $height += 2;
@@ -340,9 +345,14 @@ class Renderer extends AbstractRenderer
             $text = '';
             switch (get_class($column->getType())) {
                 
+                // case 'ZfcDatagrid\Column\Type\PhpArray':
+                // print_r($row[$column->getUniqueId()]);
+                // exit();
+                // break;
+                
                 case 'ZfcDatagrid\Column\Type\Icon':
                     $text = '';
-                
+                    
                     $link = K_BLANK_IMAGE;
                     if ($column->getIconLink() != '') {
                         $link = $column->getIconLink();
@@ -352,7 +362,7 @@ class Renderer extends AbstractRenderer
                 
                 case 'ZfcDatagrid\Column\Type\Image':
                     $text = '';
-                
+                    
                     $link = K_BLANK_IMAGE;
                     if ($row[$column->getUniqueId()] != '') {
                         $link = $row[$column->getUniqueId()];
@@ -361,10 +371,14 @@ class Renderer extends AbstractRenderer
                     // Image($file, $x='', $y='', $w=0, $h=0, $type='', $link='', $align='', $resize=false, $dpi=300, $palign='', $ismask=false, $imgmask=false, $border=0, $fitbox=false, $hidden=false, $fitonpage=false, $alt=false, $altimgs=array()) {
                     $pdf->Image($link, $x + 1, $y + 1, $width, $height, '', '', 'L', true, 300, '', false, false, 0, false, false, true, false, array());
                     break;
-                    
+                
                 default:
                     $text = $row[$column->getUniqueId()];
                     break;
+            }
+            
+            if(is_array($text)){
+                $text = implode(PHP_EOL, $text);
             }
             
             // MultiCell($w, $h, $txt, $border=0, $align='J', $fill=false, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0, $valign='T', $fitcell=false)
