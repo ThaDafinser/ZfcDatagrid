@@ -6,10 +6,11 @@ use ZfcDatagrid\Filter;
 use ZfcDatagridTest\DataSource\DataSourceTestCase;
 
 /**
+ *
  * @copyright goes to: https://github.com/doctrine/doctrine2/blob/master/tests/Doctrine/Tests/OrmTestCase.php
- * 
- * @group DataSource
- * @covers ZfcDatagrid\DataSource\Doctrine2
+ *           
+ *            @group DataSource
+ *            @covers ZfcDatagrid\DataSource\Doctrine2
  */
 abstract class AbstractDoctrine2Test extends DataSourceTestCase
 {
@@ -29,11 +30,11 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
     private static $_queryCacheImpl = null;
 
     /**
+     *
      * @var \Doctrine\ORM\EntityManager
      */
     protected $em;
-    
-    
+
     /**
      *
      * @param array $paths            
@@ -101,6 +102,11 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
         $config->setProxyDir(__DIR__ . '/Proxies');
         $config->setProxyNamespace('Doctrine\Tests\Proxies');
         
+        $config->setEntityNamespaces(array(
+            'ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity',
+            'ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity\Category'
+        ));
+        
         if ($conn === null) {
             $conn = array(
                 'driverClass' => 'ZfcDatagridTest\DataSource\Doctrine2\Mocks\DriverMock',
@@ -142,12 +148,11 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
         
         return self::$_queryCacheImpl;
     }
-    
+
     public function setUp()
     {
         $this->em = $this->_getTestEntityManager();
         
         parent::setUp();
     }
-    
 }

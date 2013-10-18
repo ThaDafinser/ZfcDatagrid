@@ -20,3 +20,4 @@ if (! isset($loader)) {
 
 /* @var $loader \Composer\Autoload\ClassLoader */
 $loader->add('ZfcDatagridTest\\', __DIR__);
+
