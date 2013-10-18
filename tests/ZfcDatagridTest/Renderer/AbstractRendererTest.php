@@ -6,6 +6,8 @@ use ZfcDatagrid\Filter;
 use ZfcDatagrid\Column\Type;
 use ZfcDatagrid\Column\Style;
 use PHPUnit_Framework_TestCase;
+use Zend\Paginator;
+use ZfcDatagridTest\DatagridMocks;
 
 /**
  * @group Column
@@ -96,5 +98,30 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         
         $this->assertEquals('config/my/template', $renderer->getTemplate());
         $this->assertEquals('config/my/toolbar', $renderer->getToolbarTemplate());
+    }
+
+    public function testPaginator()
+    {
+        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        
+        $this->assertNull($renderer->getPaginator());
+        
+        $paginator = DatagridMocks::getPaginator();
+        $renderer->setPaginator($paginator);
+        
+        $this->assertSame($paginator, $renderer->getPaginator());
+    }
+    
+    public function testColumns()
+    {
+        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        
+        $this->assertEquals(array(), $renderer->getColumns());
+        
+        $col = DatagridMocks::getColBasic();
+        $renderer->setColumns(array($col));
+        
+        $this->assertEquals(array($col), $renderer->getColumns());
+        
     }
 }
