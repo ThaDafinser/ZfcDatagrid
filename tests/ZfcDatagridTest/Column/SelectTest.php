@@ -7,9 +7,9 @@ use ZfcDatagrid\Column;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\Standard
+ * @covers ZfcDatagrid\Column\Select
  */
-class StandardTest extends PHPUnit_Framework_TestCase
+class SelectTest extends PHPUnit_Framework_TestCase
 {
 
     public function testConstructDefaultBoth ()

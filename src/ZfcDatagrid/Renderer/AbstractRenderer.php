@@ -135,9 +135,9 @@ abstract class AbstractRenderer implements RendererInterface
      */
     public function getTemplatePathDefault($type = 'layout')
     {
-        $options = $this->getOptions();
-        if (isset($options['renderer'][$this->getName()]['templates'][$type])) {
-            return $options['renderer'][$this->getName()]['templates'][$type];
+        $optionsRenderer = $this->getOptionsRenderer();
+        if (isset($optionsRenderer['templates'][$type])) {
+            return $optionsRenderer['templates'][$type];
         }
         
         if ($type === 'layout') {

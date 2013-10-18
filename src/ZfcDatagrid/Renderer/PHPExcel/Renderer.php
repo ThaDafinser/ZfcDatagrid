@@ -21,25 +21,25 @@ class Renderer extends AbstractRenderer
         'ZfcDatagrid\Column\Type\DateTime',
         'ZfcDatagrid\Column\Type\Number',
         'ZfcDatagrid\Column\Type\PhpArray',
-        'ZfcDatagrid\Column\Type\String'    
+        'ZfcDatagrid\Column\Type\String'
     );
-    
-    public function getName ()
+
+    public function getName()
     {
         return 'PHPExcel';
     }
 
-    public function isExport ()
+    public function isExport()
     {
         return true;
     }
 
-    public function isHtml ()
+    public function isHtml()
     {
         return false;
     }
 
-    public function execute ()
+    public function execute()
     {
         $options = $this->getOptions();
         $optionsExport = $options['settings']['export'];
@@ -71,12 +71,10 @@ class Renderer extends AbstractRenderer
                 $columnsToExport[] = $column;
             }
         }
-        if(count($columnsToExport) === 0){
+        if (count($columnsToExport) === 0) {
             throw new \Exception('No columns to export available');
         }
         $this->calculateColumnWidth($columnsToExport);
-        
-
         
         $xColumn = 0;
         $yRow = $optionsRenderer['startRowData'];
@@ -118,7 +116,7 @@ class Renderer extends AbstractRenderer
                                 case 'ZfcDatagrid\Column\Style\Bold':
                                     $columnStyle->getFont()->setBold(true);
                                     break;
-                                    
+                                
                                 case 'ZfcDatagrid\Column\Style\Italic':
                                     $columnStyle->getFont()->setItalic(true);
                                     break;
@@ -201,7 +199,7 @@ class Renderer extends AbstractRenderer
      *
      * @param array $columns            
      */
-    protected function calculateColumnWidth (array $columns)
+    protected function calculateColumnWidth(array $columns)
     {
         // First make sure the columns width is 100 "percent"
         $this->calculateColumnWidthPercent($columns);
@@ -221,7 +219,7 @@ class Renderer extends AbstractRenderer
      *
      * @param PHPExcel $phpExcel            
      */
-    protected function setPrinting (PHPExcel $phpExcel)
+    protected function setPrinting(PHPExcel $phpExcel)
     {
         $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
