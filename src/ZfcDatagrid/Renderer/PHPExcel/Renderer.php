@@ -21,25 +21,25 @@ class Renderer extends AbstractRenderer
         'ZfcDatagrid\Column\Type\DateTime',
         'ZfcDatagrid\Column\Type\Number',
         'ZfcDatagrid\Column\Type\PhpArray',
-        'ZfcDatagrid\Column\Type\String'    
+        'ZfcDatagrid\Column\Type\String'
     );
-    
-    public function getName ()
+
+    public function getName()
     {
         return 'PHPExcel';
     }
 
-    public function isExport ()
+    public function isExport()
     {
         return true;
     }
 
-    public function isHtml ()
+    public function isHtml()
     {
         return false;
     }
 
-    public function execute ()
+    public function execute()
     {
         $options = $this->getOptions();
         $optionsExport = $options['settings']['export'];
@@ -67,22 +67,21 @@ class Renderer extends AbstractRenderer
         $columnsToExport = array();
         foreach ($this->getColumns() as $column) {
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-            if ($column->isHidden() === false && in_array(get_class($column), $this->allowedColumnTypes)) {
+            if ($column->isHidden() === false && in_array(get_class($column->getType()), $this->allowedColumnTypes)) {
                 $columnsToExport[] = $column;
             }
         }
-        if(count($columnsToExport) === 0){
+        if (count($columnsToExport) === 0) {
             throw new \Exception('No columns to export available');
         }
         $this->calculateColumnWidth($columnsToExport);
-        
-
         
         $xColumn = 0;
         $yRow = $optionsRenderer['startRowData'];
         foreach ($columnsToExport as $column) {
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-            $sheet->setCellValueByColumnAndRow($xColumn, $yRow, $column->getLabel());
+            $label = $this->getTranslator()->translate($column->getLabel());
+            $sheet->setCellValueByColumnAndRow($xColumn, $yRow, $label);
             
             // $sheet->getColumnDimension(PHPExcel_Cell::stringFromColumnIndex($xColumn))->setCollapsed(true);
             $sheet->getColumnDimension(PHPExcel_Cell::stringFromColumnIndex($xColumn))->setWidth($column->getWidth());
@@ -117,7 +116,7 @@ class Renderer extends AbstractRenderer
                                 case 'ZfcDatagrid\Column\Style\Bold':
                                     $columnStyle->getFont()->setBold(true);
                                     break;
-                                    
+                                
                                 case 'ZfcDatagrid\Column\Style\Italic':
                                     $columnStyle->getFont()->setItalic(true);
                                     break;
@@ -200,7 +199,7 @@ class Renderer extends AbstractRenderer
      *
      * @param array $columns            
      */
-    protected function calculateColumnWidth (array $columns)
+    protected function calculateColumnWidth(array $columns)
     {
         // First make sure the columns width is 100 "percent"
         $this->calculateColumnWidthPercent($columns);
@@ -220,7 +219,7 @@ class Renderer extends AbstractRenderer
      *
      * @param PHPExcel $phpExcel            
      */
-    protected function setPrinting (PHPExcel $phpExcel)
+    protected function setPrinting(PHPExcel $phpExcel)
     {
         $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();

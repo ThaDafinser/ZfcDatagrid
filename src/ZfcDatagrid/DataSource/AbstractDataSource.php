@@ -45,7 +45,7 @@ abstract class AbstractDataSource implements DataSourceInterface
 
     /**
      *
-     * @return array
+     * @return Column\AbstractColumn[]
      */
     public function getColumns ()
     {
@@ -66,6 +66,10 @@ abstract class AbstractDataSource implements DataSourceInterface
         );
     }
 
+    public function setSortConditions(array $sortConditions){
+        $this->sortConditions = $sortConditions;
+    }
+    
     /**
      *
      * @return array
@@ -83,6 +87,10 @@ abstract class AbstractDataSource implements DataSourceInterface
     public function addFilter (Filter $filter)
     {
         $this->filters[] = $filter;
+    }
+    
+    public function setFilters(array $filters){
+        $this->filters = $filters;
     }
 
     /**

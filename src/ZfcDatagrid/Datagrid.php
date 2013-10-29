@@ -18,6 +18,7 @@ use Zend\Session\Container as SessionContainer;
 use Zend\Db\Sql\Select as ZendSelect;
 use Zend\View\Model\JsonModel;
 use Zend\Stdlib\ResponseInterface;
+use Doctrine\Common\Collections\Collection;
 
 class Datagrid implements ServiceLocatorAwareInterface
 {
@@ -161,6 +162,14 @@ class Datagrid implements ServiceLocatorAwareInterface
 
     protected $forceRenderer;
 
+    private $specialMethods = array(
+        'filterSelectOptions' => 2,
+        'rendererParameter' => 3,
+        'replaceValues' => 2,
+        'select' => 2,
+        'sortDefault' => 2
+    );
+
     /**
      * Init method is called automatically with the service creation
      */
@@ -211,6 +220,8 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function setId($id = null)
     {
         if ($id !== null) {
+            $id = preg_replace("/[^a-z0-9_\\\d]/i", '_', $id);
+            
             $this->id = (string) $id;
         }
     }
@@ -395,6 +406,13 @@ class Datagrid implements ServiceLocatorAwareInterface
             }
             $this->dataSource = new DataSource\ZendSelect($data);
             $this->dataSource->setAdapter($args[1]);
+        } elseif ($data instanceof Collection) {
+            $em = func_get_arg(1);
+            if ($em === false || ! $em instanceof \Doctrine\ORM\EntityManager) {
+                throw new \Exception('If providing a Collection, also the EntityManager is needed as a second parameter');
+            }
+            $this->dataSource = new DataSource\Doctrine2Collection($data);
+            $this->dataSource->setEntityManager($em);
         } else {
             throw new \InvalidArgumentException('$data must implement the interface ZfcDatagrid\DataSource\DataSourceInterface');
         }
@@ -545,12 +563,92 @@ class Datagrid implements ServiceLocatorAwareInterface
     }
 
     /**
-     * Add a column
+     * Create a column from array instanceof
+     *
+     * @param mixed $column            
+     *
+     * @return Column\AbstractColumn
+     */
+    private function createColumn($column)
+    {
+        if (is_array($column)) {
+            $type = isset($column['type']) ? $column['type'] : 'Select';
+            if (class_exists($type, true)) {
+                $class = $type;
+            } elseif (class_exists('ZfcDatagrid\\Column\\' . $type, true)) {
+                $class = 'ZfcDatagrid\\Column\\' . $type;
+            } else {
+                throw new \Exception('Column type: "' . $type . '" not found!');
+            }
+            
+            if ($class == 'ZfcDatagrid\\Column\\Select') {
+                if (! isset($column['index'])) {
+                    throw new \InvalidArgumentException('For "ZfcDatagrid\\Column\\Select" an index to select must be defined!');
+                }
+                $table = isset($column['table']) ? $column['table'] : null;
+                $instance = new $class($column['index'], $table);
+            } else {
+                $instance = new $class();
+            }
+            
+            foreach ($column as $key => $value) {
+                $method = 'set' . ucfirst($key);
+                if (method_exists($instance, $method)) {
+                    if (in_array($key, $this->specialMethods)) {
+                        if ($key == 'style') {
+                            $instance->addStyle($value);
+                            break;
+                        }
+                        $count = $this->specialMethods[$key];
+                        
+                        if ($count == 2) {
+                            if (is_array($value) && count($value) === 2) {}
+                        } else {
+                            throw new \Exception('currently not supported. count arguments: "' . $count . '"');
+                        }
+                    }
+                    
+                    $instance->{$method}($value);
+                    break;
+                }
+            }
+            
+            $column = $instance;
+        }
+        
+        if (! $column instanceof Column\AbstractColumn) {
+            throw new \InvalidArgumentException('addColumn supports only array or instanceof Column\AbstractColumn as a parameter');
+        }
+        
+        return $column;
+    }
+
+    /**
+     * Set all columns by an array
+     *
+     * @param array $columns            
+     */
+    public function setColumns(array $columns)
+    {
+        $useColumns = array();
+        
+        foreach ($columns as $column) {
+            $col = $this->createColumn($column);
+            
+            $useColumns[$col->getUniqueId()] = $col;
+        }
+        
+        $this->columns = $useColumns;
+    }
+
+    /**
+     * Add a column by array config or instanceof Column\AbstractColumn
      *
      * @param Column\AbstractColumn $col            
      */
-    public function addColumn(Column\AbstractColumn $col)
+    public function addColumn($col)
     {
+        $col = $this->createColumn($col);
         $this->columns[$col->getUniqueId()] = $col;
     }
 
@@ -822,19 +920,22 @@ class Datagrid implements ServiceLocatorAwareInterface
     }
 
     /**
+     *
      * @deprecated use render() instead!
      */
-    public function execute(){
-        if($this->isRendered() === false){
+    public function execute()
+    {
+        if ($this->isRendered() === false) {
             $this->render();
         }
     }
+
     /**
      * Render the grid
      */
     public function render()
     {
-        if($this->isDataLoaded() === false){
+        if ($this->isDataLoaded() === false) {
             $this->loadData();
         }
         
