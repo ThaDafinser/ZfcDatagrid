@@ -149,7 +149,7 @@ $paginatorOnclick.= 'document.forms[\'form_'.$this->gridId.'\'].submit(); return
         <div class="pagination">
         
             <input type="hidden" name="<?php echo $this->parameterNames['currentPage']; ?>" value="<?php echo $pages->current; ?>" />
-            
+            <?php if (count($pages->pagesInRange) > 1): ?>
             <ul>
                 <?php if($pages->current > 1):?>
                     <li><a href="<?php echo 
@@ -227,6 +227,7 @@ $paginatorOnclick.= 'document.forms[\'form_'.$this->gridId.'\'].submit(); return
                 <?php endif;?>
                 
             </ul>
+            <?php endif; ?>
         </div>
     </div>
     <div class="span4 text-right">
