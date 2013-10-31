@@ -119,8 +119,9 @@ var grid_<?php echo $this->gridId; ?> = $('#<?php echo $this->gridId; ?>').jqGri
     beforeSelectRow: function (rowId, e) {
     	var colModel = grid_<?php echo $this->gridId; ?>.jqGrid('getGridParam','colModel');
     	var name = colModel[$.jgrid.getCellIndex(e.target)];
-
-    	if (grid_<?php echo $this->gridId; ?>_columnsRowClickDisabled.indexOf(name.index) >= 0) {
+    	var colIndex = name.index;
+    	
+    	if (grid_<?php echo $this->gridId; ?>_columnsRowClickDisabled.colIndex) {
             return false;
         }
         
