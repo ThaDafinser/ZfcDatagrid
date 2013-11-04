@@ -13,7 +13,7 @@ use ZfcDatagrid\Column\Action\AbstractAction;
 class TableRow extends AbstractHelper
 {
 
-    private function getTr ($row, $open = true)
+    private function getTr($row, $open = true)
     {
         if ($open !== true) {
             return '</tr>';
@@ -25,7 +25,7 @@ class TableRow extends AbstractHelper
         }
     }
 
-    private function getTd ($dataValue, $attributes = array())
+    private function getTd($dataValue, $attributes = array())
     {
         $attr = array();
         foreach ($attributes as $name => $value) {
@@ -39,7 +39,7 @@ class TableRow extends AbstractHelper
         return '<td ' . $attr . '>' . $dataValue . '</td>';
     }
 
-    public function __invoke ($row, $columns, AbstractAction $rowClickAction = null)
+    public function __invoke($row, $columns, AbstractAction $rowClickAction = null)
     {
         $return = $this->getTr($row);
         
@@ -55,20 +55,29 @@ class TableRow extends AbstractHelper
                 $classes[] = 'hidden';
             }
             
-            switch ($column->getType()->getTypeName()) {
+            switch (get_class($column->getType())) {
                 
-                case 'number':
+                case 'ZfcDatagrid\Column\Type\Number':
                     $styles[] = 'text-align: right';
                     break;
                 
-                case 'array':
+                case 'ZfcDatagrid\Column\Type\PhpArray':
                     $value = '<pre>' . print_r($value, true) . '</pre>';
                     break;
-                    
-                case 'image':
-                    $value = ' <a href="#" class="thumbnail"><img src="' . $value . '" /></a>';
+                
+                case 'ZfcDatagrid\Column\Type\Image':
+                    // if thumb and original provided
+                    $thumb = $value;
+                    $original = $value;
+                    if (is_array($value)) {
+                        $thumb = $value[0];
+                        $original = $value[0];
+                        if (array_key_exists(1, $value)) {
+                            $original = $value[1];
+                        }
+                    }
+                    $value = ' <a href="' . $original . '" class="thumbnail"><img src="' . $thumb . '" /></a>';
                     break;
-                    
             }
             
             if ($column->hasStyles() === true) {
@@ -112,7 +121,7 @@ class TableRow extends AbstractHelper
                 $value = implode(' ', $actions);
             }
             
-            //"rowClick" action
+            // "rowClick" action
             if ($column instanceof Column\Select && $rowClickAction instanceof AbstractAction) {
                 $value = '<a href="' . $rowClickAction->getLinkReplaced($row) . '">' . $value . '</a>';
             }

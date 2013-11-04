@@ -269,7 +269,13 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                 break;
                 
             case 'image':
-                $formatter .= ' cellvalue = \'<img src="\' + cellvalue + \'" />\'; ';
+                $formatter .= ' 
+                    if(typeof cellvalue === \'object\'){
+                        cellvalue = \'<a href="\' + cellvalue[1] + \'"><img src="\' + cellvalue[0] + \'" /></a>\';
+                    } else{
+                        cellvalue = \'<img src="\' + cellvalue + \'" />\';
+                    }
+                ';
                 break;
                 
         }

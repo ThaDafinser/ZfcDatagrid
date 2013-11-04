@@ -366,6 +366,10 @@ class Renderer extends AbstractRenderer
                     $link = K_BLANK_IMAGE;
                     if ($row[$column->getUniqueId()] != '') {
                         $link = $row[$column->getUniqueId()];
+                        
+                        if(is_array($link)){
+                            $link = array_shift($link);
+                        }
                     }
                     list ($width, $height) = $this->calcImageSize($pdf, $link, $column->getWidth() - 2, $rowHeight - 2);
                     // Image($file, $x='', $y='', $w=0, $h=0, $type='', $link='', $align='', $resize=false, $dpi=300, $palign='', $ismask=false, $imgmask=false, $border=0, $fitbox=false, $hidden=false, $fitonpage=false, $alt=false, $altimgs=array()) {
