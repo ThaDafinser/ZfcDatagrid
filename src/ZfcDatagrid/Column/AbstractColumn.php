@@ -328,6 +328,13 @@ abstract class AbstractColumn
         }
         $this->filterSelectOptions = $options;
     }
+    
+    /**
+     * Unset the filter select options (normal search)
+     */
+    public function unsetFilterSelectOptions(){
+        $this->filterSelectOptions = null;
+    }
 
     public function getFilterSelectOptions()
     {
