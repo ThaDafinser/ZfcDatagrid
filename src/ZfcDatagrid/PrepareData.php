@@ -68,7 +68,7 @@ class PrepareData
     {
         $this->data = $data;
     }
-
+    
     /**
      *
      * @param boolean $raw            
@@ -80,9 +80,7 @@ class PrepareData
             return $this->data;
         }
         
-        if (! is_array($this->dataPrepared)) {
-            $this->dataPrepared = $this->prepare();
-        }
+        $this->prepare();
         
         return $this->dataPrepared;
     }
@@ -108,10 +106,14 @@ class PrepareData
     /**
      *
      * @throws \Exception
-     * @return array
+     * @return void
      */
     public function prepare()
     {
+        if (is_array($this->dataPrepared)) {
+            return;
+        }
+        
         $data = $this->data;
         
         foreach ($data as $key => &$row) {
@@ -184,7 +186,8 @@ class PrepareData
                 
                 // TRIM
                 if (is_array($row[$column->getUniqueId()])) {
-                    array_walk_recursive($row[$column->getUniqueId()], function(&$value) {
+                    array_walk_recursive($row[$column->getUniqueId()], function (&$value)
+                    {
                         $value = trim($value);
                     });
                 } else {
@@ -198,6 +201,6 @@ class PrepareData
             }
         }
         
-        return $data;
+        $this->dataPrepared = $data;
     }
 }
