@@ -24,7 +24,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
      * @param ServiceLocatorInterface $serviceLocator            
      * @return CustomHelper
      */
-    public function setServiceLocator (ServiceLocatorInterface $serviceLocator)
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
         return $this;
@@ -35,7 +35,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
      *
      * @return \Zend\View\HelperPluginManager
      */
-    public function getServiceLocator ()
+    public function getServiceLocator()
     {
         return $this->serviceLocator;
     }
@@ -45,7 +45,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
      * @param string $message            
      * @return string
      */
-    public function translate ($message)
+    public function translate($message)
     {
         if ($this->translator === false) {
             return $message;
@@ -67,7 +67,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
         return $this->translator->translate($message);
     }
 
-    public function __invoke (array $columns)
+    public function __invoke(array $columns)
     {
         $return = array();
         
@@ -157,7 +157,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
         return '[' . implode(',', $return) . ']';
     }
 
-    private function getFormatter ($column)
+    private function getFormatter($column)
     {
         /*
          * User defined formatter
@@ -200,19 +200,24 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                         }
                         
                         $styleString = 'if(rowObject.' . $colString . ' ' . $operator . ' \'' . $rule['value'] . '\'){';
-
+                        
                         switch (get_class($style)) {
                             
                             case 'ZfcDatagrid\Column\Style\Bold':
                                 $styleString .= 'cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';';
                                 break;
-                                
+                            
                             case 'ZfcDatagrid\Column\Style\Italic':
                                 $styleString .= 'cellvalue = \'<span style="font-style: italic;">\' + cellvalue + \'</span>\';';
                                 break;
                             
                             case 'ZfcDatagrid\Column\Style\Color':
                                 $styleString .= 'cellvalue = \'<span style="color: #' . $style->getRgbHexString() . ';">\' + cellvalue + \'</span>\';';
+                                break;
+                            
+                            case 'ZfcDatagrid\Column\Style\BackgroundColor':
+                                // do NOTHING! this is done by loadComplete event...
+                                // At this stage jqgrid haven't created the columns...
                                 break;
                             
                             default:
@@ -233,22 +238,27 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                 if ($style->isForAll() === true) {
                     
                     switch (get_class($style)) {
-                    
+                        
                         case 'ZfcDatagrid\Column\Style\Bold':
                             $styleFormatter[] = 'cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';';
                             break;
-                            
+                        
                         case 'ZfcDatagrid\Column\Style\Italic':
                             $styleFormatter[] = 'cellvalue = \'<span style="font-style: italic;">\' + cellvalue + \'</span>\';';
                             break;
-                    
+                        
                         case 'ZfcDatagrid\Column\Style\Color':
                             $styleFormatter[] = 'cellvalue = \'<span style="color: #' . $style->getRgbHexString() . ';">\' + cellvalue + \'</span>\';';
                             break;
-                    
+                        
+                        case 'ZfcDatagrid\Column\Style\BackgroundColor':
+                            // do NOTHING! this is done by loadComplete event...
+                            // At this stage jqgrid haven't created the columns...
+                            break;
+                        
                         default:
                             throw new \Exception('Not defined yet: "' . get_class($style) . '"');
-                    
+                            
                             break;
                     }
                 }
@@ -267,7 +277,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
             case 'array':
                 $formatter .= 'cellvalue = \'<pre>\' + cellvalue + \'</pre>\';';
                 break;
-                
+            
             case 'image':
                 $formatter .= ' 
                     if(typeof cellvalue === \'object\'){
@@ -277,7 +287,6 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                     }
                 ';
                 break;
-                
         }
         
         if ($column instanceof Column\Action) {

@@ -66,7 +66,6 @@ var grid_<?php echo $this->gridId; ?> = $('#<?php echo $this->gridId; ?>').jqGri
     viewrecords : true,
 
     grouping: true,
-//     multiSort: true,
     
     rowNum: <?php echo $this->paginator->getItemCountPerPage();?>,
     	    
@@ -102,44 +101,8 @@ var grid_<?php echo $this->gridId; ?> = $('#<?php echo $this->gridId; ?>').jqGri
 
     colModel: <?php echo $this->jqgridColumns($this->columns); ?>,
 
-    datatype : 'local',
-    jsonReader : {
-        repeatitems : false,
-        id : 'idConcated'
-    },
-
-    <?php if($rowClickLink != ''): ?>
-        onSelectRow: function(rowId, status, e){
-            var rowClickLink = '<?php echo $rowClickLink; ?>';
-            rowClickLink = rowClickLink.replace('<?php echo Button::ROW_ID_PLACEHOLDER; ?>', rowId);
-            window.location.href = rowClickLink;
-        },
-    <?php endif; ?>
-
-    beforeSelectRow: function (rowId, e) {
-    	var colModel = grid_<?php echo $this->gridId; ?>.jqGrid('getGridParam','colModel');
-    	var name = colModel[$.jgrid.getCellIndex(e.target)];
-    	var colIndex = name.index;
-    	
-    	if (grid_<?php echo $this->gridId; ?>_columnsRowClickDisabled.colIndex) {
-            return false;
-        }
-        
-        return true;
-    }
-});
-<?php if($this->isUserFilterEnabled === true):?>
-    grid_<?php echo $this->gridId; ?>.jqGrid('filterToolbar');
-<?php endif; ?>
-
-grid_<?php echo $this->gridId; ?>.jqGrid('setGridParam', {
-    datatype : 'json'
-}).trigger('reload');
-grid_<?php echo $this->gridId; ?>.jqGrid()[0].addJSONData(<?php echo json_encode($this->data); ?>);
-grid_<?php echo $this->gridId; ?>.trigger('reload');
-
-//This is needed to load the data with ajax!
-grid_<?php echo $this->gridId; ?>.jqGrid('setGridParam', {
+    datatype : 'jsonstring',
+    datastr: {data: <?php echo json_encode($this->data); ?>},
     jsonReader : {
         repeatitems : false,
         id : 'idConcated',
@@ -170,5 +133,33 @@ grid_<?php echo $this->gridId; ?>.jqGrid('setGridParam', {
             }
         }
     }
+
+    <?php if($rowClickLink != ''): ?>
+        onSelectRow: function(rowId, status, e){
+            var rowClickLink = '<?php echo $rowClickLink; ?>';
+            rowClickLink = rowClickLink.replace('<?php echo Button::ROW_ID_PLACEHOLDER; ?>', rowId);
+            window.location.href = rowClickLink;
+        },
+    <?php endif; ?>
+
+    beforeSelectRow: function (rowId, e) {
+    	var colModel = grid_<?php echo $this->gridId; ?>.jqGrid('getGridParam','colModel');
+    	var name = colModel[$.jgrid.getCellIndex(e.target)];
+    	var colIndex = name.index;
+    	
+    	if (grid_<?php echo $this->gridId; ?>_columnsRowClickDisabled.colIndex) {
+            return false;
+        }
+        
+        return true;
+    }
+});
+<?php if($this->isUserFilterEnabled === true):?>
+    grid_<?php echo $this->gridId; ?>.jqGrid('filterToolbar');
+<?php endif; ?>
+
+//This is needed to load the data with ajax!
+grid_<?php echo $this->gridId; ?>.jqGrid('setGridParam', {
+    datatype : 'json'
 });
 </script>

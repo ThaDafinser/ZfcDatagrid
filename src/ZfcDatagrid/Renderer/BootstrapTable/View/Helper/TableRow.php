@@ -90,8 +90,13 @@ class TableRow extends AbstractHelper
                             case 'ZfcDatagrid\Column\Style\Bold':
                                 $styles[] = 'font-weight: bold';
                                 break;
+                            
                             case 'ZfcDatagrid\Column\Style\Italic':
                                 $styles[] = 'font-style: italic';
+                                break;
+                            
+                            case 'ZfcDatagrid\Column\Style\BackgroundColor':
+                                $styles[] = 'background-color: #' . $style->getRgbHexString();
                                 break;
                             
                             case 'ZfcDatagrid\Column\Style\Color':
