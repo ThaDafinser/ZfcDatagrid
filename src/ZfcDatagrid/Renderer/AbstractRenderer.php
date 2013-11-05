@@ -536,6 +536,8 @@ abstract class AbstractRenderer implements RendererInterface
         }
         $viewModel->setVariable('columnsHidden', $columnsHidden);
         
+        $viewModel->setVariable('rowStyles', $grid->getRowStyles());
+        
         $viewModel->setVariable('paginator', $this->getPaginator());
         $viewModel->setVariable('data', $this->getData());
         $viewModel->setVariable('filters', $this->getFilters());

@@ -19,6 +19,7 @@ use Zend\Db\Sql\Select as ZendSelect;
 use Zend\View\Model\JsonModel;
 use Zend\Stdlib\ResponseInterface;
 use Doctrine\Common\Collections\Collection;
+use ZfcDatagrid\Column\Style;
 
 class Datagrid implements ServiceLocatorAwareInterface
 {
@@ -114,6 +115,12 @@ class Datagrid implements ServiceLocatorAwareInterface
      * @var array
      */
     protected $columns = array();
+
+    /**
+     *
+     * @var Style\AbstractStyle[]
+     */
+    protected $rowStyles = array();
 
     /**
      *
@@ -673,6 +680,37 @@ class Datagrid implements ServiceLocatorAwareInterface
         }
         
         return null;
+    }
+
+    /**
+     *
+     * @param unknown $style            
+     */
+    public function addRowStyle(Style\AbstractStyle $style)
+    {
+        $this->rowStyles[] = $style;
+    }
+
+    /**
+     *
+     * @return Style\AbstractStyle[]
+     */
+    public function getRowStyles()
+    {
+        return $this->rowStyles;
+    }
+
+    /**
+     *
+     * @return boolean
+     */
+    public function hasRowStyles()
+    {
+        if (count($this->rowStyles) > 0) {
+            return true;
+        }
+        
+        return false;
     }
 
     /**

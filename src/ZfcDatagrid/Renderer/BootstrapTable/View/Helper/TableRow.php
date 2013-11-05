@@ -6,6 +6,7 @@ use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Style;
 use ZfcDatagrid\Column\Type;
 use ZfcDatagrid\Column\Action\AbstractAction;
+use ZfcDatagrid\Filter;
 
 /**
  * View Helper
@@ -18,10 +19,12 @@ class TableRow extends AbstractHelper
         if ($open !== true) {
             return '</tr>';
         } else {
-            if (isset($row['idConcated']))
+            
+            if (isset($row['idConcated'])) {
                 return '<tr id="' . $row['idConcated'] . '">';
-            else
+            } else {
                 return '<tr>';
+            }
         }
     }
 
@@ -39,7 +42,7 @@ class TableRow extends AbstractHelper
         return '<td ' . $attr . '>' . $dataValue . '</td>';
     }
 
-    public function __invoke($row, $columns, AbstractAction $rowClickAction = null)
+    public function __invoke($row, $columns, AbstractAction $rowClickAction = null, $rowStyles = array())
     {
         $return = $this->getTr($row);
         
@@ -105,9 +108,36 @@ class TableRow extends AbstractHelper
                             
                             default:
                                 throw new \Exception('Not defined yet: "' . get_class($style) . '"');
-                                
                                 break;
                         }
+                    }
+                }
+            }
+            
+            foreach ($rowStyles as $style) {
+                /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
+                if ($style->isApply($row) === true) {
+                    switch (get_class($style)) {
+                        
+                        case 'ZfcDatagrid\Column\Style\Bold':
+                             $styles[] = 'font-weight: bold';
+                            break;
+                        
+                        case 'ZfcDatagrid\Column\Style\Italic':
+                             $styles[] = 'font-style: italic';
+                            break;
+                        
+                        case 'ZfcDatagrid\Column\Style\Color':
+                             $styles[] = 'color: #' . $style->getRgbHexString();
+                            break;
+                        
+                        case 'ZfcDatagrid\Column\Style\BackgroundColor':
+                             $styles[] = 'background-color: #' . $style->getRgbHexString();
+                            break;
+                        
+                        default:
+                            throw new \Exception('Not defined yet: "' . get_class($style) . '"');
+                            break;
                     }
                 }
             }

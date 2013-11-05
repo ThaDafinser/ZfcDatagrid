@@ -72,7 +72,7 @@ class PhpArray implements ServiceLocatorAwareInterface
             'changeDate' => '2013-04-19 09:30:41'
         );
         $row4 = array(
-            'id' => 5,
+            'id' => 4,
             'displayName' => 'Martin Keckeis',
             'familyName' => 'Keckeis',
             'givenName' => 'Martin',

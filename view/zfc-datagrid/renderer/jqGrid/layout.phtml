@@ -37,6 +37,107 @@ if($this->rowClickAction){
         throw new \Exception('Currently the row click action cannot bet used with Column parameters, except the rowId...');
     }
 }
+
+/*
+ * Column - background-color
+ */
+$styleString = '';
+foreach($this->columns as $column){
+    foreach ($column->getStyles() as $style) {
+
+        switch (get_class($style)) {
+
+            case 'ZfcDatagrid\Column\Style\BackgroundColor':
+                $css = '$(\'#\' + row.idConcated).find(\'td[aria-describedby=' . $this->gridId . '_' . $column->getUniqueId() . ']\').css(\'background-color\', \'#'.$style->getRgbHexString().'\');';
+                if ($style->isForAll() === false) {
+                    foreach ($style->getByValues() as $rule) {
+                        $colString = $rule['column']->getUniqueId();
+                        $operator = '';
+                        switch ($rule['operator']) {
+
+                            case Filter::EQUAL:
+                                $operator = '==';
+                                break;
+
+                            case Filter::NOT_EQUAL:
+                                $operator = '!=';
+                                break;
+
+                            default:
+                                throw new \Exception('currently not implemented filter type: "' . $rule['operator'] . '"');
+                                break;
+                        }
+
+                        $styleString .= 'if(row.'.$colString.' ' . $operator . ' \''. $rule['value'] . '\'){';
+                        $styleString .= $css;
+                        $styleString .= '}';
+                    }
+                } else{
+                    $styleString .= $css;
+                }
+                break;
+        }
+    }
+}
+
+/*
+ * Row coloring
+ */
+foreach($this->rowStyles as $style){
+    /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
+
+    switch (get_class($style)) {
+
+        case 'ZfcDatagrid\Column\Style\Bold':
+            $css = '\'font-weight\', \'bold\'';
+            break;
+
+        case 'ZfcDatagrid\Column\Style\Italic':
+            $css = '\'font-style\', \'italic\'';
+            break;
+
+        case 'ZfcDatagrid\Column\Style\Color':
+            $css = '\'color\', \'#' . $style->getRgbHexString().'\'';
+            break;
+
+        case 'ZfcDatagrid\Column\Style\BackgroundColor':
+            $css = '\'background-color\', \'#' . $style->getRgbHexString().'\'';
+            break;
+
+        default:
+            throw new \Exception('Not defined yet: "' . get_class($style) . '"');
+            break;
+    }
+    $css = '$(\'#\' + row.idConcated).find(\'td\').css('.$css.');';
+
+
+    if ($style->isForAll() === false) {
+        foreach ($style->getByValues() as $rule) {
+            $colString = $rule['column']->getUniqueId();
+            $operator = '';
+            switch ($rule['operator']) {
+
+                case Filter::EQUAL:
+                    $operator = '==';
+                    break;
+
+                case Filter::NOT_EQUAL:
+                    $operator = '!=';
+                    break;
+
+                default:
+                    throw new \Exception('currently not implemented filter type: "' . $rule['operator'] . '"');
+                    break;
+            }
+
+            $styleString .= 'if(row.'.$colString.' ' . $operator . ' \''. $rule['value'] . '\'){';
+            $styleString .= $css;
+            $styleString .= '}';
+        }
+    }  else{
+        $styleString  .= $css;
+    }
+}
 ?>
 
 <?php echo $this->partial($this->templateToolbar);?>
@@ -49,6 +150,15 @@ if($this->rowClickAction){
 <input type="hidden" id="<?php echo $this->gridId.'_'.$parameterNames['columnsGroupByLocal']; ?>" name="<?php echo $this->gridId.'_'.$parameterNames['columnsGroupByLocal']; ?>" value="" />
 
 <script>
+//Row background-color + column background-color
+function grid_<?php echo $this->gridId; ?>_loadComplete(data){
+    if(data.data && data.data.rows){
+        $.each(data.data.rows, function(key, row){
+            <?php echo $styleString; ?>
+        });
+    }
+}
+
 var grid_<?php echo $this->gridId; ?>_columnsRowClickDisabled = <?php echo json_encode($this->columnsRowClickDisabled) ?>;
 
 var grid_<?php echo $this->gridId; ?> = $('#<?php echo $this->gridId; ?>').jqGrid({
@@ -101,8 +211,9 @@ var grid_<?php echo $this->gridId; ?> = $('#<?php echo $this->gridId; ?>').jqGri
 
     colModel: <?php echo $this->jqgridColumns($this->columns); ?>,
 
-    datatype : 'jsonstring',
-    datastr: {data: <?php echo json_encode($this->data); ?>},
+    datatype : 'local',
+    data: {data: <?php echo json_encode($this->data); ?>},
+    
     jsonReader : {
         repeatitems : false,
         id : 'idConcated',
@@ -132,7 +243,7 @@ var grid_<?php echo $this->gridId; ?> = $('#<?php echo $this->gridId; ?>').jqGri
                 return data.data.rows;
             }
         }
-    }
+    },
 
     <?php if($rowClickLink != ''): ?>
         onSelectRow: function(rowId, status, e){
@@ -142,6 +253,15 @@ var grid_<?php echo $this->gridId; ?> = $('#<?php echo $this->gridId; ?>').jqGri
         },
     <?php endif; ?>
 
+    <?php if($styleString != ''): ?>
+        loadComplete: function (data) {
+            if(data !== undefined){
+                //on inti we load the first page, but locale type do not know about json data
+                grid_<?php echo $this->gridId; ?>_loadComplete(data);
+            }
+        },
+    <?php endif; ?>
+    
     beforeSelectRow: function (rowId, e) {
     	var colModel = grid_<?php echo $this->gridId; ?>.jqGrid('getGridParam','colModel');
     	var name = colModel[$.jgrid.getCellIndex(e.target)];
@@ -158,8 +278,14 @@ var grid_<?php echo $this->gridId; ?> = $('#<?php echo $this->gridId; ?>').jqGri
     grid_<?php echo $this->gridId; ?>.jqGrid('filterToolbar');
 <?php endif; ?>
 
-//This is needed to load the data with ajax!
+/*
+ * The first page is loaded directly without ajax, that's why it's here complicated...
+ * @todo find something "smarter"
+ */
 grid_<?php echo $this->gridId; ?>.jqGrid('setGridParam', {
-    datatype : 'json'
-});
+    datatype : 'json',
+}).trigger('reload');
+grid_<?php echo $this->gridId; ?>.jqGrid()[0].addJSONData(grid_<?php echo $this->gridId; ?>.jqGrid('getGridParam', 'data'));
+grid_<?php echo $this->gridId; ?>.trigger('reload');
+grid_<?php echo $this->gridId; ?>_loadComplete(grid_<?php echo $this->gridId; ?>.jqGrid('getGridParam', 'data'));
 </script>

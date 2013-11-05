@@ -71,6 +71,10 @@ class PersonController extends AbstractActionController
         $col->setSortDefault(2, 'DESC');
         $dataGrid->addColumn($col);
         
+        $style = new Style\BackgroundColor(Style\AbstractColor::$GREEN);
+        $style->setByValue($col, 'Martin');
+        $dataGrid->addRowStyle($style);
+        
         $col = new Column\Select('gender');
         $col->setLabel('Gender');
         $col->setWidth(10);

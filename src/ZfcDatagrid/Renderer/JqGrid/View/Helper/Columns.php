@@ -222,7 +222,6 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                             
                             default:
                                 throw new \Exception('Not defined yet: "' . get_class($style) . '"');
-                                
                                 break;
                         }
                         

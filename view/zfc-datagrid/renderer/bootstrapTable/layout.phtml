@@ -129,7 +129,7 @@ if($this->rowClickAction !== null){
     <!-- Start table BODY -->
     <tbody>
         <?php foreach($this->data as $row): ?>
-            <?php echo $this->bootstrapTableRow($row, $this->columns, $this->rowClickAction); ?>
+            <?php echo $this->bootstrapTableRow($row, $this->columns, $this->rowClickAction, $this->rowStyles); ?>
         <?php endforeach; ?>
     </tbody>
 </table>
