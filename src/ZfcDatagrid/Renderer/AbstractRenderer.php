@@ -30,6 +30,8 @@ abstract class AbstractRenderer implements RendererInterface
 
     protected $columns = array();
 
+    protected $rowStyles = array();
+    
     protected $sortConditions = null;
 
     protected $filters = null;
@@ -201,6 +203,24 @@ abstract class AbstractRenderer implements RendererInterface
     public function getColumns()
     {
         return $this->columns;
+    }
+
+    /**
+     *
+     * @param array $rowStyles            
+     */
+    public function setRowStyles($rowStyles = array())
+    {
+        $this->rowStyles = $rowStyles;
+    }
+
+    /**
+     *
+     * @return array
+     */
+    public function getRowStyles()
+    {
+        return $this->rowStyles;
     }
 
     /**

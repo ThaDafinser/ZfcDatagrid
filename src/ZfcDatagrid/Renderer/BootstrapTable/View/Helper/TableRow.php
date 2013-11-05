@@ -51,7 +51,7 @@ class TableRow extends AbstractHelper
             
             $value = $row[$column->getUniqueId()];
             
-            $styles = array();
+            $cssStyles = array();
             $classes = array();
             
             if ($column->isHidden() === true) {
@@ -61,7 +61,7 @@ class TableRow extends AbstractHelper
             switch (get_class($column->getType())) {
                 
                 case 'ZfcDatagrid\Column\Type\Number':
-                    $styles[] = 'text-align: right';
+                    $cssStyle[] = 'text-align: right';
                     break;
                 
                 case 'ZfcDatagrid\Column\Type\PhpArray':
@@ -83,58 +83,28 @@ class TableRow extends AbstractHelper
                     break;
             }
             
-            if ($column->hasStyles() === true) {
-                foreach ($column->getStyles() as $style) {
-                    /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
-                    if ($style->isApply($row) === true) {
-                        
-                        switch (get_class($style)) {
-                            
-                            case 'ZfcDatagrid\Column\Style\Bold':
-                                $styles[] = 'font-weight: bold';
-                                break;
-                            
-                            case 'ZfcDatagrid\Column\Style\Italic':
-                                $styles[] = 'font-style: italic';
-                                break;
-                            
-                            case 'ZfcDatagrid\Column\Style\BackgroundColor':
-                                $styles[] = 'background-color: #' . $style->getRgbHexString();
-                                break;
-                            
-                            case 'ZfcDatagrid\Column\Style\Color':
-                                $styles[] = 'color: #' . $style->getRgbHexString();
-                                break;
-                            
-                            default:
-                                throw new \Exception('Not defined yet: "' . get_class($style) . '"');
-                                break;
-                        }
-                    }
-                }
-            }
-            
-            foreach ($rowStyles as $style) {
+            $styles = array_merge($rowStyles, $column->getStyles());
+            foreach ($styles as $style) {
                 /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
                 if ($style->isApply($row) === true) {
+                    
                     switch (get_class($style)) {
                         
                         case 'ZfcDatagrid\Column\Style\Bold':
-                             $styles[] = 'font-weight: bold';
+                            $cssStyles[] = 'font-weight: bold';
                             break;
                         
                         case 'ZfcDatagrid\Column\Style\Italic':
-                             $styles[] = 'font-style: italic';
+                            $cssStyles[] = 'font-style: italic';
                             break;
                         
                         case 'ZfcDatagrid\Column\Style\Color':
-                             $styles[] = 'color: #' . $style->getRgbHexString();
+                            $cssStyles[] = 'color: #' . $style->getRgbHexString();
                             break;
                         
                         case 'ZfcDatagrid\Column\Style\BackgroundColor':
-                             $styles[] = 'background-color: #' . $style->getRgbHexString();
+                            $cssStyles[] = 'background-color: #' . $style->getRgbHexString();
                             break;
-                        
                         default:
                             throw new \Exception('Not defined yet: "' . get_class($style) . '"');
                             break;
@@ -163,7 +133,7 @@ class TableRow extends AbstractHelper
             
             $attributes = array(
                 'class' => implode(',', $classes),
-                'style' => implode(';', $styles),
+                'style' => implode(';', $cssStyles),
                 'data-columnUniqueId' => $column->getUniqueId()
             );
             

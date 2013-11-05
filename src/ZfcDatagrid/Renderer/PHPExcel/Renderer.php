@@ -107,8 +107,8 @@ class Renderer extends AbstractRenderer
                 /*
                  * Styles
                  */
-                if ($column->hasStyles() === true) {
-                    foreach ($column->getStyles() as $style) {
+                $styles = array_merge($this->getRowStyles(), $column->getStyles());
+                    foreach ($styles as $style) {
                         /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
                         if ($style->isApply($row) === true) {
                             switch (get_class($style)) {
@@ -127,6 +127,15 @@ class Renderer extends AbstractRenderer
                                         ->setRGB($style->getRgbHexString());
                                     break;
                                 
+                                case 'ZfcDatagrid\Column\Style\BackgroundColor':
+                                    $columnStyle->getFill()->applyFromArray(array(
+                                        'type' => \PHPExcel_Style_Fill::FILL_SOLID,
+                                        'color' => array(
+                                            'rgb' => $style->getRgbHexString()
+                                        )
+                                    ));
+                                    break;
+                                
                                 default:
                                     throw new \Exception('Not defined yet: "' . get_class($style) . '"');
                                     
@@ -134,7 +143,6 @@ class Renderer extends AbstractRenderer
                             }
                         }
                     }
-                }
                 
                 $xColumn ++;
             }

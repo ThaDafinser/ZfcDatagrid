@@ -833,6 +833,7 @@ class Datagrid implements ServiceLocatorAwareInterface
                 $renderer->setTranslator($this->getTranslator());
                 $renderer->setTitle($this->getTitle());
                 $renderer->setColumns($this->getColumns());
+                $renderer->setRowStyles($this->getRowStyles());
                 $renderer->setCacheId($this->getCacheId());
                 $renderer->setCacheData($this->getCache()
                     ->getItem($this->getCacheId()));

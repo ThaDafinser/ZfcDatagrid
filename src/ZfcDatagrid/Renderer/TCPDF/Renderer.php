@@ -315,29 +315,35 @@ class Renderer extends AbstractRenderer
             /*
              * Styles
              */
-            if ($column->hasStyles() === true) {
-                foreach ($column->getStyles() as $style) {
-                    /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
-                    if ($style->isApply($row) === true) {
-                        switch (get_class($style)) {
+            $backgroundColor = false;
+            
+            $styles = array_merge($this->getRowStyles(), $column->getStyles());
+            foreach ($styles as $style) {
+                /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
+                if ($style->isApply($row) === true) {
+                    switch (get_class($style)) {
+                        
+                        case 'ZfcDatagrid\Column\Style\Bold':
+                            $this->setBold();
+                            break;
+                        
+                        case 'ZfcDatagrid\Column\Style\Italic':
+                            $this->setItalic();
+                            break;
+                        
+                        case 'ZfcDatagrid\Column\Style\Color':
+                            $this->setColor($style->getRgbArray());
+                            break;
+                        
+                        case 'ZfcDatagrid\Column\Style\BackgroundColor':
+                            $this->setBackgroundColor($style->getRgbArray());
+                            $backgroundColor = true;
+                            break;
+                        
+                        default:
+                            throw new \Exception('Not defined yet: "' . get_class($style) . '"');
                             
-                            case 'ZfcDatagrid\Column\Style\Bold':
-                                $this->setBold();
-                                break;
-                            
-                            case 'ZfcDatagrid\Column\Style\Italic':
-                                $this->setItalic();
-                                break;
-                            
-                            case 'ZfcDatagrid\Column\Style\Color':
-                                $this->setColor($style->getRgbArray());
-                                break;
-                            
-                            default:
-                                throw new \Exception('Not defined yet: "' . get_class($style) . '"');
-                                
-                                break;
-                        }
+                            break;
                     }
                 }
             }
@@ -367,7 +373,7 @@ class Renderer extends AbstractRenderer
                     if ($row[$column->getUniqueId()] != '') {
                         $link = $row[$column->getUniqueId()];
                         
-                        if(is_array($link)){
+                        if (is_array($link)) {
                             $link = array_shift($link);
                         }
                     }
@@ -381,12 +387,12 @@ class Renderer extends AbstractRenderer
                     break;
             }
             
-            if(is_array($text)){
+            if (is_array($text)) {
                 $text = implode(PHP_EOL, $text);
             }
             
             // MultiCell($w, $h, $txt, $border=0, $align='J', $fill=false, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0, $valign='T', $fitcell=false)
-            $pdf->MultiCell($column->getWidth(), $rowHeight, $text, 1, 'L', false, 1, $x, $y, true, 0);
+            $pdf->MultiCell($column->getWidth(), $rowHeight, $text, 1, 'L', $backgroundColor, 1, $x, $y, true, 0);
         }
     }
 
@@ -488,5 +494,15 @@ class Renderer extends AbstractRenderer
     {
         $pdf = $this->getPdf();
         $pdf->SetTextColor($rgb['red'], $rgb['green'], $rgb['blue']);
+    }
+
+    /**
+     *
+     * @param array $rgb            
+     */
+    public function setBackgroundColor(array $rgb)
+    {
+        $pdf = $this->getPdf();
+        $pdf->SetFillColor($rgb['red'], $rgb['green'], $rgb['blue']);
     }
 }
