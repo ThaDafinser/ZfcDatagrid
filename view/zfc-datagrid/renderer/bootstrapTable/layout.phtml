@@ -87,9 +87,9 @@ if($this->rowClickAction !== null){
                     <?php 
                     if($column->isSortActive() === true){
                         if($column->getSortActiveDirection() === 'ASC'):?>
-                            <i class="icon-chevron-down"></i>
+                            <i class="icon-chevron-down glyphicon glyphicon-chevron-down"></i>
                         <?php else: ?>
-                            <i class="icon-chevron-up"></i>
+                            <i class="icon-chevron-up glyphicon glyphicon-chevron-up"></i>
                         <?php endif;
                     }
                     ?>
@@ -141,16 +141,16 @@ $paginatorOnclick = 'document.forms[\'form_'.$this->gridId.'\'].elements[\'' . $
 $paginatorOnclick.= 'document.forms[\'form_'.$this->gridId.'\'].submit(); return false;';
 ?>
 <!-- Start Pagination -->
-<div class="row-fluid">
-    <div class="span4">
+<div class="row-fluid row">
+    <div class="span4 col-md-4">
         <?php echo $this->translate('Page').' '.$this->paginator->getCurrentPageNumber().' '.$this->translate('of').' '.$this->paginator->count(); ?>
     </div>
-    <div class="span4">
+    <div class="span4 col-md-4">
         <div class="pagination">
         
             <input type="hidden" name="<?php echo $this->parameterNames['currentPage']; ?>" value="<?php echo $pages->current; ?>" />
             <?php if (count($pages->pagesInRange) > 1): ?>
-            <ul>
+            <ul class="pagination">
                 <?php if($pages->current > 1):?>
                     <li><a href="<?php echo 
                             $this->url(null, 
@@ -230,7 +230,7 @@ $paginatorOnclick.= 'document.forms[\'form_'.$this->gridId.'\'].submit(); return
             <?php endif; ?>
         </div>
     </div>
-    <div class="span4 text-right">
+    <div class="span4 col-md-4 text-right">
         <?php echo $this->translate('Showing').' '.$this->paginator->getCurrentItemCount().' '.$this->translate('of').' '.$this->paginator->getTotalItemCount().' '.$this->translate('items'); ?>
     </div>
 </div><!-- End Pagination -->
