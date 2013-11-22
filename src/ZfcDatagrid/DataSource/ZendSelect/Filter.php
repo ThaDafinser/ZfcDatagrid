@@ -64,7 +64,11 @@ class Filter
             return $adapter->getPlatform()->quoteValue($value);
         };
         
-        $colString = $filter->getColumn()->getUniqueId();
+        $column = $filter->getColumn();
+        $colString = $column->getSelectPart1();
+        if ($column->getSelectPart2() != '') {
+            $colString .= '.' . $column->getSelectPart2();
+        }
         $values = $filter->getValues();
         
         $wheres = array();
