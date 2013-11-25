@@ -950,7 +950,7 @@ class Datagrid implements ServiceLocatorAwareInterface
          * - ...
          */
         $prepareData = new PrepareData($data, $this->getColumns());
-        $prepareData->setColumns($this->getColumns());
+        $prepareData->setRenderer($this->getRendererName());
         $prepareData->setTranslator($this->getTranslator());
         $prepareData->prepare();
         $this->preparedData = $prepareData->getData();

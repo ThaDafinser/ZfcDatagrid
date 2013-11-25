@@ -6,6 +6,7 @@ use ZfcDatagrid\Examples\Data;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Type;
 use ZfcDatagrid\Column\Style;
+use ZfcDatagrid\Column\Formatter\Email;
 
 class PersonController extends AbstractActionController
 {
@@ -58,6 +59,7 @@ class PersonController extends AbstractActionController
         $col->setLabel('Displayname');
         $col->setWidth(25);
         $col->setSortDefault(1, 'ASC');
+        $col->setFormatter(new Email());
         $col->addStyle(new Style\Bold());
         $dataGrid->addColumn($col);
         

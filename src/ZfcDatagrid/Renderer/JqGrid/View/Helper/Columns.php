@@ -157,7 +157,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
         return '[' . implode(',', $return) . ']';
     }
 
-    private function getFormatter($column)
+    private function getFormatter(Column\AbstractColumn $column)
     {
         /*
          * User defined formatter
@@ -172,9 +172,52 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
          */
         $formatter = '';
         
-        if ($column->hasStyles() === true) {
-            $styleFormatter = array();
+        $formatter.= implode(' ', $this->getStyles($column));
+        
+        switch (get_class($column->getType())) {
             
+            case 'ZfcDatagrid\Column\Type\PhpArray':
+                $formatter .= 'cellvalue = \'<pre>\' + cellvalue + \'</pre>\';';
+                break;
+            
+            case 'ZfcDatagrid\Column\Type\Image':
+                $formatter .= ' 
+                    if(typeof cellvalue === \'object\'){
+                        cellvalue = \'<a href="\' + cellvalue[1] + \'"><img src="\' + cellvalue[0] + \'" /></a>\';
+                    } else{
+                        cellvalue = \'<img src="\' + cellvalue + \'" />\';
+                    }
+                ';
+                break;
+        }
+        
+        if ($column instanceof Column\Action) {
+            $formatter .= ' cellvalue = cellvalue; ';
+        } elseif ($column instanceof Column\Icon) {
+            $formatter .= ' cellvalue = \'<i class="\' + cellvalue + \'" />\'; ';
+        }
+        
+        if ($formatter != '') {
+            $prefix = 'function(cellvalue, options, rowObject){';
+            $suffix = ' return cellvalue; }';
+            
+            $formatter = $prefix . $formatter . $suffix;
+        }
+        
+        return $formatter;
+    }
+
+    /**
+     * 
+     * @param Column\AbstractColumn $column
+     * @throws \Exception
+     * @return array
+     */
+    private function getStyles(Column\AbstractColumn $column)
+    {
+        $styleFormatter = array();
+        
+        if ($column->hasStyles() === true) {
             /*
              * First all based on value (only one works) @todo
              */
@@ -262,45 +305,8 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                     }
                 }
             }
-            
-            $formatter .= implode(' ', $styleFormatter);
         }
         
-        switch ($column->getType()->getTypeName()) {
-            
-            // Numbers + Date are already formatted on the server side!
-            case 'email':
-                $formatter .= 'cellvalue = \'<a href="mailto:\' + cellvalue\'">\' + cellvalue + \'</a>\';';
-                break;
-            
-            case 'array':
-                $formatter .= 'cellvalue = \'<pre>\' + cellvalue + \'</pre>\';';
-                break;
-            
-            case 'image':
-                $formatter .= ' 
-                    if(typeof cellvalue === \'object\'){
-                        cellvalue = \'<a href="\' + cellvalue[1] + \'"><img src="\' + cellvalue[0] + \'" /></a>\';
-                    } else{
-                        cellvalue = \'<img src="\' + cellvalue + \'" />\';
-                    }
-                ';
-                break;
-        }
-        
-        if ($column instanceof Column\Action) {
-            $formatter .= ' cellvalue = cellvalue; ';
-        } elseif ($column instanceof Column\Icon) {
-            $formatter .= ' cellvalue = \'<i class="\' + cellvalue + \'" />\'; ';
-        }
-        
-        if ($formatter != '') {
-            $prefix = 'function(cellvalue, options, rowObject){';
-            $suffix = ' return cellvalue; }';
-            
-            $formatter = $prefix . $formatter . $suffix;
-        }
-        
-        return $formatter;
+        return $styleFormatter;
     }
 }

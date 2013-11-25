@@ -25,6 +25,8 @@ class PrepareData
      */
     private $dataPrepared;
 
+    private $rendererName;
+
     /**
      *
      * @var Translator
@@ -68,7 +70,7 @@ class PrepareData
     {
         $this->data = $data;
     }
-    
+
     /**
      *
      * @param boolean $raw            
@@ -83,6 +85,16 @@ class PrepareData
         $this->prepare();
         
         return $this->dataPrepared;
+    }
+
+    public function setRenderer($name = null)
+    {
+        $this->rendererName = $name;
+    }
+
+    public function getRendererName()
+    {
+        return $this->rendererName;
     }
 
     /**
@@ -126,7 +138,7 @@ class PrepareData
                     $ids[] = $row[$column->getUniqueId()];
                 }
                 
-                /**
+                /*
                  * Maybe the data come not from another DataSource?
                  */
                 if ($column instanceof Column\ExternalData) {
@@ -143,7 +155,7 @@ class PrepareData
                     $row[$column->getUniqueId()] = '';
                 }
                 
-                /**
+                /*
                  * Replace
                  */
                 if ($column->hasReplaceValues() === true) {
@@ -166,12 +178,12 @@ class PrepareData
                     }
                 }
                 
-                /**
+                /*
                  * Type converting
                  */
                 $row[$column->getUniqueId()] = $column->getType()->getUserValue($row[$column->getUniqueId()]);
                 
-                /**
+                /*
                  * Translate (nach typ convertierung -> PhpArray...)
                  */
                 if ($column->isTranslationEnabled() === true) {
@@ -184,7 +196,9 @@ class PrepareData
                     }
                 }
                 
-                // TRIM
+                /*
+                 * Trim the values
+                 */
                 if (is_array($row[$column->getUniqueId()])) {
                     array_walk_recursive($row[$column->getUniqueId()], function (&$value)
                     {
@@ -192,6 +206,19 @@ class PrepareData
                     });
                 } else {
                     $row[$column->getUniqueId()] = trim($row[$column->getUniqueId()]);
+                }
+                
+                /*
+                 * Custom formatter
+                 */
+                if ($column->hasFormatter($this->getRendererName()) === true) {
+                    /* @var $formatter \ZfcDatagrid\Column\Formatter\AbstractFormatter */
+                    $formatter = $column->getFormatter($this->getRendererName());
+                    $formatter->setColumns($this->getColumns());
+                    $formatter->setRowData($row);
+                    $formatter->setRenderer($this->getRendererName());
+                    
+                    $row[$column->getUniqueId()] = $formatter->format($column);
                 }
             }
             

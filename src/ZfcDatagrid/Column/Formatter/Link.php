@@ -1,5 +1,5 @@
 <?php
-namespace ZfcDatagrid\Formatter;
+namespace ZfcDatagrid\Column\Formatter;
 
 /**
  * @deprecated

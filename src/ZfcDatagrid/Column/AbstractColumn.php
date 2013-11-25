@@ -2,6 +2,7 @@
 namespace ZfcDatagrid\Column;
 
 use ZfcDatagrid\Filter;
+use ZfcDatagrid\Column\Formatter\AbstractFormatter;
 
 abstract class AbstractColumn
 {
@@ -58,6 +59,10 @@ abstract class AbstractColumn
 
     protected $rowClickEnabled = true;
 
+    protected $rendererParameter = array();
+
+    protected $formatter;
+
     public function setLabel($name)
     {
         $this->label = (string) $name;
@@ -113,7 +118,7 @@ abstract class AbstractColumn
 
     /**
      * Get the width
-     * 
+     *
      * @return number
      */
     public function getWidth()
@@ -328,11 +333,12 @@ abstract class AbstractColumn
         }
         $this->filterSelectOptions = $options;
     }
-    
+
     /**
      * Unset the filter select options (normal search)
      */
-    public function unsetFilterSelectOptions(){
+    public function unsetFilterSelectOptions()
+    {
         $this->filterSelectOptions = null;
     }
 
@@ -448,6 +454,13 @@ abstract class AbstractColumn
         return $this->notReplacedGetEmpty;
     }
 
+    /**
+     * Set parameter for a specific renderer (currently only supported for jqgrid)
+     *
+     * @param string $name            
+     * @param mixed $value            
+     * @param string $rendererType            
+     */
     public function setRendererParameter($name, $value, $rendererType = 'jqgrid')
     {
         if (! isset($this->rendererParameter[$rendererType])) {
@@ -460,13 +473,52 @@ abstract class AbstractColumn
         $this->rendererParameter[$rendererType] = $parameters;
     }
 
-    public function getRendererParameters($rendererType = 'jqgrid')
+    /**
+     *
+     * @param string $rendererType            
+     * @return array
+     */
+    public function getRendererParameters($rendererName = 'jqgrid')
     {
-        if (! isset($this->rendererParameter[$rendererType])) {
-            $this->rendererParameter[$rendererType] = array();
+        if (! isset($this->rendererParameter[$rendererName])) {
+            $this->rendererParameter[$rendererName] = array();
         }
         
-        return $this->rendererParameter[$rendererType];
+        return $this->rendererParameter[$rendererName];
+    }
+
+    /**
+     * Set a a template formatter
+     *
+     * @param AbstractFormatter $formatter            
+     */
+    public function setFormatter(AbstractFormatter $formatter)
+    {
+        $this->formatter = $formatter;
+    }
+
+    /**
+     *
+     * @param string $rendererName            
+     * @return NULL AbstractFormatter
+     */
+    public function getFormatter()
+    {
+        return $this->formatter;
+    }
+
+    /**
+     *
+     * @param string $rendererType            
+     * @return boolean
+     */
+    public function hasFormatter()
+    {
+        if ($this->formatter !== null) {
+            return true;
+        }
+        
+        return false;
     }
 
     public function setRowClickDisabled($mode = true)

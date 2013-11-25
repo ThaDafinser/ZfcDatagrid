@@ -288,17 +288,11 @@ abstract class AbstractAction
                 
                 if ($this->getShowOnValueOperator() == 'OR' && $isDisplayedMatch === true) {
                     // For OR one match is enough
-                    $isDisplayed = true;
-                    break;
+                    return true;
+                } elseif($this->getShowOnValueOperator() == 'AND' && $isDisplayedMatch === false){
+                    return false;
                 } else {
-                    // AND
-                    if ($isDisplayedMatch !== true) {
-                        // one time no match is enough
-                        $isDisplayed = false;
-                        break;
-                    } else {
-                        $isDisplayed = true;
-                    }
+                    $isDisplayed = $isDisplayedMatch;
                 }
             }
             

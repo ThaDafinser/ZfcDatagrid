@@ -88,7 +88,6 @@ class CategoryController extends AbstractActionController
         $col->addAction($toggle);
         $dataGrid->addColumn($col);
         
-        
         return $dataGrid;
     }
 
