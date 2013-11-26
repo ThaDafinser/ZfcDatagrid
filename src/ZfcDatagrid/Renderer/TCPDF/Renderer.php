@@ -5,6 +5,7 @@
 namespace ZfcDatagrid\Renderer\TCPDF;
 
 use ZfcDatagrid\Renderer\AbstractRenderer;
+use ZfcDatagrid\Column;
 use Zend\Http\Response\Stream as ResponseStream;
 use Zend\Http\Headers;
 use TCPDF;
