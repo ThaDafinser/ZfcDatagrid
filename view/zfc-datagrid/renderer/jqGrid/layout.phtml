@@ -2,6 +2,9 @@
 use ZfcDatagrid\Column\Action\Button;
 use ZfcDatagrid\Filter;
 
+/* @var $paginator \Zend\Paginator\Paginator */
+$paginator = $this->paginator;
+
 $parameterNames = $this->optionsRenderer['parameterNames'];
 
 // $sortColumns = explode(',', $this->activeParameters[$parameterNames['sortColumns']]);
@@ -139,6 +142,12 @@ foreach($this->rowStyles as $style){
         $styleString  .= $css;
     }
 }
+
+$itemCountPerPage = $paginator->getItemCountPerPage();
+if($paginator->getItemCountPerPage() === $paginator->getTotalItemCount()){
+    //@see http://stackoverflow.com/questions/1237096/how-to-show-all-rows-in-the-jqgrid
+    $itemCountPerPage = 1000000;
+}
 ?>
 
 <?php echo $this->partial($this->templateToolbar);?>
@@ -178,7 +187,7 @@ var grid_<?php echo $this->gridId; ?> = $('#<?php echo $this->gridId; ?>').jqGri
 
     grouping: true,
     
-    rowNum: <?php echo $this->paginator->getItemCountPerPage();?>,
+    rowNum: <?php echo $itemCountPerPage; ?>,
     	    
 	mtype : 'POST',
     postData: {
