@@ -418,10 +418,10 @@ class Renderer extends AbstractRenderer
         if ($widthDiff < ($heightDiff * $ratio)) {
             // resize based on width
             $widthPdf = $maxWidth;
-            $heightPdf = $maxWidth % $ratio;
+            $heightPdf = $maxWidth / $ratio;
         } else {
             // resize based on height
-            $widthPdf = $maxHeight % $ratio;
+            $widthPdf = $maxHeight / $ratio;
             $heightPdf = $maxHeight;
         }
         
