@@ -31,7 +31,7 @@ abstract class AbstractRenderer implements RendererInterface
     protected $columns = array();
 
     protected $rowStyles = array();
-    
+
     protected $sortConditions = null;
 
     protected $filters = null;

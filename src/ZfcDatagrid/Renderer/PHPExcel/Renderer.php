@@ -62,12 +62,13 @@ class Renderer extends AbstractRenderer
         }
         
         /*
-         * Decide which columns we want to display DO NOT display HTML, actions, ... After we have all -> resize the width to the paper format
+         * Decide which columns we want to display 
+         * DO NOT display HTML, actions, ... After we have all -> resize the width to the paper format
          */
         $columnsToExport = array();
         foreach ($this->getColumns() as $column) {
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-            if ($column->isHidden() === false && in_array(get_class($column->getType()), $this->allowedColumnTypes)) {
+            if (! $column instanceof Column\Action && $column->isHidden() === false && in_array(get_class($column->getType()), $this->allowedColumnTypes)) {
                 $columnsToExport[] = $column;
             }
         }
@@ -108,41 +109,41 @@ class Renderer extends AbstractRenderer
                  * Styles
                  */
                 $styles = array_merge($this->getRowStyles(), $column->getStyles());
-                    foreach ($styles as $style) {
-                        /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
-                        if ($style->isApply($row) === true) {
-                            switch (get_class($style)) {
+                foreach ($styles as $style) {
+                    /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
+                    if ($style->isApply($row) === true) {
+                        switch (get_class($style)) {
+                            
+                            case 'ZfcDatagrid\Column\Style\Bold':
+                                $columnStyle->getFont()->setBold(true);
+                                break;
+                            
+                            case 'ZfcDatagrid\Column\Style\Italic':
+                                $columnStyle->getFont()->setItalic(true);
+                                break;
+                            
+                            case 'ZfcDatagrid\Column\Style\Color':
+                                $columnStyle->getFont()
+                                    ->getColor()
+                                    ->setRGB($style->getRgbHexString());
+                                break;
+                            
+                            case 'ZfcDatagrid\Column\Style\BackgroundColor':
+                                $columnStyle->getFill()->applyFromArray(array(
+                                    'type' => \PHPExcel_Style_Fill::FILL_SOLID,
+                                    'color' => array(
+                                        'rgb' => $style->getRgbHexString()
+                                    )
+                                ));
+                                break;
+                            
+                            default:
+                                throw new \Exception('Not defined yet: "' . get_class($style) . '"');
                                 
-                                case 'ZfcDatagrid\Column\Style\Bold':
-                                    $columnStyle->getFont()->setBold(true);
-                                    break;
-                                
-                                case 'ZfcDatagrid\Column\Style\Italic':
-                                    $columnStyle->getFont()->setItalic(true);
-                                    break;
-                                
-                                case 'ZfcDatagrid\Column\Style\Color':
-                                    $columnStyle->getFont()
-                                        ->getColor()
-                                        ->setRGB($style->getRgbHexString());
-                                    break;
-                                
-                                case 'ZfcDatagrid\Column\Style\BackgroundColor':
-                                    $columnStyle->getFill()->applyFromArray(array(
-                                        'type' => \PHPExcel_Style_Fill::FILL_SOLID,
-                                        'color' => array(
-                                            'rgb' => $style->getRgbHexString()
-                                        )
-                                    ));
-                                    break;
-                                
-                                default:
-                                    throw new \Exception('Not defined yet: "' . get_class($style) . '"');
-                                    
-                                    break;
-                            }
+                                break;
                         }
                     }
+                }
                 
                 $xColumn ++;
             }
