@@ -6,13 +6,8 @@ use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\Console\Adapter\AdapterInterface as Console;
-use Zend\ServiceManager\ServiceManager;
 
-class Module implements 
-    AutoloaderProviderInterface, 
-    ConfigProviderInterface, 
-    ConsoleUsageProviderInterface, 
-    ServiceProviderInterface
+class Module implements AutoloaderProviderInterface, ConfigProviderInterface, ConsoleUsageProviderInterface, ServiceProviderInterface
 {
 
     public function getAutoloaderConfig()
@@ -32,7 +27,28 @@ class Module implements
 
     public function getConfig()
     {
-        return include __DIR__ . '/../../config/module.config.php';
+        return include __DIR__ . '/config/module.config.php';
+    }
+
+    public function getServiceConfig()
+    {
+        if (class_exists('DoctrineORMModule\Service\DBALConnectionFactory')) {
+            // For the doctrine examples!
+            return array(
+                'factories' => array(
+                    'doctrine.connection.orm_zfcDatagrid' => new \DoctrineORMModule\Service\DBALConnectionFactory('orm_zfcDatagrid'),
+                    'doctrine.configuration.orm_zfcDatagrid' => new \DoctrineORMModule\Service\ConfigurationFactory('orm_zfcDatagrid'),
+                    'doctrine.entitymanager.orm_zfcDatagrid' => new \DoctrineORMModule\Service\EntityManagerFactory('orm_zfcDatagrid'),
+                    
+                    'doctrine.driver.orm_zfcDatagrid' => new \DoctrineModule\Service\DriverFactory('orm_zfcDatagrid'),
+                    'doctrine.eventmanager.orm_zfcDatagrid' => new \DoctrineModule\Service\EventManagerFactory('orm_zfcDatagrid'),
+                    'doctrine.entity_resolver.orm_zfcDatagrid' => new \DoctrineORMModule\Service\EntityResolverFactory('orm_zfcDatagrid'),
+                    'doctrine.sql_logger_collector.orm_zfcDatagrid' => new \DoctrineORMModule\Service\SQLLoggerCollectorFactory('orm_zfcDatagrid')
+                )
+            );
+        }
+        
+        return array();
     }
 
     public function getConsoleUsage(Console $console)
@@ -58,45 +74,6 @@ class Module implements
             array(
                 '--sortDir=DIRECTION',
                 'Sort direction of the columns [ASC|DESC] (split with: ,)'
-            )
-        );
-    }
-    
-    public function getServiceConfig()
-    {
-        return array(
-            'factories' => array(
-                
-                'zfcDatagrid' => function  (ServiceManager $serviceManager)
-                {
-                    $config = $serviceManager->get('config');
-                    $dataGrid = new \ZfcDatagrid\Datagrid();
-                    $dataGrid->setOptions($config['ZfcDatagrid']);
-                    $dataGrid->setMvcEvent($serviceManager->get('application')
-                        ->getMvcEvent());
-                    if ($serviceManager->has('translator') === true) {
-                        $dataGrid->setTranslator($serviceManager->get('translator'));
-                    }
-                    $dataGrid->init();
-                    
-                    return $dataGrid;
-                },
-                
-                'zfcDatagrid_dbAdapter' => function  (ServiceManager $serviceManager)
-                {
-                    $config = $serviceManager->get('config');
-                    return new \Zend\Db\Adapter\Adapter($config['zfcDatagrid_dbAdapter']);
-                },
-                
-                // For the doctrine examples!
-                'doctrine.connection.orm_zfcDatagrid' => new \DoctrineORMModule\Service\DBALConnectionFactory('orm_zfcDatagrid'),
-                'doctrine.configuration.orm_zfcDatagrid' => new \DoctrineORMModule\Service\ConfigurationFactory('orm_zfcDatagrid'),
-                'doctrine.entitymanager.orm_zfcDatagrid' => new \DoctrineORMModule\Service\EntityManagerFactory('orm_zfcDatagrid'),
-                
-                'doctrine.driver.orm_zfcDatagrid' => new \DoctrineModule\Service\DriverFactory('orm_zfcDatagrid'),
-                'doctrine.eventmanager.orm_zfcDatagrid' => new \DoctrineModule\Service\EventManagerFactory('orm_zfcDatagrid'),
-                'doctrine.entity_resolver.orm_zfcDatagrid' => new \DoctrineORMModule\Service\EntityResolverFactory('orm_zfcDatagrid'),
-                'doctrine.sql_logger_collector.orm_zfcDatagrid' => new \DoctrineORMModule\Service\SQLLoggerCollectorFactory('orm_zfcDatagrid')
             )
         );
     }

@@ -166,8 +166,8 @@ return array(
     ),
     
     'service_manager' => array(
+        
         'invokables' => array(
-            'DatagridManager' => 'ZfcDatagrid\ServiceManager\DatagridManagerFactory',
             
             // HTML renderer
             'zfcDatagrid.renderer.bootstrapTable' => 'ZfcDatagrid\Renderer\BootstrapTable\Renderer',
@@ -186,6 +186,16 @@ return array(
             'zfcDatagrid.examples.data.doctrine2' => 'ZfcDatagrid\Examples\Data\Doctrine2',
             'zfcDatagrid.examples.data.zendSelect' => 'ZfcDatagrid\Examples\Data\ZendSelect'
         ),
+        
+        'factories' => array(
+            'ZfcDatagrid\Datagrid' => 'ZfcDatagrid\Service\DatagridFactory',
+        
+            'zfcDatagrid_dbAdapter' => 'ZfcDatagrid\Service\ZendDbAdapterFactory'
+        ),
+        
+        'aliases' => array(
+            'zfcDatagrid' => 'ZfcDatagrid\Datagrid'
+        )
     ),
     
     'view_helpers' => array(
