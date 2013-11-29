@@ -179,16 +179,6 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
             case 'ZfcDatagrid\Column\Type\PhpArray':
                 $formatter .= 'cellvalue = \'<pre>\' + cellvalue + \'</pre>\';';
                 break;
-            
-            case 'ZfcDatagrid\Column\Type\Image':
-                $formatter .= ' 
-                    if(typeof cellvalue === \'object\'){
-                        cellvalue = \'<a href="\' + cellvalue[1] + \'"><img src="\' + cellvalue[0] + \'" /></a>\';
-                    } else{
-                        cellvalue = \'<img src="\' + cellvalue + \'" />\';
-                    }
-                ';
-                break;
         }
         
         if ($column instanceof Column\Action) {

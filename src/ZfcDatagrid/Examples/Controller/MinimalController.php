@@ -31,7 +31,7 @@ class MinimalController extends AbstractActionController
         $dataGrid->setTitle('Minimal grid');
         
         //you can change here the renderer (allowed: bootstrapTable / jqgrid...default is bootstrapTable
-        $dataGrid->setRenderer('jqgrid');
+        $dataGrid->setRendererName('jqgrid');
         $dataGrid->setDataSource($data);
         
         $col = new Column\Select('displayName');

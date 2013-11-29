@@ -67,20 +67,6 @@ class TableRow extends AbstractHelper
                 case 'ZfcDatagrid\Column\Type\PhpArray':
                     $value = '<pre>' . print_r($value, true) . '</pre>';
                     break;
-                
-                case 'ZfcDatagrid\Column\Type\Image':
-                    // if thumb and original provided
-                    $thumb = $value;
-                    $original = $value;
-                    if (is_array($value)) {
-                        $thumb = $value[0];
-                        $original = $value[0];
-                        if (array_key_exists(1, $value)) {
-                            $original = $value[1];
-                        }
-                    }
-                    $value = ' <a href="' . $original . '" class="thumbnail"><img src="' . $thumb . '" /></a>';
-                    break;
             }
             
             $styles = array_merge($rowStyles, $column->getStyles());

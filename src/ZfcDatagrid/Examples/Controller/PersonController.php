@@ -182,7 +182,7 @@ class PersonController extends AbstractActionController
     public function jqgridAction()
     {
         $dataGrid = $this->getGrid();
-        $dataGrid->setRenderer('jqgrid');
+        $dataGrid->setRendererName('jqgrid');
         
         $dataGrid->execute();
         

@@ -9,17 +9,17 @@ use Zend\View\Model\JsonModel;
 class Renderer extends AbstractRenderer
 {
 
-    public function getName ()
+    public function getName()
     {
         return 'jqGrid';
     }
 
-    public function isHtml ()
+    public function isHtml()
     {
         return true;
     }
 
-    public function isExport ()
+    public function isExport()
     {
         return false;
     }
@@ -30,7 +30,7 @@ class Renderer extends AbstractRenderer
      *
      * @return array
      */
-    public function getSortConditions ()
+    public function getSortConditions()
     {
         if (is_array($this->sortConditions)) {
             // set from cache! (for export)
@@ -87,7 +87,7 @@ class Renderer extends AbstractRenderer
         return $this->sortConditions;
     }
 
-    public function getFilters ()
+    public function getFilters()
     {
         if (is_array($this->filters)) {
             // set from cache! (for export)
@@ -132,7 +132,7 @@ class Renderer extends AbstractRenderer
         return $this->filters;
     }
 
-    public function getCurrentPageNumber ()
+    public function getCurrentPageNumber()
     {
         $optionsRenderer = $this->getOptionsRenderer();
         $parameterNames = $optionsRenderer['parameterNames'];
@@ -148,7 +148,7 @@ class Renderer extends AbstractRenderer
         return (int) $this->currentPageNumber;
     }
 
-    public function execute ()
+    public function execute()
     {
         $request = $this->getRequest();
         if ($request instanceof HttpRequest && $request->isXmlHttpRequest() === true && $request->isPost() === true && $request->getPost('nd') != '') {
@@ -176,14 +176,14 @@ class Renderer extends AbstractRenderer
         return $viewModel;
     }
 
-    public function getData ()
+    public function getData()
     {
         $data = parent::getData();
         
         foreach ($data as &$row) {
             foreach ($this->getColumns() as $column) {
                 if ($column instanceof Column\Select) {
-//                     $row[$column->getUniqueId()] = nl2br($row[$column->getUniqueId()], true);
+                    // $row[$column->getUniqueId()] = nl2br($row[$column->getUniqueId()], true);
                 } elseif ($column instanceof Column\Action) {
                     /* @var $column \ZfcDatagrid\Column\Action */
                     
@@ -206,7 +206,7 @@ class Renderer extends AbstractRenderer
         return $data;
     }
 
-    private function getDataJqGrid ()
+    private function getDataJqGrid()
     {
         $data = $this->getData();
         

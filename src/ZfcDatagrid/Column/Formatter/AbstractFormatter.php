@@ -42,7 +42,7 @@ abstract class AbstractFormatter
         return $this->data;
     }
 
-    public function setRenderer($name = null)
+    public function setRendererName($name = null)
     {
         $this->rendererName = $name;
     }

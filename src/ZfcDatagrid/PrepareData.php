@@ -87,7 +87,7 @@ class PrepareData
         return $this->dataPrepared;
     }
 
-    public function setRenderer($name = null)
+    public function setRendererName($name = null)
     {
         $this->rendererName = $name;
     }
@@ -216,7 +216,7 @@ class PrepareData
                     $formatter = $column->getFormatter($this->getRendererName());
                     $formatter->setColumns($this->getColumns());
                     $formatter->setRowData($row);
-                    $formatter->setRenderer($this->getRendererName());
+                    $formatter->setRendererName($this->getRendererName());
                     
                     $row[$column->getUniqueId()] = $formatter->format($column);
                 }

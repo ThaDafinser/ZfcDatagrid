@@ -764,13 +764,22 @@ class Datagrid implements ServiceLocatorAwareInterface
     }
 
     /**
+     *
+     * @deprecated use setRendererName()
+     */
+    public function setRenderer($name = null)
+    {
+        $this->forceRenderer = $name;
+    }
+
+    /**
      * Overwrite the render
      * F.x.
      * if you want to directly render a PDF
      *
      * @param string $name            
      */
-    public function setRenderer($name = null)
+    public function setRendererName($name = null)
     {
         $this->forceRenderer = $name;
     }
@@ -950,7 +959,7 @@ class Datagrid implements ServiceLocatorAwareInterface
          * - ...
          */
         $prepareData = new PrepareData($data, $this->getColumns());
-        $prepareData->setRenderer($this->getRendererName());
+        $prepareData->setRendererName($this->getRendererName());
         $prepareData->setTranslator($this->getTranslator());
         $prepareData->prepare();
         $this->preparedData = $prepareData->getData();

@@ -99,7 +99,7 @@ class CategoryController extends AbstractActionController
     public function bootstrapAction ()
     {
         $dataGrid = $this->getGrid();
-//         $dataGrid->setRenderer('bootstrapTable');
+//         $dataGrid->setRendererName('bootstrapTable');
         $dataGrid->execute();
         
         return $dataGrid->getResponse();
@@ -112,7 +112,7 @@ class CategoryController extends AbstractActionController
         $viewModel = new ViewModel();
         
         $dataGrid = $this->getGrid();
-        $dataGrid->setRenderer('jqgrid');
+        $dataGrid->setRendererName('jqgrid');
         $dataGrid->setUserFilterDisabled(true);
         
         $dataGrid->execute();

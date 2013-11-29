@@ -156,6 +156,10 @@ abstract class AbstractColumn
      */
     public function setType(Type\AbstractType $type)
     {
+        if ($type instanceof Type\Image && $this->hasFormatter() === false) {
+            $this->setFormatter(new Formatter\Image());
+        }
+        
         $this->type = $type;
     }
 
