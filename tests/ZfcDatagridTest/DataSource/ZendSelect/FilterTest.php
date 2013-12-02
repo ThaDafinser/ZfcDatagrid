@@ -38,9 +38,11 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $this->column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $this->column->setUniqueId('myCol');
+        $this->column->setSelect('myCol');
         
         $this->column2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $this->column2->setUniqueId('myCol2');
+        $this->column2->setSelect('myCol2');
         
         $this->mockDriver = $this->getMock('Zend\Db\Adapter\Driver\DriverInterface');
         $this->mockConnection = $this->getMock('Zend\Db\Adapter\Driver\ConnectionInterface');

@@ -50,9 +50,6 @@
         "psr-0": {
             "ZfcDatagrid\\": "src/",
             "ZfcDatagridTest\\": "tests/"
-        },
-        "classmap": [
-            "./Module.php"
-        ]
+        }
     }
 }
