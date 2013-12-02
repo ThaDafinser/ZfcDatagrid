@@ -269,3 +269,7 @@ class PersonController extends AbstractActionController
 * ZF2
 * Doctrine2 + DoctrineModule (if used as datasource)
 * 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ThaDafinser/zfcdatagrid/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
