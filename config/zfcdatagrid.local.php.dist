@@ -59,7 +59,7 @@ return array(
         'renderer' => array(
             'jqGrid' => array(
                 'templates' => array(
-                    'layout' => 'datagrid/renderer/jqGrid/layout'
+                    'layout' => 'zfc-datagrid/renderer/jqGrid/layout'
                 )
             )
         ),
