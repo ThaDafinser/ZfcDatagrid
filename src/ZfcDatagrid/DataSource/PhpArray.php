@@ -137,7 +137,7 @@ class PhpArray extends AbstractDataSource
                 $dataCol[$key] = $value;
             }
             
-            $arguments[] = $dataCol;
+            $arguments[] = &$dataCol;
             foreach ($sortParameters as $parameter) {
                 $arguments[] = $parameter;
             }
