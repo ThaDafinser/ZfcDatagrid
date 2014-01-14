@@ -72,11 +72,21 @@ class Doctrine2 extends AbstractDataSource
             // Minimum one sort condition given -> so reset the default orderBy
             $qb->resetDQLPart('orderBy');
             
-            foreach ($this->getSortConditions() as $sortCondition) {
+            foreach ($this->getSortConditions() as $key => $sortCondition) {
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */
                 $column = $sortCondition['column'];
                 
-                $qb->add('orderBy', new Expr\OrderBy($column->getUniqueId(), $sortCondition['sortDirection']), true);
+                $colString = $column->getSelectPart1();
+                if ($column->getSelectPart2() != '') {
+                    $colString .= '.' . $column->getSelectPart2();
+                }
+                
+                if ($column->getType() === 'number') {
+                    $qb->addSelect('ABS(' . $colString . ') sortColumn' . $key);
+                    $qb->add('orderBy', new Expr\OrderBy('sortColumn' . $key, $sortCondition['sortDirection']), true);
+                } else {
+                    $qb->add('orderBy', new Expr\OrderBy($column->getUniqueId(), $sortCondition['sortDirection']), true);
+                }
             }
         }
         
