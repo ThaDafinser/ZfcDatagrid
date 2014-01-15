@@ -253,23 +253,6 @@ class PersonController extends AbstractActionController
 
 ```
 
-# Dependencies
-## Required
-* PHP >= 5.3
-* PHP intl extension
-* ZF2
-    * MVC (model, request, response)
-    * Paginator
-    * Cache
-    * Session
-    * Translator
-* Twitter Bootstrap (currently only output mode)
-
-## Optional
-* ZF2
-* Doctrine2 + DoctrineModule (if used as datasource)
-* 
-
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ThaDafinser/zfcdatagrid/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
