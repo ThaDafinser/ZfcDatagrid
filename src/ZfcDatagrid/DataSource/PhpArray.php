@@ -172,6 +172,6 @@ class PhpArray extends AbstractDataSource
         
         call_user_func_array('array_multisort', $args);
         
-        return end($arguments);
+        return end($args);
     }
 }
