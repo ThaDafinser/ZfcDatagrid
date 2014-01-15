@@ -7,7 +7,7 @@ A datagrid for ZF2 where the data input and output can be whatever you want...:-
 To get started, please follow the installation and the small ["Getting started guide"](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/docs/Getting-started.md)
 
 ## Features
-* Datasources: Doctrine2, Zend\Db, PhpArray, ... (others possible)
+* Datasources: Doctrine2 (QueryBuilder + Collections), Zend\Db, PhpArray, ... (others possible)
 * Output types: jqGrid, Bootstrap table, PDF, Excel, console, ... (others possible)
 * different column types
 * custom formatting, type based formatting (string, date, number, array...)
