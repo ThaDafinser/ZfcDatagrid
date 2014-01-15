@@ -7,6 +7,11 @@ namespace ZfcDatagrid\Column\Style;
 class AbstractColor extends AbstractStyle
 {
 
+    /**
+     * Array values are RGB (red, green,blue)
+     *
+     * @var array
+     */
     public static $RED = array(
         255,
         0,
@@ -58,12 +63,12 @@ class AbstractColor extends AbstractStyle
      * Set the RGB
      *
      * @param int $red
+     *            integer 0-255
+     * @param integer $green
      *            0-255
-     * @param int $green
+     * @param integer $blue
      *            0-255
-     * @param int $blue
-     *            0-255
-     * @return \ZfcDatagrid\Column\Style\Color
+     * @return self
      */
     public function setRgb($red, $green, $blue)
     {
@@ -76,8 +81,8 @@ class AbstractColor extends AbstractStyle
 
     /**
      *
-     * @param unknown $red            
-     * @return \ZfcDatagrid\Column\Style\Color
+     * @param integer $red            
+     * @return self
      */
     public function setRed($red)
     {
@@ -97,8 +102,8 @@ class AbstractColor extends AbstractStyle
 
     /**
      *
-     * @param unknown $green            
-     * @return \ZfcDatagrid\Column\Style\Color
+     * @param integer $green            
+     * @return self
      */
     public function setGreen($green)
     {
@@ -118,8 +123,8 @@ class AbstractColor extends AbstractStyle
 
     /**
      *
-     * @param unknown $blue            
-     * @return \ZfcDatagrid\Column\Style\Color
+     * @param integer $blue            
+     * @return self
      */
     public function setBlue($blue)
     {
