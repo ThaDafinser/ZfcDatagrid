@@ -87,17 +87,22 @@ class PhpArray extends AbstractDataSource
         $this->setPaginatorAdapter(new PaginatorAdapter($data));
     }
 
+    /**
+     *
+     * @param unknown $sortCondition            
+     * @return array
+     */
     private function getSortArrayParameter($sortCondition)
     {
         $sortArray = array(
             $sortCondition['column']->getSelectPart1()
         );
         
-        $direction = SORT_ASC;
         if ($sortCondition['sortDirection'] === 'DESC') {
-            $direction = SORT_DESC;
+            $sortArray[] = SORT_DESC;
+        } else {
+            $sortArray[] = SORT_ASC;
         }
-        $sortArray[] = $direction;
         
         // @todo Based on the column type -> SORT_NUMERIC, SORT_STRING, SORT_NATURAL, ...
         // $type = SORT_NUMERIC;
@@ -105,6 +110,10 @@ class PhpArray extends AbstractDataSource
             
             case 'ZfcDatagrid\Column\Type\Number':
                 $sortArray[] = SORT_NUMERIC;
+                break;
+            
+            default:
+                $sortArray[] = SORT_REGULAR;
                 break;
         }
         
@@ -119,13 +128,12 @@ class PhpArray extends AbstractDataSource
      */
     private function sortArrayMultiple(array $data, $sortConditions)
     {
-        $arguments = array();
-        
-        $i = 1;
+        $sortArguments = array();
         foreach ($sortConditions as $sortCondition) {
             $sortParameters = $this->getSortArrayParameter($sortCondition);
             
-            $column = array_shift($sortParameters);
+            // fetch column data
+            $column = $sortParameters[0];
             
             $dataCol = array();
             foreach ($data as $key => $row) {
@@ -137,9 +145,30 @@ class PhpArray extends AbstractDataSource
                 $dataCol[$key] = $value;
             }
             
+            $sortArguments[] = array(
+                $dataCol,
+                $sortParameters[1],
+                $sortParameters[2]
+            );
+        }
+        
+        return $this->applyMultiSort($data, $sortArguments);
+        
+        {
+            
+            $dataCol = array();
+            foreach ($data as $key => $row) {
+                if (! isset($row[$column])) {
+                    $value = '';
+                } else {
+                    $value = $row[$column];
+                }
+                $dataCol[$key] = $value;
+            }
             $arguments[] = &$dataCol;
+            
             foreach ($sortParameters as $parameter) {
-                $arguments[] = &$parameter;
+                $arguments[] = $parameter;
             }
         }
         
@@ -148,5 +177,25 @@ class PhpArray extends AbstractDataSource
         call_user_func_array('array_multisort', $arguments);
         
         return array_pop($arguments);
+    }
+
+    private function applyMultiSort(array $data, array $sortArguments)
+    {
+        if ($sortArguments % 3 !== 0) {
+            throw new \InvalidArgumentException('The parameter count $sortArguments has to be a multiple of three');
+        }
+        
+        $args = array();
+        foreach ($sortArguments as $values) {
+            $args[] = $values[0];
+            $args[] = $values[1];
+            $args[] = $values[2];
+        }
+        
+        $args[] = &$data;
+        
+        call_user_func_array('array_multisort', $args);
+        
+        return end($arguments);
     }
 }
