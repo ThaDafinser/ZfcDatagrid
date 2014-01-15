@@ -163,9 +163,9 @@ class PhpArray extends AbstractDataSource
             if ($remain != 0) {
                 throw new \InvalidArgumentException('The parameter count for each sortArgument has to be three. Given count of: ' . count($values));
             }
-            $args[] = $values[0];
-            $args[] = $values[1];
-            $args[] = $values[2];
+            $args[] = &$values[0];
+            $args[] = &$values[1];
+            $args[] = &$values[2];
         }
         
         $args[] = &$data;
