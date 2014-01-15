@@ -137,13 +137,13 @@ class PhpArray extends AbstractDataSource
                 $dataCol[$key] = $value;
             }
             
-            $arguments[] = $dataCol;
+            $arguments[] = &$dataCol;
             foreach ($sortParameters as $parameter) {
-                $arguments[] = $parameter;
+                $arguments[] = &$parameter;
             }
         }
         
-        $arguments[] = $data;
+        $arguments[] = &$data;
         
         call_user_func_array('array_multisort', $arguments);
         
