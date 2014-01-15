@@ -153,40 +153,15 @@ class PhpArray extends AbstractDataSource
         }
         
         return $this->applyMultiSort($data, $sortArguments);
-        
-        {
-            
-            $dataCol = array();
-            foreach ($data as $key => $row) {
-                if (! isset($row[$column])) {
-                    $value = '';
-                } else {
-                    $value = $row[$column];
-                }
-                $dataCol[$key] = $value;
-            }
-            $arguments[] = &$dataCol;
-            
-            foreach ($sortParameters as $parameter) {
-                $arguments[] = $parameter;
-            }
-        }
-        
-        $arguments[] = &$data;
-        
-        call_user_func_array('array_multisort', $arguments);
-        
-        return array_pop($arguments);
     }
 
     private function applyMultiSort(array $data, array $sortArguments)
     {
-        if ($sortArguments % 3 !== 0) {
-            throw new \InvalidArgumentException('The parameter count $sortArguments has to be a multiple of three');
-        }
-        
         $args = array();
         foreach ($sortArguments as $values) {
+            if ($values % 3 !== 0) {
+                throw new \InvalidArgumentException('The parameter count $sortArguments has to be a multiple of three');
+            }
             $args[] = $values[0];
             $args[] = $values[1];
             $args[] = $values[2];
