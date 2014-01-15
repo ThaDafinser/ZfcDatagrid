@@ -52,9 +52,6 @@ php index.php datagrid person
 php index.php datagrid person --page 2
 ```
 
-## Current features
-See changelog: https://github.com/ThaDafinser/ZfcDatagrid/blob/master/CHANGELOG.md
-
 ## Screenshots
 ![ScreenShot](https://raw.github.com/ThaDafinser/ZfcDatagrid/master/docs/screenshots/ZfcDatagrid_bootstrap.jpg)
 ![ScreenShot](https://raw.github.com/ThaDafinser/ZfcDatagrid/master/docs/screenshots/ZfcDatagrid_console.jpg)
