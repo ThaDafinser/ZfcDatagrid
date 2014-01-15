@@ -2,10 +2,17 @@
 namespace ZfcDatagrid;
 
 use ZfcDatagrid\Column;
+use InvalidArgumentException;
 
 class Filter
 {
-    // OK
+
+    /**
+     * The constant values are used for display on the usergrid filter
+     * This is for help, how the data is filtered really
+     *
+     * @var string
+     */
     const LIKE = '~ *%s*';
     
     // OK
@@ -217,7 +224,7 @@ class Filter
     }
 
     /**
-     * 
+     *
      * @return boolean
      */
     public function isColumnFilter()
@@ -248,7 +255,7 @@ class Filter
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getOperator()
@@ -264,5 +271,85 @@ class Filter
     public function getDisplayColumnValue()
     {
         return $this->displayColumnValue;
+    }
+
+    /**
+     * Check if a value is the same (used for style, display actions)
+     *
+     * @param mixed $currentValue            
+     * @param mixed $expectedValue            
+     * @param string $operator            
+     *
+     * @return boolean
+     */
+    public static function isApply($currentValue, $expectedValue, $operator = Filter::EQUAL)
+    {
+        switch ($operator) {
+            
+            case Filter::LIKE:
+                if (stripos((string) $expectedValue, (string) $currentValue) !== false) {
+                    return true;
+                }
+                break;
+            
+            // case Filter::LIKE_LEFT:
+            // $pos = stripos((string) $expectedValue, (string) $currentValue);
+            // if ($pos === 0) {
+            // return true;
+            // }
+            // break;
+            
+            // case Filter::LIKE_RIGHT:
+            // $length = strlen($expectedValue) - 1;
+            // $pos = stripos($currentValue, $expectedValue);
+            // if ($pos === $length) {
+            // return true;
+            // }
+            // return false;
+            // break;
+            
+            case Filter::NOT_LIKE:
+                if (stripos((string) $expectedValue, (string) $currentValue) === false) {
+                    return true;
+                }
+                break;
+            
+            // case Filter::NOT_LIKE_LEFT:
+            // $pos = stripos((string) $expectedValue, (string) $currentValue);
+            // if ($pos === false) {
+            // return true;
+            // }
+            // break;
+            
+            case Filter::EQUAL:
+                return $currentValue == $expectedValue;
+                break;
+            
+            case Filter::NOT_EQUAL:
+                return $currentValue != $expectedValue;
+                break;
+            
+            case Filter::GREATER_EQUAL:
+                return $currentValue >= $expectedValue;
+                break;
+            
+            case Filter::GREATER:
+                return $currentValue > $expectedValue;
+                break;
+            
+            case Filter::LESS_EQUAL:
+                return $currentValue <= $expectedValue;
+                break;
+            
+            case Filter::LESS:
+                return $currentValue < $expectedValue;
+                break;
+            
+            default:
+                throw new InvalidArgumentException('currently not implemented filter type: "' . $operator . '"');
+                break;
+        }
+        
+        return false;
     }
 }

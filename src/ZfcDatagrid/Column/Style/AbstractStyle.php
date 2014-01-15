@@ -20,7 +20,7 @@ abstract class AbstractStyle
      * @param mixed $value            
      * @param string $operator            
      */
-    public function setByValue (AbstractColumn $column, $value, $operator = Filter::EQUAL)
+    public function setByValue(AbstractColumn $column, $value, $operator = Filter::EQUAL)
     {
         $this->byValues[] = array(
             'column' => $column,
@@ -33,7 +33,7 @@ abstract class AbstractStyle
      *
      * @return array
      */
-    public function getByValues ()
+    public function getByValues()
     {
         return $this->byValues;
     }
@@ -42,7 +42,7 @@ abstract class AbstractStyle
      *
      * @return boolean
      */
-    public function isForAll ()
+    public function isForAll()
     {
         if (count($this->byValues) === 0) {
             return true;
@@ -54,10 +54,9 @@ abstract class AbstractStyle
     /**
      *
      * @param array $row            
-     * @throws \Exception
      * @return boolean
      */
-    public function isApply ($row)
+    public function isApply($row)
     {
         if ($this->isForAll() === true) {
             return true;
@@ -69,24 +68,7 @@ abstract class AbstractStyle
                     $value = $row[$rule['column']->getUniqueId()];
                 }
                 
-                switch ($rule['operator']) {
-                    
-                    case Filter::EQUAL:
-                        if ($rule['value'] == $value) {
-                            return true;
-                        }
-                        break;
-                    
-                    case Filter::NOT_EQUAL:
-                        if ($rule['value'] != $value) {
-                            return true;
-                        }
-                        break;
-                    
-                    default:
-                        throw new \Exception('currently not implemented filter type: "' . $rule['operator'] . '"');
-                        break;
-                }
+                return Filter::isApply($value, $rule['value'], $rule['operator']);
             }
         }
         
