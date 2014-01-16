@@ -40,12 +40,12 @@
         "phpunit/PHPUnit": "3.7.*",
         "satooshi/php-coveralls": "dev-master",
         
-        "zendframework/zendframework": ">=2.1",
-        "doctrine/doctrine-orm-module": ">=0.7"
+        "zendframework/zendframework": ">=2.2",
+        "doctrine/doctrine-orm-module": ">=0.8"
     },
     
     "suggest" : {
-        "doctrine/doctrine-orm-module": ">=0.7",
+        "doctrine/doctrine-orm-module": ">=0.8",
         "codeplex/phpexcel": "~1.7",
         "tecnick.com/tcpdf": ">=6.0"
     },

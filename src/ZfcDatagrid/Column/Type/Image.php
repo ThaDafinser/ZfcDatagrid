@@ -7,14 +7,14 @@ namespace ZfcDatagrid\Column\Type;
 class Image extends AbstractType
 {
 
-    protected $width;
+    protected $minHeight;
 
-    protected $height;
+    protected $maxHeight;
 
-    public function __construct($width = null, $height = null)
+    public function __construct($minHeight = null, $maxHeight = null)
     {
-        $this->setWidth($width);
-        $this->setHeight($height);
+        $this->setMinHeight($minHeight);
+        $this->setMaxHeight($maxHeight);
     }
 
     public function getTypeName()
@@ -22,23 +22,23 @@ class Image extends AbstractType
         return 'image';
     }
 
-    public function setWidth($width)
+    public function setMinHeight($minHeight)
     {
-        $this->width = (int) $width;
+        $this->minHeight = (int) $minHeight;
     }
 
-    public function getWidth()
+    public function getMinHeight()
     {
-        return $this->width;
+        return $this->minHeight;
     }
 
-    public function setHeight($height)
+    public function setMaxHeight($maxHeight)
     {
-        $this->height = (int) $height;
+        $this->maxHeight = (int) $maxHeight;
     }
 
-    public function getHeight()
+    public function getMaxHeight()
     {
-        return $this->height;
+        return $this->maxHeight;
     }
 }
