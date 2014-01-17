@@ -3,6 +3,12 @@ namespace ZfcDatagrid\Column;
 
 class Select extends AbstractColumn
 {
+    /**
+     * Specific column function wrapper LIKE MONTH(%s)
+     *
+     * @var string
+     */
+    private $colfunctionWrapper;
 
     /**
      * Possible calls:
@@ -37,5 +43,21 @@ class Select extends AbstractColumn
         } else {
             throw new \Exception('Column was not initiated correctly, please read the __construct docblock!');
         }
+    }
+
+    /**
+     * @param string $colfunctionWrapper
+     */
+    public function setColfunctionWrapper($colfunctionWrapper)
+    {
+        $this->colfunctionWrapper = $colfunctionWrapper;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColfunctionWrapper()
+    {
+        return $this->colfunctionWrapper;
     }
 }

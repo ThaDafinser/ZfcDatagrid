@@ -47,20 +47,18 @@ class Filter
     }
 
     /**
-     *
-     * @param DatagridFilter $filter            
+     * @param DatagridFilter $filter
+     * @throws \InvalidArgumentException
      */
     public function applyFilter(DatagridFilter $filter)
     {
         $select = $this->getSelect();
         
         $adapter = $this->getSql()->getAdapter();
-        $qi = function ($name) use($adapter)
-        {
+        $qi = function ($name) use ($adapter) {
             return $adapter->getPlatform()->quoteIdentifier($name);
         };
-        $qv = function ($value) use($adapter)
-        {
+        $qv = function ($value) use ($adapter) {
             return $adapter->getPlatform()->quoteValue($value);
         };
         
@@ -68,6 +66,9 @@ class Filter
         $colString = $column->getSelectPart1();
         if ($column->getSelectPart2() != '') {
             $colString .= '.' . $column->getSelectPart2();
+        }
+        if ($functionWrapper = $column->getColfunctionWrapper()) {
+            $colString = sprintf($functionWrapper, $colString);
         }
         $values = $filter->getValues();
         
