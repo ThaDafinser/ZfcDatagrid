@@ -39,11 +39,11 @@ class FilterTest extends PHPUnit_Framework_TestCase
         
         $this->assertTrue($filter->isColumnFilter());
     }
-    
+
     public function testEqualEmpty()
     {
         $filter = new Filter();
-    
+        
         $filter->setFromColumn($this->column, '=');
         $this->assertEquals($this->column, $filter->getColumn());
         $this->assertEquals(Filter::EQUAL, $filter->getOperator());
@@ -52,7 +52,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(
             ''
         ), $filter->getValues());
-    
+        
         $this->assertTrue($filter->isColumnFilter());
     }
 
@@ -384,5 +384,137 @@ class FilterTest extends PHPUnit_Framework_TestCase
             '2',
             '4'
         ), $filter->getValues());
+    }
+
+    public function testIsApplyLike()
+    {
+        $filter = new Filter();
+        
+        $this->assertTrue($filter->isApply('123', '123', Filter::LIKE));
+        $this->assertTrue($filter->isApply(123, '123asdf', Filter::LIKE));
+        $this->assertTrue($filter->isApply('123', 'text123text', Filter::LIKE));
+        $this->assertTrue($filter->isApply('myString', 'asdf myString', Filter::LIKE));
+        $this->assertTrue($filter->isApply('smallWritten', 'SMALLWRITTEN', Filter::LIKE));
+        
+        $this->assertFalse($filter->isApply('smallWritten', 'somethingDifferent', Filter::LIKE));
+    }
+    
+    // public function testIsApplyLikeLeft()
+    // {
+    // $filter = new Filter();
+    
+    // $this->assertTrue($filter->isApply('123', '123', Filter::LIKE_LEFT));
+    // $this->assertTrue($filter->isApply(123, '123asdf', Filter::LIKE_LEFT));
+    // $this->assertTrue($filter->isApply('smallWritten', 'SMALLWRITTEN', Filter::LIKE_LEFT));
+    
+    // $this->assertFalse($filter->isApply('123', 'text123text', Filter::LIKE_LEFT));
+    // $this->assertFalse($filter->isApply('myString', 'asdf myString', Filter::LIKE_LEFT));
+    // $this->assertFalse($filter->isApply('smallWritten', 'somethingDifferent', Filter::LIKE_LEFT));
+    // }
+    public function testIsApplyNotLike()
+    {
+        $filter = new Filter();
+        
+        $this->assertTrue($filter->isApply(123, 456, Filter::NOT_LIKE));
+        
+        $this->assertFalse($filter->isApply(123, 'test123', Filter::NOT_LIKE));
+        $this->assertFalse($filter->isApply(123, '123test', Filter::NOT_LIKE));
+        $this->assertFalse($filter->isApply(123, 'test123test', Filter::NOT_LIKE));
+        $this->assertFalse($filter->isApply(123, '123', Filter::NOT_LIKE));
+    }
+    
+    // public function testIsApplyNotLikeLeft()
+    // {
+    // $filter = new Filter();
+    
+    // $this->assertTrue($filter->isApply(123, 456, Filter::NOT_LIKE_LEFT));
+    
+    // $this->assertFalse($filter->isApply(123, 'test123', Filter::NOT_LIKE_LEFT));
+    // $this->assertFalse($filter->isApply(123, '123test', Filter::NOT_LIKE_LEFT));
+    // $this->assertFalse($filter->isApply(123, 'test123test', Filter::NOT_LIKE_LEFT));
+    // $this->assertFalse($filter->isApply(123, '123', Filter::NOT_LIKE_LEFT));
+    // }
+    public function testIsApplyEqual()
+    {
+        $filter = new Filter();
+        
+        $this->assertTrue($filter->isApply('123', 123, Filter::EQUAL));
+        $this->assertTrue($filter->isApply(123, '123', Filter::EQUAL));
+        $this->assertTrue($filter->isApply('myString', 'myString', Filter::EQUAL));
+        
+        $this->assertFalse($filter->isApply('myString', 'MYSTRING', Filter::EQUAL));
+        $this->assertFalse($filter->isApply('smallWritten', 'SMALLWRITTEN', Filter::EQUAL));
+        $this->assertFalse($filter->isApply('smallWritten', 'somethingDifferent', Filter::EQUAL));
+    }
+
+    public function testIsApplyNotEqual()
+    {
+        $filter = new Filter();
+        
+        $this->assertTrue($filter->isApply('smallWritten', 'somethingDifferent', Filter::NOT_EQUAL));
+        $this->assertTrue($filter->isApply('myString', 'MYSTRING', Filter::NOT_EQUAL));
+        $this->assertTrue($filter->isApply('smallWritten', 'SMALLWRITTEN', Filter::NOT_EQUAL));
+        
+        $this->assertFalse($filter->isApply('123', 123, Filter::NOT_EQUAL));
+        $this->assertFalse($filter->isApply(123, '123', Filter::NOT_EQUAL));
+        $this->assertFalse($filter->isApply('myString', 'myString', Filter::NOT_EQUAL));
+    }
+
+    public function testIsApplyGreaterEqual()
+    {
+        $filter = new Filter();
+        
+        $this->assertTrue($filter->isApply('123', 123, Filter::GREATER_EQUAL));
+        $this->assertTrue($filter->isApply(123, 100, Filter::GREATER_EQUAL));
+        $this->assertTrue($filter->isApply('123.5', 100, Filter::GREATER_EQUAL));
+        $this->assertTrue($filter->isApply('myString', 'myString', Filter::GREATER_EQUAL));
+        
+        $this->assertFalse($filter->isApply('123', 150, Filter::GREATER_EQUAL));
+        $this->assertFalse($filter->isApply(149.99, 150, Filter::GREATER_EQUAL));
+    }
+
+    public function testIsApplyGreater()
+    {
+        $filter = new Filter();
+        
+        $this->assertTrue($filter->isApply(123, 100, Filter::GREATER));
+        $this->assertTrue($filter->isApply('123.5', 100, Filter::GREATER));
+        $this->assertTrue($filter->isApply('nyString', 'myString', Filter::GREATER));
+        
+        $this->assertFalse($filter->isApply('150', 150, Filter::GREATER));
+        $this->assertFalse($filter->isApply(149, 150, Filter::GREATER));
+    }
+
+    public function testIsApplyLessEqual()
+    {
+        $filter = new Filter();
+        
+        $this->assertFalse($filter->isApply(123, 100, Filter::LESS_EQUAL));
+        $this->assertFalse($filter->isApply('123.5', 100, Filter::LESS_EQUAL));
+        
+        $this->assertTrue($filter->isApply('myString', 'myString', Filter::LESS_EQUAL));
+        $this->assertTrue($filter->isApply('123', 123, Filter::LESS_EQUAL));
+        $this->assertTrue($filter->isApply('123', 150, Filter::LESS_EQUAL));
+        $this->assertTrue($filter->isApply(149.99, 150, Filter::LESS_EQUAL));
+    }
+
+    public function testIsApplyLess()
+    {
+        $filter = new Filter();
+        
+        $this->assertFalse($filter->isApply(123, 100, Filter::LESS));
+        $this->assertFalse($filter->isApply('123.5', 100, Filter::LESS));
+        $this->assertFalse($filter->isApply('nyString', 'myString', Filter::LESS));
+        $this->assertFalse($filter->isApply('150', 150, Filter::LESS));
+        
+        $this->assertTrue($filter->isApply(149, 150, Filter::LESS));
+    }
+
+    public function testIsApplyInvalidArgumentException()
+    {
+        $filter = new Filter();
+        
+        $this->setExpectedException('\InvalidArgumentException');
+        $filter->isApply(123, 100, Filter::IN);
     }
 }

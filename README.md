@@ -2,21 +2,21 @@
 [![Master Branch Build Status](https://secure.travis-ci.org/ThaDafinser/ZfcDatagrid.png?branch=master)](http://travis-ci.org/ThaDafinser/ZfcDatagrid)
 [![Coverage Status](https://coveralls.io/repos/ThaDafinser/ZfcDatagrid/badge.png)](https://coveralls.io/r/ThaDafinser/ZfcDatagrid)
 
-A datagrid for ZF2 where the data input and output can be whatever you want :-)
-
-**Note** it's **still in develoment**, but there are already cool things around (at least i think so...)
+A datagrid for ZF2 where the data input and output can be whatever you want...:-)
 
 To get started, please follow the installation and the small ["Getting started guide"](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/docs/Getting-started.md)
 
 ## Features
-* Datasources: Doctrine2, Zend\Db, PhpArray, ..
-* Output types: jqGrid, Bootstrap table, PDF, Excel, console, ...
+* Datasources: Doctrine2 (QueryBuilder + Collections), Zend\Db, PhpArray, ... (others possible)
+* Output types: jqGrid, Bootstrap table, PDF, Excel, console, ... (others possible)
 * different column types
-* different data types
-* column filtering / sorting
+* custom formatting, type based formatting (string, date, number, array...)
+* column/row styling for all or based on value comparison
+* column filtering  and sorting
+* external data can be included to the dataset (like gravator or your own)
 * pagination
 * custom toolbar / view
-* other cool thing :-)
+* ...
 
 ## Installation
 ### (optional) Create a new ZF2 project
@@ -51,9 +51,6 @@ cd YOUR-PROJECT/public/
 php index.php datagrid person
 php index.php datagrid person --page 2
 ```
-
-## Current features
-See changelog: https://github.com/ThaDafinser/ZfcDatagrid/blob/master/CHANGELOG.md
 
 ## Screenshots
 ![ScreenShot](https://raw.github.com/ThaDafinser/ZfcDatagrid/master/docs/screenshots/ZfcDatagrid_bootstrap.jpg)
@@ -252,23 +249,6 @@ class PersonController extends AbstractActionController
 }
 
 ```
-
-# Dependencies
-## Required
-* PHP >= 5.3
-* PHP intl extension
-* ZF2
-    * MVC (model, request, response)
-    * Paginator
-    * Cache
-    * Session
-    * Translator
-* Twitter Bootstrap (currently only output mode)
-
-## Optional
-* ZF2
-* Doctrine2 + DoctrineModule (if used as datasource)
-* 
 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ThaDafinser/zfcdatagrid/trend.png)](https://bitdeli.com/free "Bitdeli Badge")

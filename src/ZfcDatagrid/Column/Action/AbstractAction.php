@@ -136,9 +136,15 @@ abstract class AbstractAction
         
         return '';
     }
-    
-    public function removeAttribute($name){
-        if(isset($this->htmlAttributes[$name])){
+
+    /**
+     * Removes an HTML attribute
+     *
+     * @param string $name            
+     */
+    public function removeAttribute($name)
+    {
+        if (isset($this->htmlAttributes[$name])) {
             unset($this->htmlAttributes[$name]);
         }
     }
@@ -222,6 +228,12 @@ abstract class AbstractAction
         $this->showOnValueOperator = (string) $operator;
     }
 
+    /**
+     * Get the show on value operator, e.g.
+     * OR, AND
+     * 
+     * @return string
+     */
     public function getShowOnValueOperator()
     {
         return $this->showOnValueOperator;
@@ -284,12 +296,11 @@ abstract class AbstractAction
                     $value = $row[$rule['column']->getUniqueId()];
                 }
                 
-                $isDisplayedMatch = $this->isShownOnValue($value, $rule['value'], $rule['comparison']);
-                
+                $isDisplayedMatch = Filter::isApply($value, $rule['value'], $rule['comparison']);
                 if ($this->getShowOnValueOperator() == 'OR' && $isDisplayedMatch === true) {
                     // For OR one match is enough
                     return true;
-                } elseif($this->getShowOnValueOperator() == 'AND' && $isDisplayedMatch === false){
+                } elseif ($this->getShowOnValueOperator() == 'AND' && $isDisplayedMatch === false) {
                     return false;
                 } else {
                     $isDisplayed = $isDisplayedMatch;
@@ -300,31 +311,6 @@ abstract class AbstractAction
         }
         
         return true;
-    }
-
-    /**
-     *
-     * @param mixed $currentValue            
-     * @param mixed $expectedValue            
-     * @param string $operator            
-     * @throws \Exception
-     * @return boolean
-     */
-    private function isShownOnValue($currentValue, $expectedValue, $operator = Filter::EQUAL)
-    {
-        switch ($operator) {
-            case Filter::EQUAL:
-                return $expectedValue == $currentValue;
-                break;
-            
-            case Filter::NOT_EQUAL:
-                return $expectedValue != $currentValue;
-                break;
-            
-            default:
-                throw new \Exception('currently not implemented filter type: "' . $operator . '"');
-                break;
-        }
     }
 
     /**

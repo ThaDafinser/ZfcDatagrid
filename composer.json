@@ -19,6 +19,10 @@
     
     "minimum-stability": "dev",
     
+    "config": {
+    	"process-timeout": 5000
+    },
+
     "require": {
         "ext-intl": "*",
         "php": ">=5.3.3",
