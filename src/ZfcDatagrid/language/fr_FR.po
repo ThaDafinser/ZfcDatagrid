@@ -1,0 +1,33 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ZfcDatagrid\n"
+"POT-Creation-Date: 2014-01-21 17:33+0100\n"
+"PO-Revision-Date: 2014-01-21 17:37+0100\n"
+"Last-Translator: Emmanuel Belair <contact@ebelair.fr>\n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;translate\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: /mnt/DATAS/www/ZfcDatagrid\n"
+
+#: /mnt/DATAS/www/ZfcDatagrid/src/ZfcDatagrid/Renderer/Text/ZendTable.php:250
+msgid "Page"
+msgstr ""
+
+#: /mnt/DATAS/www/ZfcDatagrid/src/ZfcDatagrid/Renderer/Text/ZendTable.php:251
+#: /mnt/DATAS/www/ZfcDatagrid/src/ZfcDatagrid/Renderer/Text/ZendTable.php:255
+msgid "of"
+msgstr "sur"
+
+#: /mnt/DATAS/www/ZfcDatagrid/src/ZfcDatagrid/Renderer/Text/ZendTable.php:255
+msgid "Showing"
+msgstr "Affichage de"
+
+#: /mnt/DATAS/www/ZfcDatagrid/src/ZfcDatagrid/Renderer/Text/ZendTable.php:255
+msgid "items"
+msgstr "lignes"
