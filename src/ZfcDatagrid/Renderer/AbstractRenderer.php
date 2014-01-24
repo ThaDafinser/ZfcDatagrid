@@ -561,7 +561,7 @@ abstract class AbstractRenderer implements RendererInterface
     {
         $filters = array();
         
-        // @todo skip this, if $dataGrid->isUserFilterEnabled() ?
+        // @todo skip this, if $grid->isUserFilterEnabled() ?
         
         if ($this->getRequest() instanceof ConsoleRequest || ($this->getRequest() instanceof HttpRequest && ! $this->getRequest()->isPost())) {
             

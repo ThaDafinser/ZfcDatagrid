@@ -4,7 +4,7 @@ Minimal column
 ```php
 $col = new Column\Standard('displayName');
 $col->setLabel('Displayname');
-$dataGrid->addColumn($col);
+$grid->addColumn($col);
 ```
 
 Advanced
@@ -14,5 +14,5 @@ $col->setLabel('Displayname');
 $col->setWidth(25);
 $col->setSortDefault(1, 'ASC');
 $col->addStyle(new Style\Bold());
-$dataGrid->addColumn($col);
+$grid->addColumn($col);
 ```
