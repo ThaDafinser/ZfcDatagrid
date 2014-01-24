@@ -60,6 +60,12 @@ abstract class AbstractRenderer implements RendererInterface
 
     /**
      *
+     * @var boolean
+     */
+    protected $isCustomFiltered = false;
+
+    /**
+     *
      * @var ViewModel
      */
     protected $viewModel;
@@ -505,10 +511,33 @@ abstract class AbstractRenderer implements RendererInterface
 
     /**
      *
+     * @param string $mode            
+     */
+    public function setCustomFiltered($mode = false)
+    {
+        $this->isCustomFiltered = (bool) $mode;
+    }
+
+    /**
+     *
+     * @return boolean
+     */
+    public function isCustomFiltered()
+    {
+        return $this->isCustomFiltered;
+    }
+
+    /**
+     *
      * @return array
      */
     public function getFilters()
     {
+        if ($this->isCustomFiltered() === true) {
+            // filters are applied already from external source, so nothing to do here!
+            return array();
+        }
+        
         if (is_array($this->filters)) {
             return $this->filters;
         } elseif ($this->isExport() === true) {

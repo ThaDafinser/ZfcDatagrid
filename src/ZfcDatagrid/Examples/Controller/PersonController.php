@@ -2,7 +2,6 @@
 namespace ZfcDatagrid\Examples\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use ZfcDatagrid\Examples\Data;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Type;
 use ZfcDatagrid\Column\Style;

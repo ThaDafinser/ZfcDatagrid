@@ -93,8 +93,12 @@ class Renderer extends AbstractRenderer
      */
     public function getFilters ()
     {
+        if ($this->isCustomFiltered() === true) {
+            // filters are applied already from external source, so nothing to do here!
+            return array();
+        }
+        
         if (is_array($this->filters)) {
-            // set from cache! (for export)
             return $this->filters;
         }
         

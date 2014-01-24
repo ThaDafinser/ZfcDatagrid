@@ -143,6 +143,12 @@ class Datagrid implements ServiceLocatorAwareInterface
 
     /**
      *
+     * @var boolean
+     */
+    protected $isCustomFiltered = false;
+
+    /**
+     *
      * @var Paginator
      */
     protected $paginator = null;
@@ -714,6 +720,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     }
 
     /**
+     * If disabled, the toolbar filter will not be shown to the user
      *
      * @param boolean $mode            
      */
@@ -729,6 +736,27 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function isUserFilterEnabled()
     {
         return (bool) $this->isUserFilterEnabled;
+    }
+
+    /**
+     * If the grid is the filtered custom, all other filters are ignored
+     * e.g.
+     * default column filter, user column filter, ...
+     *
+     * @param boolean $mode            
+     */
+    public function setCustomFiltered($mode = true)
+    {
+        $this->isCustomFiltered = (bool) $mode;
+    }
+
+    /**
+     *
+     * @return boolean
+     */
+    public function isCustomFiltered()
+    {
+        return $this->isCustomFiltered;
     }
 
     /**
@@ -848,6 +876,8 @@ class Datagrid implements ServiceLocatorAwareInterface
                 $renderer->setCacheId($this->getCacheId());
                 $renderer->setCacheData($this->getCache()
                     ->getItem($this->getCacheId()));
+                
+                $renderer->setCustomFiltered($this->isCustomFiltered());
                 
                 $this->renderer = $renderer;
             } else {
