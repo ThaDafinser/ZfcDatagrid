@@ -126,7 +126,7 @@ class PersonDoctrine2Controller extends AbstractActionController
             $dataGrid->addColumn($col);
         }
         
-        $dataGrid->execute();
+        $dataGrid->render();
         
         return $dataGrid->getResponse();
     }
@@ -175,7 +175,7 @@ class PersonDoctrine2Controller extends AbstractActionController
         $col->setType(new Type\Number());
         $dataGrid->addColumn($col);
         
-        $dataGrid->execute();
+        $dataGrid->render();
         
         return $dataGrid->getResponse();
     }

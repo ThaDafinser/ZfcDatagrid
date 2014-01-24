@@ -128,7 +128,7 @@ class PersonZendController extends AbstractActionController
             $dataGrid->addColumn($col);
         }
         
-        $dataGrid->execute();
+        $dataGrid->render();
         
         return $dataGrid->getResponse();
     }
@@ -177,7 +177,7 @@ class PersonZendController extends AbstractActionController
         $col->setType(new Type\Number());
         $dataGrid->addColumn($col);
         
-        $dataGrid->execute();
+        $dataGrid->render();
         
         return $dataGrid->getResponse();
     }

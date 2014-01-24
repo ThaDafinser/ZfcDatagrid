@@ -169,7 +169,7 @@ class PersonController extends AbstractActionController
     {
         $dataGrid = $this->getGrid();
         
-        $dataGrid->execute();
+        $dataGrid->render();
         
         return $dataGrid->getResponse();
     }
@@ -184,7 +184,7 @@ class PersonController extends AbstractActionController
         $dataGrid = $this->getGrid();
         $dataGrid->setRendererName('jqgrid');
         
-        $dataGrid->execute();
+        $dataGrid->render();
         
         return $dataGrid->getResponse();
     }
@@ -233,7 +233,7 @@ class PersonController extends AbstractActionController
         $col->setType(new Type\Number());
         $dataGrid->addColumn($col);
         
-        $dataGrid->execute();
+        $dataGrid->render();
         
         return $dataGrid->getResponse();
     }

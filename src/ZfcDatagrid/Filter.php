@@ -224,6 +224,7 @@ class Filter
     }
 
     /**
+     * Is this a column filter
      *
      * @return boolean
      */
@@ -237,6 +238,7 @@ class Filter
     }
 
     /**
+     * Only needed for column filter
      *
      * @return \ZfcDatagrid\Column\AbstractColumn
      */

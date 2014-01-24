@@ -38,7 +38,7 @@ class MinimalController extends AbstractActionController
         $col->setLabel('Name');
         $dataGrid->addColumn($col);
         
-        $dataGrid->execute();
+        $dataGrid->render();
         
         return $dataGrid->getResponse();
     }
