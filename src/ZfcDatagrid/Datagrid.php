@@ -911,19 +911,7 @@ class Datagrid implements ServiceLocatorAwareInterface
             }
         }
         
-        /**
-         * Save cache
-         */
-        if ($renderer->isExport() === false) {
-            $cacheData = array(
-                'sortConditions' => $renderer->getSortConditions(),
-                'filters' => $renderer->getFilters()
-            // 'currentPage' => $renderer->getPaginator()->getCurrentPageNumber()
-                        );
-            $success = $this->getCache()->setItem($this->getCacheId(), $cacheData);
-        }
-        
-        /**
+        /*
          * Step 2) Load the data (Paginator)
          */
         {
@@ -953,13 +941,22 @@ class Datagrid implements ServiceLocatorAwareInterface
             }
         }
         
-        /**
-         * Step 3) Format the data
-         * - Translate
-         * - Replace
-         * - Date / time / datetime
-         * - Numbers
-         * - ...
+        /*
+         * Save cache
+         */
+        
+        if ($renderer->isExport() === false) {
+            $cacheData = array(
+                'sortConditions' => $renderer->getSortConditions(),
+                'filters' => $renderer->getFilters(),
+                'currentPage' => $this->getPaginator()->getCurrentPageNumber(),
+                'data' => $this->getDataSource()->getData()
+            );
+            $success = $this->getCache()->setItem($this->getCacheId(), $cacheData);
+        }
+        
+        /*
+         * Step 3) Format the data - Translate - Replace - Date / time / datetime - Numbers - ...
          */
         $prepareData = new PrepareData($data, $this->getColumns());
         $prepareData->setRendererName($this->getRendererName());
