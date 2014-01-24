@@ -60,4 +60,17 @@ class Select extends AbstractColumn
     {
         return $this->filterSelectExpression;
     }
+    
+        /**
+     * 
+     * @return boolean
+     */
+    public function hasFilterSelectExpression()
+    {
+        if ($this->filterSelectExpression !== null) {
+            return true;
+        }
+        
+        return false;
+    }
 }
