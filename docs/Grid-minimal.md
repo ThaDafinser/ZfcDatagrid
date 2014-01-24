@@ -44,7 +44,7 @@ class MinimalController extends AbstractActionController
         $col->setLabel('Name');
         $grid->addColumn($col);
         
-        $grid->execute();
+        $grid->render();
         
         return $grid->getResponse();
     }
