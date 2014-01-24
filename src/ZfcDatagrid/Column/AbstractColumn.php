@@ -88,17 +88,38 @@ abstract class AbstractColumn
         return $this->uniqueId;
     }
 
+    /**
+     *
+     * @todo Move this to Column\Select
+     * @deprecated
+     *
+     *
+     */
     public function setSelect($part1, $part2 = null)
     {
         $this->selectPart1 = $part1;
         $this->selectPart2 = $part2;
     }
 
+    /**
+     *
+     * @todo Move this to Column\Select
+     * @deprecated
+     *
+     *
+     */
     public function getSelectPart1()
     {
         return $this->selectPart1;
     }
 
+    /**
+     *
+     * @todo Move this to Column\Select
+     * @deprecated
+     *
+     *
+     */
     public function getSelectPart2()
     {
         return $this->selectPart2;
@@ -126,16 +147,31 @@ abstract class AbstractColumn
         return $this->width;
     }
 
+    /**
+     * Hide or show the column
+     *
+     * @param boolean $mode            
+     */
     public function setHidden($mode = true)
     {
         $this->isHidden = (bool) $mode;
     }
 
+    /**
+     * Is this column hidden?
+     *
+     * @return boolean
+     */
     public function isHidden()
     {
         return (bool) $this->isHidden;
     }
 
+    /**
+     * Set this column as primaryKey column
+     *
+     * @param boolean $mode            
+     */
     public function setIdentity($mode = true)
     {
         $this->isIdentity = (bool) $mode;
@@ -144,6 +180,11 @@ abstract class AbstractColumn
         $this->setHidden($mode);
     }
 
+    /**
+     * Is this a primaryKey column?
+     *
+     * @return boolean
+     */
     public function isIdentity()
     {
         return (bool) $this->isIdentity;
@@ -254,6 +295,11 @@ abstract class AbstractColumn
         return false;
     }
 
+    /**
+     * Set that the data is getting sorted by this columns
+     * 
+     * @param string $direction
+     */
     public function setSortActive($direction = 'ASC')
     {
         $this->sortActive = $direction;

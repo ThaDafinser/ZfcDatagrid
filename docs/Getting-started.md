@@ -20,10 +20,5 @@ After you have copied it into your module, make sure the controller is registere
 Now you can try to call this action (with your defined route) and you should see your first ZfcDatagrid! (Congratulations)
 It's renderer with the output mode "bootstrapTable", where you can already paginate, filter and sort your data
 
-## Create your custom/own grid
-(i don't have more time, so this will come later...)
-You find more examples here: https://github.com/ThaDafinser/ZfcDatagrid/tree/master/src/ZfcDatagrid/Examples/Controller
-
-There are also database sources (Zend/Doctrine) and JqGrid as output mode.
-
-Have fun so far :-)
+## What to do now
+> Continue with the provided [code examples](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/src/ZfcDatagrid/Examples/Controller/) or read further in the [documentation](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/docs/)
