@@ -19,7 +19,7 @@ class CategoryController extends AbstractActionController
     private function getGrid ()
     {
         /* @var $grid \ZfcDatagrid\Datagrid */
-        $grid = $this->getServiceLocator()->get('zfcDatagrid');
+        $grid = $this->getServiceLocator()->get('ZfcDatagrid\Datagrid');
         $grid->setTitle('Categories');
         $grid->setDefaultItemsPerPage(5);
         $grid->setDataSource($this->getServiceLocator()

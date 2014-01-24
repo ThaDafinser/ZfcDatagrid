@@ -27,7 +27,7 @@ class MinimalController extends AbstractActionController
         );
         
         /* @var $grid \ZfcDatagrid\Datagrid */
-        $grid = $this->getServiceLocator()->get('zfcDatagrid');
+        $grid = $this->getServiceLocator()->get('ZfcDatagrid\Datagrid');
         $grid->setTitle('Minimal grid');
         
         //you can change here the renderer (allowed: bootstrapTable / jqgrid...default is bootstrapTable

@@ -82,7 +82,7 @@ class PersonController extends AbstractActionController
     public function bootstrapAction ()
     {
         /* @var $grid \ZfcDatagrid\Datagrid */
-        $grid = $this->getServiceLocator()->get('zfcDatagrid');
+        $grid = $this->getServiceLocator()->get('ZfcDatagrid\Datagrid');
         $grid->setTitle('Persons');
         $grid->setDefaultItemsPerPage(5);
         $grid->setRowClickLink('/zfcDatagrid/example/edit');
@@ -205,7 +205,7 @@ class PersonController extends AbstractActionController
     public function consoleAction ()
     {
         /* @var $grid \ZfcDatagrid\Datagrid */
-        $grid = $this->getServiceLocator()->get('zfcDatagrid');
+        $grid = $this->getServiceLocator()->get('ZfcDatagrid\Datagrid');
         $grid->setTitle('Persons');
         $grid->setDefaultItemsPerPage(5);
         $grid->setDataSource($this->getServiceLocator()

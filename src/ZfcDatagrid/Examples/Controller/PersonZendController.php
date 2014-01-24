@@ -20,7 +20,7 @@ class PersonZendController extends AbstractActionController
         $dbAdapter = $this->getServiceLocator()->get('zfcDatagrid_dbAdapter');
         
         /* @var $grid \ZfcDatagrid\Datagrid */
-        $grid = $this->getServiceLocator()->get('zfcDatagrid');
+        $grid = $this->getServiceLocator()->get('ZfcDatagrid\Datagrid');
         $grid->setTitle('Persons');
         $grid->setDefaultItemsPerPage(5);
         $grid->setDataSource($this->getServiceLocator()
@@ -143,7 +143,7 @@ class PersonZendController extends AbstractActionController
     public function consoleAction ()
     {
         /* @var $grid \ZfcDatagrid\Datagrid */
-        $grid = $this->getServiceLocator()->get('zfcDatagrid');
+        $grid = $this->getServiceLocator()->get('ZfcDatagrid\Datagrid');
         $grid->setTitle('Persons');
         $grid->setDefaultItemsPerPage(5);
         $grid->setDataSource($this->getServiceLocator()

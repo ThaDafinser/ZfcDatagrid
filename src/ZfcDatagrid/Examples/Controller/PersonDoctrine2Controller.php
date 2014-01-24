@@ -17,7 +17,7 @@ class PersonDoctrine2Controller extends AbstractActionController
     public function bootstrapAction ()
     {
         /* @var $grid \ZfcDatagrid\Datagrid */
-        $grid = $this->getServiceLocator()->get('zfcDatagrid');
+        $grid = $this->getServiceLocator()->get('ZfcDatagrid\Datagrid');
         $grid->setTitle('Persons');
         $grid->setDefaultItemsPerPage(5);
         $grid->setDataSource($this->getServiceLocator()
