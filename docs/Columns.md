@@ -2,6 +2,8 @@
 
 Minimal column
 ```php
+use ZfcDatagrid\Column;
+
 $col = new Column\Select('displayName');
 $col->setLabel('Displayname');
 $grid->addColumn($col);
@@ -9,6 +11,8 @@ $grid->addColumn($col);
 
 Advanced
 ```php
+use ZfcDatagrid\Column;
+
 $col = new Column\Select('displayName', 'tableNameOrAlias');
 $col->setLabel('Displayname');
 $col->setWidth(25);

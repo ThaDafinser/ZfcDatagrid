@@ -11,13 +11,13 @@ $column->setFilterDefaultOperation(\ZfcDatagrid\Filter::YOUR_TYPE);
 
 or you set the appropriate Column\Type. For example the Type\Number has the default operator "EQUAL".
 ```php
-$column->setType(new \ZfcDatagrid\Column\Type\Number());
+use ZfcDatagrid\Column\Type;
+$column->setType(new Type\Number());
 ```
 
 ## Currently available filters
-```sh
-Note: the entered filter is trimmed automatically (left/right and between the operator/value)`
-```
+> Note: the entered filter is trimmed automatically (left/right and between the operator/value)
+
 
 | WHERE condition   | Possible input value  | Description       |
 | -------------     |-------------          | -----         |
