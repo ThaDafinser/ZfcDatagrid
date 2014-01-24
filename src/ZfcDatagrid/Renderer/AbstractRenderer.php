@@ -9,6 +9,7 @@ use Zend\I18n\Translator\Translator;
 use Zend\Http\PhpEnvironment\Request as HttpRequest;
 use Zend\Console\Request as ConsoleRequest;
 use ZfcDatagrid\Filter;
+use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 
 abstract class AbstractRenderer implements RendererInterface
 {
@@ -413,12 +414,17 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     * Set the sort conditions explicit
+     * Set the sort conditions explicit (e.g.
+     * from a custom form)
      *
      * @param array $sortConditions            
      */
     public function setSortConditions(array $sortConditions)
     {
+        foreach($sortConditions as $sortCondition){
+            
+        }
+        
         $this->sortConditions = $sortConditions;
     }
 
@@ -456,8 +462,8 @@ abstract class AbstractRenderer implements RendererInterface
                 $sortDefaults = $column->getSortDefault();
                 
                 $sortConditions[$sortDefaults['priority']] = array(
-                    'sortDirection' => $sortDefaults['sortDirection'],
-                    'column' => $column
+                    'column' => $column,
+                    'sortDirection' => $sortDefaults['sortDirection']
                 );
                 
                 $column->setSortActive($sortDefaults['sortDirection']);
@@ -470,13 +476,29 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
+     * Set filters explicit (e.g.
+     * from a custom form)
+     *
+     * @param array $filters            
+     */
+    public function setFilter(array $filters)
+    {
+        foreach ($filters as $filter) {
+            if (! $filter instanceof Filter) {
+                throw new InvalidArgumentException('Filter have to be an instanceof ZfcDatagrid\Filter');
+            }
+        }
+        
+        $this->filters = $filters;
+    }
+
+    /**
      *
      * @return array
      */
     public function getFilters()
     {
         if (is_array($this->filters)) {
-            // set from cache! (for export)
             return $this->filters;
         } elseif ($this->isExport() === true) {
             // Export renderer should always retrieve the filters from cache!
