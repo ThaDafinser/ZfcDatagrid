@@ -421,8 +421,14 @@ abstract class AbstractRenderer implements RendererInterface
      */
     public function setSortConditions(array $sortConditions)
     {
-        foreach($sortConditions as $sortCondition){
+        foreach ($sortConditions as $sortCondition) {
+            if (! is_array($sortCondition)) {
+                throw new InvalidArgumentException('Sort condition have to be an array');
+            }
             
+            if (! array_key_exists('column', $sortCondition)) {
+                throw new InvalidArgumentException('Sort condition missing array key column');
+            }
         }
         
         $this->sortConditions = $sortConditions;
