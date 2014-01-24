@@ -915,7 +915,8 @@ class Datagrid implements ServiceLocatorAwareInterface
         if ($renderer->isExport() === false) {
             $cacheData = array(
                 'sortConditions' => $renderer->getSortConditions(),
-                'filters' => $renderer->getFilters()
+                'filters' => $renderer->getFilters(), 
+//                 'currentPage' => $renderer->getPaginator()->getCurrentPageNumber()
             );
             $success = $this->getCache()->setItem($this->getCacheId(), $cacheData);
         }

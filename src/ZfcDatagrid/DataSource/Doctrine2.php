@@ -85,7 +85,7 @@ class Doctrine2 extends AbstractDataSource
                     $qb->addSelect('ABS(' . $colString . ') sortColumn' . $key);
                     $qb->add('orderBy', new Expr\OrderBy('sortColumn' . $key, $sortCondition['sortDirection']), true);
                 } else {
-                    $qb->add('orderBy', new Expr\OrderBy($column->getUniqueId(), $sortCondition['sortDirection']), true);
+                    $qb->add('orderBy', new Expr\OrderBy($colString, $sortCondition['sortDirection']), true);
                 }
             }
         }
@@ -95,6 +95,7 @@ class Doctrine2 extends AbstractDataSource
          */
         $filterColumn = new Doctrine2\Filter($qb);
         foreach ($this->getFilters() as $filter) {
+            /* @var $filter \ZfcDatagrid\Filter */
             if ($filter->isColumnFilter() === true) {
                 $filterColumn->applyFilter($filter);
             }

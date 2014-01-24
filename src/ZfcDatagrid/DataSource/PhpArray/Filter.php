@@ -62,12 +62,6 @@ class Filter
         }
         
         return array($rowValue, $filterValue);
-        
-        // if (! is_array($rowValue)) {
-        // $rowValue = (string) $rowValue;
-        // }
-        
-        // return $rowValue;
     }
 
     /**

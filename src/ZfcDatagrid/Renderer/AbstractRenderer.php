@@ -8,6 +8,7 @@ use Zend\Mvc\MvcEvent;
 use Zend\I18n\Translator\Translator;
 use Zend\Http\PhpEnvironment\Request as HttpRequest;
 use Zend\Console\Request as ConsoleRequest;
+use ZfcDatagrid\Filter;
 
 abstract class AbstractRenderer implements RendererInterface
 {
@@ -303,11 +304,17 @@ abstract class AbstractRenderer implements RendererInterface
         $this->cacheData = $cacheData;
     }
 
-    private function getCacheSortConditions()
+    /**
+     *
+     * @throws \Exception
+     * @return array
+     */
+    public function getCacheSortConditions()
     {
         if (! isset($this->cacheData['sortConditions'])) {
             throw new \Exception('Sort conditions from cache are missing!');
         }
+        
         return $this->cacheData['sortConditions'];
     }
 
@@ -406,13 +413,22 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
+     * Set the sort conditions explicit
+     *
+     * @param array $sortConditions            
+     */
+    public function setSortConditions(array $sortConditions)
+    {
+        $this->sortConditions = $sortConditions;
+    }
+
+    /**
      *
      * @return array
      */
     public function getSortConditions()
     {
         if (is_array($this->sortConditions)) {
-            // set from cache! (for export)
             return $this->sortConditions;
         } elseif ($this->isExport() === true) {
             // Export renderer should always retrieve the sort conditions from cache!
@@ -482,13 +498,16 @@ abstract class AbstractRenderer implements RendererInterface
     public function getFiltersDefault()
     {
         $filters = array();
+        
+        // @todo skip this, if $dataGrid->isUserFilterEnabled() ?
+        
         if ($this->getRequest() instanceof ConsoleRequest || ($this->getRequest() instanceof HttpRequest && ! $this->getRequest()->isPost())) {
             
             foreach ($this->getColumns() as $column) {
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */
                 if ($column->hasFilterDefaultValue() === true) {
                     
-                    $filter = new \ZfcDatagrid\Filter();
+                    $filter = new Filter();
                     $filter->setFromColumn($column, $column->getFilterDefaultValue());
                     $filters[] = $filter;
                     
@@ -566,7 +585,7 @@ abstract class AbstractRenderer implements RendererInterface
         
         $viewModel->setVariable('isUserFilterEnabled', $grid->isUserFilterEnabled());
         
-        /**
+        /*
          * renderer specific parameter names
          */
         $optionsRenderer = $this->getOptionsRenderer();
