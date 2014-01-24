@@ -11,15 +11,15 @@ class DatagridFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $sm)
     {
         $config = $sm->get('config');
-        $dataGrid = new Datagrid();
-        $dataGrid->setOptions($config['ZfcDatagrid']);
-        $dataGrid->setMvcEvent($sm->get('application')
+        $grid = new Datagrid();
+        $grid->setOptions($config['ZfcDatagrid']);
+        $grid->setMvcEvent($sm->get('application')
             ->getMvcEvent());
         if ($sm->has('translator') === true) {
-            $dataGrid->setTranslator($sm->get('translator'));
+            $grid->setTranslator($sm->get('translator'));
         }
-        $dataGrid->init();
+        $grid->init();
         
-        return $dataGrid;
+        return $grid;
     }
 }

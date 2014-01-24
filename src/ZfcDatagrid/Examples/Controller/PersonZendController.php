@@ -19,17 +19,17 @@ class PersonZendController extends AbstractActionController
         /* @var $dbAdapter \Zend\Db\Adapter\Adapter */
         $dbAdapter = $this->getServiceLocator()->get('zfcDatagrid_dbAdapter');
         
-        /* @var $dataGrid \ZfcDatagrid\Datagrid */
-        $dataGrid = $this->getServiceLocator()->get('zfcDatagrid');
-        $dataGrid->setTitle('Persons');
-        $dataGrid->setDefaultItemsPerPage(5);
-        $dataGrid->setDataSource($this->getServiceLocator()
+        /* @var $grid \ZfcDatagrid\Datagrid */
+        $grid = $this->getServiceLocator()->get('zfcDatagrid');
+        $grid->setTitle('Persons');
+        $grid->setDefaultItemsPerPage(5);
+        $grid->setDataSource($this->getServiceLocator()
             ->get('zfcDatagrid.examples.data.zendSelect')
             ->getPersons(), $dbAdapter);
         
         $col = new Column\Select('id', 'p');
         $col->setIdentity();
-        $dataGrid->addColumn($col);
+        $grid->addColumn($col);
         
         {
             /**
@@ -51,7 +51,7 @@ class PersonZendController extends AbstractActionController
             $col->setLabel('Avatar');
             $col->setDataPopulation($dataPopulation);
             $col->setType(new Type\Image());
-            $dataGrid->addColumn($col);
+            $grid->addColumn($col);
         }
         
         $col = new Column\Select('displayName', 'p');
@@ -59,20 +59,20 @@ class PersonZendController extends AbstractActionController
         $col->setWidth(25);
         $col->setSortDefault(1, 'ASC');
         $col->addStyle(new Style\Bold());
-        $dataGrid->addColumn($col);
+        $grid->addColumn($col);
         
         $col = new Column\Select('familyName', 'p');
         $col->setLabel('Familyname');
         $col->setWidth(15);
-        $dataGrid->addColumn($col);
+        $grid->addColumn($col);
         
         $col = new Column\Select('givenName', 'p');
         $col->setLabel('Givenname');
         $col->setWidth(15);
         $col->setSortDefault(2, 'DESC');
-        $dataGrid->addColumn($col);
+        $grid->addColumn($col);
         
-        $dataGrid->addColumn($colEmail);
+        $grid->addColumn($colEmail);
         
         $col = new Column\Select('gender', 'p');
         $col->setLabel('Gender');
@@ -82,7 +82,7 @@ class PersonZendController extends AbstractActionController
             'f' => 'female'
         ));
         $col->setTranslationEnabled(true);
-        $dataGrid->addColumn($col);
+        $grid->addColumn($col);
         
         {
             $col = new Column\Select('age', 'p');
@@ -94,7 +94,7 @@ class PersonZendController extends AbstractActionController
             $style->setByValue($col, 20);
             $col->addStyle($style);
             
-            $dataGrid->addColumn($col);
+            $grid->addColumn($col);
         }
         
         {
@@ -106,7 +106,7 @@ class PersonZendController extends AbstractActionController
             $col->setLabel('Weight');
             $col->setWidth(10);
             $col->setType($colType);
-            $dataGrid->addColumn($col);
+            $grid->addColumn($col);
         }
         
         $col = new Column\Select('birthday', 'p');
@@ -114,7 +114,7 @@ class PersonZendController extends AbstractActionController
         $col->setWidth(10);
         $col->setType(new Type\DateTime());
         $col->setUserSortDisabled(true);
-        $dataGrid->addColumn($col);
+        $grid->addColumn($col);
         
         {
             $colType = new Type\DateTime('Y-m-d H:i:s', \IntlDateFormatter::MEDIUM, \IntlDateFormatter::MEDIUM);
@@ -125,12 +125,12 @@ class PersonZendController extends AbstractActionController
             $col->setLabel('Last change');
             $col->setWidth(15);
             $col->setType($colType);
-            $dataGrid->addColumn($col);
+            $grid->addColumn($col);
         }
         
-        $dataGrid->render();
+        $grid->render();
         
-        return $dataGrid->getResponse();
+        return $grid->getResponse();
     }
 
     /**
@@ -142,43 +142,43 @@ class PersonZendController extends AbstractActionController
      */
     public function consoleAction ()
     {
-        /* @var $dataGrid \ZfcDatagrid\Datagrid */
-        $dataGrid = $this->getServiceLocator()->get('zfcDatagrid');
-        $dataGrid->setTitle('Persons');
-        $dataGrid->setDefaultItemsPerPage(5);
-        $dataGrid->setDataSource($this->getServiceLocator()
+        /* @var $grid \ZfcDatagrid\Datagrid */
+        $grid = $this->getServiceLocator()->get('zfcDatagrid');
+        $grid->setTitle('Persons');
+        $grid->setDefaultItemsPerPage(5);
+        $grid->setDataSource($this->getServiceLocator()
             ->get('zfcDatagrid.examples.data.zendSelect')
             ->getPersons());
         
         $col = new Column\Select('id');
         $col->setIdentity();
-        $dataGrid->addColumn($col);
+        $grid->addColumn($col);
         
         $col = new Column\Select('displayName');
         $col->setLabel('Displayname');
         $col->setWidth(25);
         $col->setSortDefault(1, 'ASC');
         $col->addStyle(new Style\Bold());
-        $dataGrid->addColumn($col);
+        $grid->addColumn($col);
         
         $col = new Column\Select('familyName');
         $col->setLabel('Familyname');
         $col->setWidth(15);
-        $dataGrid->addColumn($col);
+        $grid->addColumn($col);
         
         $col = new Column\Select('givenName');
         $col->setLabel('Givenname');
         $col->setWidth(15);
-        $dataGrid->addColumn($col);
+        $grid->addColumn($col);
         
         $col = new Column\Select('age');
         $col->setLabel('Age');
         $col->setWidth(10);
         $col->setType(new Type\Number());
-        $dataGrid->addColumn($col);
+        $grid->addColumn($col);
         
-        $dataGrid->render();
+        $grid->render();
         
-        return $dataGrid->getResponse();
+        return $grid->getResponse();
     }
 }

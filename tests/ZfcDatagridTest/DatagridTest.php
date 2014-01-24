@@ -15,7 +15,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
      *
      * @var Datagrid
      */
-    private $datagrid;
+    private $grid;
 
     public function setUp()
     {
@@ -32,99 +32,99 @@ class DatagridTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->getMock('Zend\Http\PhpEnvironment\Request')));
         $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceManager');
         
-        $this->datagrid = new Datagrid();
-        $this->datagrid->setOptions($config);
-        $this->datagrid->setMvcEvent($mvcEvent);
-        $this->datagrid->setServiceLocator($serviceLocator);
+        $this->grid = new Datagrid();
+        $this->grid->setOptions($config);
+        $this->grid->setMvcEvent($mvcEvent);
+        $this->grid->setServiceLocator($serviceLocator);
     }
 
     public function testInit()
     {
-        $this->assertFalse($this->datagrid->isInit());
+        $this->assertFalse($this->grid->isInit());
         
-        $this->datagrid->init();
+        $this->grid->init();
         
-        $this->assertTrue($this->datagrid->isInit());
+        $this->assertTrue($this->grid->isInit());
     }
 
     public function testId()
     {
-        $this->assertEquals('defaultGrid', $this->datagrid->getId());
+        $this->assertEquals('defaultGrid', $this->grid->getId());
         
-        $this->datagrid->setId('myCustomId');
-        $this->assertEquals('myCustomId', $this->datagrid->getId());
+        $this->grid->setId('myCustomId');
+        $this->assertEquals('myCustomId', $this->grid->getId());
     }
 
     public function testSession()
     {
-        $this->assertInstanceOf('Zend\Session\Container', $this->datagrid->getSession());
-        $this->assertEquals('defaultGrid', $this->datagrid->getSession()
+        $this->assertInstanceOf('Zend\Session\Container', $this->grid->getSession());
+        $this->assertEquals('defaultGrid', $this->grid->getSession()
             ->getName());
         
-        $this->datagrid->setSession(new Container('myName'));
-        $this->assertInstanceOf('Zend\Session\Container', $this->datagrid->getSession());
-        $this->assertEquals('myName', $this->datagrid->getSession()
+        $this->grid->setSession(new Container('myName'));
+        $this->assertInstanceOf('Zend\Session\Container', $this->grid->getSession());
+        $this->assertEquals('myName', $this->grid->getSession()
             ->getName());
     }
 
     public function testCacheId()
     {
-        $this->assertEquals('_defaultGrid', $this->datagrid->getCacheId());
+        $this->assertEquals('_defaultGrid', $this->grid->getCacheId());
         
-        $this->datagrid->setCacheId('myCacheId');
-        $this->assertEquals('myCacheId', $this->datagrid->getCacheId());
+        $this->grid->setCacheId('myCacheId');
+        $this->assertEquals('myCacheId', $this->grid->getCacheId());
     }
 
     public function testServiceLocator()
     {
-        $this->assertInstanceOf('Zend\ServiceManager\ServiceManager', $this->datagrid->getServiceLocator());
+        $this->assertInstanceOf('Zend\ServiceManager\ServiceManager', $this->grid->getServiceLocator());
         
         $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceManager');
-        $this->datagrid->setServiceLocator($serviceLocator);
-        $this->assertInstanceOf('Zend\ServiceManager\ServiceManager', $this->datagrid->getServiceLocator());
-        $this->assertEquals($serviceLocator, $this->datagrid->getServiceLocator());
+        $this->grid->setServiceLocator($serviceLocator);
+        $this->assertInstanceOf('Zend\ServiceManager\ServiceManager', $this->grid->getServiceLocator());
+        $this->assertEquals($serviceLocator, $this->grid->getServiceLocator());
     }
 
     public function testMvcEvent()
     {
-        $this->assertInstanceOf('Zend\Mvc\MvcEvent', $this->datagrid->getMvcEvent());
+        $this->assertInstanceOf('Zend\Mvc\MvcEvent', $this->grid->getMvcEvent());
         
         $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent');
-        $this->datagrid->setMvcEvent($mvcEvent);
-        $this->assertInstanceOf('Zend\Mvc\MvcEvent', $this->datagrid->getMvcEvent());
-        $this->assertEquals($mvcEvent, $this->datagrid->getMvcEvent());
+        $this->grid->setMvcEvent($mvcEvent);
+        $this->assertInstanceOf('Zend\Mvc\MvcEvent', $this->grid->getMvcEvent());
+        $this->assertEquals($mvcEvent, $this->grid->getMvcEvent());
     }
 
     public function testRequest()
     {
-        $this->assertInstanceOf('Zend\Http\PhpEnvironment\Request', $this->datagrid->getRequest());
+        $this->assertInstanceOf('Zend\Http\PhpEnvironment\Request', $this->grid->getRequest());
     }
 
     public function testTranslator()
     {
-        $this->assertFalse($this->datagrid->hasTranslator());
+        $this->assertFalse($this->grid->hasTranslator());
         
-        $this->datagrid->setTranslator($this->getMock('Zend\I18n\Translator\Translator'));
+        $this->grid->setTranslator($this->getMock('Zend\I18n\Translator\Translator'));
         
-        $this->assertTrue($this->datagrid->hasTranslator());
-        $this->assertInstanceOf('Zend\I18n\Translator\Translator', $this->datagrid->getTranslator());
+        $this->assertTrue($this->grid->hasTranslator());
+        $this->assertInstanceOf('Zend\I18n\Translator\Translator', $this->grid->getTranslator());
     }
 
     public function testDataSourceArray()
     {
-        $this->assertFalse($this->datagrid->hasDataSource());
+        $this->assertFalse($this->grid->hasDataSource());
         
-        $this->datagrid->setDataSource(array());
-        $this->assertTrue($this->datagrid->hasDataSource());
-        $this->assertInstanceOf('ZfcDatagrid\DataSource\PhpArray', $this->datagrid->getDataSource());
+        $this->grid->setDataSource(array());
+        $this->assertTrue($this->grid->hasDataSource());
+        $this->assertInstanceOf('ZfcDatagrid\DataSource\PhpArray', $this->grid->getDataSource());
         
         $source = $this->getMock('ZfcDatagrid\DataSource\PhpArray', array(), array(
             array()
         ));
-        $this->datagrid->setDataSource($source);
+        $this->grid->setDataSource($source);
         
         $this->setExpectedException('InvalidArgumentException');
-        $this->datagrid->setDataSource(null);
+        $this->grid->setDataSource(null);
     }
 
     public function testDataSourceZend()
@@ -146,82 +146,82 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
     public function testDefaultItemsPerRow()
     {
-        $this->assertEquals(25, $this->datagrid->getDefaultItemsPerPage());
+        $this->assertEquals(25, $this->grid->getDefaultItemsPerPage());
         
-        $this->datagrid->setDefaultItemsPerPage(- 1);
-        $this->assertEquals(- 1, $this->datagrid->getDefaultItemsPerPage());
+        $this->grid->setDefaultItemsPerPage(- 1);
+        $this->assertEquals(- 1, $this->grid->getDefaultItemsPerPage());
     }
 
     public function testTitle()
     {
-        $this->assertEquals('', $this->datagrid->getTitle());
+        $this->assertEquals('', $this->grid->getTitle());
         
-        $this->datagrid->setTitle('My title');
-        $this->assertEquals('My title', $this->datagrid->getTitle());
+        $this->grid->setTitle('My title');
+        $this->assertEquals('My title', $this->grid->getTitle());
     }
 
     public function testParameters()
     {
-        $this->assertFalse($this->datagrid->hasParameters());
-        $this->assertEquals(array(), $this->datagrid->getParameters());
+        $this->assertFalse($this->grid->hasParameters());
+        $this->assertEquals(array(), $this->grid->getParameters());
         
-        $this->datagrid->addParameter('myPara', 'test');
+        $this->grid->addParameter('myPara', 'test');
         
         $this->assertEquals(array(
             'myPara' => 'test'
-        ), $this->datagrid->getParameters());
+        ), $this->grid->getParameters());
         
-        $this->datagrid->setParameters(array(
+        $this->grid->setParameters(array(
             'other' => 'blubb'
         ));
         $this->assertEquals(array(
             'other' => 'blubb'
-        ), $this->datagrid->getParameters());
-        $this->assertTrue($this->datagrid->hasParameters());
+        ), $this->grid->getParameters());
+        $this->assertTrue($this->grid->hasParameters());
     }
 
     public function testUrl()
     {
-        $this->assertEquals(null, $this->datagrid->getUrl());
+        $this->assertEquals(null, $this->grid->getUrl());
         
-        $this->datagrid->setUrl('/module/controller/action');
-        $this->assertEquals('/module/controller/action', $this->datagrid->getUrl());
+        $this->grid->setUrl('/module/controller/action');
+        $this->assertEquals('/module/controller/action', $this->grid->getUrl());
     }
 
     public function testExportRenderers()
     {
-        $this->assertEquals(array(), $this->datagrid->getExportRenderers());
+        $this->assertEquals(array(), $this->grid->getExportRenderers());
         
-        $this->datagrid->setExportRenderers(array(
+        $this->grid->setExportRenderers(array(
             'tcpdf' => 'PDF'
         ));
         
         $this->assertEquals(array(
             'tcpdf' => 'PDF'
-        ), $this->datagrid->getExportRenderers());
+        ), $this->grid->getExportRenderers());
     }
 
     public function testColumns()
     {
-        $this->assertEquals(array(), $this->datagrid->getColumns());
+        $this->assertEquals(array(), $this->grid->getColumns());
         
         $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $col->expects($this->any())
             ->method('getUniqueId')
             ->will($this->returnValue('myUniqueId'));
         
-        $this->datagrid->addColumn($col);
+        $this->grid->addColumn($col);
         
-        $this->assertCount(1, $this->datagrid->getColumns());
+        $this->assertCount(1, $this->grid->getColumns());
         // @todo
         // $this->assertEquals($col, $this->datagrid->getColumnByUniqueId('myUniqueId'));
         
-        $this->assertEquals(null, $this->datagrid->getColumnByUniqueId('notAvailable'));
+        $this->assertEquals(null, $this->grid->getColumnByUniqueId('notAvailable'));
     }
 
     public function testColumnArray()
     {
-        $this->assertEquals(array(), $this->datagrid->getColumns());
+        $this->assertEquals(array(), $this->grid->getColumns());
         
         $column = array(
             'name' => 'Test',
@@ -233,13 +233,13 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 //             )
         );
         
-        $this->datagrid->addColumn($column);
+        $this->grid->addColumn($column);
         
-        $this->assertCount(1, $this->datagrid->getColumns());
+        $this->assertCount(1, $this->grid->getColumns());
         
-        $col = $this->datagrid->getColumnByUniqueId('123');
+        $col = $this->grid->getColumnByUniqueId('123');
         $this->assertInstanceOf('ZfcDatagrid\Column\Select', $col);
-        $this->assertEquals(null, $this->datagrid->getColumnByUniqueId('notAvailable'));
+        $this->assertEquals(null, $this->grid->getColumnByUniqueId('notAvailable'));
         $this->assertEquals('blubb', $col->getLabel());
         
 //         $this->assertEquals('table', $col->getSelectPart1());
@@ -248,26 +248,26 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
     public function testUserFilter()
     {
-        $this->assertTrue($this->datagrid->isUserFilterEnabled());
+        $this->assertTrue($this->grid->isUserFilterEnabled());
         
-        $this->datagrid->setUserFilterDisabled(true);
-        $this->assertFalse($this->datagrid->isUserFilterEnabled());
+        $this->grid->setUserFilterDisabled(true);
+        $this->assertFalse($this->grid->isUserFilterEnabled());
     }
 
     public function testRowClickAction()
     {
-        $this->assertFalse($this->datagrid->hasRowClickAction());
+        $this->assertFalse($this->grid->hasRowClickAction());
         
         $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
-        $this->datagrid->setRowClickAction($action);
-        $this->assertEquals($action, $this->datagrid->getRowClickAction());
-        $this->assertTrue($this->datagrid->hasRowClickAction());
+        $this->grid->setRowClickAction($action);
+        $this->assertEquals($action, $this->grid->getRowClickAction());
+        $this->assertTrue($this->grid->hasRowClickAction());
     }
 
     public function testGetRendererName()
     {
         // Default on HTTP
-        $this->assertEquals('bootstrapTable', $this->datagrid->getRendererName());
+        $this->assertEquals('bootstrapTable', $this->grid->getRendererName());
         
         // Default on CLI
         $_SERVER['argv'] = array(
@@ -282,12 +282,12 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));
-        $this->datagrid->setMvcEvent($mvcEvent);
-        $this->assertEquals('zendTable', $this->datagrid->getRendererName());
+        $this->grid->setMvcEvent($mvcEvent);
+        $this->assertEquals('zendTable', $this->grid->getRendererName());
         
         // change default
-        $this->datagrid->setRendererName('myRenderer');
-        $this->assertEquals('myRenderer', $this->datagrid->getRendererName());
+        $this->grid->setRendererName('myRenderer');
+        $this->assertEquals('myRenderer', $this->grid->getRendererName());
         
         // by HTTP request
         $_GET['rendererType'] = 'jqGrid';
@@ -296,8 +296,8 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));
-        $this->datagrid->setMvcEvent($mvcEvent);
-        $this->assertEquals('jqGrid', $this->datagrid->getRendererName());
+        $this->grid->setMvcEvent($mvcEvent);
+        $this->assertEquals('jqGrid', $this->grid->getRendererName());
     }
 
     public function testGetRenderer()
