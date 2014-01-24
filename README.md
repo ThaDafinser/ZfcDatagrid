@@ -2,6 +2,8 @@
 [![Master Branch Build Status](https://secure.travis-ci.org/ThaDafinser/ZfcDatagrid.png?branch=master)](http://travis-ci.org/ThaDafinser/ZfcDatagrid)
 [![Coverage Status](https://coveralls.io/repos/ThaDafinser/ZfcDatagrid/badge.png)](https://coveralls.io/r/ThaDafinser/ZfcDatagrid)
 
+** Testing failing currently because of PHP 5.3.3....**
+
 A datagrid for ZF2 where the data input and output can be whatever you want...:-)
 
 To get started, please follow the installation and the small ["Getting started guide"](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/docs/Getting-started.md)
