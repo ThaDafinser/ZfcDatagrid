@@ -14,7 +14,7 @@ class SelectTest extends PHPUnit_Framework_TestCase
 
     public function testConstructDefaultBoth ()
     {
-        $column = new Column\Standard('id', 'user');
+        $column = new Column\Select('id', 'user');
         
         $this->assertEquals('user_id', $column->getUniqueId());
         $this->assertEquals('user', $column->getSelectPart1());
@@ -23,7 +23,7 @@ class SelectTest extends PHPUnit_Framework_TestCase
 
     public function testConstructDefaultSingle ()
     {
-        $column = new Column\Standard('title');
+        $column = new Column\Select('title');
         
         $this->assertEquals('title', $column->getUniqueId());
         $this->assertEquals('title', $column->getSelectPart1());
@@ -32,7 +32,7 @@ class SelectTest extends PHPUnit_Framework_TestCase
     public function testObject ()
     {
         $expr = new \Zend\Db\Sql\Expression('Something...');
-        $column = new Column\Standard($expr, 'myAlias');
+        $column = new Column\Select($expr, 'myAlias');
         
         $this->assertEquals($expr, $column->getSelectPart1());
         $this->assertEquals('myAlias', $column->getUniqueId());
@@ -43,7 +43,7 @@ class SelectTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('Exception');
         
         $expr = new \Zend\Db\Sql\Expression('Something...');
-        $column = new Column\Standard($expr);
+        $column = new Column\Select($expr);
     }
 
     public function testExceptionNotString ()
@@ -51,6 +51,6 @@ class SelectTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('Exception');
         
         $expr = new \Zend\Db\Sql\Expression('Something...');
-        $column = new Column\Standard($expr, new \stdClass());
+        $column = new Column\Select($expr, new \stdClass());
     }
 }

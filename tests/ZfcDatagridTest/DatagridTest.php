@@ -286,7 +286,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('zendTable', $this->datagrid->getRendererName());
         
         // change default
-        $this->datagrid->setRenderer('myRenderer');
+        $this->datagrid->setRendererName('myRenderer');
         $this->assertEquals('myRenderer', $this->datagrid->getRendererName());
         
         // by HTTP request

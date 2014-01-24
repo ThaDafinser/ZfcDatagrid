@@ -319,6 +319,11 @@ abstract class AbstractRenderer implements RendererInterface
         return $this->cacheData['sortConditions'];
     }
 
+    /**
+     *
+     * @throws \Exception
+     * @return array
+     */
     private function getCacheFilters()
     {
         if (! isset($this->cacheData['filters'])) {
