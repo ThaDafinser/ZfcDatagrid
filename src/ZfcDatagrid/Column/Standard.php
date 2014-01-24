@@ -11,4 +11,11 @@ namespace ZfcDatagrid\Column;
  */
 class Standard extends Select
 {
+
+    public function __construct($columnOrIndexOrObject, $tableOrAliasOrUniqueId = null)
+    {
+        trigger_error('ZfcDatagrid\Column\Standard is deprecated, please use ZfcDatagrid\Column\Select instead', E_USER_DEPRECATED);
+        
+        parent::__construct($columnOrIndexOrObject, $tableOrAliasOrUniqueId);
+    }
 }

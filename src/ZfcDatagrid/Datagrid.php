@@ -769,6 +769,8 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function setRenderer($name = null)
     {
+        trigger_error('setRenderer() is deprecated, please use setRendererName() instead', E_USER_DEPRECATED);
+        
         $this->forceRenderer = $name;
     }
 
@@ -915,9 +917,9 @@ class Datagrid implements ServiceLocatorAwareInterface
         if ($renderer->isExport() === false) {
             $cacheData = array(
                 'sortConditions' => $renderer->getSortConditions(),
-                'filters' => $renderer->getFilters(), 
-//                 'currentPage' => $renderer->getPaginator()->getCurrentPageNumber()
-            );
+                'filters' => $renderer->getFilters()
+            // 'currentPage' => $renderer->getPaginator()->getCurrentPageNumber()
+                        );
             $success = $this->getCache()->setItem($this->getCacheId(), $cacheData);
         }
         
@@ -974,6 +976,8 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function execute()
     {
+        trigger_error('execute() is deprecated, please use render() instead', E_USER_DEPRECATED);
+        
         if ($this->isRendered() === false) {
             $this->render();
         }
