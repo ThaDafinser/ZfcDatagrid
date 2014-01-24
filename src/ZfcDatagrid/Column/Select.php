@@ -4,11 +4,11 @@ namespace ZfcDatagrid\Column;
 class Select extends AbstractColumn
 {
     /**
-     * Specific column function wrapper LIKE MONTH(%s)
+     * Specific column function filter e.g. WHERE MONTH(%s)
      *
      * @var string
      */
-    private $colfunctionWrapper;
+    private $filterSelectExpression;
 
     /**
      * Possible calls:
@@ -46,18 +46,18 @@ class Select extends AbstractColumn
     }
 
     /**
-     * @param string $colfunctionWrapper
+     * @param string $filterSelectExpression
      */
-    public function setColfunctionWrapper($colfunctionWrapper)
+    public function setFilterSelectExpression($filterSelectExpression)
     {
-        $this->colfunctionWrapper = $colfunctionWrapper;
+        $this->filterSelectExpression = $filterSelectExpression;
     }
 
     /**
      * @return string
      */
-    public function getColfunctionWrapper()
+    public function getFilterSelectExpression()
     {
-        return $this->colfunctionWrapper;
+        return $this->filterSelectExpression;
     }
 }

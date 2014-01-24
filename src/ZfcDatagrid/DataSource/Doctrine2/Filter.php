@@ -42,8 +42,8 @@ class Filter
         if ($column->getSelectPart2() != '') {
             $colString .= '.' . $column->getSelectPart2();
         }
-        if ($functionWrapper = $column->getColfunctionWrapper()) {
-            $colString = sprintf($functionWrapper, $colString);
+        if ($filterSelectExpression = $column->getFilterSelectExpression()) {
+            $colString = sprintf($filterSelectExpression, $colString);
         }
         $values = $filter->getValues();
         
