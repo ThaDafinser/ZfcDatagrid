@@ -29,8 +29,8 @@ class Filter
     }
 
     /**
-     *
-     * @param DatagridFilter $filter            
+     * @param DatagridFilter $filter
+     * @throws \InvalidArgumentException
      */
     public function applyFilter(DatagridFilter $filter)
     {
@@ -41,6 +41,9 @@ class Filter
         $colString = $column->getSelectPart1();
         if ($column->getSelectPart2() != '') {
             $colString .= '.' . $column->getSelectPart2();
+        }
+        if ($column instanceof Column\Select && $column->hasFilterSelectExpression()) {
+            $colString = sprintf($column->getFilterSelectExpression(), $colString);
         }
         $values = $filter->getValues();
         

@@ -3,6 +3,12 @@ namespace ZfcDatagrid\Column;
 
 class Select extends AbstractColumn
 {
+    /**
+     * Specific column function filter e.g. WHERE MONTH(%s)
+     *
+     * @var string
+     */
+    private $filterSelectExpression;
 
     /**
      * Possible calls:
@@ -37,5 +43,34 @@ class Select extends AbstractColumn
         } else {
             throw new \Exception('Column was not initiated correctly, please read the __construct docblock!');
         }
+    }
+
+    /**
+     * @param string $filterSelectExpression
+     */
+    public function setFilterSelectExpression($filterSelectExpression)
+    {
+        $this->filterSelectExpression = $filterSelectExpression;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFilterSelectExpression()
+    {
+        return $this->filterSelectExpression;
+    }
+    
+        /**
+     * 
+     * @return boolean
+     */
+    public function hasFilterSelectExpression()
+    {
+        if ($this->filterSelectExpression !== null) {
+            return true;
+        }
+        
+        return false;
     }
 }
