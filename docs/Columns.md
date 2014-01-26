@@ -50,6 +50,7 @@ $col->setType(new Type\Image());
 $col->setFormatter(new Formatter\FileSize());
 
 //you can set different styles for columns
+//you can also combine multiple styles
 $col->addStyle(new Style\Bold());
 
 //style can also be applied on different values only!
