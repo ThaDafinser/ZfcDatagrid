@@ -5,13 +5,19 @@ php:
   - 5.3
   - 5.4
   - 5.5
+  - hhvm
 
+matrix:
+  allow_failures:
+    - php: hhvm
+    
 before_script:
  - composer install --prefer-source --dev --no-interaction
 
 script:
  - mkdir -p build/logs
- - ./vendor/bin/phpunit -c travis.phpunit.xml --coverage-clover build/logs/clover.xml
+ - ./vendor/bin/phpunit -c travis.phpunit.xml --coverage-clover build/clover.xml
+ - php build/logs/coverage-checker.php build/clover.xml 60
 
 after_script:
   - php vendor/bin/coveralls
