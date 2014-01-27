@@ -2,50 +2,30 @@
 namespace ZfcDatagridTest\Service;
 
 use PHPUnit_Framework_TestCase;
-use ZfcDatagrid\Service\DatagridFactory;
 use Zend\ServiceManager\ServiceManager;
+use ZfcDatagrid\Service\ZendDbAdapterFactory;
 
 /**
- * @covers ZfcDatagrid\Service\DatagridFactory
+ * @covers ZfcDatagrid\Service\ZendDbAdapterFactory
  */
-class DatagridFactoryTest extends PHPUnit_Framework_TestCase
+class ZendDbAdapterFactoryTest extends PHPUnit_Framework_TestCase
 {
 
     private $config = array(
-        'ZfcDatagrid' => array(
-            'cache' => array(
-                'adapter' => array(
-                    'name' => 'Filesystem'
-                )
-            )
+        'zfcDatagrid_dbAdapter' => array(
+            'driver' => 'Pdo_Sqlite',
+            'database' => 'somewhere/testDb.sqlite'
         )
     );
-
-    private $applicationMock;
-
-    private $translatorMock;
-
-    public function setUp()
-    {
-        $mvcEventMock = $this->getMock('Zend\Mvc\MvcEvent');
-        
-        $this->applicationMock = $this->getMock('Zend\Mvc\Application', array(), array(), '', false);
-        $this->applicationMock->expects($this->any())
-            ->method('getMvcEvent')
-            ->will($this->returnValue($mvcEventMock));
-        
-        $this->translatorMock = $this->getMock('Zend\I18n\Translator\Translator', array(), array(), '', false);
-    }
 
     public function testCanCreateService()
     {
         $sm = new ServiceManager();
         $sm->setService('config', $this->config);
-        $sm->setService('application', $this->applicationMock);
         
-        $factory = new DatagridFactory();
+        $factory = new ZendDbAdapterFactory();
         $grid = $factory->createService($sm);
         
-        $this->assertInstanceOf('ZfcDatagrid\Datagrid', $grid);
+        $this->assertInstanceOf('Zend\Db\Adapter\Adapter', $grid);
     }
 }

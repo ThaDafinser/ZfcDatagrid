@@ -686,12 +686,11 @@ class Datagrid implements ServiceLocatorAwareInterface
     /**
      * Add a column by array config or instanceof Column\AbstractColumn
      *
-     * @param Column\AbstractColumn $col            
+     * @param array|Column\AbstractColumn $col            
      */
     public function addColumn($col)
     {
-        $col = $this->createColumn($col);
-        $this->columns[$col->getUniqueId()] = $col;
+        $this->columns[$col->getUniqueId()] = $this->createColumn($col);
     }
 
     /**
