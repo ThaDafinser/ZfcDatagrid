@@ -100,7 +100,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
             /**
              * Cellattr
              */
-            $rendererParameters = $column->getRendererParameters('jqgrid');
+            $rendererParameters = $column->getRendererParameters('jqGrid');
             if (isset($rendererParameters['cellattr'])) {
                 $options['cellattr'] = (string) $rendererParameters['cellattr'];
             }
@@ -162,7 +162,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
         /*
          * User defined formatter
          */
-        $rendererParameters = $column->getRendererParameters('jqgrid');
+        $rendererParameters = $column->getRendererParameters('jqGrid');
         if (isset($rendererParameters['formatter'])) {
             return $rendererParameters['formatter'];
         }
@@ -172,7 +172,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
          */
         $formatter = '';
         
-        $formatter.= implode(' ', $this->getStyles($column));
+        $formatter .= implode(' ', $this->getStyles($column));
         
         switch (get_class($column->getType())) {
             
@@ -198,8 +198,8 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
     }
 
     /**
-     * 
-     * @param Column\AbstractColumn $column
+     *
+     * @param Column\AbstractColumn $column            
      * @throws \Exception
      * @return array
      */
@@ -213,7 +213,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
              */
             foreach ($column->getStyles() as $style) {
                 /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
-                if ($style->isForAll() === false) {
+                if ($style->hasByValues() === true) {
                     foreach ($style->getByValues() as $rule) {
                         $colString = $rule['column']->getUniqueId();
                         $operator = '';
@@ -267,7 +267,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
             
             foreach ($column->getStyles() as $style) {
                 /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
-                if ($style->isForAll() === true) {
+                if ($style->hasByValues() === true) {
                     
                     switch (get_class($style)) {
                         

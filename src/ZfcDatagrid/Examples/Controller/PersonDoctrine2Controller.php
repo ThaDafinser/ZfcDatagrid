@@ -89,7 +89,7 @@ class PersonDoctrine2Controller extends AbstractActionController
             $col->setFilterDefaultValue('>=20');
             
             $style = new Style\Color(Style\Color::$RED);
-            $style->setByValue($col, 20);
+            $style->addByValue($col, 20);
             $col->addStyle($style);
             
             $grid->addColumn($col);

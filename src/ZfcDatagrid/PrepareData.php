@@ -87,11 +87,19 @@ class PrepareData
         return $this->dataPrepared;
     }
 
+    /**
+     *
+     * @param string $name            
+     */
     public function setRendererName($name = null)
     {
         $this->rendererName = $name;
     }
 
+    /**
+     *
+     * @return string
+     */
     public function getRendererName()
     {
         return $this->rendererName;
@@ -116,14 +124,15 @@ class PrepareData
     }
 
     /**
-     *
+     * Return true if preparing executed, false if already done!
+     * 
      * @throws \Exception
-     * @return void
+     * @return boolean
      */
     public function prepare()
     {
         if (is_array($this->dataPrepared)) {
-            return;
+            return false;
         }
         
         $data = $this->data;
@@ -214,7 +223,6 @@ class PrepareData
                 if ($column->hasFormatter($this->getRendererName()) === true) {
                     /* @var $formatter \ZfcDatagrid\Column\Formatter\AbstractFormatter */
                     $formatter = $column->getFormatter($this->getRendererName());
-                    $formatter->setColumns($this->getColumns());
                     $formatter->setRowData($row);
                     $formatter->setRendererName($this->getRendererName());
                     
@@ -229,5 +237,7 @@ class PrepareData
         }
         
         $this->dataPrepared = $data;
+        
+        return true;
     }
 }

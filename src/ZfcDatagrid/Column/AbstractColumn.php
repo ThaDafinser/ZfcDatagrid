@@ -505,13 +505,13 @@ abstract class AbstractColumn
     }
 
     /**
-     * Set parameter for a specific renderer (currently only supported for jqgrid)
+     * Set parameter for a specific renderer (currently only supported for jqGrid)
      *
      * @param string $name            
      * @param mixed $value            
      * @param string $rendererType            
      */
-    public function setRendererParameter($name, $value, $rendererType = 'jqgrid')
+    public function setRendererParameter($name, $value, $rendererType = 'jqGrid')
     {
         if (! isset($this->rendererParameter[$rendererType])) {
             $this->rendererParameter[$rendererType] = array();
@@ -528,7 +528,7 @@ abstract class AbstractColumn
      * @param string $rendererType            
      * @return array
      */
-    public function getRendererParameters($rendererName = 'jqgrid')
+    public function getRendererParameters($rendererName = 'jqGrid')
     {
         if (! isset($this->rendererParameter[$rendererName])) {
             $this->rendererParameter[$rendererName] = array();

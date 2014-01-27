@@ -75,7 +75,7 @@ class CategoryController extends AbstractActionController
             
                 return valuePrint;
             }
-        ', 'jqgrid');
+        ', 'jqGrid');
         $grid->addColumn($col);
         
         $toggle = new Column\Action\Button();
@@ -112,7 +112,7 @@ class CategoryController extends AbstractActionController
         $viewModel = new ViewModel();
         
         $grid = $this->getGrid();
-        $grid->setRendererName('jqgrid');
+        $grid->setRendererName('jqGrid');
         $grid->setUserFilterDisabled(true);
         
         $grid->render();

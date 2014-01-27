@@ -14,35 +14,43 @@ class ExternalDataTest extends PHPUnit_Framework_TestCase
 
     public function testConstruct()
     {
-        $column = new Column\ExternalData('myData');
+        $col = new Column\ExternalData('myData');
         
-        $this->assertEquals('myData', $column->getUniqueId());
+        $this->assertEquals('myData', $col->getUniqueId());
         
-        $this->assertFalse($column->isUserFilterEnabled());
-        $this->assertFalse($column->isUserSortEnabled());
+        $this->assertFalse($col->isUserFilterEnabled());
+        $this->assertFalse($col->isUserSortEnabled());
+    }
+
+    public function testGetDataPopulationException()
+    {
+        $col = new Column\ExternalData('myData');
+        
+        $this->setExpectedException('InvalidArgumentException');
+        
+        $col->getDataPopulation();
     }
 
     public function testSetGetData()
     {
-        $column = new Column\ExternalData('myData');
-        
+        $col = new Column\ExternalData('myData');
         
         $object = new DataPopulation\Object();
         $object->setObject(new DataPopulation\Object\Gravatar());
-        $this->assertEquals(false, $column->hasDataPopulation());
+        $this->assertEquals(false, $col->hasDataPopulation());
         
-        $column->setDataPopulation($object);
+        $col->setDataPopulation($object);
         
-        $this->assertEquals(true, $column->hasDataPopulation());
-        $this->assertInstanceOf('ZfcDatagrid\Column\DataPopulation\Object', $column->getDataPopulation());
+        $this->assertEquals(true, $col->hasDataPopulation());
+        $this->assertInstanceOf('ZfcDatagrid\Column\DataPopulation\Object', $col->getDataPopulation());
     }
 
     public function testException()
     {
-         $column = new Column\ExternalData('myData');
+        $col = new Column\ExternalData('myData');
         
         $object = new DataPopulation\Object();
         $this->setExpectedException('Exception');
-        $column->setDataPopulation($object);
+        $col->setDataPopulation($object);
     }
 }

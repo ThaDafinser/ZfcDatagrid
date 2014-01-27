@@ -78,7 +78,7 @@ class PersonController extends AbstractActionController
             200,
             200
         ));
-        $style->setByValue($col, 'Martin');
+        $style->addByValue($col, 'Martin');
         $grid->addRowStyle($style);
         
         $col = new Column\Select('gender');
@@ -93,7 +93,7 @@ class PersonController extends AbstractActionController
             100,
             100
         ));
-        $style->setByValue($col, 'male');
+        $style->addByValue($col, 'male');
         $col->addStyle($style);
         $col->setTranslationEnabled(true);
         $grid->addColumn($col);
@@ -106,7 +106,7 @@ class PersonController extends AbstractActionController
             $col->setFilterDefaultValue('>=20');
             
             $style = new Style\Color(Style\Color::$RED);
-            $style->setByValue($col, 20);
+            $style->addByValue($col, 20);
             $col->addStyle($style);
             
             $grid->addColumn($col);
@@ -181,7 +181,7 @@ class PersonController extends AbstractActionController
     public function jqgridAction()
     {
         $grid = $this->getGrid();
-        $grid->setRendererName('jqgrid');
+        $grid->setRendererName('jqGrid');
         
         $grid->render();
         
