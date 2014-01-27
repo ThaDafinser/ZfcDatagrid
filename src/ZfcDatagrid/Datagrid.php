@@ -127,6 +127,13 @@ class Datagrid implements ServiceLocatorAwareInterface
      * @var Column\Action\AbstractAction
      */
     protected $rowClickAction;
+    
+    /**
+     * Table classes
+     *
+     * @var array
+     */
+    protected $tableClasses = array();
 
     /**
      * The prepared data
@@ -801,6 +808,25 @@ class Datagrid implements ServiceLocatorAwareInterface
         
         $this->forceRenderer = $name;
     }
+    
+    /**
+     * Set all table classes by an array
+     *
+     * @param array $classes            
+    */
+    public function setTableClasses(array $classes)
+    {
+        $this->tableClasses = $classes;
+    }
+    
+    /**
+     *
+     * @return array            
+    */
+    public function getTableClasses()
+    {
+        return $this->tableClasses;
+    }
 
     /**
      * Overwrite the render
@@ -873,6 +899,7 @@ class Datagrid implements ServiceLocatorAwareInterface
                 $renderer->setTitle($this->getTitle());
                 $renderer->setColumns($this->getColumns());
                 $renderer->setRowStyles($this->getRowStyles());
+                $renderer->setTableClasses($this->getTableClasses());
                 $renderer->setCacheId($this->getCacheId());
                 $renderer->setCacheData($this->getCache()
                     ->getItem($this->getCacheId()));

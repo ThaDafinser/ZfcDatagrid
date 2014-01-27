@@ -30,7 +30,7 @@ foreach($this->parameters as $name => $value){
     $parametersHtml []= $name.': \''.$value.'\'';
 }
 
-$tableClasses = array();
+$tableClasses = $this->tableClasses;
 
 $rowClickLink = '';
 if($this->rowClickAction){

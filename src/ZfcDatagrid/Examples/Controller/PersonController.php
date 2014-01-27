@@ -16,6 +16,7 @@ class PersonController extends AbstractActionController
         $grid = $this->getServiceLocator()->get('ZfcDatagrid\Datagrid');
         $grid->setTitle('Persons');
         $grid->setDefaultItemsPerPage(5);
+        $grid->setTableClasses(array('table', 'table-striped', 'table-bordered', 'table-condensed'));
         $grid->setDataSource($this->getServiceLocator()
             ->get('zfcDatagrid.examples.data.phpArray')
             ->getPersons());
