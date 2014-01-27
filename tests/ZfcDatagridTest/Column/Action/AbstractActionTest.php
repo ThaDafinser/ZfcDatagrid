@@ -210,8 +210,8 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
         $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
         
-        $this->setExpectedException('Exception');
-        $action->addShowOnValue($this->column, '23', Filter::BETWEEN);
+        $this->setExpectedException('InvalidArgumentException');
+        $action->addShowOnValue($this->column, '23', 'UNknownFilter');
         $action->isDisplayed(array(
             $this->column->getUniqueId() => '32'
         ));

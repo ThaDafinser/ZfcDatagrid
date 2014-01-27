@@ -17,13 +17,13 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
      */
     private $column;
 
-    public function setUp ()
+    public function setUp()
     {
         $this->column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $this->column->setUniqueId('colName');
     }
 
-    public function testGeneralStyle ()
+    public function testGeneralStyle()
     {
         /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
         $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
@@ -40,7 +40,7 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($style->isApply($row));
     }
 
-    public function testStyleByValue ()
+    public function testStyleByValue()
     {
         /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
         $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
@@ -68,7 +68,7 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($style->isApply($row));
     }
 
-    public function testStyleByValueNotEqual ()
+    public function testStyleByValueNotEqual()
     {
         /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
         $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
@@ -94,17 +94,5 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
             $this->column->getUniqueId() => 'myApplyValue'
         );
         $this->assertFalse($style->isApply($row));
-    }
-
-    public function testStyleByValueException ()
-    {
-        /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
-        $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
-        
-        $this->setExpectedException('Exception');
-        $style->setByValue($this->column, 'myApplyValue', Filter::BETWEEN);
-        $style->isApply(array(
-            'some' => 'data'
-        ));
     }
 }

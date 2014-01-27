@@ -60,8 +60,16 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     protected $mvcEvent;
 
+    /**
+     *
+     * @var array
+     */
     protected $parameters = array();
 
+    /**
+     *
+     * @var mixed
+     */
     protected $url;
 
     /**
@@ -108,6 +116,10 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     protected $dataSource = null;
 
+    /**
+     *
+     * @var integer
+     */
     protected $defaulItemsPerPage = 25;
 
     /**
@@ -167,12 +179,28 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     protected $viewModel;
 
+    /**
+     *
+     * @var boolean
+     */
     protected $isInit = false;
 
+    /**
+     *
+     * @var boolean
+     */
     protected $isDataLoaded = false;
 
+    /**
+     *
+     * @var boolean
+     */
     protected $isRendered = false;
 
+    /**
+     *
+     * @var string
+     */
     protected $forceRenderer;
 
     private $specialMethods = array(
@@ -500,6 +528,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     }
 
     /**
+     * These parameters are handled to the view + over all grid actions
      *
      * @param array $parameters            
      */
