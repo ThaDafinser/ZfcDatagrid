@@ -14,7 +14,7 @@ class DatagridMocks
 
     /**
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return \ZfcDatagrid\Column\AbstractColumn
      */
     public static function getColBasic()
     {

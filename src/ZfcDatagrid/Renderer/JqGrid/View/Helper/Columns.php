@@ -45,7 +45,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
      * @param string $message            
      * @return string
      */
-    public function translate($message)
+    private function translate($message)
     {
         if ($this->translator === false) {
             return $message;
@@ -67,6 +67,11 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
         return $this->translator->translate($message);
     }
 
+    /**
+     *
+     * @param array $columns            
+     * @return string
+     */
     public function __invoke(array $columns)
     {
         $return = array();
@@ -157,6 +162,11 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
         return '[' . implode(',', $return) . ']';
     }
 
+    /**
+     *
+     * @param Column\AbstractColumn $column            
+     * @return string
+     */
     private function getFormatter(Column\AbstractColumn $column)
     {
         /*

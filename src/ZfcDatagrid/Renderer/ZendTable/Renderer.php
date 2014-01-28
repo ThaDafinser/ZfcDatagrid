@@ -37,6 +37,19 @@ class Renderer extends AbstractRenderer
     }
 
     /**
+     * @return ConsoleRequest
+     */
+    public function getRequest()
+    {
+        $request = parent::getRequest();
+        if (! $request instanceof ConsoleRequest) {
+            throw new \Exception('Request must be an instance of Zend\Console\Request for console rendering');
+        }
+        
+        return $request;
+    }
+
+    /**
      *
      * @todo enable parameters from console
      *      
@@ -44,10 +57,11 @@ class Renderer extends AbstractRenderer
      */
     public function getSortConditions()
     {
-        $request = $this->getRequest();
-        if (! $request instanceof ConsoleRequest) {
-            throw new \Exception('Must be an instance of ConsoleRequest for console rendering');
+        if (is_array($this->sortConditions)) {
+            return $this->sortConditions;
         }
+        
+        $request = $this->getRequest();
         
         $optionsRenderer = $this->getOptionsRenderer();
         $parameterNames = $optionsRenderer['parameterNames'];
@@ -104,9 +118,6 @@ class Renderer extends AbstractRenderer
     public function getFilters()
     {
         $request = $this->getRequest();
-        if (! $request instanceof ConsoleRequest) {
-            throw new \Exception('Must be an instance of ConsoleRequest for console rendering');
-        }
         
         return array();
     }
@@ -119,9 +130,6 @@ class Renderer extends AbstractRenderer
     public function getCurrentPageNumber()
     {
         $request = $this->getRequest();
-        if (! $request instanceof ConsoleRequest) {
-            throw new \Exception('Must be an instance of ConsoleRequest for console rendering');
-        }
         
         $optionsRenderer = $this->getOptionsRenderer();
         $parameterNames = $optionsRenderer['parameterNames'];
@@ -135,9 +143,6 @@ class Renderer extends AbstractRenderer
     public function getItemsPerPage($defaultItems = 25)
     {
         $request = $this->getRequest();
-        if (! $request instanceof ConsoleRequest) {
-            throw new \Exception('Must be an instance of ConsoleRequest for console rendering');
-        }
         
         $optionsRenderer = $this->getOptionsRenderer();
         $parameterNames = $optionsRenderer['parameterNames'];
@@ -293,7 +298,7 @@ class Renderer extends AbstractRenderer
 
     /**
      * Get the console width
-     * 
+     *
      * @return number
      */
     private function getWidthAvailable()
@@ -303,7 +308,7 @@ class Renderer extends AbstractRenderer
         }
         
         $console = Console::getInstance();
-        //Minus 2, because of the table!
+        // Minus 2, because of the table!
         $this->consoleWidth = $console->getWidth() - 2;
         
         return $this->consoleWidth;
