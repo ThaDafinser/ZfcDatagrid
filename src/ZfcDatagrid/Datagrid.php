@@ -204,11 +204,11 @@ class Datagrid implements ServiceLocatorAwareInterface
     protected $forceRenderer;
 
     private $specialMethods = array(
-        'filterSelectOptions' => 2,
-        'rendererParameter' => 3,
-        'replaceValues' => 2,
-        'select' => 2,
-        'sortDefault' => 2
+        'filterSelectOptions',
+        'rendererParameter',
+        'replaceValues',
+        'select',
+        'sortDefault'
     );
 
     /**
@@ -607,62 +607,64 @@ class Datagrid implements ServiceLocatorAwareInterface
     /**
      * Create a column from array instanceof
      *
-     * @param mixed $column            
+     * @param mixed $col            
      *
      * @return Column\AbstractColumn
      */
-    private function createColumn($column)
+    private function createColumn($config)
     {
-        if (is_array($column)) {
-            $type = isset($column['type']) ? $column['type'] : 'Select';
-            if (class_exists($type, true)) {
-                $class = $type;
-            } elseif (class_exists('ZfcDatagrid\\Column\\' . $type, true)) {
-                $class = 'ZfcDatagrid\\Column\\' . $type;
-            } else {
-                throw new \Exception('Column type: "' . $type . '" not found!');
+        if ($config instanceof Column\AbstractColumn) {
+            return $config;
+        }
+        
+        if (! is_array($config) && ! $config instanceof Column\AbstractColumn) {
+            throw new \InvalidArgumentException('createColumn() supports only a config array or instanceof Column\AbstractColumn as a parameter');
+        }
+        
+        $colType = isset($config['colType']) ? $config['colType'] : 'Select';
+        if (class_exists($colType, true)) {
+            $class = $colType;
+        } elseif (class_exists('ZfcDatagrid\\Column\\' . $colType, true)) {
+            $class = 'ZfcDatagrid\\Column\\' . $colType;
+        } else {
+            throw new \InvalidArgumentException('Column type: "' . $colType . '" not found!');
+        }
+        
+        if ($class == 'ZfcDatagrid\\Column\\Select') {
+            if (! isset($config['select']['column'])) {
+                throw new \InvalidArgumentException('For "ZfcDatagrid\Column\Select" the option select[column] must be defined!');
             }
+            $table = isset($config['select']['table']) ? $config['select']['table'] : null;
             
-            if ($class == 'ZfcDatagrid\\Column\\Select') {
-                if (! isset($column['index'])) {
-                    throw new \InvalidArgumentException('For "ZfcDatagrid\\Column\\Select" an index to select must be defined!');
-                }
-                $table = isset($column['table']) ? $column['table'] : null;
-                $instance = new $class($column['index'], $table);
-            } else {
-                $instance = new $class();
-            }
-            
-            foreach ($column as $key => $value) {
-                $method = 'set' . ucfirst($key);
-                if (method_exists($instance, $method)) {
-                    if (in_array($key, $this->specialMethods)) {
-                        if ($key == 'style') {
-                            $instance->addStyle($value);
-                            break;
-                        }
-                        $count = $this->specialMethods[$key];
-                        
-                        if ($count == 2) {
-                            if (is_array($value) && count($value) === 2) {}
-                        } else {
-                            throw new \Exception('currently not supported. count arguments: "' . $count . '"');
-                        }
+            $instance = new $class($config['select']['column'], $table);
+        } else {
+            $instance = new $class();
+        }
+        
+        foreach ($config as $key => $value) {
+            $method = 'set' . ucfirst($key);
+            if (method_exists($instance, $method)) {
+                
+                if (in_array($key, $this->specialMethods)) {
+                    if (! is_array($value)) {
+                        $value = array(
+                            $value
+                        );
                     }
-                    
-                    $instance->{$method}($value);
-                    break;
+                    call_user_func_array(array(
+                        $instance,
+                        $method
+                    ), $value);
+                } else {
+                    call_user_func(array(
+                        $instance,
+                        $method
+                    ), $value);
                 }
             }
-            
-            $column = $instance;
         }
         
-        if (! $column instanceof Column\AbstractColumn) {
-            throw new \InvalidArgumentException('addColumn supports only array or instanceof Column\AbstractColumn as a parameter');
-        }
-        
-        return $column;
+        return $instance;
     }
 
     /**
@@ -1105,6 +1107,12 @@ class Datagrid implements ServiceLocatorAwareInterface
         $this->toolbarTemplate = (string) $name;
     }
 
+    /**
+     * Get the toolbar template name
+     * Return null if nothing custom set
+     *
+     * @return string null
+     */
     public function getToolbarTemplate()
     {
         return $this->toolbarTemplate;
@@ -1118,7 +1126,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function setViewModel(ViewModel $viewModel)
     {
         if ($this->viewModel !== null) {
-            throw new \Exception('A viewModel is already set (did you already called render()?)');
+            throw new \Exception('A viewModel is already set. Did you already called $grid->render() or $grid->getViewModel() before?');
         }
         
         $this->viewModel = $viewModel;

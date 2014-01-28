@@ -94,6 +94,8 @@ abstract class AbstractColumn
      * @deprecated
      *
      *
+     *
+     *
      */
     public function setSelect($part1, $part2 = null)
     {
@@ -107,6 +109,8 @@ abstract class AbstractColumn
      * @deprecated
      *
      *
+     *
+     *
      */
     public function getSelectPart1()
     {
@@ -117,6 +121,8 @@ abstract class AbstractColumn
      *
      * @todo Move this to Column\Select
      * @deprecated
+     *
+     *
      *
      *
      */
@@ -218,8 +224,22 @@ abstract class AbstractColumn
     }
 
     /**
-     * 
-     * @param Style\AbstractStyle $style
+     * Set styles
+     *
+     * @param array $styles            
+     */
+    public function setStyles(array $styles)
+    {
+        $this->styles = [];
+        
+        foreach ($styles as $style) {
+            $this->addStyle($style);
+        }
+    }
+
+    /**
+     *
+     * @param Style\AbstractStyle $style            
      */
     public function addStyle(Style\AbstractStyle $style)
     {
@@ -227,7 +247,7 @@ abstract class AbstractColumn
     }
 
     /**
-     * 
+     *
      * @return Style\AbstractStyle[]
      */
     public function getStyles()
@@ -236,7 +256,7 @@ abstract class AbstractColumn
     }
 
     /**
-     * 
+     *
      * @return boolean
      */
     public function hasStyles()
@@ -309,8 +329,8 @@ abstract class AbstractColumn
 
     /**
      * Set that the data is getting sorted by this columns
-     * 
-     * @param string $direction
+     *
+     * @param string $direction            
      */
     public function setSortActive($direction = 'ASC')
     {
