@@ -10,7 +10,7 @@ use Zend\Paginator;
 use ZfcDatagridTest\DatagridMocks;
 
 /**
- * @group Column
+ * @group Renderer
  * @covers ZfcDatagrid\Renderer\AbstractRenderer
  */
 class AbstractRendererTest extends PHPUnit_Framework_TestCase

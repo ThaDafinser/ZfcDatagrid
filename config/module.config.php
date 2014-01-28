@@ -174,7 +174,7 @@ return array(
             'zfcDatagrid.renderer.jqgrid' => 'ZfcDatagrid\Renderer\JqGrid\Renderer',
             
             // CLI renderer
-            'zfcDatagrid.renderer.zendTable' => 'ZfcDatagrid\Renderer\Text\ZendTable',
+            'zfcDatagrid.renderer.zendTable' => 'ZfcDatagrid\Renderer\ZendTable\Renderer',
             
             // Export renderer
             'zfcDatagrid.renderer.printHtml' => 'ZfcDatagrid\Renderer\PrintHtml\Renderer',

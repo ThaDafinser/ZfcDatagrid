@@ -1,5 +1,5 @@
 <?php
-namespace ZfcDatagrid\Renderer\Text;
+namespace ZfcDatagrid\Renderer\ZendTable;
 
 use ZfcDatagrid\Renderer\AbstractRenderer;
 use ZfcDataGrid\Column\Type;
@@ -11,7 +11,7 @@ use Zend\Console\Console;
 /**
  * For CLI or E-Mail useful
  */
-class ZendTable extends AbstractRenderer
+class Renderer extends AbstractRenderer
 {
 
     /**
