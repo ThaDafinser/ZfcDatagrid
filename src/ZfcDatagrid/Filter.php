@@ -404,9 +404,9 @@ class Filter
                 break;
         }
         
-        return [
+        return array(
             $currentValue,
             $expectedValue
-        ];
+        );
     }
 }
