@@ -46,14 +46,15 @@ if($this->rowClickAction){
  * Column - background-color
  */
 $styleString = '';
-foreach($this->columns as $column){
-    foreach ($column->getStyles() as $style) {
+foreach($this->columns as $col){
+    /* @var $col \ZfcDatagrid\Column\AbstractColumn */
+    foreach ($col->getStyles() as $style) {
 
         switch (get_class($style)) {
 
             case 'ZfcDatagrid\Column\Style\BackgroundColor':
-                $css = '$(\'#\' + row.idConcated).find(\'td[aria-describedby=' . $this->gridId . '_' . $column->getUniqueId() . ']\').css(\'background-color\', \'#'.$style->getRgbHexString().'\');';
-                if ($style->isForAll() === false) {
+                $css = '$(\'#\' + row.idConcated).find(\'td[aria-describedby=' . $this->gridId . '_' . $col->getUniqueId() . ']\').css(\'background-color\', \'#'.$style->getRgbHexString().'\');';
+                if ($style->hasByValues() === true) {
                     foreach ($style->getByValues() as $rule) {
                         $colString = $rule['column']->getUniqueId();
                         $operator = '';
@@ -115,7 +116,7 @@ foreach($this->rowStyles as $style){
     $css = '$(\'#\' + row.idConcated).find(\'td\').css('.$css.');';
 
 
-    if ($style->isForAll() === false) {
+    if ($style->hasByValues() === true) {
         foreach ($style->getByValues() as $rule) {
             $colString = $rule['column']->getUniqueId();
             $operator = '';
