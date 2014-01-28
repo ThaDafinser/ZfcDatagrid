@@ -91,11 +91,7 @@ abstract class AbstractColumn
     /**
      *
      * @todo Move this to Column\Select
-     * @deprecated
-     *
-     *
-     *
-     *
+     * @deprecated remove this
      */
     public function setSelect($part1, $part2 = null)
     {
@@ -106,11 +102,7 @@ abstract class AbstractColumn
     /**
      *
      * @todo Move this to Column\Select
-     * @deprecated
-     *
-     *
-     *
-     *
+     * @deprecated remove this
      */
     public function getSelectPart1()
     {
@@ -120,11 +112,7 @@ abstract class AbstractColumn
     /**
      *
      * @todo Move this to Column\Select
-     * @deprecated
-     *
-     *
-     *
-     *
+     * @deprecated remove this
      */
     public function getSelectPart2()
     {
@@ -337,6 +325,10 @@ abstract class AbstractColumn
         $this->sortActive = $direction;
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function isSortActive()
     {
         if ($this->sortActive !== null) {
@@ -346,6 +338,10 @@ abstract class AbstractColumn
         return false;
     }
 
+    /**
+     *
+     * @return string
+     */
     public function getSortActiveDirection()
     {
         return $this->sortActive;
@@ -377,11 +373,19 @@ abstract class AbstractColumn
         }
     }
 
+    /**
+     *
+     * @return string
+     */
     public function getFilterDefaultValue()
     {
         return $this->filterDefaultValue;
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function hasFilterDefaultValue()
     {
         if ($this->filterDefaultValue != '') {
@@ -391,11 +395,19 @@ abstract class AbstractColumn
         }
     }
 
+    /**
+     *
+     * @param string $operation            
+     */
     public function setFilterDefaultOperation($operation = Filter::LIKE)
     {
         $this->filterDefaultOperation = $operation;
     }
 
+    /**
+     *
+     * @return string
+     */
     public function getFilterDefaultOperation()
     {
         if ($this->filterDefaultOperation != '') {
@@ -405,6 +417,11 @@ abstract class AbstractColumn
         return $this->getType()->getFilterDefaultOperation();
     }
 
+    /**
+     *
+     * @param array $options            
+     * @param boolean $noSelect            
+     */
     public function setFilterSelectOptions(array $options = null, $noSelect = true)
     {
         if ($noSelect === true) {
@@ -424,11 +441,19 @@ abstract class AbstractColumn
         $this->filterSelectOptions = null;
     }
 
+    /**
+     *
+     * @return array null
+     */
     public function getFilterSelectOptions()
     {
         return $this->filterSelectOptions;
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function hasFilterSelectOptions()
     {
         if (is_array($this->filterSelectOptions)) {
@@ -457,6 +482,10 @@ abstract class AbstractColumn
         return $this->filterActive;
     }
 
+    /**
+     *
+     * @return string
+     */
     public function getFilterActiveValue()
     {
         return $this->filterActiveValue;
@@ -603,11 +632,19 @@ abstract class AbstractColumn
         return false;
     }
 
+    /**
+     *
+     * @param boolean $mode            
+     */
     public function setRowClickDisabled($mode = true)
     {
         $this->rowClickEnabled = (bool) ! $mode;
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function isRowClickEnabled()
     {
         return $this->rowClickEnabled;

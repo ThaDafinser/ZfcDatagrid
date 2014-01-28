@@ -26,6 +26,9 @@ class Checkbox extends AbstractAction
         return '';
     }
 
+    /**
+     * @see \ZfcDatagrid\Column\Action\AbstractAction::toHtml()
+     */
     public function toHtml(array $row)
     {
         $this->removeAttribute('name');
