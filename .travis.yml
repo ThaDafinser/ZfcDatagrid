@@ -16,9 +16,9 @@ before_script:
  - composer install --prefer-source --dev --no-interaction
 
 script:
- - mkdir -p build/logs
+ - mkdir -p build
  - ./vendor/bin/phpunit -c travis.phpunit.xml --coverage-clover build/clover.xml
- - php build/logs/coverage-checker.php build/clover.xml 60
+ - php build/coverage-checker.php build/clover.xml 60
 
 after_script:
   - php vendor/bin/coveralls
