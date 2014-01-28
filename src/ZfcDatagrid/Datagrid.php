@@ -448,12 +448,12 @@ class Datagrid implements ServiceLocatorAwareInterface
             $this->dataSource = new DataSource\ZendSelect($data);
             $this->dataSource->setAdapter($args[1]);
         } elseif ($data instanceof Collection) {
-            $em = func_get_arg(1);
-            if ($em === false || ! $em instanceof \Doctrine\ORM\EntityManager) {
-                throw new \Exception('If providing a Collection, also the EntityManager is needed as a second parameter');
+            $args = func_get_args();
+            if (count($args) === 1 || ! $args[1] instanceof \Doctrine\ORM\EntityManager) {
+                throw new \InvalidArgumentException('If providing a Collection, also the Doctrine\ORM\EntityManager is needed as a second parameter');
             }
             $this->dataSource = new DataSource\Doctrine2Collection($data);
-            $this->dataSource->setEntityManager($em);
+            $this->dataSource->setEntityManager($args[1]);
         } else {
             throw new \InvalidArgumentException('$data must implement the interface ZfcDatagrid\DataSource\DataSourceInterface');
         }
@@ -666,7 +666,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     }
 
     /**
-     * Set all columns by an array
+     * Set multiple columns by array (willoverwrite all existing)
      *
      * @param array $columns            
      */
@@ -674,9 +674,8 @@ class Datagrid implements ServiceLocatorAwareInterface
     {
         $useColumns = array();
         
-        foreach ($columns as $column) {
-            $col = $this->createColumn($column);
-            
+        foreach ($columns as $col) {
+            $col = $this->createColumn($col);
             $useColumns[$col->getUniqueId()] = $col;
         }
         
