@@ -218,7 +218,7 @@ abstract class AbstractColumn
      */
     public function setStyles(array $styles)
     {
-        $this->styles = [];
+        $this->styles = array();
         
         foreach ($styles as $style) {
             $this->addStyle($style);
