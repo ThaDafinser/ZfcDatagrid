@@ -19,7 +19,8 @@ return array(
                 
                 'formats' => array(
                     //type => Displayname (Toolbar - you can use here HTML too...)
-                    //                 'tcpdf' => 'PDF',
+                    'printHtml' => 'Print',
+                                    'tcpdf' => 'PDF',
                 ),
                 
                 // The output+save directory

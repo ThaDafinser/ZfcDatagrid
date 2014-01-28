@@ -217,16 +217,28 @@ abstract class AbstractColumn
         return $this->type;
     }
 
+    /**
+     * 
+     * @param Style\AbstractStyle $style
+     */
     public function addStyle(Style\AbstractStyle $style)
     {
         $this->styles[] = $style;
     }
 
+    /**
+     * 
+     * @return Style\AbstractStyle[]
+     */
     public function getStyles()
     {
         return $this->styles;
     }
 
+    /**
+     * 
+     * @return boolean
+     */
     public function hasStyles()
     {
         if (count($this->styles) > 0) {
