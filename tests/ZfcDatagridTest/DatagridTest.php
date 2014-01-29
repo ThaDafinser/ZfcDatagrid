@@ -253,10 +253,10 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
     public function testExportRenderers()
     {
-        $this->assertEquals(array(
-            'printHtml' => 'Print',
-            'tcpdf' => 'PDF'
-        ), $this->grid->getExportRenderers());
+        /*
+         * NEVER define default export renderer -> because the user cant remove them after!
+         */
+        $this->assertEquals(array(), $this->grid->getExportRenderers());
         
         $this->grid->setExportRenderers(array(
             'tcpdf' => 'PDF'
