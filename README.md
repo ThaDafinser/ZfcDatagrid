@@ -1,6 +1,6 @@
 # Datagrid/Datatable module for Zend Framework 2 
 [![Master Branch Build Status](https://secure.travis-ci.org/ThaDafinser/ZfcDatagrid.png?branch=master)](http://travis-ci.org/ThaDafinser/ZfcDatagrid)
-[![Coverage Status](https://coveralls.io/repos/ThaDafinser/ZfcDatagrid/badge.png)](https://coveralls.io/r/ThaDafinser/ZfcDatagrid)
+[![Coverage Status](https://coveralls.io/repos/ThaDafinser/ZfcDatagrid/badge.png?branch=master)](https://coveralls.io/r/ThaDafinser/ZfcDatagrid?branch=master)
 
 A datagrid for ZF2 where the data input and output can be whatever you want...:-)
 
