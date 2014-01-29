@@ -85,7 +85,7 @@ class Doctrine2 extends AbstractDataSource
                     $qb->addSelect('ABS(' . $colString . ') sortColumn' . $key);
                     $qb->add('orderBy', new Expr\OrderBy('sortColumn' . $key, $sortCondition['sortDirection']), true);
                 } else {
-                    $qb->add('orderBy', new Expr\OrderBy($colString, $sortCondition['sortDirection']), true);
+                    $qb->add('orderBy', new Expr\OrderBy($$column->getUniqueId(), $sortCondition['sortDirection']), true);
                 }
             }
         }
