@@ -1009,10 +1009,13 @@ class Datagrid implements ServiceLocatorAwareInterface
             $cacheData = array(
                 'sortConditions' => $renderer->getSortConditions(),
                 'filters' => $renderer->getFilters(),
-                'currentPage' => $this->getPaginator()->getCurrentPageNumber(),
-                'data' => $this->getDataSource()->getData()
+                'currentPage' => $this->getPaginator()->getCurrentPageNumber()
             );
             $success = $this->getCache()->setItem($this->getCacheId(), $cacheData);
+            if ($success !== true) {
+                $options = $this->getCache()->getOptions();
+                throw new \Exception('Could not save the datagrid cache. Does the directory "' . $options->getCacheDir() . '" exists and is writeable?');
+            }
         }
         
         /*
