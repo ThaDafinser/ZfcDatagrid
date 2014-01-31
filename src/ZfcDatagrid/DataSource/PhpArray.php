@@ -117,6 +117,12 @@ class PhpArray extends AbstractDataSource
                 break;
         }
         
+        if (version_compare(PHP_VERSION, '5.3.4', 'lt')) {
+            foreach($sortArray as &$value){
+                $value = constant($value);
+            }
+        }
+        
         return $sortArray;
     }
 
