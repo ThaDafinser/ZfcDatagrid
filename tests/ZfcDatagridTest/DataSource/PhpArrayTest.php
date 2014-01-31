@@ -47,8 +47,6 @@ class PhpArrayTest extends DataSourceTestCase
     {
         $source = clone $this->source;
         
-        $source->addSortCondition($this->colVolumne);
-        $source->addSortCondition($this->colEdition, 'DESC');
         $source->execute();
         
         $this->assertInstanceOf('Zend\Paginator\Adapter\ArrayAdapter', $source->getPaginatorAdapter());
@@ -69,5 +67,27 @@ class PhpArrayTest extends DataSourceTestCase
         
         $this->assertEquals(2, $source->getPaginatorAdapter()
             ->count());
+    }
+
+    public function testSortIsApply()
+    {
+        $source = clone $this->source;
+        
+        $source->addSortCondition($this->colVolumne);
+        $source->addSortCondition($this->colEdition, 'DESC');
+        
+        $source->execute();
+        $data = $source->getPaginatorAdapter()->getItems(0, 10);
+        
+        // test 1st column sort
+        $this->assertEquals(67, $data[0]['volume']);
+        $this->assertEquals(98, $data[5]['volume']);
+        
+        // test 2nd column sort
+        $this->assertEquals(86, $data[3]['volume']);
+        $this->assertEquals(86, $data[4]['volume']);
+        
+        $this->assertEquals(6, $data[3]['edition']);
+        $this->assertEquals(1, $data[4]['edition']);
     }
 }
