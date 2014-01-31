@@ -26,8 +26,12 @@ class DateTimeTest extends PHPUnit_Framework_TestCase
      */
     private $datetimeEN;
 
-    public function setUp ()
+    public function setUp()
     {
+        if (! extension_loaded('intl')) {
+            $this->markTestSkipped('ext/intl not enabled');
+        }
+        
         $type = new Type\DateTime();
         $type->setLocale('de_AT');
         $type->setSourceTimezone('UTC');
@@ -41,7 +45,7 @@ class DateTimeTest extends PHPUnit_Framework_TestCase
         $this->datetimeEN = $type;
     }
 
-    public function testConstruct ()
+    public function testConstruct()
     {
         $type = new Type\DateTime();
         
@@ -56,14 +60,14 @@ class DateTimeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::GREATER_EQUAL, $type->getFilterDefaultOperation());
     }
 
-    public function testTypeName ()
+    public function testTypeName()
     {
         $type = new Type\DateTime();
         
         $this->assertEquals('dateTime', $type->getTypeName());
     }
 
-    public function testSourceDateTimeFormat ()
+    public function testSourceDateTimeFormat()
     {
         $type = new Type\DateTime();
         
@@ -71,7 +75,7 @@ class DateTimeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Y-m-d', $type->getSourceDateTimeFormat());
     }
 
-    public function testOutputDateType ()
+    public function testOutputDateType()
     {
         $type = new Type\DateTime();
         
@@ -79,7 +83,7 @@ class DateTimeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(IntlDateFormatter::FULL, $type->getOutputDateType());
     }
 
-    public function testOutputTimeType ()
+    public function testOutputTimeType()
     {
         $type = new Type\DateTime();
         
@@ -87,7 +91,7 @@ class DateTimeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(IntlDateFormatter::SHORT, $type->getOutputTimeType());
     }
 
-    public function testLocale ()
+    public function testLocale()
     {
         $type = new Type\DateTime();
         
@@ -95,7 +99,7 @@ class DateTimeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('de_AT', $type->getLocale());
     }
 
-    public function testSourceTimezone ()
+    public function testSourceTimezone()
     {
         $type = new Type\DateTime();
         
@@ -103,7 +107,7 @@ class DateTimeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Europe/Vienna', $type->getSourceTimezone());
     }
 
-    public function testOutputTimezone ()
+    public function testOutputTimezone()
     {
         $type = new Type\DateTime();
         
@@ -111,7 +115,7 @@ class DateTimeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Europe/Vaduz', $type->getOutputTimezone());
     }
 
-    public function testOutputPattern ()
+    public function testOutputPattern()
     {
         $type = new Type\DateTime();
         
@@ -122,7 +126,7 @@ class DateTimeTest extends PHPUnit_Framework_TestCase
     /**
      * Convert the user value to a filter value
      */
-    public function testFilterValueAT ()
+    public function testFilterValueAT()
     {
         $type = clone $this->datetimeAT;
         $this->assertEquals('2013-01-10 00:00:00', $type->getFilterValue('10.01.2013'));
@@ -134,7 +138,7 @@ class DateTimeTest extends PHPUnit_Framework_TestCase
     /**
      * Convert the user value to a filter value
      */
-    public function testFilterValueEN ()
+    public function testFilterValueEN()
     {
         $type = clone $this->datetimeEN;
         $this->assertEquals('2013-01-10 00:00:00', $type->getFilterValue('Jan 10, 2013'));
@@ -143,31 +147,30 @@ class DateTimeTest extends PHPUnit_Framework_TestCase
         
         $this->assertEquals('2013-01-10 10:00:00', $type->getFilterValue('Jan 10, 2013 10:00 AM'));
     }
-    
-    
+
     /**
      * Convert the database value to a display value
      */
-    public function testUserValueAT ()
+    public function testUserValueAT()
     {
         $type = clone $this->datetimeAT;
         $this->assertEquals('', $type->getUserValue(''));
         
         $this->assertEquals('10.01.2013', $type->getUserValue(new \DateTime('2013-01-10')));
         $this->assertEquals('10.01.2013', $type->getUserValue('2013-01-10 00:00:00'));
-    
+        
         $type->setOutputTimeType(IntlDateFormatter::SHORT);
         $this->assertEquals('10.01.2013 10:00', $type->getUserValue('2013-01-10 10:00:00'));
     }
-    
+
     /**
      * Convert the database value to a display value
      */
-    public function testUserValueEN ()
+    public function testUserValueEN()
     {
         $type = clone $this->datetimeEN;
         $this->assertEquals('Jan 10, 2013', $type->getUserValue('2013-01-10 00:00:00'));
-    
+        
         $type->setOutputTimeType(IntlDateFormatter::SHORT);
         $this->assertEquals('Jan 10, 2013 10:00 AM', $type->getUserValue('2013-01-10 10:00:00'));
     }

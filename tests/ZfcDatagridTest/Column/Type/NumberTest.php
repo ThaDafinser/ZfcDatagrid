@@ -28,6 +28,10 @@ class NumberTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        if (! extension_loaded('intl')) {
+            $this->markTestSkipped('ext/intl not enabled');
+        }
+        
         $type = new Type\Number();
         $type->setLocale('de_AT');
         $this->numberFormatterAT = $type;

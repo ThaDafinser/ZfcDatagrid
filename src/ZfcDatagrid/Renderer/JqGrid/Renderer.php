@@ -105,13 +105,13 @@ class Renderer extends AbstractRenderer
             return $this->filters;
         }
         
-        $request = $this->getRequest();
         
         $filters = array();
         
         $optionsRenderer = $this->getOptionsRenderer();
         $parameterNames = $optionsRenderer['parameterNames'];
         
+        $request = $this->getRequest();
         $isSearch = $request->getPost($parameterNames['isSearch']);
         if ($isSearch == 'true') {
             // User filtering
