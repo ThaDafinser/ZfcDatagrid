@@ -24,7 +24,6 @@
     },
 
     "require": {
-        "ext-intl": "*",
         "php": ">=5.3.3",
         
         "zendframework/zend-mvc": ">=2.1",
@@ -45,6 +44,7 @@
     },
     
     "suggest" : {
+        "ext-intl": "*",
         "doctrine/doctrine-orm-module": ">=0.8",
         "codeplex/phpexcel": "~1.7",
         "tecnick.com/tcpdf": ">=6.0"
