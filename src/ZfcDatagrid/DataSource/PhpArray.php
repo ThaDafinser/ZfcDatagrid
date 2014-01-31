@@ -99,9 +99,11 @@ class PhpArray extends AbstractDataSource
         );
         
         if ($sortCondition['sortDirection'] === 'DESC') {
-            $sortArray[] = SORT_DESC;
+            $desc = SORT_DESC;
+            $sortArray[] = $desc;
         } else {
-            $sortArray[] = SORT_ASC;
+            $asc = SORT_ASC;
+            $sortArray[] = $asc;
         }
         
         // @todo Based on the column type -> SORT_NUMERIC, SORT_STRING, SORT_NATURAL, ...
@@ -109,18 +111,14 @@ class PhpArray extends AbstractDataSource
         switch (get_class($sortCondition['column']->getType())) {
             
             case 'ZfcDatagrid\Column\Type\Number':
-                $sortArray[] = SORT_NUMERIC;
+                $numeric = SORT_NUMERIC;
+                $sortArray[] = $numeric;
                 break;
             
             default:
-                $sortArray[] = SORT_REGULAR;
+                $regular = SORT_REGULAR;
+                $sortArray[] = $regular;
                 break;
-        }
-        
-        if (version_compare(PHP_VERSION, '5.3.4', 'lt')) {
-            foreach($sortArray as &$value){
-                $value = constant($value);
-            }
         }
         
         return $sortArray;
@@ -162,12 +160,12 @@ class PhpArray extends AbstractDataSource
     }
 
     /**
-     * Multisort an array 
-     * 
-     * @param array $data
-     * @param array $sortArguments
+     * Multisort an array
+     *
+     * @param array $data            
+     * @param array $sortArguments            
      * @throws \InvalidArgumentException
-     * 
+     *
      * @return mixed
      */
     private function applyMultiSort(array $data, array $sortArguments)
@@ -178,9 +176,9 @@ class PhpArray extends AbstractDataSource
             if ($remain != 0) {
                 throw new \InvalidArgumentException('The parameter count for each sortArgument has to be three. Given count of: ' . count($values));
             }
-            $args[] = &$values[0];
-            $args[] = &$values[1];
-            $args[] = &$values[2];
+            $args[] = &$values[0]; // column value
+            $args[] = &$values[1]; // sort direction
+            $args[] = &$values[2]; // sort type
         }
         
         $args[] = &$data;
