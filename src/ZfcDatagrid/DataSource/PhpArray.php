@@ -155,6 +155,15 @@ class PhpArray extends AbstractDataSource
         return $this->applyMultiSort($data, $sortArguments);
     }
 
+    /**
+     * Multisort an array 
+     * 
+     * @param array $data
+     * @param array $sortArguments
+     * @throws \InvalidArgumentException
+     * 
+     * @return mixed
+     */
     private function applyMultiSort(array $data, array $sortArguments)
     {
         $args = array();

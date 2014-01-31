@@ -9,12 +9,22 @@ use PHPUnit_Framework_TestCase;
 class AbstractDataSourceTest extends PHPUnit_Framework_TestCase
 {
 
-    public function testDefaults()
+    /**
+     *
+     * @var \ZfcDatagrid\DataSource\AbstractDataSource
+     */
+    private $dsMock;
+
+    public function setUp()
     {
-        /* @var $ds \ZfcDatagrid\DataSource\AbstractDataSource */
-        $ds = $this->getMockForAbstractClass('ZfcDatagrid\DataSource\AbstractDataSource', array(
+        $this->dsMock = $this->getMockForAbstractClass('ZfcDatagrid\DataSource\AbstractDataSource', array(
             array()
         ), '', false);
+    }
+
+    public function testDefaults()
+    {
+        $ds = clone $this->dsMock;
         
         $this->assertEquals(array(), $ds->getColumns());
         $this->assertEquals(array(), $ds->getSortConditions());
@@ -24,10 +34,7 @@ class AbstractDataSourceTest extends PHPUnit_Framework_TestCase
 
     public function testColumn()
     {
-        /* @var $ds \ZfcDatagrid\DataSource\AbstractDataSource */
-        $ds = $this->getMockForAbstractClass('ZfcDatagrid\DataSource\AbstractDataSource', array(
-            array()
-        ), '', false);
+        $ds = clone $this->dsMock;
         
         $col1 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $col1->setUniqueId('test');
@@ -46,10 +53,7 @@ class AbstractDataSourceTest extends PHPUnit_Framework_TestCase
 
     public function testSortCondition()
     {
-        /* @var $ds \ZfcDatagrid\DataSource\AbstractDataSource */
-        $ds = $this->getMockForAbstractClass('ZfcDatagrid\DataSource\AbstractDataSource', array(
-            array()
-        ), '', false);
+        $ds = clone $this->dsMock;
         
         $col1 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $col2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
@@ -79,10 +83,7 @@ class AbstractDataSourceTest extends PHPUnit_Framework_TestCase
 
     public function testFilter()
     {
-        /* @var $ds \ZfcDatagrid\DataSource\AbstractDataSource */
-        $ds = $this->getMockForAbstractClass('ZfcDatagrid\DataSource\AbstractDataSource', array(
-            array()
-        ), '', false);
+        $ds = clone $this->dsMock;
         
         $filter = $this->getMock('ZfcDatagrid\Filter');
         $ds->addFilter($filter);
@@ -94,10 +95,7 @@ class AbstractDataSourceTest extends PHPUnit_Framework_TestCase
 
     public function testPaginatorAdapter()
     {
-        /* @var $ds \ZfcDatagrid\DataSource\AbstractDataSource */
-        $ds = $this->getMockForAbstractClass('ZfcDatagrid\DataSource\AbstractDataSource', array(
-            array()
-        ), '', false);
+        $ds = clone $this->dsMock;
         
         $adapter = $this->getMock('Zend\Paginator\Adapter\ArrayAdapter');
         $ds->setPaginatorAdapter($adapter);
