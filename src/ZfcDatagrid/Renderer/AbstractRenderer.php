@@ -403,8 +403,17 @@ abstract class AbstractRenderer implements RendererInterface
         return $this->getMvcEvent()->getRequest();
     }
 
-    public function setTranslator(Translator $translator)
+    /**
+     *
+     * @param Translator $translator            
+     * @throws \InvalidArgumentException
+     */
+    public function setTranslator($translator)
     {
+        if (! $translator instanceof Translator && ! $translator instanceof Zend\I18n\Translator\TranslatorInterface) {
+            throw new \InvalidArgumentException('Translator must be an instanceof "Zend\I18n\Translator\Translator" or "Zend\I18n\Translator\TranslatorInterface"');
+        }
+        
         $this->translator = $translator;
     }
 
@@ -634,7 +643,7 @@ abstract class AbstractRenderer implements RendererInterface
 
     /**
      * Set the current page number
-     * 
+     *
      * @param integer $page            
      */
     public function setCurrentPageNumber($page)

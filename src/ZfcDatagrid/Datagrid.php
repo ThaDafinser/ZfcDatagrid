@@ -398,9 +398,14 @@ class Datagrid implements ServiceLocatorAwareInterface
      * Set the translator
      *
      * @param Translator $translator            
+     * @throws \InvalidArgumentException
      */
-    public function setTranslator(Translator $translator = null)
+    public function setTranslator($translator = null)
     {
+        if (! $translator instanceof Translator && ! $translator instanceof Zend\I18n\Translator\TranslatorInterface) {
+            throw new \InvalidArgumentException('Translator must be an instanceof "Zend\I18n\Translator\Translator" or "Zend\I18n\Translator\TranslatorInterface"');
+        }
+        
         $this->translator = $translator;
     }
 

@@ -108,9 +108,14 @@ class PrepareData
     /**
      *
      * @param Translator $translator            
+     * @throws \InvalidArgumentException
      */
-    public function setTranslator(Translator $translator)
+    public function setTranslator($translator)
     {
+        if (! $translator instanceof Translator && ! $translator instanceof Zend\I18n\Translator\TranslatorInterface) {
+            throw new \InvalidArgumentException('Translator must be an instanceof "Zend\I18n\Translator\Translator" or "Zend\I18n\Translator\TranslatorInterface"');
+        }
+        
         $this->translator = $translator;
     }
 
@@ -125,7 +130,7 @@ class PrepareData
 
     /**
      * Return true if preparing executed, false if already done!
-     * 
+     *
      * @throws \Exception
      * @return boolean
      */
