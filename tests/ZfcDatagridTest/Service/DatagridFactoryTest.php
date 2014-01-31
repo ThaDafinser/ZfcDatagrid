@@ -23,8 +23,6 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
 
     private $applicationMock;
 
-    private $translatorMock;
-
     public function setUp()
     {
         $mvcEventMock = $this->getMock('Zend\Mvc\MvcEvent');
@@ -33,8 +31,6 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
         $this->applicationMock->expects($this->any())
             ->method('getMvcEvent')
             ->will($this->returnValue($mvcEventMock));
-        
-        $this->translatorMock = $this->getMock('Zend\I18n\Translator\Translator', array(), array(), '', false);
     }
 
     public function testCreateServiceException()
@@ -62,14 +58,33 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
 
     public function testCanCreateServiceWithTranslator()
     {
+        $translatorMock = $this->getMock('Zend\I18n\Translator\Translator', array(), array(), '', false);
+        
         $sm = new ServiceManager();
         $sm->setService('config', $this->config);
         $sm->setService('application', $this->applicationMock);
-        $sm->setService('translator', $this->translatorMock);
+        $sm->setService('translator', $translatorMock);
         
         $factory = new DatagridFactory();
         $grid = $factory->createService($sm);
         
         $this->assertInstanceOf('ZfcDatagrid\Datagrid', $grid);
+        $this->assertEquals($translatorMock, $grid->getTranslator());
+    }
+
+    public function testCanCreateServiceWithMvcTranslator()
+    {
+        $mvcTranslatorMock = $this->getMock('Zend\Mvc\I18n\Translator', array(), array(), '', false);
+        
+        $sm = new ServiceManager();
+        $sm->setService('config', $this->config);
+        $sm->setService('application', $this->applicationMock);
+        $sm->setService('translator', $mvcTranslatorMock);
+        
+        $factory = new DatagridFactory();
+        $grid = $factory->createService($sm);
+        
+        $this->assertInstanceOf('ZfcDatagrid\Datagrid', $grid);
+        $this->assertEquals($mvcTranslatorMock, $grid->getTranslator());
     }
 }
