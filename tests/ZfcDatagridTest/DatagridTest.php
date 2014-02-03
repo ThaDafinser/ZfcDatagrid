@@ -20,6 +20,12 @@ class DatagridTest extends PHPUnit_Framework_TestCase
      */
     private $grid;
 
+    /**
+     *
+     * @var array
+     */
+    private $config;
+
     public function setUp()
     {
         $config = include './config/module.config.php';
@@ -29,6 +35,8 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $config['cache']['adapter']['name'] = 'Memory';
         $config['cache']['adapter']['options'] = $cacheOptions->toArray();
         
+        $this->config = $config;
+        
         $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent');
         $mvcEvent->expects($this->any())
             ->method('getRequest')
@@ -36,7 +44,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceManager');
         
         $this->grid = new Datagrid();
-        $this->grid->setOptions($config);
+        $this->grid->setOptions($this->config);
         $this->grid->setMvcEvent($mvcEvent);
         $this->grid->setServiceLocator($serviceLocator);
     }
@@ -66,15 +74,23 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('defaultGrid', $this->grid->getSession()
             ->getName());
         
-        $this->grid->setSession(new Container('myName'));
+        $session = new Container('myName');
+        
+        $this->grid->setSession($session);
         $this->assertInstanceOf('Zend\Session\Container', $this->grid->getSession());
+        $this->assertSame($session, $this->grid->getSession());
         $this->assertEquals('myName', $this->grid->getSession()
             ->getName());
     }
 
     public function testCacheId()
     {
-        $this->assertEquals('_defaultGrid', $this->grid->getCacheId());
+        $grid = new Datagrid();
+        $sessionId = $grid->getSession()
+            ->getManager()
+            ->getId();
+        
+        $this->assertEquals($sessionId . '_defaultGrid', $this->grid->getCacheId());
         
         $this->grid->setCacheId('myCacheId');
         $this->assertEquals('myCacheId', $this->grid->getCacheId());
@@ -427,11 +443,11 @@ class DatagridTest extends PHPUnit_Framework_TestCase
             'sortDirection' => 'ASC'
         ), $col->getSortDefault());
     }
-    
+
     public function testAddColumnArraySortDefault()
     {
         $grid = new Datagrid();
-    
+        
         $column = array(
             'select' => array(
                 'column' => 'myCol',
@@ -443,12 +459,12 @@ class DatagridTest extends PHPUnit_Framework_TestCase
             )
         );
         $grid->addColumn($column);
-    
+        
         $this->assertCount(1, $grid->getColumns());
-    
+        
         $col = $grid->getColumnByUniqueId('myTable_myCol');
         $this->assertInstanceOf('ZfcDatagrid\Column\Select', $col);
-    
+        
         $this->assertEquals(array(
             'priority' => 1,
             'sortDirection' => 'ASC'
