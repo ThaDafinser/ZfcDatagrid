@@ -24,9 +24,15 @@ class Action extends AbstractColumn
         $this->setRowClickDisabled(true);
     }
 
+    /**
+     * @param Action\AbstractAction $action
+     *
+     * @return $this
+     */
     public function addAction (Action\AbstractAction $action)
     {
         $this->actions[] = $action;
+        return $this;
     }
 
     /**
@@ -36,5 +42,43 @@ class Action extends AbstractColumn
     public function getActions ()
     {
         return $this->actions;
+    }
+
+    /**
+     * @param array|Action\AbstractAction[] $actions
+     *
+     * @return $this
+     */
+    public function setActions (array $actions)
+    {
+        $this->actions = $actions;
+        return $this;
+    }
+
+    /**
+     * @param int $key
+     *
+     * @return mixed
+     */
+    public function getAction($key)
+    {
+        if (isset($this->actions[$key])) {
+            return $this->actions[$key];
+        }
+    }
+
+    /**
+     * @param int $key
+     *
+     * @return $this
+     */
+    public function removeAction($key = null)
+    {
+        if (null === $key) {
+            return $this->setActions(array());
+        }
+        unset ($this->actions[$key]);
+
+        return $this;
     }
 }
