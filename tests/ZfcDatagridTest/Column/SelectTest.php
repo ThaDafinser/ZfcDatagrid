@@ -4,7 +4,6 @@ namespace ZfcDatagridTest\Column;
 use PHPUnit_Framework_TestCase;
 use ZfcDatagrid\Column;
 
-
 /**
  * @group Column
  * @covers ZfcDatagrid\Column\Select
@@ -12,45 +11,57 @@ use ZfcDatagrid\Column;
 class SelectTest extends PHPUnit_Framework_TestCase
 {
 
-    public function testConstructDefaultBoth ()
+    public function testConstructDefaultBoth()
     {
-        $column = new Column\Standard('id', 'user');
+        $col = new Column\Select('id', 'user');
         
-        $this->assertEquals('user_id', $column->getUniqueId());
-        $this->assertEquals('user', $column->getSelectPart1());
-        $this->assertEquals('id', $column->getSelectPart2());
+        $this->assertEquals('user_id', $col->getUniqueId());
+        $this->assertEquals('user', $col->getSelectPart1());
+        $this->assertEquals('id', $col->getSelectPart2());
     }
 
-    public function testConstructDefaultSingle ()
+    public function testConstructDefaultSingle()
     {
-        $column = new Column\Standard('title');
+        $col = new Column\Select('title');
         
-        $this->assertEquals('title', $column->getUniqueId());
-        $this->assertEquals('title', $column->getSelectPart1());
+        $this->assertEquals('title', $col->getUniqueId());
+        $this->assertEquals('title', $col->getSelectPart1());
     }
 
-    public function testObject ()
+    public function testObject()
     {
         $expr = new \Zend\Db\Sql\Expression('Something...');
-        $column = new Column\Standard($expr, 'myAlias');
+        $col = new Column\Select($expr, 'myAlias');
         
-        $this->assertEquals($expr, $column->getSelectPart1());
-        $this->assertEquals('myAlias', $column->getUniqueId());
+        $this->assertEquals($expr, $col->getSelectPart1());
+        $this->assertEquals('myAlias', $col->getUniqueId());
     }
 
-    public function testException ()
+    public function testException()
     {
         $this->setExpectedException('Exception');
         
         $expr = new \Zend\Db\Sql\Expression('Something...');
-        $column = new Column\Standard($expr);
+        $col = new Column\Select($expr);
     }
 
-    public function testExceptionNotString ()
+    public function testExceptionNotString()
     {
         $this->setExpectedException('Exception');
         
         $expr = new \Zend\Db\Sql\Expression('Something...');
-        $column = new Column\Standard($expr, new \stdClass());
+        $col = new Column\Select($expr, new \stdClass());
+    }
+
+    public function testGetFilterSelectExpression()
+    {
+        $col = new Column\Select('id', 'user');
+        
+        $this->assertFalse($col->hasFilterSelectExpression());
+        $this->assertNull($col->getFilterSelectExpression());
+        
+        $col->setFilterSelectExpression('CONCAT(%s)');
+        $this->assertEquals('CONCAT(%s)', $col->getFilterSelectExpression());
+        $this->assertTrue($col->hasFilterSelectExpression());
     }
 }

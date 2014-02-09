@@ -5,6 +5,7 @@ use ZfcDatagrid\Column\DataPopulation;
 use ZfcDatagrid\Filter;
 use ZfcDatagrid\Column\Type;
 use ZfcDatagrid\Column\Style;
+use ZfcDatagrid\Column\Formatter;
 use PHPUnit_Framework_TestCase;
 
 /**
@@ -14,205 +15,236 @@ use PHPUnit_Framework_TestCase;
 class AbstractColumnTest extends PHPUnit_Framework_TestCase
 {
 
-    public function testGeneral ()
+    public function testGeneral()
     {
-        /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-        $column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        /* @var $col \ZfcDatagrid\Column\AbstractColumn */
+        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         
-        $this->assertEquals(5, $column->getWidth());
-        $this->assertEquals(false, $column->isHidden());
-        $this->assertEquals(false, $column->isIdentity());
-        $this->assertInstanceOf('ZfcDatagrid\Column\Type\AbstractType', $column->getType());
-        $this->assertInstanceOf('ZfcDatagrid\Column\Type\String', $column->getType());
+        $this->assertEquals(5, $col->getWidth());
+        $this->assertEquals(false, $col->isHidden());
+        $this->assertEquals(false, $col->isIdentity());
+        $this->assertInstanceOf('ZfcDatagrid\Column\Type\AbstractType', $col->getType());
+        $this->assertInstanceOf('ZfcDatagrid\Column\Type\String', $col->getType());
         
-        $this->assertEquals(false, $column->isTranslationEnabled());
+        $this->assertEquals(false, $col->isTranslationEnabled());
         
-        $column->setLabel('test');
-        $this->assertEquals('test', $column->getLabel());
+        $col->setLabel('test');
+        $this->assertEquals('test', $col->getLabel());
         
-        $column->setUniqueId('unique_id');
-        $this->assertEquals('unique_id', $column->getUniqueId());
+        $col->setUniqueId('unique_id');
+        $this->assertEquals('unique_id', $col->getUniqueId());
         
-        $column->setSelect('id', 'user');
-        $this->assertEquals('id', $column->getSelectPart1());
-        $this->assertEquals('user', $column->getSelectPart2());
+        $col->setSelect('id', 'user');
+        $this->assertEquals('id', $col->getSelectPart1());
+        $this->assertEquals('user', $col->getSelectPart2());
         
-        $column->setWidth(30);
-        $this->assertEquals(30, $column->getWidth());
-        $column->setWidth(50.53);
-        $this->assertEquals(50.53, $column->getWidth());
+        $col->setWidth(30);
+        $this->assertEquals(30, $col->getWidth());
+        $col->setWidth(50.53);
+        $this->assertEquals(50.53, $col->getWidth());
         
-        $column->setHidden(true);
-        $this->assertEquals(true, $column->isHidden());
-        $column->setHidden(false);
-        $this->assertEquals(false, $column->isHidden());
+        $col->setHidden(true);
+        $this->assertEquals(true, $col->isHidden());
+        $col->setHidden(false);
+        $this->assertEquals(false, $col->isHidden());
         
-        $column->setIdentity(true);
-        $this->assertEquals(true, $column->isIdentity());
-        $column->setIdentity(false);
-        $this->assertEquals(false, $column->isIdentity());
+        $col->setIdentity(true);
+        $this->assertEquals(true, $col->isIdentity());
+        $col->setIdentity(false);
+        $this->assertEquals(false, $col->isIdentity());
     }
 
-    public function testTypeStyle ()
+    public function testStyle()
     {
-        /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-        $column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        /* @var $col \ZfcDatagrid\Column\AbstractColumn */
+        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         
-        $this->assertEquals(array(), $column->getStyles());
-        $this->assertEquals(false, $column->hasStyles());
+        $this->assertEquals(array(), $col->getStyles());
+        $this->assertEquals(false, $col->hasStyles());
         
-        $column->setType(new Type\PhpArray());
-        $this->assertInstanceOf('ZfcDatagrid\Column\Type\AbstractType', $column->getType());
-        $this->assertInstanceOf('ZfcDatagrid\Column\Type\PhpArray', $column->getType());
+        $col->addStyle(new Style\Bold());
+        $this->assertEquals(true, $col->hasStyles());
+        $this->assertEquals(1, count($col->getStyles()));
         
-        $column->addStyle(new Style\Bold());
-        $this->assertEquals(true, $column->hasStyles());
-        $this->assertEquals(1, count($column->getStyles()));
-        
-        $style = $column->getStyles();
+        $style = $col->getStyles();
         $style = array_pop($style);
         $this->assertInstanceOf('ZfcDatagrid\Column\Style\Bold', $style);
         $this->assertInstanceOf('ZfcDatagrid\Column\Style\AbstractStyle', $style);
     }
 
-    public function testSort ()
+    public function testType()
     {
-        /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-        $column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        /* @var $col \ZfcDatagrid\Column\AbstractColumn */
+        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         
-        $this->assertEquals(true, $column->isUserSortEnabled());
-        $this->assertEquals(false, $column->hasSortDefault());
-        $this->assertEquals(array(), $column->getSortDefault());
+        // DEFAULT
+        $this->assertInstanceOf('ZfcDatagrid\Column\Type\String', $col->getType());
         
-        $this->assertEquals(false, $column->isSortActive());
+        $col->setType(new Type\PhpArray());
+        $this->assertInstanceOf('ZfcDatagrid\Column\Type\AbstractType', $col->getType());
+        $this->assertInstanceOf('ZfcDatagrid\Column\Type\PhpArray', $col->getType());
         
-        $column->setUserSortDisabled(true);
-        $this->assertEquals(false, $column->isUserSortEnabled());
-        $column->setUserSortDisabled(false);
-        $this->assertEquals(true, $column->isUserSortEnabled());
+        $this->assertNull($col->getFormatter());
+        $col->setType(new Type\Image());
+        $this->assertInstanceOf('ZfcDatagrid\Column\Formatter\Image', $col->getFormatter());
+    }
+
+    public function testSort()
+    {
+        /* @var $col \ZfcDatagrid\Column\AbstractColumn */
+        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         
-        $column->setSortDefault(1, 'DESC');
+        $this->assertEquals(true, $col->isUserSortEnabled());
+        $this->assertEquals(false, $col->hasSortDefault());
+        $this->assertEquals(array(), $col->getSortDefault());
+        
+        $this->assertEquals(false, $col->isSortActive());
+        
+        $col->setUserSortDisabled(true);
+        $this->assertEquals(false, $col->isUserSortEnabled());
+        $col->setUserSortDisabled(false);
+        $this->assertEquals(true, $col->isUserSortEnabled());
+        
+        $col->setSortDefault(1, 'DESC');
         $this->assertEquals(array(
             'priority' => 1,
             'sortDirection' => 'DESC'
-        ), $column->getSortDefault());
-        $this->assertEquals(true, $column->hasSortDefault());
+        ), $col->getSortDefault());
+        $this->assertEquals(true, $col->hasSortDefault());
         
-        $column->setSortActive('ASC');
-        $this->assertEquals(true, $column->isSortActive());
-        $this->assertEquals('ASC', $column->getSortActiveDirection());
+        $col->setSortActive('ASC');
+        $this->assertEquals(true, $col->isSortActive());
+        $this->assertEquals('ASC', $col->getSortActiveDirection());
         
-        $column->setSortActive('DESC');
-        $this->assertEquals(true, $column->isSortActive());
-        $this->assertEquals('DESC', $column->getSortActiveDirection());
+        $col->setSortActive('DESC');
+        $this->assertEquals(true, $col->isSortActive());
+        $this->assertEquals('DESC', $col->getSortActiveDirection());
     }
 
-    public function testFilter ()
+    public function testFilter()
     {
-        /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-        $column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        /* @var $col \ZfcDatagrid\Column\AbstractColumn */
+        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         
-        $this->assertEquals(true, $column->isUserFilterEnabled());
+        $this->assertEquals(true, $col->isUserFilterEnabled());
         
-        $this->assertEquals(false, $column->hasFilterDefaultValue());
+        $this->assertEquals(false, $col->hasFilterDefaultValue());
         
-        $this->assertEquals(Filter::LIKE, $column->getFilterDefaultOperation());
-        $this->assertEquals('', $column->getFilterDefaultValue());
+        $this->assertEquals(Filter::LIKE, $col->getFilterDefaultOperation());
+        $this->assertEquals('', $col->getFilterDefaultValue());
         
-        $this->assertEquals(false, $column->hasFilterSelectOptions());
-        $this->assertEquals(null, $column->getFilterSelectOptions());
+        $this->assertEquals(false, $col->hasFilterSelectOptions());
+        $this->assertEquals(null, $col->getFilterSelectOptions());
         
-        $this->assertEquals(false, $column->isFilterActive());
-        $this->assertEquals('', $column->getFilterActiveValue());
+        $this->assertEquals(false, $col->isFilterActive());
+        $this->assertEquals('', $col->getFilterActiveValue());
         
-        $column->setUserFilterDisabled(true);
-        $this->assertEquals(false, $column->isUserFilterEnabled());
-        $column->setUserFilterDisabled(false);
-        $this->assertEquals(true, $column->isUserFilterEnabled());
+        $col->setUserFilterDisabled(true);
+        $this->assertEquals(false, $col->isUserFilterEnabled());
+        $col->setUserFilterDisabled(false);
+        $this->assertEquals(true, $col->isUserFilterEnabled());
         
-        $column->setFilterDefaultValue('!=blubb');
-        $this->assertEquals(true, $column->hasFilterDefaultValue());
-        $this->assertEquals('!=blubb', $column->getFilterDefaultValue());
+        $col->setFilterDefaultValue('!=blubb');
+        $this->assertEquals(true, $col->hasFilterDefaultValue());
+        $this->assertEquals('!=blubb', $col->getFilterDefaultValue());
         
-        $column->setFilterDefaultOperation(Filter::GREATER_EQUAL);
-        $this->assertEquals(Filter::GREATER_EQUAL, $column->getFilterDefaultOperation());
+        $col->setFilterDefaultOperation(Filter::GREATER_EQUAL);
+        $this->assertEquals(Filter::GREATER_EQUAL, $col->getFilterDefaultOperation());
         
-        $column->setFilterSelectOptions(array(
+        $col->setFilterSelectOptions(array(
             1 => 'one',
             2 => 'two'
         ));
-        $this->assertEquals(3, count($column->getFilterSelectOptions()));
-        $this->assertEquals(true, $column->hasFilterSelectOptions());
+        $this->assertEquals(3, count($col->getFilterSelectOptions()));
+        $this->assertEquals(true, $col->hasFilterSelectOptions());
         
-        $column->setFilterSelectOptions(array(
+        $col->setFilterSelectOptions(array(
             1 => 'one',
             2 => 'two'
         ), false);
-        $this->assertEquals(2, count($column->getFilterSelectOptions()));
-        $this->assertEquals(true, $column->hasFilterSelectOptions());
+        $this->assertEquals(2, count($col->getFilterSelectOptions()));
+        $this->assertEquals(true, $col->hasFilterSelectOptions());
         
-        $column->setFilterActive('asdf');
-        $this->assertEquals('asdf', $column->getFilterActiveValue());
-        $this->assertEquals(true, $column->isFilterActive());
+        $col->unsetFilterSelectOptions();
+        $this->assertEquals(null, $col->getFilterSelectOptions());
+        $this->assertEquals(false, $col->hasFilterSelectOptions());
+        
+        $col->setFilterActive('asdf');
+        $this->assertEquals('asdf', $col->getFilterActiveValue());
+        $this->assertEquals(true, $col->isFilterActive());
     }
 
-    public function testSetGet ()
+    public function testSetGet()
     {
-        /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-        $column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        /* @var $col \ZfcDatagrid\Column\AbstractColumn */
+        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         
-        $column->setTranslationEnabled(true);
-        $this->assertEquals(true, $column->isTranslationEnabled());
-        $column->setTranslationEnabled(false);
-        $this->assertEquals(false, $column->isTranslationEnabled());
+        $col->setTranslationEnabled(true);
+        $this->assertEquals(true, $col->isTranslationEnabled());
+        $col->setTranslationEnabled(false);
+        $this->assertEquals(false, $col->isTranslationEnabled());
         
-        $this->assertEquals(false, $column->hasReplaceValues());
-        $this->assertEquals(array(), $column->getReplaceValues());
-        $column->setReplaceValues(array(
+        $this->assertEquals(false, $col->hasReplaceValues());
+        $this->assertEquals(array(), $col->getReplaceValues());
+        $col->setReplaceValues(array(
             1,
             2,
             3
         ));
-        $this->assertEquals(true, $column->hasReplaceValues());
+        $this->assertEquals(true, $col->hasReplaceValues());
         $this->assertEquals(array(
             1,
             2,
             3
-        ), $column->getReplaceValues());
-        $this->assertEquals(true, $column->notReplacedGetEmpty());
-        $column->setReplaceValues(array(
+        ), $col->getReplaceValues());
+        $this->assertEquals(true, $col->notReplacedGetEmpty());
+        $col->setReplaceValues(array(
             1,
             2,
             3
         ), false);
-        $this->assertEquals(true, $column->hasReplaceValues());
+        $this->assertEquals(true, $col->hasReplaceValues());
         $this->assertEquals(array(
             1,
             2,
             3
-        ), $column->getReplaceValues());
-        $this->assertEquals(false, $column->notReplacedGetEmpty());
+        ), $col->getReplaceValues());
+        $this->assertEquals(false, $col->notReplacedGetEmpty());
         
-        $this->assertEquals(array(), $column->getRendererParameters('jqgrid'));
+        $this->assertEquals(array(), $col->getRendererParameters('jqGrid'));
         
-        $column->setRendererParameter('key', 'value', 'someRenderer');
+        $col->setRendererParameter('key', 'value', 'someRenderer');
         $this->assertEquals(array(
             'key' => 'value'
-        ), $column->getRendererParameters('someRenderer'));
-
-        
+        ), $col->getRendererParameters('someRenderer'));
     }
-    
-    public function testRowClick(){
-        /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-        $column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+
+    public function testFormatter()
+    {
+        /* @var $col \ZfcDatagrid\Column\AbstractColumn */
+        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         
-        $this->assertTrue($column->isRowClickEnabled());
+        // DEFAULT
+        $this->assertNull($col->getFormatter());
+        $this->assertFalse($col->hasFormatter());
         
-        $column->setRowClickDisabled(true);
-        $this->assertFalse($column->isRowClickEnabled());
+        $col->setFormatter(new Formatter\Link());
+        $this->assertTrue($col->hasFormatter());
+        $this->assertInstanceOf('ZfcDatagrid\Column\Formatter\AbstractFormatter', $col->getFormatter());
+        $this->assertInstanceOf('ZfcDatagrid\Column\Formatter\Link', $col->getFormatter());
+    }
+
+    public function testRowClick()
+    {
+        /* @var $col \ZfcDatagrid\Column\AbstractColumn */
+        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         
-        $column->setRowClickDisabled(false);
-        $this->assertTrue($column->isRowClickEnabled());
+        $this->assertTrue($col->isRowClickEnabled());
+        
+        $col->setRowClickDisabled(true);
+        $this->assertFalse($col->isRowClickEnabled());
+        
+        $col->setRowClickDisabled(false);
+        $this->assertTrue($col->isRowClickEnabled());
     }
 }

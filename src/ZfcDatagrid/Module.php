@@ -64,15 +64,15 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, Co
                 'Number of the page to display [1...n]'
             ),
             array(
-                '--itmes=NUMBER',
+                '--items=NUMBER',
                 'How much items to display per page [1...n]'
             ),
             array(
-                '--sortBy=COLUMN',
+                '--sortBys=COLUMN',
                 'Unique id of the column(s) to sort (split with: ,)'
             ),
             array(
-                '--sortDir=DIRECTION',
+                '--sortDirs=DIRECTION',
                 'Sort direction of the columns [ASC|DESC] (split with: ,)'
             )
         );

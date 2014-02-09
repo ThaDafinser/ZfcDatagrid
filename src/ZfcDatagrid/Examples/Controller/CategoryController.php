@@ -18,32 +18,32 @@ class CategoryController extends AbstractActionController
      */
     private function getGrid ()
     {
-        /* @var $dataGrid \ZfcDatagrid\Datagrid */
-        $dataGrid = $this->getServiceLocator()->get('zfcDatagrid');
-        $dataGrid->setTitle('Categories');
-        $dataGrid->setDefaultItemsPerPage(5);
-        $dataGrid->setDataSource($this->getServiceLocator()
+        /* @var $grid \ZfcDatagrid\Datagrid */
+        $grid = $this->getServiceLocator()->get('ZfcDatagrid\Datagrid');
+        $grid->setTitle('Categories');
+        $grid->setDefaultItemsPerPage(5);
+        $grid->setDataSource($this->getServiceLocator()
             ->get('zfcDatagrid.examples.data.phpArray')
             ->getCategorys());
         
         $col = new Column\Select('id');
         $col->setIdentity();
-        $dataGrid->addColumn($col);
+        $grid->addColumn($col);
         
         $colParentId = new Column\Select('parentId');
         $colParentId->setHidden(true);
-        $dataGrid->addColumn($colParentId);
+        $grid->addColumn($colParentId);
         
         $colHasChildren = new Column\Select('hasChildren');
         $colHasChildren->setHidden(true);
-        $dataGrid->addColumn($colHasChildren);
+        $grid->addColumn($colHasChildren);
         
         $colTags = new Column\Select('tags');
         $colTags->setLabel('Tags');
         $colTags->setHidden(true);
         $colTags->setWidth(30);
         $colTags->setType(new Type\PhpArray());
-        $dataGrid->addColumn($colTags);
+        $grid->addColumn($colTags);
         
         $toggle = new Column\Action\Button();
         $toggle->setLabel('+');
@@ -51,7 +51,7 @@ class CategoryController extends AbstractActionController
         $toggle->setAttribute('onclick', 'console.log($(this).parent().parent().attr(\'id\'));$.get(\'/zfcDatagrid/category/tree\', function(data){
             console.log(this);
             $.each(data.data, function(index, value){ 
-                $(\'#'.$dataGrid->getId().'\').jqGrid(\'addRowData\', value.idConcated, value, \'after\', 5); 
+                $(\'#'.$grid->getId().'\').jqGrid(\'addRowData\', value.idConcated, value, \'after\', 5); 
              }); 
         });');
         
@@ -59,7 +59,7 @@ class CategoryController extends AbstractActionController
         $col->setLabel(' ');
         $col->setUniqueId('expandAction');
         $col->addAction($toggle);
-        $dataGrid->addColumn($col);
+        $grid->addColumn($col);
         
         $col = new Column\Select('name');
         $col->setLabel('Name');
@@ -75,8 +75,8 @@ class CategoryController extends AbstractActionController
             
                 return valuePrint;
             }
-        ', 'jqgrid');
-        $dataGrid->addColumn($col);
+        ', 'jqGrid');
+        $grid->addColumn($col);
         
         $toggle = new Column\Action\Button();
         $toggle->setLabel('other action...');
@@ -86,9 +86,9 @@ class CategoryController extends AbstractActionController
         $col = new Column\Action();
 //         $col->setLabel('A');
         $col->addAction($toggle);
-        $dataGrid->addColumn($col);
+        $grid->addColumn($col);
         
-        return $dataGrid;
+        return $grid;
     }
 
     /**
@@ -98,11 +98,11 @@ class CategoryController extends AbstractActionController
      */
     public function bootstrapAction ()
     {
-        $dataGrid = $this->getGrid();
-//         $dataGrid->setRendererName('bootstrapTable');
-        $dataGrid->execute();
+        $grid = $this->getGrid();
+//         $grid->setRendererName('bootstrapTable');
+        $grid->render();
         
-        return $dataGrid->getResponse();
+        return $grid->getResponse();
     }
 
     public function jqgridAction ()
@@ -111,13 +111,24 @@ class CategoryController extends AbstractActionController
         
         $viewModel = new ViewModel();
         
-        $dataGrid = $this->getGrid();
-        $dataGrid->setRendererName('jqgrid');
-        $dataGrid->setUserFilterDisabled(true);
+        $grid = $this->getGrid();
+        $grid->setRendererName('jqGrid');
+        $grid->setUserFilterDisabled(true);
         
-        $dataGrid->execute();
+        $grid->render();
         
-        return $dataGrid->getResponse();
+        return $grid->getResponse();
+    }
+    
+
+    public function consoleAction ()
+    {
+        $viewModel = new ViewModel();
+    
+        $grid = $this->getGrid();
+        $grid->render();
+    
+        return $grid->getResponse();
     }
 
     /**

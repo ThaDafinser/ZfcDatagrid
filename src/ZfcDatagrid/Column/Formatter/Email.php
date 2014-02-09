@@ -7,12 +7,14 @@ class Email extends AbstractFormatter
 {
 
     protected $validRenderers = array(
-        'jqgrid',
+        'jqGrid',
         'bootstrapTable'
     );
 
-    public function getFormattedValue($value, $columnUniqueId)
+    public function getFormattedValue(AbstractColumn $column)
     {
-        return '<a href="mailto:' . $value . '">' . $value . '</a>';
+        $row = $this->getRowData();
+        
+        return '<a href="mailto:' . $row[$column->getUniqueId()] . '">' . $row[$column->getUniqueId()] . '</a>';
     }
 }

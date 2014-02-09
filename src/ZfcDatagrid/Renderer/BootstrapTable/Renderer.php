@@ -21,6 +21,20 @@ class Renderer extends AbstractRenderer
     {
         return true;
     }
+    
+    /**
+     *
+     * @return HttpRequest
+     */
+    public function getRequest()
+    {
+        $request = parent::getRequest();
+        if (! $request instanceof HttpRequest) {
+            throw new \Exception('Request must be an instance of Zend\Http\PhpEnvironment\Request for HTML rendering');
+        }
+    
+        return $request;
+    }
 
     /**
      *
@@ -36,9 +50,6 @@ class Renderer extends AbstractRenderer
         }
         
         $request = $this->getRequest();
-        if (! $request instanceof HttpRequest) {
-            throw new \Exception('Must be an instance of HttpRequest for HTML rendering');
-        }
         
         $optionsRenderer = $this->getOptionsRenderer();
         $parameterNames = $optionsRenderer['parameterNames'];
@@ -93,15 +104,16 @@ class Renderer extends AbstractRenderer
      */
     public function getFilters ()
     {
+        if ($this->isCustomFiltered() === true) {
+            // filters are applied already from external source, so nothing to do here!
+            return array();
+        }
+        
         if (is_array($this->filters)) {
-            // set from cache! (for export)
             return $this->filters;
         }
         
         $request = $this->getRequest();
-        if (! $request instanceof HttpRequest) {
-            throw new \Exception('Must be an instance of HttpRequest for HTML rendering');
-        }
         
         $filters = array();
         if ($request->isPost() === true && $request->getPost('toolbarFilters') !== null) {

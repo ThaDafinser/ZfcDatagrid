@@ -1,10 +1,7 @@
 <?php
 namespace ZfcDatagrid\Renderer;
 
-use ZfcDatagrid\Datagrid;
-use Zend\Mvc\MvcEvent;
 use Zend\View\Model\ViewModel;
-use Zend\Stdlib\RequestInterface as Request;
 
 interface RendererInterface
 {

@@ -40,11 +40,11 @@ class MinimalController extends AbstractActionController
         //$grid->setRenderer('jqgrid');
         $grid->setDataSource($data);
         
-        $col = new Column\Standard('displayName');
+        $col = new Column\Select('displayName');
         $col->setLabel('Name');
         $grid->addColumn($col);
         
-        $grid->execute();
+        $grid->render();
         
         return $grid->getResponse();
     }

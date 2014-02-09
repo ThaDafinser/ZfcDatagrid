@@ -3,8 +3,10 @@ namespace ZfcDatagrid\Column;
 
 class Select extends AbstractColumn
 {
+
     /**
-     * Specific column function filter e.g. WHERE MONTH(%s)
+     * Specific column function filter e.g.
+     * WHERE MONTH(%s)
      *
      * @var string
      */
@@ -22,7 +24,7 @@ class Select extends AbstractColumn
      * @param string|object $columnOrIndexOrObject            
      * @param string $tableOrAliasOrUniqueId            
      */
-    public function __construct ($columnOrIndexOrObject, $tableOrAliasOrUniqueId = null)
+    public function __construct($columnOrIndexOrObject, $tableOrAliasOrUniqueId = null)
     {
         if ($tableOrAliasOrUniqueId !== null && ! is_string($tableOrAliasOrUniqueId)) {
             throw new \Exception('Variable $tableOrAliasOrUniqueId must be null or a string');
@@ -46,7 +48,8 @@ class Select extends AbstractColumn
     }
 
     /**
-     * @param string $filterSelectExpression
+     *
+     * @param string $filterSelectExpression            
      */
     public function setFilterSelectExpression($filterSelectExpression)
     {
@@ -54,10 +57,24 @@ class Select extends AbstractColumn
     }
 
     /**
+     *
      * @return string
      */
     public function getFilterSelectExpression()
     {
         return $this->filterSelectExpression;
+    }
+
+    /**
+     *
+     * @return boolean
+     */
+    public function hasFilterSelectExpression()
+    {
+        if ($this->filterSelectExpression !== null) {
+            return true;
+        }
+        
+        return false;
     }
 }

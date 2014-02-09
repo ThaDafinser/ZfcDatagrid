@@ -224,6 +224,7 @@ class Filter
     }
 
     /**
+     * Is this a column filter
      *
      * @return boolean
      */
@@ -237,6 +238,7 @@ class Filter
     }
 
     /**
+     * Only needed for column filter
      *
      * @return \ZfcDatagrid\Column\AbstractColumn
      */
@@ -276,56 +278,73 @@ class Filter
     /**
      * Check if a value is the same (used for style, display actions)
      *
-     * @param mixed $currentValue            
-     * @param mixed $expectedValue            
+     * @param mixed $currentValue
+     *            rowValue
+     * @param mixed $expectedValue
+     *            filterValue
      * @param string $operator            
      *
      * @return boolean
      */
     public static function isApply($currentValue, $expectedValue, $operator = Filter::EQUAL)
     {
+        list ($currentValue, $expectedValue) = self::convertValues($currentValue, $expectedValue, $operator);
+        
         switch ($operator) {
             
             case Filter::LIKE:
-                if (stripos((string) $expectedValue, (string) $currentValue) !== false) {
+                if (stripos($currentValue, $expectedValue) !== false) {
                     return true;
                 }
                 break;
             
-            // case Filter::LIKE_LEFT:
-            // $pos = stripos((string) $expectedValue, (string) $currentValue);
-            // if ($pos === 0) {
-            // return true;
-            // }
-            // break;
+            case Filter::LIKE_LEFT:
+                $length = strlen($expectedValue);
+                $start = 0 - $length;
+                $searchedValue = substr($currentValue, $start, $length);
+                if (stripos($searchedValue, $expectedValue) !== false) {
+                    return true;
+                }
+                break;
             
-            // case Filter::LIKE_RIGHT:
-            // $length = strlen($expectedValue) - 1;
-            // $pos = stripos($currentValue, $expectedValue);
-            // if ($pos === $length) {
-            // return true;
-            // }
-            // return false;
-            // break;
+            case Filter::LIKE_RIGHT:
+                $length = strlen($expectedValue);
+                $searchedValue = substr($currentValue, 0, $length);
+                if (stripos($searchedValue, $expectedValue) !== false) {
+                    return true;
+                }
+                break;
             
             case Filter::NOT_LIKE:
-                if (stripos((string) $expectedValue, (string) $currentValue) === false) {
+                if (stripos($currentValue, $expectedValue) === false) {
                     return true;
                 }
                 break;
             
-            // case Filter::NOT_LIKE_LEFT:
-            // $pos = stripos((string) $expectedValue, (string) $currentValue);
-            // if ($pos === false) {
-            // return true;
-            // }
-            // break;
+            case Filter::NOT_LIKE_LEFT:
+                $length = strlen($expectedValue);
+                $start = 0 - $length;
+                $searchedValue = substr($currentValue, $start, $length);
+                if (stripos($searchedValue, $expectedValue) === false) {
+                    return true;
+                }
+                break;
+            
+            case Filter::NOT_LIKE_RIGHT:
+                $length = strlen($expectedValue);
+                $searchedValue = substr($currentValue, 0, $length);
+                if (stripos($searchedValue, $expectedValue) === false) {
+                    return true;
+                }
+                break;
             
             case Filter::EQUAL:
+            case Filter::IN:
                 return $currentValue == $expectedValue;
                 break;
             
             case Filter::NOT_EQUAL:
+            case Filter::NOT_IN:
                 return $currentValue != $expectedValue;
                 break;
             
@@ -345,11 +364,49 @@ class Filter
                 return $currentValue < $expectedValue;
                 break;
             
+            case Filter::BETWEEN:
+                if (count($expectedValue) >= 2) {
+                    if ($currentValue >= $expectedValue[0] && $currentValue <= $expectedValue[1]) {
+                        return true;
+                    }
+                } else {
+                    throw new InvalidArgumentException('Between needs exactly an array of two expected values. Give: "' . print_r($expectedValue, true));
+                }
+                break;
+            
             default:
                 throw new InvalidArgumentException('currently not implemented filter type: "' . $operator . '"');
                 break;
         }
         
         return false;
+    }
+
+    /**
+     *
+     * @param unknown $currentValue            
+     * @param unknown $expectedValue            
+     * @param string $operator            
+     * @return array
+     */
+    private static function convertValues($currentValue, $expectedValue, $operator = Filter::EQUAL)
+    {
+        switch ($operator) {
+            
+            case Filter::LIKE:
+            case Filter::LIKE_LEFT:
+            case Filter::LIKE_RIGHT:
+            case Filter::NOT_LIKE:
+            case Filter::NOT_LIKE_LEFT:
+            case Filter::NOT_LIKE_RIGHT:
+                $currentValue = (string) $currentValue;
+                $expectedValue = (string) $expectedValue;
+                break;
+        }
+        
+        return array(
+            $currentValue,
+            $expectedValue
+        );
     }
 }

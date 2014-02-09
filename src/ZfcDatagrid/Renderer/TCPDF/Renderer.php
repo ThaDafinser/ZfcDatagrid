@@ -9,6 +9,7 @@ use ZfcDatagrid\Column;
 use Zend\Http\Response\Stream as ResponseStream;
 use Zend\Http\Headers;
 use TCPDF;
+use ZfcDatagrid\Library\ImageResize;
 
 class Renderer extends AbstractRenderer
 {
@@ -248,13 +249,14 @@ class Renderer extends AbstractRenderer
             switch (get_class($column->getType())) {
                 
                 case 'ZfcDatagrid\Column\Type\Icon':
+                    // @deprecated
                     // "min" height for such a column
-                    $height = 10;
+                    // $height = 10;
                     break;
                 
                 case 'ZfcDatagrid\Column\Type\Image':
                     // "min" height for such a column
-                    $height = 15;
+                    $height = 19;
                     break;
                 
                 default:
@@ -378,7 +380,7 @@ class Renderer extends AbstractRenderer
                             $link = array_shift($link);
                         }
                     }
-                    list ($width, $height) = $this->calcImageSize($pdf, $link, $column->getWidth() - 2, $rowHeight - 2);
+                    list ($width, $height) = $this->calcImageSize($link, $column->getWidth() - 2, $rowHeight - 2);
                     // Image($file, $x='', $y='', $w=0, $h=0, $type='', $link='', $align='', $resize=false, $dpi=300, $palign='', $ismask=false, $imgmask=false, $border=0, $fitbox=false, $hidden=false, $fitonpage=false, $alt=false, $altimgs=array()) {
                     $pdf->Image($link, $x + 1, $y + 1, $width, $height, '', '', 'L', true, 300, '', false, false, 0, false, false, true, false, array());
                     break;
@@ -399,36 +401,24 @@ class Renderer extends AbstractRenderer
 
     /**
      *
-     * @param TCPDF $pdf            
      * @param string $image            
      * @param number $maxWidth            
      * @param number $maxHeight            
      * @return array
      */
-    private function calcImageSize(TCPDF $pdf, $image, $maxWidth, $maxHeight)
+    private function calcImageSize($image, $maxWidth, $maxHeight)
     {
-        list ($width, $height) = getimagesize($image);
+        $pdf = $this->getPdf();
         
+        list ($width, $height) = getimagesize($image);
         $width = $pdf->pixelsToUnits($width);
         $height = $pdf->pixelsToUnits($height);
-        $ratio = $width / $height;
         
-        $widthDiff = $maxWidth - $width;
-        $heightDiff = $maxHeight - $height;
-        
-        if ($widthDiff < ($heightDiff * $ratio)) {
-            // resize based on width
-            $widthPdf = $maxWidth;
-            $heightPdf = $maxWidth / $ratio;
-        } else {
-            // resize based on height
-            $widthPdf = $maxHeight / $ratio;
-            $heightPdf = $maxHeight;
-        }
+        list ($newWidth, $newHeight) = ImageResize::getCalculatedSize($width, $height, $maxWidth, $maxHeight);
         
         return array(
-            $widthPdf,
-            $heightPdf
+            $newWidth,
+            $newHeight
         );
     }
 

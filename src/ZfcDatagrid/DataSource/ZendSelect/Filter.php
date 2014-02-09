@@ -67,8 +67,8 @@ class Filter
         if ($column->getSelectPart2() != '') {
             $colString .= '.' . $column->getSelectPart2();
         }
-        if ($filterSelectExpression = $column->getFilterSelectExpression()) {
-            $colString = sprintf($filterSelectExpression, $colString);
+        if ($column instanceof Column\Select && $column->hasFilterSelectExpression()) {
+            $colString = sprintf($column->getFilterSelectExpression(), $colString);
         }
         $values = $filter->getValues();
         

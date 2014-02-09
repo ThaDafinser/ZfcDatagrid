@@ -90,6 +90,9 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         ), $action->getAttributes());
         
         $this->assertEquals('error', $action->getAttribute('class'));
+        
+        $action->removeAttribute('class');
+        $this->assertEquals('', $action->getAttribute('class'));
     }
 
     public function testTitle()
@@ -165,32 +168,31 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
             $this->column->getUniqueId() => '23'
         )));
     }
-    
+
     public function testIsDisplayedAndOperatorDisplay()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
         $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
-    
+        
         $action->setShowOnValueOperator('AND');
-    
+        
         $this->assertTrue($action->isDisplayed(array(
             $this->column->getUniqueId() => '23'
         )));
-    
-    
+        
         $action->addShowOnValue($this->column, '23', Filter::EQUAL);
         $action->addShowOnValue($this->column, '24', Filter::NOT_EQUAL);
-    
+        
         $this->assertTrue($action->isDisplayed(array(
             $this->column->getUniqueId() => '23'
         )));
     }
-    
+
     public function testIsDisplayedAndOperatorNoDisplay()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
         $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
-    
+        
         $action->setShowOnValueOperator('AND');
         
         $action->addShowOnValue($this->column, '23', Filter::EQUAL);
@@ -199,10 +201,19 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($action->isDisplayed(array(
             $this->column->getUniqueId() => '23'
         )));
-    
+        
         $this->assertFalse($action->isDisplayed(array(
             $this->column->getUniqueId() => '33'
         )));
+    }
+
+    public function testSetShowOnValueOperatorException()
+    {
+        /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
+        $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
+        
+        $this->setExpectedException('InvalidArgumentException');
+        $action->setShowOnValueOperator('XOR');
     }
 
     public function testIsDisplayedException()
@@ -210,8 +221,8 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
         $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
         
-        $this->setExpectedException('Exception');
-        $action->addShowOnValue($this->column, '23', Filter::BETWEEN);
+        $this->setExpectedException('InvalidArgumentException');
+        $action->addShowOnValue($this->column, '23', 'UNknownFilter');
         $action->isDisplayed(array(
             $this->column->getUniqueId() => '32'
         ));

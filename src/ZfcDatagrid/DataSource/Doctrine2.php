@@ -47,7 +47,7 @@ class Doctrine2 extends AbstractDataSource
     {
         $qb = $this->getData();
         
-        /**
+        /*
          * Step 1) Apply needed columns
          */
         $selectColumns = array();
@@ -65,7 +65,7 @@ class Doctrine2 extends AbstractDataSource
         $qb->resetDQLPart('select');
         $qb->select($selectColumns);
         
-        /**
+        /*
          * Step 2) Apply sorting
          */
         if (count($this->getSortConditions()) > 0) {
@@ -90,17 +90,18 @@ class Doctrine2 extends AbstractDataSource
             }
         }
         
-        /**
+        /*
          * Step 3) Apply filters
          */
         $filterColumn = new Doctrine2\Filter($qb);
         foreach ($this->getFilters() as $filter) {
+            /* @var $filter \ZfcDatagrid\Filter */
             if ($filter->isColumnFilter() === true) {
                 $filterColumn->applyFilter($filter);
             }
         }
         
-        /**
+        /*
          * Step 4) Pagination
          */
         $this->setPaginatorAdapter(new PaginatorAdapter($qb));

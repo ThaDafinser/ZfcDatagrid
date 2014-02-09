@@ -60,8 +60,16 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     protected $mvcEvent;
 
+    /**
+     *
+     * @var array
+     */
     protected $parameters = array();
 
+    /**
+     *
+     * @var mixed
+     */
     protected $url;
 
     /**
@@ -108,6 +116,10 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     protected $dataSource = null;
 
+    /**
+     *
+     * @var integer
+     */
     protected $defaulItemsPerPage = 25;
 
     /**
@@ -143,6 +155,12 @@ class Datagrid implements ServiceLocatorAwareInterface
 
     /**
      *
+     * @var boolean
+     */
+    protected $isCustomFiltered = false;
+
+    /**
+     *
      * @var Paginator
      */
     protected $paginator = null;
@@ -161,20 +179,36 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     protected $viewModel;
 
+    /**
+     *
+     * @var boolean
+     */
     protected $isInit = false;
 
+    /**
+     *
+     * @var boolean
+     */
     protected $isDataLoaded = false;
 
+    /**
+     *
+     * @var boolean
+     */
     protected $isRendered = false;
 
+    /**
+     *
+     * @var string
+     */
     protected $forceRenderer;
 
     private $specialMethods = array(
-        'filterSelectOptions' => 2,
-        'rendererParameter' => 3,
-        'replaceValues' => 2,
-        'select' => 2,
-        'sortDefault' => 2
+        'filterSelectOptions',
+        'rendererParameter',
+        'replaceValues',
+        'select',
+        'sortDefault'
     );
 
     /**
@@ -364,9 +398,14 @@ class Datagrid implements ServiceLocatorAwareInterface
      * Set the translator
      *
      * @param Translator $translator            
+     * @throws \InvalidArgumentException
      */
-    public function setTranslator(Translator $translator = null)
+    public function setTranslator($translator = null)
     {
+        if (! $translator instanceof Translator && ! $translator instanceof \Zend\I18n\Translator\TranslatorInterface) {
+            throw new \InvalidArgumentException('Translator must be an instanceof "Zend\I18n\Translator\Translator" or "Zend\I18n\Translator\TranslatorInterface"');
+        }
+        
         $this->translator = $translator;
     }
 
@@ -414,12 +453,12 @@ class Datagrid implements ServiceLocatorAwareInterface
             $this->dataSource = new DataSource\ZendSelect($data);
             $this->dataSource->setAdapter($args[1]);
         } elseif ($data instanceof Collection) {
-            $em = func_get_arg(1);
-            if ($em === false || ! $em instanceof \Doctrine\ORM\EntityManager) {
-                throw new \Exception('If providing a Collection, also the EntityManager is needed as a second parameter');
+            $args = func_get_args();
+            if (count($args) === 1 || ! $args[1] instanceof \Doctrine\ORM\EntityManager) {
+                throw new \InvalidArgumentException('If providing a Collection, also the Doctrine\ORM\EntityManager is needed as a second parameter');
             }
             $this->dataSource = new DataSource\Doctrine2Collection($data);
-            $this->dataSource->setEntityManager($em);
+            $this->dataSource->setEntityManager($args[1]);
         } else {
             throw new \InvalidArgumentException('$data must implement the interface ZfcDatagrid\DataSource\DataSourceInterface');
         }
@@ -494,6 +533,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     }
 
     /**
+     * These parameters are handled to the view + over all grid actions
      *
      * @param array $parameters            
      */
@@ -572,66 +612,68 @@ class Datagrid implements ServiceLocatorAwareInterface
     /**
      * Create a column from array instanceof
      *
-     * @param mixed $column            
+     * @param mixed $col            
      *
      * @return Column\AbstractColumn
      */
-    private function createColumn($column)
+    private function createColumn($config)
     {
-        if (is_array($column)) {
-            $type = isset($column['type']) ? $column['type'] : 'Select';
-            if (class_exists($type, true)) {
-                $class = $type;
-            } elseif (class_exists('ZfcDatagrid\\Column\\' . $type, true)) {
-                $class = 'ZfcDatagrid\\Column\\' . $type;
-            } else {
-                throw new \Exception('Column type: "' . $type . '" not found!');
+        if ($config instanceof Column\AbstractColumn) {
+            return $config;
+        }
+        
+        if (! is_array($config) && ! $config instanceof Column\AbstractColumn) {
+            throw new \InvalidArgumentException('createColumn() supports only a config array or instanceof Column\AbstractColumn as a parameter');
+        }
+        
+        $colType = isset($config['colType']) ? $config['colType'] : 'Select';
+        if (class_exists($colType, true)) {
+            $class = $colType;
+        } elseif (class_exists('ZfcDatagrid\\Column\\' . $colType, true)) {
+            $class = 'ZfcDatagrid\\Column\\' . $colType;
+        } else {
+            throw new \InvalidArgumentException('Column type: "' . $colType . '" not found!');
+        }
+        
+        if ($class == 'ZfcDatagrid\\Column\\Select') {
+            if (! isset($config['select']['column'])) {
+                throw new \InvalidArgumentException('For "ZfcDatagrid\Column\Select" the option select[column] must be defined!');
             }
+            $table = isset($config['select']['table']) ? $config['select']['table'] : null;
             
-            if ($class == 'ZfcDatagrid\\Column\\Select') {
-                if (! isset($column['index'])) {
-                    throw new \InvalidArgumentException('For "ZfcDatagrid\\Column\\Select" an index to select must be defined!');
-                }
-                $table = isset($column['table']) ? $column['table'] : null;
-                $instance = new $class($column['index'], $table);
-            } else {
-                $instance = new $class();
-            }
-            
-            foreach ($column as $key => $value) {
-                $method = 'set' . ucfirst($key);
-                if (method_exists($instance, $method)) {
-                    if (in_array($key, $this->specialMethods)) {
-                        if ($key == 'style') {
-                            $instance->addStyle($value);
-                            break;
-                        }
-                        $count = $this->specialMethods[$key];
-                        
-                        if ($count == 2) {
-                            if (is_array($value) && count($value) === 2) {}
-                        } else {
-                            throw new \Exception('currently not supported. count arguments: "' . $count . '"');
-                        }
+            $instance = new $class($config['select']['column'], $table);
+        } else {
+            $instance = new $class();
+        }
+        
+        foreach ($config as $key => $value) {
+            $method = 'set' . ucfirst($key);
+            if (method_exists($instance, $method)) {
+                
+                if (in_array($key, $this->specialMethods)) {
+                    if (! is_array($value)) {
+                        $value = array(
+                            $value
+                        );
                     }
-                    
-                    $instance->{$method}($value);
-                    break;
+                    call_user_func_array(array(
+                        $instance,
+                        $method
+                    ), $value);
+                } else {
+                    call_user_func(array(
+                        $instance,
+                        $method
+                    ), $value);
                 }
             }
-            
-            $column = $instance;
         }
         
-        if (! $column instanceof Column\AbstractColumn) {
-            throw new \InvalidArgumentException('addColumn supports only array or instanceof Column\AbstractColumn as a parameter');
-        }
-        
-        return $column;
+        return $instance;
     }
 
     /**
-     * Set all columns by an array
+     * Set multiple columns by array (willoverwrite all existing)
      *
      * @param array $columns            
      */
@@ -639,9 +681,8 @@ class Datagrid implements ServiceLocatorAwareInterface
     {
         $useColumns = array();
         
-        foreach ($columns as $column) {
-            $col = $this->createColumn($column);
-            
+        foreach ($columns as $col) {
+            $col = $this->createColumn($col);
             $useColumns[$col->getUniqueId()] = $col;
         }
         
@@ -651,7 +692,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     /**
      * Add a column by array config or instanceof Column\AbstractColumn
      *
-     * @param Column\AbstractColumn $col            
+     * @param array|Column\AbstractColumn $col            
      */
     public function addColumn($col)
     {
@@ -714,6 +755,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     }
 
     /**
+     * If disabled, the toolbar filter will not be shown to the user
      *
      * @param boolean $mode            
      */
@@ -729,6 +771,27 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function isUserFilterEnabled()
     {
         return (bool) $this->isUserFilterEnabled;
+    }
+
+    /**
+     * If the grid is the filtered custom, all other filters are ignored
+     * e.g.
+     * default column filter, user column filter, ...
+     *
+     * @param boolean $mode            
+     */
+    public function setCustomFiltered($mode = true)
+    {
+        $this->isCustomFiltered = (bool) $mode;
+    }
+
+    /**
+     *
+     * @return boolean
+     */
+    public function isCustomFiltered()
+    {
+        return $this->isCustomFiltered;
     }
 
     /**
@@ -769,6 +832,8 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function setRenderer($name = null)
     {
+        trigger_error('setRenderer() is deprecated, please use setRendererName() instead', E_USER_DEPRECATED);
+        
         $this->forceRenderer = $name;
     }
 
@@ -847,6 +912,8 @@ class Datagrid implements ServiceLocatorAwareInterface
                 $renderer->setCacheData($this->getCache()
                     ->getItem($this->getCacheId()));
                 
+                $renderer->setCustomFiltered($this->isCustomFiltered());
+                
                 $this->renderer = $renderer;
             } else {
                 throw new \Exception('Renderer service was not found, please register it: "' . $rendererName . '"');
@@ -909,18 +976,7 @@ class Datagrid implements ServiceLocatorAwareInterface
             }
         }
         
-        /**
-         * Save cache
-         */
-        if ($renderer->isExport() === false) {
-            $cacheData = array(
-                'sortConditions' => $renderer->getSortConditions(),
-                'filters' => $renderer->getFilters()
-            );
-            $success = $this->getCache()->setItem($this->getCacheId(), $cacheData);
-        }
-        
-        /**
+        /*
          * Step 2) Load the data (Paginator)
          */
         {
@@ -950,13 +1006,25 @@ class Datagrid implements ServiceLocatorAwareInterface
             }
         }
         
-        /**
-         * Step 3) Format the data
-         * - Translate
-         * - Replace
-         * - Date / time / datetime
-         * - Numbers
-         * - ...
+        /*
+         * Save cache
+         */
+        
+        if ($renderer->isExport() === false) {
+            $cacheData = array(
+                'sortConditions' => $renderer->getSortConditions(),
+                'filters' => $renderer->getFilters(),
+                'currentPage' => $this->getPaginator()->getCurrentPageNumber()
+            );
+            $success = $this->getCache()->setItem($this->getCacheId(), $cacheData);
+            if ($success !== true) {
+                $options = $this->getCache()->getOptions();
+                throw new \Exception('Could not save the datagrid cache. Does the directory "' . $options->getCacheDir() . '" exists and is writeable?');
+            }
+        }
+        
+        /*
+         * Step 3) Format the data - Translate - Replace - Date / time / datetime - Numbers - ...
          */
         $prepareData = new PrepareData($data, $this->getColumns());
         $prepareData->setRendererName($this->getRendererName());
@@ -973,6 +1041,8 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function execute()
     {
+        trigger_error('execute() is deprecated, please use render() instead', E_USER_DEPRECATED);
+        
         if ($this->isRendered() === false) {
             $this->render();
         }
@@ -1045,6 +1115,12 @@ class Datagrid implements ServiceLocatorAwareInterface
         $this->toolbarTemplate = (string) $name;
     }
 
+    /**
+     * Get the toolbar template name
+     * Return null if nothing custom set
+     *
+     * @return string null
+     */
     public function getToolbarTemplate()
     {
         return $this->toolbarTemplate;
@@ -1058,7 +1134,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function setViewModel(ViewModel $viewModel)
     {
         if ($this->viewModel !== null) {
-            throw new \Exception('A viewModel is already set (did you already called render()?)');
+            throw new \Exception('A viewModel is already set. Did you already called $grid->render() or $grid->getViewModel() before?');
         }
         
         $this->viewModel = $viewModel;

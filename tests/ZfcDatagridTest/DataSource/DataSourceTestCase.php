@@ -67,8 +67,9 @@ class DataSourceTestCase extends PHPUnit_Framework_TestCase
         
         $this->data = $data;
         
-        $col1 = new Column\Standard('volume');
-        $col1->setType(new Type\Number());
+        $col1 = new Column\Select('volume');
+        // intl dependency...
+        // $col1->setType(new Type\Number());
         $this->colVolumne = $col1;
         
         $col2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
@@ -76,7 +77,7 @@ class DataSourceTestCase extends PHPUnit_Framework_TestCase
         $col2->setSelect('edition');
         $this->colEdition = $col2;
         
-        $col3 = new Column\Standard('displayName', 'user');
+        $col3 = new Column\Select('displayName', 'user');
         $this->colUserDisplayName = $col3;
     }
 }

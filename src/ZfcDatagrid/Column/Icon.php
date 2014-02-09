@@ -3,8 +3,9 @@ namespace ZfcDatagrid\Column;
 
 /**
  * Display icons
- * 
+ *
  * @deprecated
+ *
  */
 class Icon extends AbstractColumn
 {
@@ -15,7 +16,7 @@ class Icon extends AbstractColumn
 
     protected $title = '';
 
-    public function __construct ($uniqueId = 'icon')
+    public function __construct($uniqueId = 'icon')
     {
         $this->setUniqueId($uniqueId);
         
@@ -24,17 +25,17 @@ class Icon extends AbstractColumn
         $this->setWidth(5);
     }
 
-    public function setIconClass ($name)
+    public function setIconClass($name)
     {
         $this->iconClass = (string) $name;
     }
 
-    public function getIconClass ()
+    public function getIconClass()
     {
         return $this->iconClass;
     }
 
-    public function hasIconClass ()
+    public function hasIconClass()
     {
         if ($this->getIconClass() != '') {
             return true;
@@ -43,17 +44,17 @@ class Icon extends AbstractColumn
         return false;
     }
 
-    public function setIconLink ($http)
+    public function setIconLink($http)
     {
         $this->iconLink = $http;
     }
 
-    public function getIconLink ()
+    public function getIconLink()
     {
         return $this->iconLink;
     }
 
-    public function hasIconLink ()
+    public function hasIconLink()
     {
         if ($this->getIconLink() != '') {
             return true;
@@ -62,18 +63,19 @@ class Icon extends AbstractColumn
         return false;
     }
 
-    public function setTitle ($title)
+    public function setTitle($title)
     {
         $this->title = (string) $title;
     }
 
-    public function getTitle ()
+    public function getTitle()
     {
         return $this->title;
     }
-    
-    public function hasTitle(){
-        if($this->getTitle() != ''){
+
+    public function hasTitle()
+    {
+        if ($this->getTitle() != '') {
             return true;
         }
         

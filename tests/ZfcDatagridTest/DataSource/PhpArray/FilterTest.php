@@ -3,6 +3,7 @@ namespace ZfcDatagridTest\DataSource\PhpArray;
 
 use PHPUnit_Framework_TestCase;
 use ZfcDatagrid\DataSource\PhpArray\Filter as FilterArray;
+use ZfcDatagrid\Filter;
 
 /**
  * @group DataSource
@@ -38,6 +39,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '~myValue,123');
+        $this->assertEquals(Filter::LIKE, $filter->getOperator());
         
         $filterArray = new FilterArray($filter);
         
@@ -47,7 +49,6 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '1234'
         )));
-        
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '51237'
         )));
@@ -136,7 +137,6 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '1234'
         )));
-        
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '51237'
         )));
@@ -395,6 +395,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '15 <> 30');
+        $this->assertEquals(Filter::BETWEEN, $filter->getOperator());
         
         $filterArray = new FilterArray($filter);
         

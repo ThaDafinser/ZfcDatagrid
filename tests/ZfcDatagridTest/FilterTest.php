@@ -391,49 +391,74 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $filter = new Filter();
         
         $this->assertTrue($filter->isApply('123', '123', Filter::LIKE));
-        $this->assertTrue($filter->isApply(123, '123asdf', Filter::LIKE));
-        $this->assertTrue($filter->isApply('123', 'text123text', Filter::LIKE));
-        $this->assertTrue($filter->isApply('myString', 'asdf myString', Filter::LIKE));
+        $this->assertTrue($filter->isApply('123asdf', '123', Filter::LIKE));
+        $this->assertTrue($filter->isApply('text123text', '123', Filter::LIKE));
+        $this->assertTrue($filter->isApply('asdf myString', 'myString', Filter::LIKE));
         $this->assertTrue($filter->isApply('smallWritten', 'SMALLWRITTEN', Filter::LIKE));
         
         $this->assertFalse($filter->isApply('smallWritten', 'somethingDifferent', Filter::LIKE));
     }
-    
-    // public function testIsApplyLikeLeft()
-    // {
-    // $filter = new Filter();
-    
-    // $this->assertTrue($filter->isApply('123', '123', Filter::LIKE_LEFT));
-    // $this->assertTrue($filter->isApply(123, '123asdf', Filter::LIKE_LEFT));
-    // $this->assertTrue($filter->isApply('smallWritten', 'SMALLWRITTEN', Filter::LIKE_LEFT));
-    
-    // $this->assertFalse($filter->isApply('123', 'text123text', Filter::LIKE_LEFT));
-    // $this->assertFalse($filter->isApply('myString', 'asdf myString', Filter::LIKE_LEFT));
-    // $this->assertFalse($filter->isApply('smallWritten', 'somethingDifferent', Filter::LIKE_LEFT));
-    // }
+
+    public function testIsApplyLikeLeft()
+    {
+        $filter = new Filter();
+        
+        $this->assertTrue($filter->isApply('123', '123', Filter::LIKE_LEFT));
+        $this->assertTrue($filter->isApply('asdf123', '123', Filter::LIKE_LEFT));
+        $this->assertTrue($filter->isApply('smallWritten', 'SMALLWRITTEN', Filter::LIKE_LEFT));
+        
+        $this->assertFalse($filter->isApply('text123text', '123', Filter::LIKE_LEFT), '123 %~ text123text');
+        $this->assertFalse($filter->isApply('myString asdf', 'myString', Filter::LIKE_LEFT), 'myString %~ myString asdf');
+        $this->assertFalse($filter->isApply('smallWritten', 'somethingDifferent', Filter::LIKE_LEFT), 'smallWritten %~ somethingDifferent');
+    }
+
+    public function testIsApplyLikeRight()
+    {
+        $filter = new Filter();
+        
+        $this->assertTrue($filter->isApply('123', '123', Filter::LIKE_RIGHT));
+        $this->assertTrue($filter->isApply('123asdf', 123, Filter::LIKE_RIGHT));
+        $this->assertTrue($filter->isApply('smallWritten', 'SMALLWRITTEN', Filter::LIKE_RIGHT));
+        
+        $this->assertFalse($filter->isApply('text123text', '123', Filter::LIKE_RIGHT));
+        $this->assertFalse($filter->isApply('asdf myString', 'myString', Filter::LIKE_RIGHT));
+        $this->assertFalse($filter->isApply('smallWritten', 'somethingDifferent', Filter::LIKE_RIGHT));
+    }
+
     public function testIsApplyNotLike()
     {
         $filter = new Filter();
         
         $this->assertTrue($filter->isApply(123, 456, Filter::NOT_LIKE));
         
-        $this->assertFalse($filter->isApply(123, 'test123', Filter::NOT_LIKE));
-        $this->assertFalse($filter->isApply(123, '123test', Filter::NOT_LIKE));
-        $this->assertFalse($filter->isApply(123, 'test123test', Filter::NOT_LIKE));
+        $this->assertFalse($filter->isApply('test123', 123, Filter::NOT_LIKE));
+        $this->assertFalse($filter->isApply('123test', 123, Filter::NOT_LIKE));
+        $this->assertFalse($filter->isApply('test123test', 123, Filter::NOT_LIKE));
         $this->assertFalse($filter->isApply(123, '123', Filter::NOT_LIKE));
     }
-    
-    // public function testIsApplyNotLikeLeft()
-    // {
-    // $filter = new Filter();
-    
-    // $this->assertTrue($filter->isApply(123, 456, Filter::NOT_LIKE_LEFT));
-    
-    // $this->assertFalse($filter->isApply(123, 'test123', Filter::NOT_LIKE_LEFT));
-    // $this->assertFalse($filter->isApply(123, '123test', Filter::NOT_LIKE_LEFT));
-    // $this->assertFalse($filter->isApply(123, 'test123test', Filter::NOT_LIKE_LEFT));
-    // $this->assertFalse($filter->isApply(123, '123', Filter::NOT_LIKE_LEFT));
-    // }
+
+    public function testIsApplyNotLikeLeft()
+    {
+        $filter = new Filter();
+        
+        $this->assertTrue($filter->isApply(123, 456, Filter::NOT_LIKE_LEFT));
+        $this->assertTrue($filter->isApply(1234, 123, Filter::NOT_LIKE_LEFT));
+        
+        $this->assertFalse($filter->isApply(123, '123', Filter::NOT_LIKE_LEFT));
+        $this->assertFalse($filter->isApply('asdf123', 123, Filter::NOT_LIKE_LEFT));
+    }
+
+    public function testIsApplyNotLikeRight()
+    {
+        $filter = new Filter();
+        
+        $this->assertTrue($filter->isApply(123, 456, Filter::NOT_LIKE_RIGHT));
+        $this->assertTrue($filter->isApply(4123, 123, Filter::NOT_LIKE_RIGHT));
+        
+        $this->assertFalse($filter->isApply(123, '123', Filter::NOT_LIKE_RIGHT));
+        $this->assertFalse($filter->isApply('123asdf', 123, Filter::NOT_LIKE_RIGHT));
+    }
+
     public function testIsApplyEqual()
     {
         $filter = new Filter();
@@ -510,11 +535,50 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($filter->isApply(149, 150, Filter::LESS));
     }
 
+    public function testIsApplyBetween()
+    {
+        $filter = new Filter();
+        $this->assertTrue($filter->isApply(70, array(
+            50,
+            100
+        ), Filter::BETWEEN));
+        $this->assertTrue($filter->isApply(50, array(
+            50,
+            100
+        ), Filter::BETWEEN));
+        $this->assertTrue($filter->isApply(100, array(
+            50,
+            100
+        ), Filter::BETWEEN));
+        
+        $this->assertFalse($filter->isApply(49, array(
+            50,
+            100
+        ), Filter::BETWEEN));
+        $this->assertFalse($filter->isApply(101, array(
+            50,
+            100
+        ), Filter::BETWEEN));
+        
+        $this->assertFalse($filter->isApply(49.99, array(
+            50,
+            100
+        ), Filter::BETWEEN));
+    }
+
+    public function testIsApplyBetweenInvalidArgumentException()
+    {
+        $filter = new Filter();
+        
+        $this->setExpectedException('\InvalidArgumentException');
+        $filter->isApply(123, 100, Filter::BETWEEN);
+    }
+
     public function testIsApplyInvalidArgumentException()
     {
         $filter = new Filter();
         
         $this->setExpectedException('\InvalidArgumentException');
-        $filter->isApply(123, 100, Filter::IN);
+        $filter->isApply(123, 100, 'UndefinedFilter');
     }
 }

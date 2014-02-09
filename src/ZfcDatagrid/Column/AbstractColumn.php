@@ -88,17 +88,32 @@ abstract class AbstractColumn
         return $this->uniqueId;
     }
 
+    /**
+     *
+     * @todo Move this to Column\Select
+     * @deprecated remove this
+     */
     public function setSelect($part1, $part2 = null)
     {
         $this->selectPart1 = $part1;
         $this->selectPart2 = $part2;
     }
 
+    /**
+     *
+     * @todo Move this to Column\Select
+     * @deprecated remove this
+     */
     public function getSelectPart1()
     {
         return $this->selectPart1;
     }
 
+    /**
+     *
+     * @todo Move this to Column\Select
+     * @deprecated remove this
+     */
     public function getSelectPart2()
     {
         return $this->selectPart2;
@@ -126,16 +141,31 @@ abstract class AbstractColumn
         return $this->width;
     }
 
+    /**
+     * Hide or show the column
+     *
+     * @param boolean $mode            
+     */
     public function setHidden($mode = true)
     {
         $this->isHidden = (bool) $mode;
     }
 
+    /**
+     * Is this column hidden?
+     *
+     * @return boolean
+     */
     public function isHidden()
     {
         return (bool) $this->isHidden;
     }
 
+    /**
+     * Set this column as primaryKey column
+     *
+     * @param boolean $mode            
+     */
     public function setIdentity($mode = true)
     {
         $this->isIdentity = (bool) $mode;
@@ -144,6 +174,11 @@ abstract class AbstractColumn
         $this->setHidden($mode);
     }
 
+    /**
+     * Is this a primaryKey column?
+     *
+     * @return boolean
+     */
     public function isIdentity()
     {
         return (bool) $this->isIdentity;
@@ -176,16 +211,42 @@ abstract class AbstractColumn
         return $this->type;
     }
 
+    /**
+     * Set styles
+     *
+     * @param array $styles            
+     */
+    public function setStyles(array $styles)
+    {
+        $this->styles = array();
+        
+        foreach ($styles as $style) {
+            $this->addStyle($style);
+        }
+    }
+
+    /**
+     *
+     * @param Style\AbstractStyle $style            
+     */
     public function addStyle(Style\AbstractStyle $style)
     {
         $this->styles[] = $style;
     }
 
+    /**
+     *
+     * @return Style\AbstractStyle[]
+     */
     public function getStyles()
     {
         return $this->styles;
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function hasStyles()
     {
         if (count($this->styles) > 0) {
@@ -254,11 +315,20 @@ abstract class AbstractColumn
         return false;
     }
 
+    /**
+     * Set that the data is getting sorted by this columns
+     *
+     * @param string $direction            
+     */
     public function setSortActive($direction = 'ASC')
     {
         $this->sortActive = $direction;
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function isSortActive()
     {
         if ($this->sortActive !== null) {
@@ -268,6 +338,10 @@ abstract class AbstractColumn
         return false;
     }
 
+    /**
+     *
+     * @return string
+     */
     public function getSortActiveDirection()
     {
         return $this->sortActive;
@@ -299,11 +373,19 @@ abstract class AbstractColumn
         }
     }
 
+    /**
+     *
+     * @return string
+     */
     public function getFilterDefaultValue()
     {
         return $this->filterDefaultValue;
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function hasFilterDefaultValue()
     {
         if ($this->filterDefaultValue != '') {
@@ -313,11 +395,19 @@ abstract class AbstractColumn
         }
     }
 
+    /**
+     *
+     * @param string $operation            
+     */
     public function setFilterDefaultOperation($operation = Filter::LIKE)
     {
         $this->filterDefaultOperation = $operation;
     }
 
+    /**
+     *
+     * @return string
+     */
     public function getFilterDefaultOperation()
     {
         if ($this->filterDefaultOperation != '') {
@@ -327,6 +417,11 @@ abstract class AbstractColumn
         return $this->getType()->getFilterDefaultOperation();
     }
 
+    /**
+     *
+     * @param array $options            
+     * @param boolean $noSelect            
+     */
     public function setFilterSelectOptions(array $options = null, $noSelect = true)
     {
         if ($noSelect === true) {
@@ -346,11 +441,19 @@ abstract class AbstractColumn
         $this->filterSelectOptions = null;
     }
 
+    /**
+     *
+     * @return array null
+     */
     public function getFilterSelectOptions()
     {
         return $this->filterSelectOptions;
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function hasFilterSelectOptions()
     {
         if (is_array($this->filterSelectOptions)) {
@@ -379,6 +482,10 @@ abstract class AbstractColumn
         return $this->filterActive;
     }
 
+    /**
+     *
+     * @return string
+     */
     public function getFilterActiveValue()
     {
         return $this->filterActiveValue;
@@ -459,13 +566,13 @@ abstract class AbstractColumn
     }
 
     /**
-     * Set parameter for a specific renderer (currently only supported for jqgrid)
+     * Set parameter for a specific renderer (currently only supported for jqGrid)
      *
      * @param string $name            
      * @param mixed $value            
      * @param string $rendererType            
      */
-    public function setRendererParameter($name, $value, $rendererType = 'jqgrid')
+    public function setRendererParameter($name, $value, $rendererType = 'jqGrid')
     {
         if (! isset($this->rendererParameter[$rendererType])) {
             $this->rendererParameter[$rendererType] = array();
@@ -482,7 +589,7 @@ abstract class AbstractColumn
      * @param string $rendererType            
      * @return array
      */
-    public function getRendererParameters($rendererName = 'jqgrid')
+    public function getRendererParameters($rendererName = 'jqGrid')
     {
         if (! isset($this->rendererParameter[$rendererName])) {
             $this->rendererParameter[$rendererName] = array();
@@ -525,11 +632,19 @@ abstract class AbstractColumn
         return false;
     }
 
+    /**
+     *
+     * @param boolean $mode            
+     */
     public function setRowClickDisabled($mode = true)
     {
         $this->rowClickEnabled = (bool) ! $mode;
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function isRowClickEnabled()
     {
         return $this->rowClickEnabled;
