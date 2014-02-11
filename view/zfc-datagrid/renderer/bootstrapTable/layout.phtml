@@ -112,22 +112,9 @@ if($this->rowClickAction !== null){
                     }
                     
                     $htmlFilter = '';
-					if ($column->isUserFilterEnabled() === true) {
-
-						if ($column->hasFilterSelectOptions() === true) {
-							$htmlFilter = '<select name="toolbarFilters[' . $column->getUniqueId() . ']" style="width: 80%" onchange="this.form.submit()">';
-							foreach ($column->getFilterSelectOptions() as $value => $option) {
-								if ($column->getFilterActiveValue() != '' && $column->getFilterActiveValue() == $value) {
-									$htmlFilter .= '<option value="' . $value . '" selected="selected">' . $option . '</option>';
-								} else {
-									$htmlFilter .= '<option value="' . $value . '">' . $option . '</option>';
-								}
-							}
-							$htmlFilter .= '</select>';
-						} else {
-							$htmlFilter = '<input type="text" name="toolbarFilters[' . $column->getUniqueId() . ']" style="width: 80%" value="' . $column->getFilterActiveValue() . '" />';
-						}
-					}
+                    if($column->isUserFilterEnabled() === true){
+                        $htmlFilter = '<input type="text" name="toolbarFilters['.$column->getUniqueId().']" style="width: 80%" value="'.$column->getFilterActiveValue().'" />';
+                    }
                     ?>
                     <td class="<?php echo implode(',', $classes); ?>">
                         <?php echo $htmlFilter; ?>
