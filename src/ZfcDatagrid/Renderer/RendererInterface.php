@@ -26,6 +26,13 @@ interface RendererInterface
     public function getName();
     
     /**
+     * Return the table classes
+     * 
+     * @return array
+     */
+    public function getTableClasses();
+ 
+    /**
      * Determine if the renderer is for export
      *
      * @return boolean

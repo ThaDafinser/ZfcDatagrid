@@ -143,6 +143,19 @@ class Renderer extends AbstractRenderer
         
         return $this->filters;
     }
+    
+    /**
+     * Get table classes
+     *
+     * @return array
+     */
+    public function getTableClasses ()
+    {
+        if (empty($this->tableClasses)) {
+            $this->tableClasses = array('table', 'table-striped', 'table-bordered');
+        }
+        return $this->tableClasses;
+    }
 
     public function getCurrentPageNumber ()
     {

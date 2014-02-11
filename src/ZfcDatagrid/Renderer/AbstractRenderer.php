@@ -33,6 +33,8 @@ abstract class AbstractRenderer implements RendererInterface
     protected $columns = array();
 
     protected $rowStyles = array();
+    
+    protected $tableClasses = array();
 
     protected $sortConditions = null;
 
@@ -640,6 +642,16 @@ abstract class AbstractRenderer implements RendererInterface
         
         return $filters;
     }
+    
+    /**
+     * Set table classes
+     *
+     * @param array $classes
+     */
+    public function setTableClasses(array $classes)
+    {
+        $this->tableClasses = $classes;
+    }
 
     /**
      * Set the current page number
@@ -693,6 +705,7 @@ abstract class AbstractRenderer implements RendererInterface
         
         $viewModel->setVariable('templateToolbar', $this->getToolbarTemplate());
         $viewModel->setVariable('rendererName', $this->getName());
+        $viewModel->setVariable('tableClasses', $this->getTableClasses());
         
         $options = $this->getOptions();
         $generalParameterNames = $options['generalParameterNames'];
