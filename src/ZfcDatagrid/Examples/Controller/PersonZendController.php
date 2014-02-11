@@ -91,7 +91,7 @@ class PersonZendController extends AbstractActionController
             $col->setType(new Type\Number());
             
             $style = new Style\Color(Style\Color::$RED);
-            $style->setByValue($col, 20);
+            $style->addByValue($col, 20);
             $col->addStyle($style);
             
             $grid->addColumn($col);

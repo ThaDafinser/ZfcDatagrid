@@ -68,7 +68,8 @@ class DataSourceTestCase extends PHPUnit_Framework_TestCase
         $this->data = $data;
         
         $col1 = new Column\Select('volume');
-        $col1->setType(new Type\Number());
+        // intl dependency...
+        // $col1->setType(new Type\Number());
         $this->colVolumne = $col1;
         
         $col2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');

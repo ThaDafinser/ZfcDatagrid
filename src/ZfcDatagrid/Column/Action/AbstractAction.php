@@ -231,7 +231,7 @@ abstract class AbstractAction
     /**
      * Get the show on value operator, e.g.
      * OR, AND
-     * 
+     *
      * @return string
      */
     public function getShowOnValueOperator()
@@ -285,32 +285,29 @@ abstract class AbstractAction
      */
     public function isDisplayed(array $row)
     {
-        if ($this->hasShowOnValues() === true) {
-            
-            $isDisplayed = false;
-            
-            foreach ($this->getShowOnValues() as $rule) {
-                
-                $value = '';
-                if (isset($row[$rule['column']->getUniqueId()])) {
-                    $value = $row[$rule['column']->getUniqueId()];
-                }
-                
-                $isDisplayedMatch = Filter::isApply($value, $rule['value'], $rule['comparison']);
-                if ($this->getShowOnValueOperator() == 'OR' && $isDisplayedMatch === true) {
-                    // For OR one match is enough
-                    return true;
-                } elseif ($this->getShowOnValueOperator() == 'AND' && $isDisplayedMatch === false) {
-                    return false;
-                } else {
-                    $isDisplayed = $isDisplayedMatch;
-                }
-            }
-            
-            return $isDisplayed;
+        if ($this->hasShowOnValues() === false) {
+            return true;
         }
         
-        return true;
+        $isDisplayed = false;
+        foreach ($this->getShowOnValues() as $rule) {
+            $value = '';
+            if (isset($row[$rule['column']->getUniqueId()])) {
+                $value = $row[$rule['column']->getUniqueId()];
+            }
+            
+            $isDisplayedMatch = Filter::isApply($value, $rule['value'], $rule['comparison']);
+            if ($this->getShowOnValueOperator() == 'OR' && $isDisplayedMatch === true) {
+                // For OR one match is enough
+                return true;
+            } elseif ($this->getShowOnValueOperator() == 'AND' && $isDisplayedMatch === false) {
+                return false;
+            } else {
+                $isDisplayed = $isDisplayedMatch;
+            }
+        }
+        
+        return $isDisplayed;
     }
 
     /**

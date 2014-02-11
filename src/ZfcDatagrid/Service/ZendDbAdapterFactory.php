@@ -11,6 +11,7 @@ class ZendDbAdapterFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $sm)
     {
         $config = $sm->get('config');
+        
         return new Adapter($config['zfcDatagrid_dbAdapter']);
     }
 }

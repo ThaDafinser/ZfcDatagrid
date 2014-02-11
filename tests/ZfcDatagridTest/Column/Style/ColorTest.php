@@ -1,38 +1,38 @@
 <?php
 namespace ZfcDatagridTest\Column\Style;
 
-use ZfcDatagrid\Column\Style\Color;
 use PHPUnit_Framework_TestCase;
+use ZfcDatagrid\Column\Style\AbstractColor;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\Style\Color
+ * @covers ZfcDatagrid\Column\Style\AbstractColor
  */
 class ColorTest extends PHPUnit_Framework_TestCase
 {
 
     public function testConstruct()
     {
-        $style = new Color(Color::$RED);
+        $style = new AbstractColor(AbstractColor::$RED);
         
         $this->assertEquals(255, $style->getRed());
         $this->assertEquals(0, $style->getGreen());
         $this->assertEquals(0, $style->getBlue());
         $this->assertEquals('ff0000', $style->getRgbHexString());
         
-        $style = new Color(Color::$GREEN);
+        $style = new AbstractColor(AbstractColor::$GREEN);
         $this->assertEquals(0, $style->getRed());
         $this->assertEquals(255, $style->getGreen());
         $this->assertEquals(0, $style->getBlue());
         $this->assertEquals('00ff00', $style->getRgbHexString());
         
-        $style = new Color(Color::$BLUE);
+        $style = new AbstractColor(AbstractColor::$BLUE);
         $this->assertEquals(0, $style->getRed());
         $this->assertEquals(0, $style->getGreen());
         $this->assertEquals(255, $style->getBlue());
         $this->assertEquals('0000ff', $style->getRgbHexString());
         
-        $style = new Color(50, 70, 30);
+        $style = new AbstractColor(50, 70, 30);
         $this->assertEquals(50, $style->getRed());
         $this->assertEquals(70, $style->getGreen());
         $this->assertEquals(30, $style->getBlue());
@@ -41,7 +41,7 @@ class ColorTest extends PHPUnit_Framework_TestCase
 
     public function testSetRgb()
     {
-        $style = new Color(0, 0, 0);
+        $style = new AbstractColor(0, 0, 0);
         
         $style->setRgb(20, 10, 5);
         $this->assertEquals(20, $style->getRed());
@@ -66,7 +66,7 @@ class ColorTest extends PHPUnit_Framework_TestCase
 
     public function testRgbHexString()
     {
-        $style = new Color(0, 0, 0);
+        $style = new AbstractColor(0, 0, 0);
         
         $this->assertEquals('000000', $style->getRgbHexString());
         

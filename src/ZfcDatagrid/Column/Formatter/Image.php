@@ -36,8 +36,12 @@ class Image extends AbstractFormatter
         return $this->linkAttributes;
     }
 
-    public function getFormattedValue($value, $columnUniqueId)
+    public function getFormattedValue(AbstractColumn $column)
     {
+        $row = $this->getRowData();
+        $value = $row[$column->getUniqueId()];
+        
+        
         if (is_array($value)) {
             $thumb = $value[0];
             

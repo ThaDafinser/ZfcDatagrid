@@ -26,6 +26,20 @@ class Renderer extends AbstractRenderer
 
     /**
      *
+     * @return HttpRequest
+     */
+    public function getRequest()
+    {
+        $request = parent::getRequest();
+        if (! $request instanceof HttpRequest) {
+            throw new \Exception('Request must be an instance of Zend\Http\PhpEnvironment\Request for HTML rendering');
+        }
+        
+        return $request;
+    }
+
+    /**
+     *
      * @see \ZfcDatagrid\Renderer\AbstractRenderer::getSortConditions()
      *
      * @return array
@@ -33,14 +47,11 @@ class Renderer extends AbstractRenderer
     public function getSortConditions()
     {
         if (is_array($this->sortConditions)) {
-            // set from cache! (for export)
             return $this->sortConditions;
         }
         
         $request = $this->getRequest();
-        if (! $request instanceof HttpRequest) {
-            throw new \Exception('Must be an instance of HttpRequest for HTML rendering');
-        }
+        
         $optionsRenderer = $this->getOptionsRenderer();
         $parameterNames = $optionsRenderer['parameterNames'];
         
@@ -94,16 +105,13 @@ class Renderer extends AbstractRenderer
             return $this->filters;
         }
         
-        $request = $this->getRequest();
-        if (! $request instanceof HttpRequest) {
-            throw new \Exception('Must be an instance of HttpRequest for HTML rendering');
-        }
         
         $filters = array();
         
         $optionsRenderer = $this->getOptionsRenderer();
         $parameterNames = $optionsRenderer['parameterNames'];
         
+        $request = $this->getRequest();
         $isSearch = $request->getPost($parameterNames['isSearch']);
         if ($isSearch == 'true') {
             // User filtering
@@ -161,7 +169,7 @@ class Renderer extends AbstractRenderer
     public function execute()
     {
         $request = $this->getRequest();
-        if ($request instanceof HttpRequest && $request->isXmlHttpRequest() === true && $request->isPost() === true && $request->getPost('nd') != '') {
+        if ($request->isXmlHttpRequest() === true && $request->isPost() === true && $request->getPost('nd') != '') {
             // AJAX Request...load only data...
             $viewModel = new JsonModel();
             $viewModel->setVariable('data', $this->getDataJqGrid());

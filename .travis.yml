@@ -10,16 +10,14 @@ php:
 matrix:
   allow_failures:
     - php: hhvm
-    - php: 5.3.3
     
 before_script:
  - composer install --prefer-source --dev --no-interaction
 
 script:
  - mkdir -p build/logs
- - ./vendor/bin/phpunit -c travis.phpunit.xml --coverage-clover build/clover.xml
- - php build/logs/coverage-checker.php build/clover.xml 60
+ - ./vendor/bin/phpunit -c travis.phpunit.xml --coverage-clover build/logs/clover.xml
 
 after_script:
-  - php vendor/bin/coveralls
- 
+  - php vendor/bin/coveralls -v
+  

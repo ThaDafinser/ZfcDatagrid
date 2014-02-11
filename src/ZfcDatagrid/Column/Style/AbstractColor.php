@@ -18,12 +18,20 @@ class AbstractColor extends AbstractStyle
         0
     );
 
+    /**
+     * 
+     * @var array
+     */
     public static $GREEN = array(
         0,
         255,
         0
     );
 
+    /**
+     * 
+     * @var array
+     */
     public static $BLUE = array(
         0,
         0,

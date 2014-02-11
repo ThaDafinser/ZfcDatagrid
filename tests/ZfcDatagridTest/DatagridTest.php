@@ -4,8 +4,11 @@ namespace ZfcDatagridTest;
 use PHPUnit_Framework_TestCase;
 use ZfcDatagrid\Datagrid;
 use Zend\Session\Container;
+use Zend\Stdlib\ErrorHandler;
+use ZfcDatagrid\Column;
 
 /**
+ * @group Datagrid
  * @covers ZfcDatagrid\Datagrid
  */
 class DatagridTest extends PHPUnit_Framework_TestCase
@@ -17,6 +20,12 @@ class DatagridTest extends PHPUnit_Framework_TestCase
      */
     private $grid;
 
+    /**
+     *
+     * @var array
+     */
+    private $config;
+
     public function setUp()
     {
         $config = include './config/module.config.php';
@@ -26,6 +35,8 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $config['cache']['adapter']['name'] = 'Memory';
         $config['cache']['adapter']['options'] = $cacheOptions->toArray();
         
+        $this->config = $config;
+        
         $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent');
         $mvcEvent->expects($this->any())
             ->method('getRequest')
@@ -33,7 +44,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceManager');
         
         $this->grid = new Datagrid();
-        $this->grid->setOptions($config);
+        $this->grid->setOptions($this->config);
         $this->grid->setMvcEvent($mvcEvent);
         $this->grid->setServiceLocator($serviceLocator);
     }
@@ -49,10 +60,12 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
     public function testId()
     {
+        $grid = new Datagrid();
+        
         $this->assertEquals('defaultGrid', $this->grid->getId());
         
-        $this->grid->setId('myCustomId');
-        $this->assertEquals('myCustomId', $this->grid->getId());
+        $grid->setId('myCustomId');
+        $this->assertEquals('myCustomId', $grid->getId());
     }
 
     public function testSession()
@@ -61,15 +74,23 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('defaultGrid', $this->grid->getSession()
             ->getName());
         
-        $this->grid->setSession(new Container('myName'));
+        $session = new Container('myName');
+        
+        $this->grid->setSession($session);
         $this->assertInstanceOf('Zend\Session\Container', $this->grid->getSession());
+        $this->assertSame($session, $this->grid->getSession());
         $this->assertEquals('myName', $this->grid->getSession()
             ->getName());
     }
 
     public function testCacheId()
     {
-        $this->assertEquals('_defaultGrid', $this->grid->getCacheId());
+        $grid = new Datagrid();
+        $sessionId = $grid->getSession()
+            ->getManager()
+            ->getId();
+        
+        $this->assertEquals($sessionId . '_defaultGrid', $this->grid->getCacheId());
         
         $this->grid->setCacheId('myCacheId');
         $this->assertEquals('myCacheId', $this->grid->getCacheId());
@@ -112,36 +133,94 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
     public function testDataSourceArray()
     {
-        $this->assertFalse($this->grid->hasDataSource());
+        $grid = new Datagrid();
+        $this->assertFalse($grid->hasDataSource());
         
-        $this->grid->setDataSource(array());
-        $this->assertTrue($this->grid->hasDataSource());
-        $this->assertInstanceOf('ZfcDatagrid\DataSource\PhpArray', $this->grid->getDataSource());
+        $grid->setDataSource(array());
+        $this->assertTrue($grid->hasDataSource());
+        $this->assertInstanceOf('ZfcDatagrid\DataSource\PhpArray', $grid->getDataSource());
         
         $source = $this->getMock('ZfcDatagrid\DataSource\PhpArray', array(), array(
             array()
         ));
-        $this->grid->setDataSource($source);
+        $grid->setDataSource($source);
+        $this->assertTrue($grid->hasDataSource());
         
         $this->setExpectedException('InvalidArgumentException');
-        $this->grid->setDataSource(null);
+        $grid->setDataSource(null);
     }
 
     public function testDataSourceZend()
     {
-        // $this->assertFalse($this->datagrid->hasDataSource());
+        // $this->assertFalse($this->grid->hasDataSource());
         
-        // $this->datagrid->setDataSource(array());
-        // $this->assertTrue($this->datagrid->hasDataSource());
-        // $this->assertInstanceOf('ZfcDatagrid\DataSource\PhpArray', $this->datagrid->getDataSource());
+        // $this->grid->setDataSource(array());
+        // $this->assertTrue($this->grid->hasDataSource());
+        // $this->assertInstanceOf('ZfcDatagrid\DataSource\PhpArray', $this->grid->getDataSource());
         
         // $select = $this->getMock('Zend\Db\Sql\Select');
-        // $this->datagrid->setDataSource($select);
+        // $this->grid->setDataSource($select);
         
         // $qb = $this->getMock('Doctrine\ORM\QueryBuilder', array(), array(
         // $this->getMock('Doctrine\ORM\EntityManager')
         // ));
-        // $this->datagrid->setDataSource($qb);
+        // $this->grid->setDataSource($qb);
+    }
+
+    public function testDataSourceZendSelect()
+    {
+        $grid = new Datagrid();
+        
+        $this->assertFalse($grid->hasDataSource());
+        
+        $select = $this->getMock('Zend\Db\Sql\Select', array(), array(), '', false);
+        
+        $platform = $this->getMock('Zend\Db\Adapter\Platform\Sqlite');
+        $platform->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('myPlatform'));
+        
+        $adapter = $this->getMock('Zend\Db\Adapter\Adapter', array(), array(), '', false);
+        $adapter->expects($this->any())
+            ->method('getPlatform')
+            ->will($this->returnValue($platform));
+        
+        $grid->setDataSource($select, $adapter);
+        $this->assertTrue($grid->hasDataSource());
+        $this->assertInstanceOf('ZfcDatagrid\Datasource\ZendSelect', $grid->getDataSource());
+        
+        $this->setExpectedException('InvalidArgumentException', 'For "Zend\Db\Sql\Select" also a "Zend\Db\Adapter\Sql" or "Zend\Db\Sql\Sql" is needed.');
+        $grid->setDataSource($select);
+    }
+
+    public function testDataSourceDoctrine()
+    {
+        $grid = new Datagrid();
+        
+        $this->assertFalse($grid->hasDataSource());
+        
+        $qb = $this->getMock('Doctrine\ORM\QueryBuilder', array(), array(), '', false);
+        
+        $grid->setDataSource($qb);
+        $this->assertTrue($grid->hasDataSource());
+        $this->assertInstanceOf('ZfcDatagrid\DataSource\Doctrine2', $grid->getDataSource());
+    }
+
+    public function testDataSourceDoctrineCollection()
+    {
+        $grid = new Datagrid();
+        
+        $this->assertFalse($grid->hasDataSource());
+        
+        $coll = $this->getMock('Doctrine\Common\Collections\ArrayCollection', array(), array(), '', false);
+        $em = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
+        
+        $grid->setDataSource($coll, $em);
+        $this->assertTrue($grid->hasDataSource());
+        $this->assertInstanceOf('ZfcDatagrid\DataSource\Doctrine2Collection', $grid->getDataSource());
+        
+        $this->setExpectedException('InvalidArgumentException', 'If providing a Collection, also the Doctrine\ORM\EntityManager is needed as a second parameter');
+        $grid->setDataSource($coll);
     }
 
     public function testDefaultItemsPerRow()
@@ -190,6 +269,9 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
     public function testExportRenderers()
     {
+        /*
+         * NEVER define default export renderer -> because the user cant remove them after!
+         */
         $this->assertEquals(array(), $this->grid->getExportRenderers());
         
         $this->grid->setExportRenderers(array(
@@ -201,7 +283,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         ), $this->grid->getExportRenderers());
     }
 
-    public function testColumns()
+    public function testAddColumn()
     {
         $this->assertEquals(array(), $this->grid->getColumns());
         
@@ -213,37 +295,216 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->grid->addColumn($col);
         
         $this->assertCount(1, $this->grid->getColumns());
-        // @todo
-        // $this->assertEquals($col, $this->datagrid->getColumnByUniqueId('myUniqueId'));
         
         $this->assertEquals(null, $this->grid->getColumnByUniqueId('notAvailable'));
     }
 
-    public function testColumnArray()
+    public function testAddColumnInvalidArgumentException()
     {
-        $this->assertEquals(array(), $this->grid->getColumns());
+        $grid = new Datagrid();
+        
+        $this->setExpectedException('InvalidArgumentException', 'createColumn() supports only a config array or instanceof Column\AbstractColumn as a parameter');
+        $grid->addColumn(null);
+    }
+
+    public function testAddColumnArrayFQN()
+    {
+        $grid = new Datagrid();
+        $this->assertEquals(array(), $grid->getColumns());
         
         $column = array(
-            'name' => 'Test',
-            'index' => '123',
-            'label' => 'blubb',
-//             'select' => array(
-//                 'table',
-//                 'column'
-//             )
+            'colType' => 'ZfcDatagrid\Column\Select',
+            'label' => 'My label',
+            'select' => array(
+                'column' => 'myCol',
+                'table' => 'myTable'
+            )
+        );
+        $grid->addColumn($column);
+        
+        $this->assertCount(1, $grid->getColumns());
+        
+        $col = $grid->getColumnByUniqueId('myTable_myCol');
+        $this->assertInstanceOf('ZfcDatagrid\Column\Select', $col);
+        $this->assertEquals('My label', $col->getLabel());
+    }
+
+    public function testAddColumnArrayInvalidColType()
+    {
+        $grid = new Datagrid();
+        $this->assertEquals(array(), $grid->getColumns());
+        
+        $column = array(
+            'colType' => 'ZfcDatagrid\Column\Unknown',
+            'label' => 'My label'
         );
         
-        $this->grid->addColumn($column);
+        $this->setExpectedException('InvalidArgumentException', 'Column type: "ZfcDatagrid\Column\Unknown" not found!');
+        $grid->addColumn($column);
+    }
+
+    public function testAddColumnArraySelect()
+    {
+        $grid = new Datagrid();
+        $this->assertEquals(array(), $grid->getColumns());
         
-        $this->assertCount(1, $this->grid->getColumns());
+        $column = array(
+            'label' => 'My label',
+            'select' => array(
+                'column' => 'myCol',
+                'table' => 'myTable'
+            )
+        );
+        $grid->addColumn($column);
         
-        $col = $this->grid->getColumnByUniqueId('123');
+        $this->assertCount(1, $grid->getColumns());
+        
+        $col = $grid->getColumnByUniqueId('myTable_myCol');
         $this->assertInstanceOf('ZfcDatagrid\Column\Select', $col);
-        $this->assertEquals(null, $this->grid->getColumnByUniqueId('notAvailable'));
-        $this->assertEquals('blubb', $col->getLabel());
+        $this->assertEquals('My label', $col->getLabel());
+    }
+
+    public function testAddColumnArraySelectInvalidArgumentException()
+    {
+        $grid = new Datagrid();
+        $this->assertEquals(array(), $grid->getColumns());
         
-//         $this->assertEquals('table', $col->getSelectPart1());
-//         $this->assertEquals('column', $col->getSelectPart2());
+        $column = array(
+            'label' => 'My label'
+        );
+        $this->setExpectedException('InvalidArgumentException', 'For "ZfcDatagrid\Column\Select" the option select[column] must be defined!');
+        $grid->addColumn($column);
+    }
+
+    public function testAddColumnArrayTypeAction()
+    {
+        $grid = new Datagrid();
+        
+        $column = array(
+            'colType' => 'action',
+            'label' => 'My action'
+        );
+        $grid->addColumn($column);
+        
+        $this->assertCount(1, $grid->getColumns());
+        
+        $col = $grid->getColumnByUniqueId('action');
+        $this->assertInstanceOf('ZfcDatagrid\Column\Action', $col);
+        $this->assertEquals('My action', $col->getLabel());
+    }
+
+    public function testAddColumnArrayStyle()
+    {
+        $grid = new Datagrid();
+        
+        $bold = new Column\Style\Bold();
+        
+        $column = array(
+            'select' => array(
+                'column' => 'myCol',
+                'table' => 'myTable'
+            ),
+            'styles' => array(
+                $bold
+            )
+        );
+        $grid->addColumn($column);
+        
+        $this->assertCount(1, $grid->getColumns());
+        
+        $col = $grid->getColumnByUniqueId('myTable_myCol');
+        $this->assertInstanceOf('ZfcDatagrid\Column\Select', $col);
+        
+        $this->assertEquals(array(
+            $bold
+        ), $col->getStyles());
+    }
+
+    public function testAddColumnArraySortDefaultMinimal()
+    {
+        $grid = new Datagrid();
+        
+        $column = array(
+            'select' => array(
+                'column' => 'myCol',
+                'table' => 'myTable'
+            ),
+            'sortDefault' => 1
+        );
+        $grid->addColumn($column);
+        
+        $this->assertCount(1, $grid->getColumns());
+        
+        $col = $grid->getColumnByUniqueId('myTable_myCol');
+        $this->assertInstanceOf('ZfcDatagrid\Column\Select', $col);
+        
+        $this->assertEquals(array(
+            'priority' => 1,
+            'sortDirection' => 'ASC'
+        ), $col->getSortDefault());
+    }
+
+    public function testAddColumnArraySortDefault()
+    {
+        $grid = new Datagrid();
+        
+        $column = array(
+            'select' => array(
+                'column' => 'myCol',
+                'table' => 'myTable'
+            ),
+            'sortDefault' => array(
+                1,
+                'ASC'
+            )
+        );
+        $grid->addColumn($column);
+        
+        $this->assertCount(1, $grid->getColumns());
+        
+        $col = $grid->getColumnByUniqueId('myTable_myCol');
+        $this->assertInstanceOf('ZfcDatagrid\Column\Select', $col);
+        
+        $this->assertEquals(array(
+            'priority' => 1,
+            'sortDirection' => 'ASC'
+        ), $col->getSortDefault());
+    }
+
+    public function testSetColumn()
+    {
+        $grid = new Datagrid();
+        
+        $this->assertEquals(array(), $grid->getColumns());
+        
+        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col->setUniqueId('myUniqueId');
+        
+        $col2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col2->setUniqueId('myUniqueId2');
+        
+        $grid->setColumns(array(
+            $col,
+            $col2
+        ));
+        
+        $this->assertCount(2, $grid->getColumns());
+        $this->assertEquals($col, $grid->getColumnByUniqueId('myUniqueId'));
+        $this->assertEquals($col2, $grid->getColumnByUniqueId('myUniqueId2'));
+    }
+
+    public function testRowStyle()
+    {
+        $grid = new Datagrid();
+        $this->assertFalse($grid->hasRowStyles());
+        
+        $grid->addRowStyle($this->getMock('ZfcDatagrid\Column\Style\Bold'));
+        $this->assertCount(1, $grid->getRowStyles());
+        $this->assertTrue($grid->hasRowStyles());
+        
+        $grid->addRowStyle($this->getMock('ZfcDatagrid\Column\Style\Italic'));
+        $this->assertCount(2, $grid->getRowStyles());
+        $this->assertTrue($grid->hasRowStyles());
     }
 
     public function testUserFilter()
@@ -252,6 +513,18 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         
         $this->grid->setUserFilterDisabled(true);
         $this->assertFalse($this->grid->isUserFilterEnabled());
+    }
+
+    public function testCustomFiltered()
+    {
+        $grid = new Datagrid();
+        $this->assertFalse($grid->isCustomFiltered());
+        
+        $grid->setCustomFiltered(true);
+        $this->assertTrue($grid->isCustomFiltered());
+        
+        $grid->setCustomFiltered(false);
+        $this->assertFalse($grid->isCustomFiltered());
     }
 
     public function testRowClickAction()
@@ -264,7 +537,18 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->grid->hasRowClickAction());
     }
 
-    public function testGetRendererName()
+    public function testSetRendererDeprecated()
+    {
+        $grid = new Datagrid();
+        
+        ErrorHandler::start(E_USER_DEPRECATED);
+        $grid->setRenderer('myRenderer');
+        $err = ErrorHandler::stop();
+        
+        $this->assertInstanceOf('ErrorException', $err);
+    }
+
+    public function testRendererName()
     {
         // Default on HTTP
         $this->assertEquals('bootstrapTable', $this->grid->getRendererName());
@@ -300,9 +584,42 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('jqGrid', $this->grid->getRendererName());
     }
 
-    public function testGetRenderer()
+    public function testToolbarTemplate()
     {
+        $grid = new Datagrid();
         
-        // $this->datagrid->getRenderer();
+        $this->assertNull($grid->getToolbarTemplate());
+        
+        $grid->setToolbarTemplate('my-module/my-controller/grid-toolbar');
+        $this->assertEquals('my-module/my-controller/grid-toolbar', $grid->getToolbarTemplate());
+    }
+
+    public function testViewModelDefault()
+    {
+        $grid = new Datagrid();
+        
+        $defaultView = $grid->getViewModel();
+        $this->assertInstanceOf('Zend\View\Model\ViewModel', $defaultView);
+        $this->assertSame($defaultView, $grid->getViewModel());
+    }
+
+    public function testSetViewModel()
+    {
+        $grid = new Datagrid();
+        
+        $customView = $this->getMock('Zend\View\Model\ViewModel');
+        $grid->setViewModel($customView);
+        $this->assertSame($customView, $grid->getViewModel());
+    }
+
+    public function testSetViewModelException()
+    {
+        $grid = new Datagrid();
+        $grid->getViewModel();
+        
+        $customView = $this->getMock('Zend\View\Model\ViewModel');
+        
+        $this->setExpectedException('Exception', 'A viewModel is already set. Did you already called $grid->render() or $grid->getViewModel() before?');
+        $grid->setViewModel($customView);
     }
 }

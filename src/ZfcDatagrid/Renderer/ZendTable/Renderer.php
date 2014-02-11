@@ -1,8 +1,9 @@
 <?php
-namespace ZfcDatagrid\Renderer\Text;
+namespace ZfcDatagrid\Renderer\ZendTable;
 
 use ZfcDatagrid\Renderer\AbstractRenderer;
 use ZfcDataGrid\Column\Type;
+use ZfcDatagrid\Column;
 use Zend\Text\Table\Table as TextTable;
 use Zend\Text\Table;
 use Zend\Console\Request as ConsoleRequest;
@@ -11,7 +12,7 @@ use Zend\Console\Console;
 /**
  * For CLI or E-Mail useful
  */
-class ZendTable extends AbstractRenderer
+class Renderer extends AbstractRenderer
 {
 
     /**
@@ -20,6 +21,8 @@ class ZendTable extends AbstractRenderer
      * @var integer
      */
     private $consoleWidth;
+
+    private $columnsToDisplay;
 
     public function getName()
     {
@@ -38,16 +41,31 @@ class ZendTable extends AbstractRenderer
 
     /**
      *
+     * @return ConsoleRequest
+     */
+    public function getRequest()
+    {
+        $request = parent::getRequest();
+        if (! $request instanceof ConsoleRequest) {
+            throw new \Exception('Request must be an instance of Zend\Console\Request for console rendering');
+        }
+        
+        return $request;
+    }
+
+    /**
+     *
      * @todo enable parameters from console
      *      
      * @return array
      */
     public function getSortConditions()
     {
-        $request = $this->getRequest();
-        if (! $request instanceof ConsoleRequest) {
-            throw new \Exception('Must be an instance of ConsoleRequest for console rendering');
+        if (is_array($this->sortConditions)) {
+            return $this->sortConditions;
         }
+        
+        $request = $this->getRequest();
         
         $optionsRenderer = $this->getOptionsRenderer();
         $parameterNames = $optionsRenderer['parameterNames'];
@@ -104,9 +122,6 @@ class ZendTable extends AbstractRenderer
     public function getFilters()
     {
         $request = $this->getRequest();
-        if (! $request instanceof ConsoleRequest) {
-            throw new \Exception('Must be an instance of ConsoleRequest for console rendering');
-        }
         
         return array();
     }
@@ -119,9 +134,6 @@ class ZendTable extends AbstractRenderer
     public function getCurrentPageNumber()
     {
         $request = $this->getRequest();
-        if (! $request instanceof ConsoleRequest) {
-            throw new \Exception('Must be an instance of ConsoleRequest for console rendering');
-        }
         
         $optionsRenderer = $this->getOptionsRenderer();
         $parameterNames = $optionsRenderer['parameterNames'];
@@ -135,9 +147,6 @@ class ZendTable extends AbstractRenderer
     public function getItemsPerPage($defaultItems = 25)
     {
         $request = $this->getRequest();
-        if (! $request instanceof ConsoleRequest) {
-            throw new \Exception('Must be an instance of ConsoleRequest for console rendering');
-        }
         
         $optionsRenderer = $this->getOptionsRenderer();
         $parameterNames = $optionsRenderer['parameterNames'];
@@ -193,27 +202,25 @@ class ZendTable extends AbstractRenderer
          * Header
          */
         $tableRow = new Table\Row();
-        foreach ($this->getColumns() as $column) {
-            if (! $column->isHidden()) {
-                $label = $column->getLabel();
-                if ($this->getTranslator() !== null) {
-                    $label = $this->getTranslator()->translate($label);
-                }
-                if (function_exists('mb_strtoupper')) {
-                    $label = mb_strtoupper($label);
-                } else {
-                    $label = strtoupper($label);
-                }
-                
-                $tableColumn = new Table\Column($label);
-                if ($column->getType() instanceof Type\Number) {
-                    $tableColumn->setAlign(Table\Column::ALIGN_RIGHT);
-                } else {
-                    $tableColumn->setAlign(Table\Column::ALIGN_LEFT);
-                }
-                
-                $tableRow->appendColumn($tableColumn);
+        foreach ($this->getColumnsToDisplay() as $column) {
+            $label = $column->getLabel();
+            if ($this->getTranslator() !== null) {
+                $label = $this->getTranslator()->translate($label);
             }
+            if (function_exists('mb_strtoupper')) {
+                $label = mb_strtoupper($label);
+            } else {
+                $label = strtoupper($label);
+            }
+            
+            $tableColumn = new Table\Column($label);
+            if ($column->getType() instanceof Type\Number) {
+                $tableColumn->setAlign(Table\Column::ALIGN_RIGHT);
+            } else {
+                $tableColumn->setAlign(Table\Column::ALIGN_LEFT);
+            }
+            
+            $tableRow->appendColumn($tableColumn);
         }
         $table->appendRow($tableRow);
         
@@ -223,20 +230,18 @@ class ZendTable extends AbstractRenderer
         foreach ($this->getData() as $row) {
             $tableRow = new Table\Row();
             
-            foreach ($this->getColumns() as $column) {
-                if (! $column->isHidden()) {
-                    $value = '';
-                    if (isset($row[$column->getUniqueId()]))
-                        $value = $row[$column->getUniqueId()];
-                    
-                    $tableColumn = new Table\Column($value);
-                    if ($column->getType() instanceof Type\Number) {
-                        $tableColumn->setAlign(Table\Column::ALIGN_RIGHT);
-                    } else {
-                        $tableColumn->setAlign(Table\Column::ALIGN_LEFT);
-                    }
-                    $tableRow->appendColumn($tableColumn);
+            foreach ($this->getColumnsToDisplay() as $column) {
+                $value = '';
+                if (isset($row[$column->getUniqueId()]))
+                    $value = $row[$column->getUniqueId()];
+                
+                $tableColumn = new Table\Column($value);
+                if ($column->getType() instanceof Type\Number) {
+                    $tableColumn->setAlign(Table\Column::ALIGN_RIGHT);
+                } else {
+                    $tableColumn->setAlign(Table\Column::ALIGN_LEFT);
                 }
+                $tableRow->appendColumn($tableColumn);
             }
             
             $table->appendRow($tableRow);
@@ -264,20 +269,45 @@ class ZendTable extends AbstractRenderer
         return $table;
     }
 
+    /**
+     * Decide which columns we want to display
+     *
+     * @return Column\AbstractColumn[]
+     */
+    private function getColumnsToDisplay()
+    {
+        if (is_array($this->columnsToDisplay)) {
+            return $this->columnsToDisplay;
+        }
+        
+        $columnsToDisplay = array();
+        foreach ($this->getColumns() as $column) {
+            /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+            
+            if (! $column instanceof Column\Action && $column->isHidden() === false) {
+                $columnsToDisplay[] = $column;
+            }
+        }
+        if (count($columnsToDisplay) === 0) {
+            throw new \Exception('No columns to di available');
+        }
+        
+        $this->columnsToDisplay = $columnsToDisplay;
+        
+        return $this->columnsToDisplay;
+    }
+
+    /**
+     *
+     * @return array
+     */
     private function getColumnWidth()
     {
         $return = array();
         
-        $displayColumns = array();
-        foreach ($this->getColumns() as $column) {
-            if (! $column->isHidden()) {
-                $displayColumns[] = 1;
-            }
-        }
-        
-        $maxWidth = $this->getWidthAvailable() - count($displayColumns);
-        $oneColWidth = floor($maxWidth / count($displayColumns));
-        foreach ($displayColumns as &$col) {
+        $maxWidth = $this->getWidthAvailable() - count($this->getColumnsToDisplay());
+        $oneColWidth = floor($maxWidth / count($this->getColumnsToDisplay()));
+        foreach ($this->getColumnsToDisplay() as $col) {
             $return[] = (int) $oneColWidth * $col;
         }
         
@@ -293,7 +323,7 @@ class ZendTable extends AbstractRenderer
 
     /**
      * Get the console width
-     * 
+     *
      * @return number
      */
     private function getWidthAvailable()
@@ -303,7 +333,7 @@ class ZendTable extends AbstractRenderer
         }
         
         $console = Console::getInstance();
-        //Minus 2, because of the table!
+        // Minus 2, because of the table!
         $this->consoleWidth = $console->getWidth() - 2;
         
         return $this->consoleWidth;

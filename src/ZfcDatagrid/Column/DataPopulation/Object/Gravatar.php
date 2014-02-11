@@ -28,11 +28,19 @@ class Gravatar implements ObjectAwareInterface
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \ZfcDatagrid\Column\DataPopulation\ObjectAwareInterface::setParameterFromColumn()
+     */
     public function setParameterFromColumn($name, $value)
     {
         $this->setParameter($name, $value);
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \ZfcDatagrid\Column\DataPopulation\ObjectAwareInterface::toString()
+     */
     public function toString()
     {
 
