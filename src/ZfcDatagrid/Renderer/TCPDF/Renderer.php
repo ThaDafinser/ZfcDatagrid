@@ -49,8 +49,6 @@ class Renderer extends AbstractRenderer
 
     public function execute()
     {
-        $this->initPdf();
-        
         $pdf = $this->getPdf();
         
         // Check for PDF image header
@@ -170,6 +168,10 @@ class Renderer extends AbstractRenderer
      */
     public function getPdf()
     {
+        if ($this->pdf === null) {
+            $this->initPdf();
+        }
+        
         return $this->pdf;
     }
 
@@ -179,7 +181,7 @@ class Renderer extends AbstractRenderer
      *
      * @return multitype:\ZfcDatagrid\Column\AbstractColumn
      */
-    public function getColumnsToExport()
+    private function getColumnsToExport()
     {
         if (is_array($this->columnsToExport)) {
             return $this->columnsToExport;
@@ -231,7 +233,7 @@ class Renderer extends AbstractRenderer
      * @param array $row            
      * @return number
      */
-    public function getRowHeight(array $row)
+    private function getRowHeight(array $row)
     {
         $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
@@ -380,9 +382,11 @@ class Renderer extends AbstractRenderer
                             $link = array_shift($link);
                         }
                     }
-                    list ($width, $height) = $this->calcImageSize($link, $column->getWidth() - 2, $rowHeight - 2);
+                    
+                    $imageData = file_get_contents($image);
+                    list ($width, $height) = $this->calcImageSize($imageData, $column->getWidth() - 2, $rowHeight - 2);
                     // Image($file, $x='', $y='', $w=0, $h=0, $type='', $link='', $align='', $resize=false, $dpi=300, $palign='', $ismask=false, $imgmask=false, $border=0, $fitbox=false, $hidden=false, $fitonpage=false, $alt=false, $altimgs=array()) {
-                    $pdf->Image($link, $x + 1, $y + 1, $width, $height, '', '', 'L', true, 300, '', false, false, 0, false, false, true, false, array());
+                    $pdf->Image('@' . $imageData, $x + 1, $y + 1, $width, $height, '', '', 'L', true, 300, '', false, false, 0, false, false, true, false, array());
                     break;
                 
                 default:
@@ -401,16 +405,16 @@ class Renderer extends AbstractRenderer
 
     /**
      *
-     * @param string $image            
+     * @param string $imageData            
      * @param number $maxWidth            
      * @param number $maxHeight            
      * @return array
      */
-    private function calcImageSize($image, $maxWidth, $maxHeight)
+    private function calcImageSize($imageData, $maxWidth, $maxHeight)
     {
         $pdf = $this->getPdf();
         
-        list ($width, $height) = getimagesize($image);
+        list ($width, $height) = getimagesizefromstring($imageData);
         $width = $pdf->pixelsToUnits($width);
         $height = $pdf->pixelsToUnits($height);
         
@@ -422,7 +426,7 @@ class Renderer extends AbstractRenderer
         );
     }
 
-    public function setFontHeader()
+    private function setFontHeader()
     {
         $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
@@ -441,7 +445,7 @@ class Renderer extends AbstractRenderer
         $pdf->setTextRenderingMode(0.15, true, false);
     }
 
-    public function setFontData()
+    private function setFontData()
     {
         $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
@@ -459,13 +463,13 @@ class Renderer extends AbstractRenderer
         $pdf->setTextRenderingMode();
     }
 
-    public function setBold()
+    private function setBold()
     {
         $pdf = $this->getPdf();
         $pdf->setTextRenderingMode(0.15, true, false);
     }
 
-    public function setItalic()
+    private function setItalic()
     {
         $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
@@ -481,7 +485,7 @@ class Renderer extends AbstractRenderer
      *
      * @param array $rgb            
      */
-    public function setColor(array $rgb)
+    private function setColor(array $rgb)
     {
         $pdf = $this->getPdf();
         $pdf->SetTextColor($rgb['red'], $rgb['green'], $rgb['blue']);
@@ -491,7 +495,7 @@ class Renderer extends AbstractRenderer
      *
      * @param array $rgb            
      */
-    public function setBackgroundColor(array $rgb)
+    private function setBackgroundColor(array $rgb)
     {
         $pdf = $this->getPdf();
         $pdf->SetFillColor($rgb['red'], $rgb['green'], $rgb['blue']);
