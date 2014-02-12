@@ -383,7 +383,7 @@ class Renderer extends AbstractRenderer
                         }
                     }
                     
-                    $imageData = file_get_contents($image);
+                    $imageData = file_get_contents($link);
                     list ($width, $height) = $this->calcImageSize($imageData, $column->getWidth() - 2, $rowHeight - 2);
                     // Image($file, $x='', $y='', $w=0, $h=0, $type='', $link='', $align='', $resize=false, $dpi=300, $palign='', $ismask=false, $imgmask=false, $border=0, $fitbox=false, $hidden=false, $fitonpage=false, $alt=false, $altimgs=array()) {
                     $pdf->Image('@' . $imageData, $x + 1, $y + 1, $width, $height, '', '', 'L', true, 300, '', false, false, 0, false, false, true, false, array());
