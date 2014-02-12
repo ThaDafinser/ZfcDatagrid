@@ -12,7 +12,7 @@ matrix:
     - php: hhvm
     
 before_script:
- - composer install --prefer-source --dev --no-interaction
+ - composer update --prefer-source
 
 script:
  - mkdir -p build/logs
