@@ -117,7 +117,7 @@ if($this->rowClickAction !== null){
                         if ($column->hasFilterSelectOptions() === true) {
                             $htmlFilter = '<select name="toolbarFilters[' . $column->getUniqueId() . ']" style="width: 80%" onchange="this.form.submit()">';
                             foreach ($column->getFilterSelectOptions() as $value => $option) {
-                                if ($column->getFilterActiveValue() != '' && $column->getFilterActiveValue() == $value) {
+                                if ($column->getFilterActiveValue() == sprintf($column->getFilterDefaultOperation(), $value)) {
                                     $htmlFilter .= '<option value="' . $value . '" selected="selected">' . $option . '</option>';
                                 } else {
                                     $htmlFilter .= '<option value="' . $value . '">' . $option . '</option>';
