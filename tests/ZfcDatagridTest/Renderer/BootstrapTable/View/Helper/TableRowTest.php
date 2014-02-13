@@ -79,6 +79,10 @@ class TableRowTest extends PHPUnit_Framework_TestCase
 
     public function testType()
     {
+        if (! extension_loaded('intl')) {
+            $this->markTestSkipped('ext/intl not enabled');
+        }
+        
         $helper = new TableRow();
         
         $myCol = clone $this->myCol;
@@ -162,8 +166,8 @@ class TableRowTest extends PHPUnit_Framework_TestCase
         
         $helper = new TableRow();
         
-        $myCol = clone $this->myCol;
-        $myCol->setType(new Type\Number());
+        // must be instanceof Column\Select...
+        $myCol = new Column\Select('myCol');
         
         $action = new Column\Action\Checkbox();
         $action->setLink('http://example.com');
@@ -180,10 +184,6 @@ class TableRowTest extends PHPUnit_Framework_TestCase
         $this->assertContains('<input type="checkbox"', $html);
         
         // row action
-        
-        // must be instanceof Column\Select...
-        $myCol = new Column\Select('myCol');
-        
         $cols = array(
             $myCol,
             $colAction

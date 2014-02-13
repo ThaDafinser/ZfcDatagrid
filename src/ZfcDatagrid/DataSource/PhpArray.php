@@ -176,14 +176,20 @@ class PhpArray extends AbstractDataSource
             if ($remain != 0) {
                 throw new \InvalidArgumentException('The parameter count for each sortArgument has to be three. Given count of: ' . count($values));
             }
-            $args[] = &$values[0]; // column value
-            $args[] = &$values[1]; // sort direction
-            $args[] = &$values[2]; // sort type
+            $args[] = $values[0]; // column value
+            $args[] = $values[1]; // sort direction
+            $args[] = $values[2]; // sort type
         }
         
-        $args[] = &$data;
+        $args[] = $data;
         
-        call_user_func_array('array_multisort', $args);
+        //possible 5.3.3 fix?
+        $sortArgs = array();
+        foreach ($args as $key => &$value) {
+            $sortArgs[$key] = &$value;
+        }
+        
+        call_user_func_array('array_multisort', $sortArgs);
         
         return end($args);
     }

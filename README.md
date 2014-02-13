@@ -13,6 +13,11 @@ If you need help, please use following ressources
 - [Code examples](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/src/ZfcDatagrid/Examples/Controller/)
 - [Issues/Help](https://github.com/ThaDafinser/ZfcDatagrid/issues)
 
+If you want to help out on this project:
+- seek through the issues
+- documentation
+- ...any help
+
 ## Features
 * Datasources: Doctrine2 (QueryBuilder + Collections), Zend\Db, PhpArray, ... (others possible)
 * Output types: jqGrid, Bootstrap table, PDF, Excel, console, ... (others possible)

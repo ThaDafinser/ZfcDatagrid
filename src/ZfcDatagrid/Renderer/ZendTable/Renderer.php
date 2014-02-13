@@ -3,23 +3,30 @@ namespace ZfcDatagrid\Renderer\ZendTable;
 
 use ZfcDatagrid\Renderer\AbstractRenderer;
 use ZfcDataGrid\Column\Type;
+use ZfcDatagrid\Column;
 use Zend\Text\Table\Table as TextTable;
 use Zend\Text\Table;
 use Zend\Console\Request as ConsoleRequest;
 use Zend\Console\Console;
+use Zend\Console\Adapter\AdapterInterface as ConsoleAdapter;
 
 /**
- * For CLI or E-Mail useful
+ * For CLI
  */
 class Renderer extends AbstractRenderer
 {
 
     /**
-     * In windows...
      *
-     * @var integer
+     * @var ConsoleAdapter
      */
-    private $consoleWidth;
+    private $consoleAdapter;
+
+    /**
+     *
+     * @var Column\AbstractColumn[]
+     */
+    private $columnsToDisplay;
 
     public function getName()
     {
@@ -37,6 +44,7 @@ class Renderer extends AbstractRenderer
     }
 
     /**
+     *
      * @return ConsoleRequest
      */
     public function getRequest()
@@ -47,6 +55,28 @@ class Renderer extends AbstractRenderer
         }
         
         return $request;
+    }
+
+    /**
+     *
+     * @param ConsoleAdapter $adapter            
+     */
+    public function setConsoleAdapter(ConsoleAdapter $adapter)
+    {
+        $this->consoleAdapter = $adapter;
+    }
+
+    /**
+     *
+     * @return ConsoleAdapter
+     */
+    public function getConsoleAdapter()
+    {
+        if ($this->consoleAdapter === null) {
+            $this->consoleAdapter = Console::getInstance();
+        }
+        
+        return $this->consoleAdapter;
     }
 
     /**
@@ -74,12 +104,12 @@ class Renderer extends AbstractRenderer
             $sortColumns = explode(',', $sortColumns);
             $sortDirections = explode(',', $sortDirections);
             
-            if (count($sortColumns) != count($sortDirections)) {
-                throw new \Exception('Count missmatch order columns/direction');
-            }
-            
             foreach ($sortColumns as $key => $sortColumn) {
-                $sortDirection = strtoupper($sortDirections[$key]);
+                if (isset($sortDirections[$key])) {
+                    $sortDirection = strtoupper($sortDirections[$key]);
+                } else {
+                    $sortDirection = 'ASC';
+                }
                 
                 if ($sortDirection != 'ASC' && $sortDirection != 'DESC') {
                     $sortDirection = 'ASC';
@@ -167,7 +197,7 @@ class Renderer extends AbstractRenderer
 
     /**
      *
-     * @return \Zend\Text\Table\Table
+     * @return TextTable
      */
     private function getTable()
     {
@@ -175,14 +205,14 @@ class Renderer extends AbstractRenderer
         $translator = $this->getTranslator();
         
         $options = array(
-            'columnWidths' => $this->getColumnWidth()
+            'columnWidths' => $this->getColumnWidths()
         );
         
         $table = new TextTable($options);
         $table->setDecorator('ascii');
         // $table->setAutoSeparate(TextTable::AUTO_SEPARATE_HEADER);
         
-        /**
+        /*
          * Title
          */
         $tableRow = new Table\Row();
@@ -198,27 +228,25 @@ class Renderer extends AbstractRenderer
          * Header
          */
         $tableRow = new Table\Row();
-        foreach ($this->getColumns() as $column) {
-            if (! $column->isHidden()) {
-                $label = $column->getLabel();
-                if ($this->getTranslator() !== null) {
-                    $label = $this->getTranslator()->translate($label);
-                }
-                if (function_exists('mb_strtoupper')) {
-                    $label = mb_strtoupper($label);
-                } else {
-                    $label = strtoupper($label);
-                }
-                
-                $tableColumn = new Table\Column($label);
-                if ($column->getType() instanceof Type\Number) {
-                    $tableColumn->setAlign(Table\Column::ALIGN_RIGHT);
-                } else {
-                    $tableColumn->setAlign(Table\Column::ALIGN_LEFT);
-                }
-                
-                $tableRow->appendColumn($tableColumn);
+        foreach ($this->getColumnsToDisplay() as $column) {
+            $label = $column->getLabel();
+            if ($this->getTranslator() !== null) {
+                $label = $this->getTranslator()->translate($label);
             }
+            if (function_exists('mb_strtoupper')) {
+                $label = mb_strtoupper($label);
+            } else {
+                $label = strtoupper($label);
+            }
+            
+            $tableColumn = new Table\Column($label);
+            if ($column->getType() instanceof Type\Number) {
+                $tableColumn->setAlign(Table\Column::ALIGN_RIGHT);
+            } else {
+                $tableColumn->setAlign(Table\Column::ALIGN_LEFT);
+            }
+            
+            $tableRow->appendColumn($tableColumn);
         }
         $table->appendRow($tableRow);
         
@@ -228,26 +256,24 @@ class Renderer extends AbstractRenderer
         foreach ($this->getData() as $row) {
             $tableRow = new Table\Row();
             
-            foreach ($this->getColumns() as $column) {
-                if (! $column->isHidden()) {
-                    $value = '';
-                    if (isset($row[$column->getUniqueId()]))
-                        $value = $row[$column->getUniqueId()];
-                    
-                    $tableColumn = new Table\Column($value);
-                    if ($column->getType() instanceof Type\Number) {
-                        $tableColumn->setAlign(Table\Column::ALIGN_RIGHT);
-                    } else {
-                        $tableColumn->setAlign(Table\Column::ALIGN_LEFT);
-                    }
-                    $tableRow->appendColumn($tableColumn);
+            foreach ($this->getColumnsToDisplay() as $column) {
+                $value = '';
+                if (isset($row[$column->getUniqueId()]))
+                    $value = $row[$column->getUniqueId()];
+                
+                $tableColumn = new Table\Column($value);
+                if ($column->getType() instanceof Type\Number) {
+                    $tableColumn->setAlign(Table\Column::ALIGN_RIGHT);
+                } else {
+                    $tableColumn->setAlign(Table\Column::ALIGN_LEFT);
                 }
+                $tableRow->appendColumn($tableColumn);
             }
             
             $table->appendRow($tableRow);
         }
         
-        /**
+        /*
          * Pagination
          */
         $tableRow = new Table\Row();
@@ -269,48 +295,63 @@ class Renderer extends AbstractRenderer
         return $table;
     }
 
-    private function getColumnWidth()
+    /**
+     * Decide which columns we want to display
+     *
+     * @return Column\AbstractColumn[]
+     */
+    private function getColumnsToDisplay()
     {
-        $return = array();
+        if (is_array($this->columnsToDisplay)) {
+            return $this->columnsToDisplay;
+        }
         
-        $displayColumns = array();
+        $columnsToDisplay = array();
         foreach ($this->getColumns() as $column) {
-            if (! $column->isHidden()) {
-                $displayColumns[] = 1;
+            /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+            
+            if (! $column instanceof Column\Action && $column->isHidden() === false) {
+                $columnsToDisplay[] = $column;
             }
         }
-        
-        $maxWidth = $this->getWidthAvailable() - count($displayColumns);
-        $oneColWidth = floor($maxWidth / count($displayColumns));
-        foreach ($displayColumns as &$col) {
-            $return[] = (int) $oneColWidth * $col;
+        if (count($columnsToDisplay) === 0) {
+            throw new \Exception('No columns to display available');
         }
         
-        $i = 0;
-        while (array_sum($return) < $maxWidth) {
-            $return[$i] = $return[$i] + 1;
-            
-            $i ++;
-        }
+        $this->columnsToDisplay = $columnsToDisplay;
         
-        return $return;
+        return $this->columnsToDisplay;
     }
 
     /**
-     * Get the console width
      *
-     * @return number
+     * @return array
      */
-    private function getWidthAvailable()
+    private function getColumnWidths()
     {
-        if ($this->consoleWidth !== null) {
-            return $this->consoleWidth;
+        $cols = $this->getColumnsToDisplay();
+        
+        $this->calculateColumnWidthPercent($cols);
+        
+        $widthAvailable = $this->getConsoleAdapter()->getWidth() - 2;
+        $onePercent = $widthAvailable / 100;
+        
+        $colWidths = array();
+        foreach ($cols as $col) {
+            /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+            $width = $col->getWidth() * $onePercent;
+            $width = (int) floor($col->getWidth() * $onePercent);
+            
+            $colWidths[] = $width;
         }
         
-        $console = Console::getInstance();
-        // Minus 2, because of the table!
-        $this->consoleWidth = $console->getWidth() - 2;
+        $i = 0;
+        while (array_sum($colWidths) < $widthAvailable) {
+            $colWidths[$i] = $colWidths[$i] + 1;
         
-        return $this->consoleWidth;
+            $i ++;
+        }
+        
+        return $colWidths;
     }
 }

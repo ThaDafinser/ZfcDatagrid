@@ -119,6 +119,17 @@ class CategoryController extends AbstractActionController
         
         return $grid->getResponse();
     }
+    
+
+    public function consoleAction ()
+    {
+        $viewModel = new ViewModel();
+    
+        $grid = $this->getGrid();
+        $grid->render();
+    
+        return $grid->getResponse();
+    }
 
     /**
      * Get the tree data from a record
