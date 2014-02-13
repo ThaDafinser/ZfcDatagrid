@@ -7,7 +7,6 @@ use ZfcDatagrid\Column\Type;
 use ZfcDatagrid\Column\Style;
 use PHPUnit_Framework_TestCase;
 use Zend\Paginator;
-use ZfcDatagridTest\DatagridMocks;
 use ReflectionClass;
 
 /**
@@ -16,6 +15,17 @@ use ReflectionClass;
  */
 class AbstractRendererTest extends PHPUnit_Framework_TestCase
 {
+
+    /**
+     *
+     * @var \ZfcDatagrid\Column\AbstractColumn
+     */
+    private $colMock;
+
+    public function setUp()
+    {
+        $this->colMock = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+    }
 
     public function testOptions()
     {
@@ -107,8 +117,9 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         
         $this->assertNull($renderer->getPaginator());
         
-        $paginator = DatagridMocks::getPaginator();
-        $renderer->setPaginator($paginator);
+        $testCollection = range(1, 101);
+        $pagintorMock = \Zend\Paginator\Paginator(new \Zend\Paginator\Adapter\ArrayAdapter($testCollection));
+        $renderer->setPaginator($pagintorMock);
         
         $this->assertSame($paginator, $renderer->getPaginator());
     }
@@ -119,7 +130,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         
         $this->assertEquals(array(), $renderer->getColumns());
         
-        $col = DatagridMocks::getColBasic();
+        $col = clone $this->colMock;
         $renderer->setColumns(array(
             $col
         ));
@@ -154,7 +165,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         $method = $reflection->getMethod('calculateColumnWidthPercent');
         $method->setAccessible(true);
         
-        $col1 = DatagridMocks::getColBasic();
+        $col1 = clone $this->colMock;
         $cols = array(
             $col1
         );
@@ -171,10 +182,10 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         /*
          * Width higher than 100%
          */
-        $col1 = DatagridMocks::getColBasic();
+        $col1 = clone $this->colMock;
         $col1->setWidth(90);
         
-        $col2 = DatagridMocks::getColBasic();
+        $col2 = clone $this->colMock;
         $col2->setWidth(60);
         $cols = array(
             $col1,
@@ -394,7 +405,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
         $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
         
-        $col1 = DatagridMocks::getColBasic();
+        $col1 = clone $this->colMock;
         $col1->setUniqueId('myCol');
         $col1->setSortDefault(1);
         $renderer->setColumns(array(
@@ -440,7 +451,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
         $renderer->setMvcEvent($mvcEvent);
         
-        $col1 = DatagridMocks::getColBasic();
+        $col1 = clone $this->colMock;
         $col1->setUniqueId('myCol');
         $col1->setFilterDefaultValue('filterValue');
         $renderer->setColumns(array(
@@ -463,7 +474,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
         $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
         
-        $col1 = DatagridMocks::getColBasic();
+        $col1 = clone $this->colMock;
         $col1->setUniqueId('myCol');
         $col1->setFilterDefaultValue('filterValue');
         $renderer->setColumns(array(

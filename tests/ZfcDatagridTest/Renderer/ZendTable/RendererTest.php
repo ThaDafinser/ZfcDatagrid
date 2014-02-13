@@ -3,7 +3,6 @@ namespace ZfcDatagridTest\Renderer\ZendTable;
 
 use PHPUnit_Framework_TestCase;
 use ZfcDatagrid\Renderer\ZendTable;
-use ZfcDatagridTest\DatagridMocks;
 use ReflectionClass;
 
 /**
@@ -38,10 +37,18 @@ class RendererTest extends PHPUnit_Framework_TestCase
      */
     private $mvcEventMock;
 
+    /**
+     * 
+     * @var \ZfcDatagrid\Column\AbstractColumn
+     */
+    private $colMock;
+    
     public function setUp()
     {
         $this->requestMock = $this->getMock('Zend\Console\Request', array(), array(), '', false);
         $this->mvcEventMock = $this->getMock('Zend\Mvc\MvcEvent', array(), array(), '', false);
+        
+        $this->colMock = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
     }
 
     public function testGetName()
@@ -154,10 +161,10 @@ class RendererTest extends PHPUnit_Framework_TestCase
         $renderer->setOptions($this->options);
         $renderer->setMvcEvent($mvcEvent);
         
-        $col1 = DatagridMocks::getColBasic();
+        $col1 = clone $this->colMock;
         $col1->setUniqueId('myCol1');
         
-        $col2 = DatagridMocks::getColBasic();
+        $col2 = clone $this->colMock;
         $col2->setUniqueId('myCol2');
         
         $renderer->setColumns(array(
@@ -207,10 +214,10 @@ class RendererTest extends PHPUnit_Framework_TestCase
         $renderer->setOptions($this->options);
         $renderer->setMvcEvent($mvcEvent);
         
-        $col1 = DatagridMocks::getColBasic();
+        $col1 = clone $this->colMock;
         $col1->setUniqueId('myCol1');
         
-        $col2 = DatagridMocks::getColBasic();
+        $col2 = clone $this->colMock;
         $col2->setUniqueId('myCol2');
         
         $renderer->setColumns(array(
