@@ -118,10 +118,10 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         $this->assertNull($renderer->getPaginator());
         
         $testCollection = range(1, 101);
-        $pagintorMock = \Zend\Paginator\Paginator(new \Zend\Paginator\Adapter\ArrayAdapter($testCollection));
+        $pagintorMock = new \Zend\Paginator\Paginator(new \Zend\Paginator\Adapter\ArrayAdapter($testCollection));
         $renderer->setPaginator($pagintorMock);
         
-        $this->assertSame($paginator, $renderer->getPaginator());
+        $this->assertSame($pagintorMock, $renderer->getPaginator());
     }
 
     public function testColumns()
@@ -421,20 +421,6 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         ), $sortConditions);
     }
 
-    public function testCustomFiltered()
-    {
-        /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
-        
-        $this->assertFalse($renderer->isCustomFiltered());
-        
-        $renderer->setCustomFiltered(true);
-        $this->assertTrue($renderer->isCustomFiltered());
-        
-        $renderer->setCustomFiltered(false);
-        $this->assertFalse($renderer->isCustomFiltered());
-    }
-
     public function testGetFiltersDefault()
     {
         $request = $this->getMock('Zend\Http\PhpEnvironment\Request', array(), array(), '', false);
@@ -480,9 +466,6 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         $renderer->setColumns(array(
             $col1
         ));
-        
-        $renderer->setCustomFiltered(true);
-        $this->assertEquals(array(), $renderer->getFilters());
     }
 
     public function testCurrentPageNumber()

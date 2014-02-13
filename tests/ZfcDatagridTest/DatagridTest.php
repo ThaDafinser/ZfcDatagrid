@@ -515,18 +515,6 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($this->grid->isUserFilterEnabled());
     }
 
-    public function testCustomFiltered()
-    {
-        $grid = new Datagrid();
-        $this->assertFalse($grid->isCustomFiltered());
-        
-        $grid->setCustomFiltered(true);
-        $this->assertTrue($grid->isCustomFiltered());
-        
-        $grid->setCustomFiltered(false);
-        $this->assertFalse($grid->isCustomFiltered());
-    }
-
     public function testRowClickAction()
     {
         $this->assertFalse($this->grid->hasRowClickAction());
