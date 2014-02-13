@@ -18,7 +18,7 @@ class AbstractDataSourceTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         if (defined('HPHP_VERSION') === true) {
-            $this->fail('HVM Fatals');
+            $this->fail('HHVM Fatals');
         }
         
         $this->dsMock = $this->getMockForAbstractClass('ZfcDatagrid\DataSource\AbstractDataSource', array(
