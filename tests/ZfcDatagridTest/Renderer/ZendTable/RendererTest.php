@@ -4,6 +4,7 @@ namespace ZfcDatagridTest\Renderer\ZendTable;
 use PHPUnit_Framework_TestCase;
 use ZfcDatagrid\Renderer\ZendTable;
 use ZfcDatagridTest\DatagridMocks;
+use ReflectionClass;
 
 /**
  * @group Renderer
@@ -24,6 +25,24 @@ class RendererTest extends PHPUnit_Framework_TestCase
             )
         )
     );
+
+    /**
+     *
+     * @var \Zend\Http\PhpEnvironment\Request
+     */
+    private $requestMock;
+
+    /**
+     *
+     * @var \Zend\Mvc\MvcEvent
+     */
+    private $mvcEventMock;
+
+    public function setUp()
+    {
+        $this->requestMock = $this->getMock('Zend\Console\Request', array(), array(), '', false);
+        $this->mvcEventMock = $this->getMock('Zend\Mvc\MvcEvent', array(), array(), '', false);
+    }
 
     public function testGetName()
     {
@@ -50,7 +69,7 @@ class RendererTest extends PHPUnit_Framework_TestCase
     {
         $request = $this->getMock('Zend\Http\PhpEnvironment\Request', array(), array(), '', false);
         
-        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', array(), array(), '', false);
+        $mvcEvent = clone $this->mvcEventMock;
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));
@@ -64,9 +83,9 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
     public function testGetRequest()
     {
-        $request = $this->getMock('Zend\Console\Request', array(), array(), '', false);
+        $request = clone $this->requestMock;
         
-        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', array(), array(), '', false);
+        $mvcEvent = clone $this->mvcEventMock;
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));
@@ -77,11 +96,24 @@ class RendererTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($request, $renderer->getRequest());
     }
 
+    public function testConsoleAdapter()
+    {
+        $renderer = new ZendTable\Renderer();
+        
+        $this->assertInstanceOf('Zend\Console\Adapter\AdapterInterface', $renderer->getConsoleAdapter());
+        
+        $adapter = $this->getMockForAbstractClass('Zend\Console\Adapter\AbstractAdapter');
+        
+        $this->assertNotSame($adapter, $renderer->getConsoleAdapter());
+        $renderer->setConsoleAdapter($adapter);
+        $this->assertSame($adapter, $renderer->getConsoleAdapter());
+    }
+
     public function testGetSortConditionsDefaultEmpty()
     {
-        $request = $this->getMock('Zend\Console\Request', array(), array(), '', false);
+        $request = clone $this->requestMock;
         
-        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', array(), array(), '', false);
+        $mvcEvent = clone $this->mvcEventMock;
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));
@@ -100,7 +132,8 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
     public function testGetSortConditionsFromRequest()
     {
-        $request = $this->getMock('Zend\Console\Request', array(), array(), '', false);
+        $request = clone $this->requestMock;
+        
         $request->expects($this->any())
             ->method('getParam')
             ->will($this->returnCallback(function ($name)
@@ -112,7 +145,7 @@ class RendererTest extends PHPUnit_Framework_TestCase
             }
         }));
         
-        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', array(), array(), '', false);
+        $mvcEvent = clone $this->mvcEventMock;
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));
@@ -145,11 +178,64 @@ class RendererTest extends PHPUnit_Framework_TestCase
         ), $sortConditions);
     }
 
+    /**
+     * One direction is not defined (ASC or desc allowed) and one is empty
+     *
+     * @return string
+     */
+    public function testGetSortConditionsFromRequestDefaultSortDirection()
+    {
+        $request = clone $this->requestMock;
+        
+        $request->expects($this->any())
+            ->method('getParam')
+            ->will($this->returnCallback(function ($name)
+        {
+            if ($name == 'dirs') {
+                return 'WRONG_DIRECTION';
+            } else {
+                return 'myCol1,myCol2';
+            }
+        }));
+        
+        $mvcEvent = clone $this->mvcEventMock;
+        $mvcEvent->expects($this->any())
+            ->method('getRequest')
+            ->will($this->returnValue($request));
+        
+        $renderer = new ZendTable\Renderer();
+        $renderer->setOptions($this->options);
+        $renderer->setMvcEvent($mvcEvent);
+        
+        $col1 = DatagridMocks::getColBasic();
+        $col1->setUniqueId('myCol1');
+        
+        $col2 = DatagridMocks::getColBasic();
+        $col2->setUniqueId('myCol2');
+        
+        $renderer->setColumns(array(
+            $col1,
+            $col2
+        ));
+        
+        $sortConditions = $renderer->getSortConditions();
+        $this->assertEquals(array(
+            array(
+                'sortDirection' => 'ASC',
+                'column' => $col1
+            ),
+            array(
+                'sortDirection' => 'ASC',
+                'column' => $col2
+            )
+        ), $sortConditions);
+    }
+
     public function testGetCurrentPageNumberDefault()
     {
-        $request = $this->getMock('Zend\Console\Request', array(), array(), '', false);
+        $request = clone $this->requestMock;
         
-        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', array(), array(), '', false);
+        $mvcEvent = clone $this->mvcEventMock;
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));
@@ -163,12 +249,12 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
     public function testGetCurrentPageNumberUser()
     {
-        $request = $this->getMock('Zend\Console\Request', array(), array(), '', false);
+        $request = clone $this->requestMock;
         $request->expects($this->any())
             ->method('getParam')
             ->will($this->returnValue(3));
         
-        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', array(), array(), '', false);
+        $mvcEvent = clone $this->mvcEventMock;
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));
@@ -182,9 +268,9 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
     public function testGetItemsPerPage()
     {
-        $request = $this->getMock('Zend\Console\Request', array(), array(), '', false);
+        $request = clone $this->requestMock;
         
-        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', array(), array(), '', false);
+        $mvcEvent = clone $this->mvcEventMock;
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));
@@ -198,12 +284,12 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
     public function testGetItemsPerPageUser()
     {
-        $request = $this->getMock('Zend\Console\Request', array(), array(), '', false);
+        $request = clone $this->requestMock;
         $request->expects($this->any())
             ->method('getParam')
             ->will($this->returnValue(99));
         
-        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', array(), array(), '', false);
+        $mvcEvent = clone $this->mvcEventMock;
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));
@@ -213,5 +299,138 @@ class RendererTest extends PHPUnit_Framework_TestCase
         $renderer->setMvcEvent($mvcEvent);
         
         $this->assertEquals(99, $renderer->getItemsPerPage());
+    }
+
+    public function testGetColumnsToDisplay()
+    {
+        $reflection = new ReflectionClass('ZfcDatagrid\Renderer\ZendTable\Renderer');
+        $method = $reflection->getMethod('getColumnsToDisplay');
+        $method->setAccessible(true);
+        
+        $col1 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col1->setWidth(30);
+        
+        $col2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col2->setWidth(20);
+        
+        $col3 = $this->getMock('ZfcDatagrid\Column\Action');
+        $col3->setWidth(20);
+        
+        $renderer = new ZendTable\Renderer();
+        $renderer->setColumns(array(
+            $col1,
+            $col2,
+            $col3
+        ));
+        
+        $result = $method->invoke($renderer);
+        
+        // $col3 is substracted, because its an action
+        $this->assertSame(array(
+            $col1,
+            $col2
+        ), $result);
+        
+        // 2nd call from "cache"
+        $result = $method->invoke($renderer);
+        $this->assertSame(array(
+            $col1,
+            $col2
+        ), $result);
+        
+        $this->setExpectedException('Exception', 'No columns to display available');
+        $renderer = new ZendTable\Renderer();
+        $method->invoke($renderer);
+    }
+
+    public function testGetColumnWidthsSmaller()
+    {
+        $reflection = new ReflectionClass('ZfcDatagrid\Renderer\ZendTable\Renderer');
+        $method = $reflection->getMethod('getColumnWidths');
+        $method->setAccessible(true);
+        
+        $col1 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col1->setWidth(30);
+        
+        $col2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col2->setWidth(20);
+        
+        $consoleAdapter = $this->getMockForAbstractClass('Zend\Console\Adapter\AbstractAdapter');
+        $renderer = new ZendTable\Renderer();
+        $renderer->setConsoleAdapter($consoleAdapter);
+        $renderer->setColumns(array(
+            $col1,
+            $col2
+        ));
+        
+        $result = $method->invoke($renderer);
+        $this->assertEquals(78, array_sum($result));
+        
+        $this->assertEquals(array(
+            47,
+            31
+        ), $result);
+    }
+
+    public function testGetColumnWidthsLarger()
+    {
+        $widthAvailable = 78;
+        
+        $reflection = new ReflectionClass('ZfcDatagrid\Renderer\ZendTable\Renderer');
+        $method = $reflection->getMethod('getColumnWidths');
+        $method->setAccessible(true);
+        
+        $col1 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col1->setWidth(60);
+        
+        $col2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col2->setWidth(40);
+        
+        $consoleAdapter = $this->getMockForAbstractClass('Zend\Console\Adapter\AbstractAdapter');
+        $renderer = new ZendTable\Renderer();
+        $renderer->setConsoleAdapter($consoleAdapter);
+        $renderer->setColumns(array(
+            $col1,
+            $col2
+        ));
+        
+        $result = $method->invoke($renderer);
+        $this->assertEquals($widthAvailable, array_sum($result));
+        
+        $this->assertEquals(array(
+            47,
+            31
+        ), $result);
+    }
+
+    public function testGetColumnWidthsRoundNecessary()
+    {
+        $widthAvailable = 78;
+        
+        $reflection = new ReflectionClass('ZfcDatagrid\Renderer\ZendTable\Renderer');
+        $method = $reflection->getMethod('getColumnWidths');
+        $method->setAccessible(true);
+        
+        $col1 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col1->setWidth(72);
+        
+        $col2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col2->setWidth(5);
+        
+        $consoleAdapter = $this->getMockForAbstractClass('Zend\Console\Adapter\AbstractAdapter');
+        $renderer = new ZendTable\Renderer();
+        $renderer->setConsoleAdapter($consoleAdapter);
+        $renderer->setColumns(array(
+            $col1,
+            $col2
+        ));
+        
+        $result = $method->invoke($renderer);
+        $this->assertEquals($widthAvailable, array_sum($result));
+        
+        $this->assertEquals(array(
+            73,
+            5
+        ), $result);
     }
 }

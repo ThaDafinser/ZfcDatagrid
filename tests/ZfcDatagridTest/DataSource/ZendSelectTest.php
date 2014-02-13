@@ -9,6 +9,7 @@ namespace ZfcDatagridTest\DataSource;
 use PHPUnit_Framework_TestCase;
 use ZfcDatagrid\DataSource\ZendSelect;
 use ZfcDatagrid\Filter;
+use ZfcDatagrid\Column;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Select;
@@ -56,6 +57,10 @@ class ZendSelectTest extends DataSourceTestCase
             ->method('getConnection')
             ->will($this->returnValue($this->mockConnection));
         $this->mockPlatform = $this->getMock('Zend\Db\Adapter\Platform\PlatformInterface');
+        $this->mockPlatform->expects($this->any())
+            ->method('getIdentifierSeparator')
+            ->will($this->returnValue('.'));
+        
         $this->mockStatement = $this->getMock('Zend\Db\Adapter\Driver\StatementInterface');
         $this->mockDriver->expects($this->any())
             ->method('createStatement')
@@ -84,7 +89,7 @@ class ZendSelectTest extends DataSourceTestCase
         $this->assertInstanceOf('Zend\Db\Sql\Select', $source->getData());
         $this->assertEquals($select, $source->getData());
         
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('InvalidArgumentException', 'A instance of Zend\Db\SqlSelect is needed to use this dataSource!');
         
         $source = new ZendSelect(array());
     }
@@ -95,7 +100,7 @@ class ZendSelectTest extends DataSourceTestCase
         
         $source = new ZendSelect($select);
         
-        $this->setExpectedException('Exception');
+        $this->setExpectedException('Exception', 'Object "Zend\Db\Sql\Sql" is missing, please call setAdapter() first!');
         
         $source->execute();
     }
@@ -123,6 +128,31 @@ class ZendSelectTest extends DataSourceTestCase
         $source->execute();
         
         $this->assertInstanceOf('Zend\Paginator\Adapter\DbSelect', $source->getPaginatorAdapter());
+    }
+
+    public function testJoinTable()
+    {
+        $col1 = new Column\Select('id', 'o');
+        $col2 = new Column\Select('name', 'u');
+        
+        $select = new Select();
+        $select->from(array(
+            'o' => 'orders'
+        ));
+        $select->join(array(
+            'u' => 'user'
+        ), 'u.order = o.id');
+        
+        $source = new ZendSelect($select);
+        $source->setAdapter($this->sql);
+        $source->setColumns(array(
+            $col1,
+            $col2
+        ));
+        $source->execute();
+        
+        var_dump($source->getData()->getSqlString());
+        exit();
     }
 
     public function testFilter()

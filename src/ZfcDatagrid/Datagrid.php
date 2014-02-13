@@ -153,11 +153,6 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     protected $isUserFilterEnabled = true;
 
-    /**
-     *
-     * @var boolean
-     */
-    protected $isCustomFiltered = false;
 
     /**
      *
@@ -774,27 +769,6 @@ class Datagrid implements ServiceLocatorAwareInterface
     }
 
     /**
-     * If the grid is the filtered custom, all other filters are ignored
-     * e.g.
-     * default column filter, user column filter, ...
-     *
-     * @param boolean $mode            
-     */
-    public function setCustomFiltered($mode = true)
-    {
-        $this->isCustomFiltered = (bool) $mode;
-    }
-
-    /**
-     *
-     * @return boolean
-     */
-    public function isCustomFiltered()
-    {
-        return $this->isCustomFiltered;
-    }
-
-    /**
      * Set the row click action - identity will be automatically appended!
      *
      * @param Column\Action\AbstractAction $action            
@@ -911,8 +885,6 @@ class Datagrid implements ServiceLocatorAwareInterface
                 $renderer->setCacheId($this->getCacheId());
                 $renderer->setCacheData($this->getCache()
                     ->getItem($this->getCacheId()));
-                
-                $renderer->setCustomFiltered($this->isCustomFiltered());
                 
                 $this->renderer = $renderer;
             } else {

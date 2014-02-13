@@ -4,11 +4,9 @@ namespace ZfcDatagrid\Renderer\JqGrid\View\Helper;
 use ZfcDatagrid\Filter;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Type;
-use ZfcDatagrid\Column\Style;
 use Zend\View\Helper\AbstractHelper;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use ZfcDatagrid\Column\Style\Color\AbstractColor;
 
 /**
  * View Helper
@@ -17,6 +15,10 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
 {
 
     private $translator;
+
+    const STYLE_BOLD = 'cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';';
+
+    const STYLE_ITALIC = 'cellvalue = \'<span style="font-style: italic;">\' + cellvalue + \'</span>\';';
 
     /**
      * Set the service locator.
@@ -209,102 +211,70 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
 
     /**
      *
-     * @param Column\AbstractColumn $column            
+     * @param Column\AbstractColumn $col            
      * @throws \Exception
      * @return array
      */
-    private function getStyles(Column\AbstractColumn $column)
+    private function getStyles(Column\AbstractColumn $col)
     {
         $styleFormatter = array();
         
-        if ($column->hasStyles() === true) {
-            /*
-             * First all based on value (only one works) @todo
-             */
-            foreach ($column->getStyles() as $style) {
-                /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
-                if ($style->hasByValues() === true) {
-                    foreach ($style->getByValues() as $rule) {
-                        $colString = $rule['column']->getUniqueId();
-                        $operator = '';
-                        switch ($rule['operator']) {
-                            
-                            case Filter::EQUAL:
-                                $operator = '==';
-                                break;
-                            
-                            case Filter::NOT_EQUAL:
-                                $operator = '!=';
-                                break;
-                            
-                            default:
-                                throw new \Exception('currently not implemented filter type: "' . $rule['operator'] . '"');
-                                break;
-                        }
-                        
-                        $styleString = 'if(rowObject.' . $colString . ' ' . $operator . ' \'' . $rule['value'] . '\'){';
-                        
-                        switch (get_class($style)) {
-                            
-                            case 'ZfcDatagrid\Column\Style\Bold':
-                                $styleString .= 'cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';';
-                                break;
-                            
-                            case 'ZfcDatagrid\Column\Style\Italic':
-                                $styleString .= 'cellvalue = \'<span style="font-style: italic;">\' + cellvalue + \'</span>\';';
-                                break;
-                            
-                            case 'ZfcDatagrid\Column\Style\Color':
-                                $styleString .= 'cellvalue = \'<span style="color: #' . $style->getRgbHexString() . ';">\' + cellvalue + \'</span>\';';
-                                break;
-                            
-                            case 'ZfcDatagrid\Column\Style\BackgroundColor':
-                                // do NOTHING! this is done by loadComplete event...
-                                // At this stage jqgrid haven't created the columns...
-                                break;
-                            
-                            default:
-                                throw new \Exception('Not defined yet: "' . get_class($style) . '"');
-                                break;
-                        }
-                        
-                        $styleString .= '}';
-                        
-                        $styleFormatter[] = $styleString;
-                    }
+        /*
+         * First all based on value (only one works) @todo
+         */
+        foreach ($col->getStyles() as $style) {
+            $prepend = '';
+            $append = '';
+            
+            /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
+            foreach ($style->getByValues() as $rule) {
+                $colString = $rule['column']->getUniqueId();
+                $operator = '';
+                switch ($rule['operator']) {
+                    
+                    case Filter::EQUAL:
+                        $operator = '==';
+                        break;
+                    
+                    case Filter::NOT_EQUAL:
+                        $operator = '!=';
+                        break;
+                    
+                    default:
+                        throw new \Exception('Currently not supported filter operation: "' . $rule['operator'] . '"');
+                        break;
                 }
+                
+                $prepend = 'if(rowObject.' . $colString . ' ' . $operator . ' \'' . $rule['value'] . '\'){';
+                $append .= '}';
             }
             
-            foreach ($column->getStyles() as $style) {
-                /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
-                if ($style->hasByValues() === true) {
-                    
-                    switch (get_class($style)) {
-                        
-                        case 'ZfcDatagrid\Column\Style\Bold':
-                            $styleFormatter[] = 'cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';';
-                            break;
-                        
-                        case 'ZfcDatagrid\Column\Style\Italic':
-                            $styleFormatter[] = 'cellvalue = \'<span style="font-style: italic;">\' + cellvalue + \'</span>\';';
-                            break;
-                        
-                        case 'ZfcDatagrid\Column\Style\Color':
-                            $styleFormatter[] = 'cellvalue = \'<span style="color: #' . $style->getRgbHexString() . ';">\' + cellvalue + \'</span>\';';
-                            break;
-                        
-                        case 'ZfcDatagrid\Column\Style\BackgroundColor':
-                            // do NOTHING! this is done by loadComplete event...
-                            // At this stage jqgrid haven't created the columns...
-                            break;
-                        
-                        default:
-                            throw new \Exception('Not defined yet: "' . get_class($style) . '"');
-                            
-                            break;
-                    }
-                }
+            $styleString = '';
+            switch (get_class($style)) {
+                
+                case 'ZfcDatagrid\Column\Style\Bold':
+                    $styleString = self::STYLE_BOLD;
+                    break;
+                
+                case 'ZfcDatagrid\Column\Style\Italic':
+                    $styleString = self::STYLE_ITALIC;
+                    break;
+                
+                case 'ZfcDatagrid\Column\Style\Color':
+                    $styleString = 'cellvalue = \'<span style="color: #' . $style->getRgbHexString() . ';">\' + cellvalue + \'</span>\';';
+                    break;
+                
+                case 'ZfcDatagrid\Column\Style\BackgroundColor':
+                    // do NOTHING! this is done by loadComplete event...
+                    // At this stage jqgrid haven't created the columns...
+                    break;
+                
+                default:
+                    throw new \Exception('Not defined style: "' . get_class($style) . '"');
+                    break;
             }
+            
+            $styleFormatter[] = $prepend . $styleString . $append;
         }
         
         return $styleFormatter;

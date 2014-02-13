@@ -38,7 +38,7 @@ abstract class AbstractRenderer implements RendererInterface
 
     protected $filters = null;
 
-    protected $currentPageNumber = 1;
+    protected $currentPageNumber = null;
 
     /**
      *
@@ -57,12 +57,6 @@ abstract class AbstractRenderer implements RendererInterface
      * @var array
      */
     protected $cacheData = array();
-
-    /**
-     *
-     * @var boolean
-     */
-    protected $isCustomFiltered = false;
 
     /**
      *
@@ -490,21 +484,21 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @param array $sortConditions            
      */
-    // public function setSortConditions(array $sortConditions)
-    // {
-    // foreach ($sortConditions as $sortCondition) {
-    // if (! is_array($sortCondition)) {
-    // throw new InvalidArgumentException('Sort condition have to be an array');
-    // }
-    
-    // if (! array_key_exists('column', $sortCondition)) {
-    // throw new InvalidArgumentException('Sort condition missing array key column');
-    // }
-    // }
-    
-    // $this->sortConditions = $sortConditions;
-    // }
-    
+    public function setSortConditions(array $sortConditions)
+    {
+        foreach ($sortConditions as $sortCondition) {
+            if (! is_array($sortCondition)) {
+                throw new InvalidArgumentException('Sort condition have to be an array');
+            }
+            
+            if (! array_key_exists('column', $sortCondition)) {
+                throw new InvalidArgumentException('Sort condition missing array key column');
+            }
+        }
+        
+        $this->sortConditions = $sortConditions;
+    }
+
     /**
      *
      * @return array
@@ -513,7 +507,9 @@ abstract class AbstractRenderer implements RendererInterface
     {
         if (is_array($this->sortConditions)) {
             return $this->sortConditions;
-        } elseif ($this->isExport() === true) {
+        }
+        
+        if ($this->isExport() === true) {
             // Export renderer should always retrieve the sort conditions from cache!
             $this->sortConditions = $this->getCacheSortConditions();
             
@@ -558,33 +554,15 @@ abstract class AbstractRenderer implements RendererInterface
      *
      * @param array $filters            
      */
-    // public function setFilter(array $filters)
-    // {
-    // foreach ($filters as $filter) {
-    // if (! $filter instanceof Filter) {
-    // throw new InvalidArgumentException('Filter have to be an instanceof ZfcDatagrid\Filter');
-    // }
-    // }
-    
-    // $this->filters = $filters;
-    // }
-    
-    /**
-     *
-     * @param string $mode            
-     */
-    public function setCustomFiltered($mode = false)
+    public function setFilters(array $filters)
     {
-        $this->isCustomFiltered = (bool) $mode;
-    }
-
-    /**
-     *
-     * @return boolean
-     */
-    public function isCustomFiltered()
-    {
-        return $this->isCustomFiltered;
+        foreach ($filters as $filter) {
+            if (! $filter instanceof Filter) {
+                throw new InvalidArgumentException('Filter have to be an instanceof ZfcDatagrid\Filter');
+            }
+        }
+        
+        $this->filters = $filters;
     }
 
     /**
@@ -593,14 +571,10 @@ abstract class AbstractRenderer implements RendererInterface
      */
     public function getFilters()
     {
-        if ($this->isCustomFiltered() === true) {
-            // filters are applied already from external source, so nothing to do here!
-            return array();
-        }
-        
         if (is_array($this->filters)) {
             return $this->filters;
-        } elseif ($this->isExport() === true) {
+        }
+        if ($this->isExport() === true) {
             // Export renderer should always retrieve the filters from cache!
             $this->filters = $this->getCacheFilters();
             
@@ -658,6 +632,10 @@ abstract class AbstractRenderer implements RendererInterface
      */
     public function getCurrentPageNumber()
     {
+        if ($this->currentPageNumber === null) {
+            $this->currentPageNumber = 1;
+        }
+        
         return (int) $this->currentPageNumber;
     }
 
