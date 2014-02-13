@@ -132,6 +132,8 @@ class ZendSelectTest extends DataSourceTestCase
 
     public function testJoinTable()
     {
+        $this->markTestIncomplete('ZendSelect join table test');
+        
         $col1 = new Column\Select('id', 'o');
         $col2 = new Column\Select('name', 'u');
         
@@ -151,8 +153,8 @@ class ZendSelectTest extends DataSourceTestCase
         ));
         $source->execute();
         
-        var_dump($source->getData()->getSqlString());
-        exit();
+//         var_dump($source->getData()->getSqlString());
+//         exit();
     }
 
     public function testFilter()
