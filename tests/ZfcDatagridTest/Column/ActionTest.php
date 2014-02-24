@@ -22,7 +22,7 @@ class ActionTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($column->isRowClickEnabled());
     }
 
-    public function testAddAction ()
+    public function testAddRemoveAction ()
     {
         $column = new Column\Action();
         
@@ -39,5 +39,15 @@ class ActionTest extends PHPUnit_Framework_TestCase
         $column->addAction($action3);
         
         $this->assertCount(3, $column->getActions());
+        $this->assertEquals($action2, $column->getAction(1));
+        $column->removeAction(2);
+        $this->assertCount(2, $column->getActions());
+
+        $actions = array(
+            $this->getMock('ZfcDatagrid\Column\Action\Button'),
+            $this->getMock('ZfcDatagrid\Column\Action\Button')
+        );
+        $column->setActions($actions);
+        $this->assertEquals($actions, $column->getActions());
     }
 }
