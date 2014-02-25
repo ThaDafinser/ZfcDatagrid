@@ -78,10 +78,17 @@ class Action extends AbstractColumn
      */
     public function removeAction($key = null)
     {
-        if (null === $key) {
-            return $this->setActions(array());
-        }
         unset ($this->actions[$key]);
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    public function clearActions()
+    {
+        $this->actions = array();
 
         return $this;
     }
