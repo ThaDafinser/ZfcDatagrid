@@ -49,5 +49,7 @@ class ActionTest extends PHPUnit_Framework_TestCase
         );
         $column->setActions($actions);
         $this->assertEquals($actions, $column->getActions());
+        $column->clearActions();
+        $this->assertCount(0, $column->getActions());
     }
 }
