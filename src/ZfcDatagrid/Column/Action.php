@@ -31,7 +31,7 @@ class Action extends AbstractColumn
     /**
      * @param Action\AbstractAction $action
      *
-     * @return $this
+     * @return self
      */
     public function addAction (Action\AbstractAction $action)
     {
@@ -51,7 +51,7 @@ class Action extends AbstractColumn
     /**
      * @param array|Action\AbstractAction[] $actions
      *
-     * @return $this
+     * @return self
      */
     public function setActions (array $actions)
     {
@@ -74,7 +74,7 @@ class Action extends AbstractColumn
     /**
      * @param int $key
      *
-     * @return $this
+     * @return self
      */
     public function removeAction($key = null)
     {
