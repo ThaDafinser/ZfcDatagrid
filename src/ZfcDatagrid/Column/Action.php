@@ -4,8 +4,9 @@ namespace ZfcDatagrid\Column;
 /**
  * Action Column
  * IMPORTANT: Will only be shown on HTML renderer
- *
+ * 
  * So Attributes for HTML are valid...
+ *
  */
 class Action extends AbstractColumn
 {
@@ -28,13 +29,14 @@ class Action extends AbstractColumn
     }
 
     /**
-     * Add a action to the this action column
+     * @param Action\AbstractAction $action
      *
-     * @param Action\AbstractAction $action            
+     * @return self
      */
-    public function addAction(Action\AbstractAction $action)
+    public function addAction (Action\AbstractAction $action)
     {
         $this->actions[] = $action;
+        return $this;
     }
 
     /**
@@ -44,5 +46,50 @@ class Action extends AbstractColumn
     public function getActions()
     {
         return $this->actions;
+    }
+
+    /**
+     * @param array|Action\AbstractAction[] $actions
+     *
+     * @return self
+     */
+    public function setActions (array $actions)
+    {
+        $this->actions = $actions;
+        return $this;
+    }
+
+    /**
+     * @param int $key
+     *
+     * @return mixed
+     */
+    public function getAction($key)
+    {
+        if (isset($this->actions[$key])) {
+            return $this->actions[$key];
+        }
+    }
+
+    /**
+     * @param int $key
+     *
+     * @return self
+     */
+    public function removeAction($key = null)
+    {
+        unset ($this->actions[$key]);
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    public function clearActions()
+    {
+        $this->actions = array();
+
+        return $this;
     }
 }
