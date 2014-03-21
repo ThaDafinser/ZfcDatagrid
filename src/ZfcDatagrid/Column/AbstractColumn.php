@@ -424,12 +424,14 @@ abstract class AbstractColumn
      */
     public function setFilterSelectOptions(array $options = null, $noSelect = true)
     {
+        // This work also with options with integer based array index such as
+        // array(0 => 'zero', 1 => 'once', 2 => 'double', 3 => 'triple'....) 
+        
         if ($noSelect === true) {
-            $nothing = array(
-                '' => '-'
-            );
-            $options = array_merge($nothing, $options);
+            $options[''] = '-';
+            $this->setFilterDefaultValue('');
         }
+
         $this->filterSelectOptions = $options;
     }
 
