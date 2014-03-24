@@ -14,7 +14,7 @@ class PersonDoctrine2Controller extends AbstractActionController
      *
      * @return \ZfcDatagrid\Controller\ViewModel
      */
-    public function bootstrapAction ()
+    public function bootstrapAction()
     {
         /* @var $grid \ZfcDatagrid\Datagrid */
         $grid = $this->getServiceLocator()->get('ZfcDatagrid\Datagrid');
@@ -138,7 +138,7 @@ class PersonDoctrine2Controller extends AbstractActionController
      *
      * @return \Zend\Http\Response\Stream
      */
-    public function consoleAction ()
+    public function consoleAction()
     {
         /* @var $grid \ZfcDatagrid\Datagrid */
         $grid = $this->getServiceLocator()->get('zfcDatagrid');

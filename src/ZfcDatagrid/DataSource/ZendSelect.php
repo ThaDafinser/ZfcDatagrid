@@ -4,6 +4,7 @@ namespace ZfcDatagrid\DataSource;
 use ZfcDatagrid\Column;
 use Zend\Paginator\Adapter\DbSelect as PaginatorAdapter;
 use Zend\Db\Sql;
+use Zend\Db\Sql\Expression;
 
 class ZendSelect extends AbstractDataSource
 {
@@ -76,22 +77,35 @@ class ZendSelect extends AbstractDataSource
             throw new \Exception('Object "Zend\Db\Sql\Sql" is missing, please call setAdapter() first!');
         }
         
+        $platform = $this->getAdapter()
+            ->getAdapter()
+            ->getPlatform();
+        
         $select = $this->getData();
         
-        /**
+        /*
          * Step 1) Apply needed columns
          */
         $selectColumns = array();
         foreach ($this->getColumns() as $column) {
-            
             if ($column instanceof Column\Select) {
-                $selectColumns[$column->getUniqueId()] = $column->getSelectPart2();
+                $colString = $column->getSelectPart1();
+                if ($column->getSelectPart2() != '') {
+                    $colString = new Expression($platform->quoteIdentifier($colString) . $platform->getIdentifierSeparator() . $platform->quoteIdentifier($column->getSelectPart2()));
+                }
+                
+                $selectColumns[$column->getUniqueId()] = $colString;
             }
         }
-        // @note Table "Prefix" should be set automatically, so $column->getSelectPart1() is not needed...
-        $select->columns($selectColumns);
+        $select->columns($selectColumns, false);
         
-        /**
+        $joins = $select->getRawState('joins');
+        $select->reset('joins');
+        foreach ($joins as $join) {
+            $select->join($join['name'], $join['on'], array(), $join['type']);
+        }
+        
+        /*
          * Step 2) Apply sorting
          */
         if (count($this->getSortConditions()) > 0) {
@@ -104,7 +118,7 @@ class ZendSelect extends AbstractDataSource
             }
         }
         
-        /**
+        /*
          * Step 3) Apply filters
          */
         $filterColumn = new ZendSelect\Filter($this->getAdapter(), $select);
@@ -116,7 +130,7 @@ class ZendSelect extends AbstractDataSource
             }
         }
         
-        /**
+        /*
          * Step 4) Pagination
          */
         $this->setPaginatorAdapter(new PaginatorAdapter($select, $this->getAdapter()));

@@ -62,6 +62,13 @@ class Person {
 	protected $changeDate;
 	
 	/**
+     * @ORM\ManyToOne(targetEntity="Group")
+     * @ORM\JoinColumn(name="primaryGroupId", referencedColumnName="id")
+     */
+	protected $primaryGroup;
+	
+	
+	/**
 	 *
 	 * @param integer $id        	
 	 */

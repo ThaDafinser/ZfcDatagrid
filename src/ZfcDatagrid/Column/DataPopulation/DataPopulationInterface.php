@@ -10,4 +10,9 @@ interface DataPopulationInterface
      * @return string
      */
     public function toString();
+    
+    /**
+     * @return array
+     */
+    public function getParameters();
 }

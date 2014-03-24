@@ -10,18 +10,17 @@ return array(
                 'renderer' => array(
                     'http' => 'bootstrapTable',
                     'console' => 'zendTable'
-                ),
+                )
             ),
             
             'export' => array(
-                //Export is enabled?
+                // Export is enabled?
                 'enabled' => true,
                 
-                'formats' => array(
-                    //type => Displayname (Toolbar - you can use here HTML too...)
-                    //'printHtml' => 'Print',
-                    //'tcpdf' => 'PDF',
-                ),
+                'formats' => array(),
+                // type => Displayname (Toolbar - you can use here HTML too...)
+                // 'printHtml' => 'Print',
+                // 'tcpdf' => 'PDF',
                 
                 // The output+save directory
                 'path' => 'data/ZfcDatagrid',
@@ -31,10 +30,9 @@ return array(
                 // @TODO iframe = PHP generates the file and a hidden <iframe> sends the document (ATTENTION: your webserver must enable "force-download" for excel/pdf/...)
                 'mode' => 'direct'
             )
-            
         ),
         
-        //The cache is used to save the filter + sort and other things for exporting        
+        // The cache is used to save the filter + sort and other things for exporting
         'cache' => array(
             
             'adapter' => array(
@@ -92,7 +90,7 @@ return array(
             ),
             
             'PHPExcel' => array(
-
+                
                 'papersize' => 'A4',
                 
                 // landscape / portrait (we preferr landscape, because datagrids are often wide)
@@ -122,18 +120,18 @@ return array(
                     'top' => 20,
                     'bottom' => 11,
                     'left' => 10,
-                    'right' => 10,
+                    'right' => 10
                 ),
                 
                 'icon' => array(
-                    //milimeter...
+                    // milimeter...
                     'size' => 16
                 ),
                 
                 'header' => array(
-                    //define your logo here, please be aware of the relative path...
+                    // define your logo here, please be aware of the relative path...
                     'logo' => '',
-                    'logoWidth'=> 35
+                    'logoWidth' => 35
                 ),
                 
                 'style' => array(
@@ -142,19 +140,33 @@ return array(
                         'font' => 'helvetica',
                         'size' => 11,
                         
-                        'color' => array(0,0,0),
-                        'background-color' => array(255,255,200),
-                        
+                        'color' => array(
+                            0,
+                            0,
+                            0
+                        ),
+                        'background-color' => array(
+                            255,
+                            255,
+                            200
+                        )
                     ),
                     
                     'data' => array(
                         'font' => 'helvetica',
                         'size' => 11,
                         
-                        'color' => array(0,0,0),
-                        'background-color' => array(255,255,255),
+                        'color' => array(
+                            0,
+                            0,
+                            0
+                        ),
+                        'background-color' => array(
+                            255,
+                            255,
+                            255
+                        )
                     )
-                    
                 )
             )
             
@@ -190,7 +202,7 @@ return array(
         
         'factories' => array(
             'ZfcDatagrid\Datagrid' => 'ZfcDatagrid\Service\DatagridFactory',
-        
+            
             'zfcDatagrid_dbAdapter' => 'ZfcDatagrid\Service\ZendDbAdapterFactory'
         ),
         
@@ -309,7 +321,7 @@ return array(
      */
     'zfcDatagrid_dbAdapter' => array(
         'driver' => 'Pdo_Sqlite',
-        'database' => 'data/ZfcDatagrid/testDb.sqlite'
+        'database' => __DIR__ . '/../src/ZfcDatagrid/Examples/Data/examples.sqlite'
     ),
     
     'doctrine' => array(
@@ -318,7 +330,7 @@ return array(
                 'driverClass' => 'Doctrine\DBAL\Driver\PDOSqlite\Driver',
                 'params' => array(
                     'charset' => 'utf8',
-                    'path' => 'data/ZfcDatagrid/testDb.sqlite'
+                    'path' => __DIR__ . '/../src/ZfcDatagrid/Examples/Data/examples.sqlite'
                 )
             )
         ),

@@ -128,6 +128,11 @@ class PersonZendController extends AbstractActionController
             $grid->addColumn($col);
         }
         
+        $col = new Column\Select('name', 'g');
+        $col->setLabel('Group');
+        $col->setWidth(10);
+        $grid->addColumn($col);
+        
         $grid->render();
         
         return $grid->getResponse();

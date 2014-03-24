@@ -383,8 +383,14 @@ class Renderer extends AbstractRenderer
                         }
                     }
                     
-                   // without resize (dynamic width)
-                     $pdf->Image($link, $x + 1, $y + 1, 0, $rowHeight - 2, '', '', 'L', false);
+                    // // without resize (dynamic width)
+                    // $pdf->Image($link, $x + 1, $y + 1, 0, $rowHeight-2, '', '', 'L', false);
+                    
+                    //resizing properly to width + height (and keeping the ratio)
+                    $file = file_get_contents($link);
+                    list ($width, $height) = $this->calcImageSize($file, $column->getWidth() - 2, $rowHeight - 2);
+                    
+                    $pdf->Image('@' . $file, $x + 1, $y + 1, $width, $height, '', '', 'L', false);
                     break;
                 
                 default:

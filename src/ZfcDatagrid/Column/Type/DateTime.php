@@ -187,6 +187,9 @@ class DateTime extends AbstractType
             $date->setTimezone(new DateTimeZone($this->getOutputTimezone()));
         } else {
             $date = PhpDateTime::createFromFormat($this->getSourceDateTimeFormat(), $val, new DateTimeZone($this->getSourceTimezone()));
+            if($date === false){
+                return '';
+            }
             $date->setTimezone(new DateTimeZone($this->getOutputTimezone()));
         }
         $formatter = new IntlDateFormatter($this->getLocale(), $this->getOutputDateType(), $this->getOutputTimeType(), $this->getOutputTimezone(), IntlDateFormatter::GREGORIAN, $this->getOutputPattern());

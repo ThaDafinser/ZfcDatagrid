@@ -15,7 +15,7 @@ class ZendSelect implements ServiceLocatorAwareInterface
      *
      * @param ServiceLocatorInterface $serviceLocator            
      */
-    public function setServiceLocator (ServiceLocatorInterface $serviceLocator)
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
     }
@@ -25,7 +25,7 @@ class ZendSelect implements ServiceLocatorAwareInterface
      *
      * @return ServiceLocatorInterface
      */
-    public function getServiceLocator ()
+    public function getServiceLocator()
     {
         return $this->serviceLocator;
     }
@@ -34,12 +34,15 @@ class ZendSelect implements ServiceLocatorAwareInterface
      *
      * @return \Zend\Db\Sql\Select
      */
-    public function getPersons ()
+    public function getPersons()
     {
         $select = new Select();
         $select->from(array(
             'p' => 'person'
         ));
+        $select->join(array(
+            'g' => 'group'
+        ), 'g.id = p.primaryGroupId', 'name', 'left');
         
         return $select;
     }

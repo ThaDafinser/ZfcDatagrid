@@ -18,7 +18,7 @@ class Doctrine2 implements ServiceLocatorAwareInterface
      *
      * @param ServiceLocatorInterface $serviceLocator            
      */
-    public function setServiceLocator (ServiceLocatorInterface $serviceLocator)
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
     }
@@ -28,12 +28,12 @@ class Doctrine2 implements ServiceLocatorAwareInterface
      *
      * @return ServiceLocatorInterface
      */
-    public function getServiceLocator ()
+    public function getServiceLocator()
     {
         return $this->serviceLocator;
     }
 
-    private function createTables ()
+    private function createTables()
     {
         /* @var $entityManager \Doctrine\ORM\EntityManager */
         $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_zfcDatagrid');
@@ -71,7 +71,7 @@ class Doctrine2 implements ServiceLocatorAwareInterface
         // exit();
     }
 
-    private function createData ($entity, $data)
+    private function createData($entity, $data)
     {
         /* @var $entityManager \Doctrine\ORM\EntityManager */
         $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_zfcDatagrid');
@@ -94,11 +94,11 @@ class Doctrine2 implements ServiceLocatorAwareInterface
      *
      * @return QueryBuilder
      */
-    public function getPersons ()
+    public function getPersons()
     {
         /* @var $entityManager \Doctrine\ORM\EntityManager */
         $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_zfcDatagrid');
-        $personEntity = $entityManager->getRepository('ZfcDatagrid\Examples\Entity\Person');
+        $personRepo = $entityManager->getRepository('ZfcDatagrid\Examples\Entity\Person');
         
         // if($entityManager->getConnection()->isConnected() === true){
         
@@ -106,11 +106,10 @@ class Doctrine2 implements ServiceLocatorAwareInterface
         
         // Test if the SqLite is ready...
         try {
-            $data = $personEntity->find(2);
+            $data = $personRepo->find(2);
         } catch (\Exception $e) {
             $this->createTables();
-            
-            $data = $personEntity->find(2);
+            $data = $personRepo->find(2);
         }
         
         $qb = $entityManager->createQueryBuilder();

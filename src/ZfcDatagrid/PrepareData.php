@@ -145,49 +145,49 @@ class PrepareData
         foreach ($data as $key => &$row) {
             $ids = array();
             
-            foreach ($this->getColumns() as $column) {
-                /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+            foreach ($this->getColumns() as $col) {
+                /* @var $col \ZfcDatagrid\Column\AbstractColumn */
                 
-                if (isset($row[$column->getUniqueId()]) && $column->isIdentity() === true) {
-                    $ids[] = $row[$column->getUniqueId()];
+                if (isset($row[$col->getUniqueId()]) && $col->isIdentity() === true) {
+                    $ids[] = $row[$col->getUniqueId()];
                 }
                 
                 /*
                  * Maybe the data come not from another DataSource?
                  */
-                if ($column instanceof Column\ExternalData) {
+                if ($col instanceof Column\ExternalData) {
                     // @todo improve the interface...
-                    $dataPopulation = $column->getDataPopulation();
+                    $dataPopulation = $col->getDataPopulation();
                     
                     foreach ($dataPopulation->getParameters() as $parameter) {
                         $dataPopulation->setParameterValue($parameter['objectParameterName'], $row[$parameter['column']->getUniqueId()]);
                     }
-                    $row[$column->getUniqueId()] = $dataPopulation->toString();
+                    $row[$col->getUniqueId()] = $dataPopulation->toString();
                 }
                 
-                if (! isset($row[$column->getUniqueId()])) {
-                    $row[$column->getUniqueId()] = '';
+                if (! isset($row[$col->getUniqueId()])) {
+                    $row[$col->getUniqueId()] = '';
                 }
                 
                 /*
                  * Replace
                  */
-                if ($column->hasReplaceValues() === true) {
-                    $replaceValues = $column->getReplaceValues();
+                if ($col->hasReplaceValues() === true) {
+                    $replaceValues = $col->getReplaceValues();
                     
-                    if (is_array($row[$column->getUniqueId()])) {
-                        foreach ($row[$column->getUniqueId()] as &$value) {
+                    if (is_array($row[$col->getUniqueId()])) {
+                        foreach ($row[$col->getUniqueId()] as &$value) {
                             if (isset($replaceValues[$value])) {
                                 $value = $replaceValues[$value];
-                            } elseif ($column->notReplacedGetEmpty() === true) {
+                            } elseif ($col->notReplacedGetEmpty() === true) {
                                 $value = '';
                             }
                         }
                     } else {
-                        if (isset($replaceValues[$row[$column->getUniqueId()]])) {
-                            $row[$column->getUniqueId()] = $replaceValues[$row[$column->getUniqueId()]];
-                        } elseif ($column->notReplacedGetEmpty() === true) {
-                            $row[$column->getUniqueId()] = '';
+                        if (isset($replaceValues[$row[$col->getUniqueId()]])) {
+                            $row[$col->getUniqueId()] = $replaceValues[$row[$col->getUniqueId()]];
+                        } elseif ($col->notReplacedGetEmpty() === true) {
+                            $row[$col->getUniqueId()] = '';
                         }
                     }
                 }
@@ -195,43 +195,43 @@ class PrepareData
                 /*
                  * Type converting
                  */
-                $row[$column->getUniqueId()] = $column->getType()->getUserValue($row[$column->getUniqueId()]);
+                $row[$col->getUniqueId()] = $col->getType()->getUserValue($row[$col->getUniqueId()]);
                 
                 /*
                  * Translate (nach typ convertierung -> PhpArray...)
                  */
-                if ($column->isTranslationEnabled() === true) {
-                    if (is_array($row[$column->getUniqueId()])) {
-                        foreach ($row[$column->getUniqueId()] as &$value) {
+                if ($col->isTranslationEnabled() === true) {
+                    if (is_array($row[$col->getUniqueId()])) {
+                        foreach ($row[$col->getUniqueId()] as &$value) {
                             $value = $this->getTranslator()->translate($value);
                         }
                     } else {
-                        $row[$column->getUniqueId()] = $this->getTranslator()->translate($row[$column->getUniqueId()]);
+                        $row[$col->getUniqueId()] = $this->getTranslator()->translate($row[$col->getUniqueId()]);
                     }
                 }
                 
                 /*
                  * Trim the values
                  */
-                if (is_array($row[$column->getUniqueId()])) {
-                    array_walk_recursive($row[$column->getUniqueId()], function (&$value)
+                if (is_array($row[$col->getUniqueId()])) {
+                    array_walk_recursive($row[$col->getUniqueId()], function (&$value)
                     {
                         $value = trim($value);
                     });
                 } else {
-                    $row[$column->getUniqueId()] = trim($row[$column->getUniqueId()]);
+                    $row[$col->getUniqueId()] = trim($row[$col->getUniqueId()]);
                 }
                 
                 /*
                  * Custom formatter
                  */
-                if ($column->hasFormatter($this->getRendererName()) === true) {
+                if ($col->hasFormatter($this->getRendererName()) === true) {
                     /* @var $formatter \ZfcDatagrid\Column\Formatter\AbstractFormatter */
-                    $formatter = $column->getFormatter($this->getRendererName());
+                    $formatter = $col->getFormatter($this->getRendererName());
                     $formatter->setRowData($row);
                     $formatter->setRendererName($this->getRendererName());
                     
-                    $row[$column->getUniqueId()] = $formatter->format($column);
+                    $row[$col->getUniqueId()] = $formatter->format($col);
                 }
             }
             
