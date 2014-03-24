@@ -119,6 +119,8 @@ if($this->rowClickAction !== null){
                             foreach ($column->getFilterSelectOptions() as $value => $option) {
                                 if ($column->getFilterActiveValue() == sprintf($column->getFilterDefaultOperation(), $value)) {
                                     $htmlFilter .= '<option value="' . $value . '" selected="selected">' . $option . '</option>';
+                                } else if (($column->getFilterActiveValue() == '') && ($value == '')){
+                                    $htmlFilter .= '<option value="' . $value . '" selected="selected">' . $option . '</option>';
                                 } else {
                                     $htmlFilter .= '<option value="' . $value . '">' . $option . '</option>';
                                 }
