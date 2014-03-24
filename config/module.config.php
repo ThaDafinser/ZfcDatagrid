@@ -220,6 +220,10 @@ return array(
     
     'view_manager' => array(
         
+        'strategies' => array(
+            'ViewJsonStrategy'
+        ),
+        
         'template_map' => array(
             'zfc-datagrid/renderer/bootstrapTable/layout' => __DIR__ . '/../view/zfc-datagrid/renderer/bootstrapTable/layout.phtml',
             'zfc-datagrid/renderer/printHtml/layout' => __DIR__ . '/../view/zfc-datagrid/renderer/printHtml/layout.phtml',
