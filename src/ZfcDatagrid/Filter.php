@@ -1,12 +1,12 @@
 <?php
 namespace ZfcDatagrid;
-
+ 
 use ZfcDatagrid\Column;
 use InvalidArgumentException;
-
+ 
 class Filter
 {
-
+ 
     /**
      * The constant values are used for display on the usergrid filter
      * This is for help, how the data is filtered really
@@ -53,21 +53,21 @@ class Filter
     
     // OK
     const NOT_IN = '!=(%s)';
-
+ 
     const BETWEEN = '%s <> %s';
-
+ 
     /**
      *
      * @var Column\AbstractColumn
      */
     private $column;
-
+ 
     private $operator = self::LIKE;
-
+ 
     private $value;
-
+ 
     private $displayColumnValue;
-
+ 
     /**
      * Apply a filter based on a column
      *
@@ -79,7 +79,7 @@ class Filter
         $this->column = $column;
         $this->setColumnOperator($inputFilterValue, $column->getFilterDefaultOperation());
     }
-
+ 
     /**
      * Convert the input filter to operator + filter + display filter value
      *
@@ -183,43 +183,34 @@ class Filter
             $operator = self::BETWEEN;
             $value = explode('<>', $inputFilterValue);
         }
+        $this->operator = $operator;
         
-
-
         if ($value === false) {
             // NO VALUE applied...maybe only "="
             $value = '';
         }
         
-        //Check if the column is Datetime type and Daterange picker isn't enabled
-        if (($this->getColumn()->getType() instanceof \ZfcDatagrid\Column\Type\DateTime) && (!$this->getColumn()->getType()->isDaterangePickerEnabled()))
-        {
-            /*
-             * Handle multiple values
-             */
-            if (is_string($value)) {
-                $value = explode(',', $value);
-            }
-            foreach ($value as &$val) {
-                $val = trim($val);
-            }
+        /*
+         * Handle multiple values
+         */
+        if ($this->getColumn()->getType() instanceof Column\Type\DateTime && $this->getColumn()
+            ->getType()
+            ->isDaterangePickerEnabled() === true) {
+            $value = explode(' - ', $value);
+        } elseif (! is_array($value)) {
+            $value = explode(',', $value);
         }
-        $this->operator = $operator;
-
+        foreach ($value as &$val) {
+            $val = trim($val);
+        }
         
         if ($operator == self::BETWEEN) {
-            //Check if column is a DateTime type and if Daterange picker is enabled
-            if (($this->getColumn()->getType() instanceof \ZfcDatagrid\Column\Type\DateTime) && ($this->getColumn()->getType()->isDaterangePickerEnabled()))
-            {
-                $dateSplit = split(' - ', $value);
-                $value = array(
-                    $dateSplit[0],
-                    $dateSplit[1]
-                );
-                $this->displayColumnValue = implode(' - ', $dateSplit);
-            }
-            else
-            {
+            // Check if column is a DateTime type and if Daterange picker is enabled
+            if ($this->getColumn()->getType() instanceof Column\Type\DateTime && $this->getColumn()
+                ->getType()
+                ->isDaterangePickerEnabled() === true) {
+                $this->displayColumnValue = implode(' - ', $value);
+            } else {
                 $value = array(
                     min($value),
                     max($value)
@@ -229,7 +220,7 @@ class Filter
         } else {
             $this->displayColumnValue = sprintf($operator, implode(',', $value));
         }
-
+        
         /*
          * The searched value must be converted maybe.... - Translation - Replace - DateTime - ...
          */
@@ -239,11 +230,10 @@ class Filter
             
             // @TODO Translation + Replace
         }
-
         
         $this->value = $value;
     }
-
+ 
     /**
      * Is this a column filter
      *
@@ -257,7 +247,7 @@ class Filter
             return false;
         }
     }
-
+ 
     /**
      * Only needed for column filter
      *
@@ -267,7 +257,7 @@ class Filter
     {
         return $this->column;
     }
-
+ 
     /**
      *
      * @return array
@@ -276,7 +266,7 @@ class Filter
     {
         return $this->value;
     }
-
+ 
     /**
      *
      * @return string
@@ -285,7 +275,7 @@ class Filter
     {
         return $this->operator;
     }
-
+ 
     /**
      * Get the value displayed to the user
      *
@@ -295,7 +285,7 @@ class Filter
     {
         return $this->displayColumnValue;
     }
-
+ 
     /**
      * Check if a value is the same (used for style, display actions)
      *
@@ -402,7 +392,7 @@ class Filter
         
         return false;
     }
-
+ 
     /**
      *
      * @param unknown $currentValue            
