@@ -162,7 +162,7 @@ class Renderer extends AbstractRenderer
         $viewModel = $this->getViewModel();
 
         // Check if the datarange picker is enabled
-        if ((isset($options['daterange'])) && (isset($options['daterange']['enabled'])) && ($options['daterange']['enabled'] == true))
+        if (isset($options['daterange']['enabled']) && $options['daterange']['enabled'] === true)
         {
             $dateRangeParameters = $options['daterange']['options'];    
 
