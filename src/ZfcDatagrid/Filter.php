@@ -184,32 +184,52 @@ class Filter
             $value = explode('<>', $inputFilterValue);
         }
         
+
+
         if ($value === false) {
             // NO VALUE applied...maybe only "="
             $value = '';
         }
         
-        /*
-         * Handle multiple values
-         */
-        if (is_string($value)) {
-            $value = explode(',', $value);
-        }
-        foreach ($value as &$val) {
-            $val = trim($val);
+        //Check if the column is Datetime type and Daterange picker isn't enabled
+        if (($this->getColumn()->getType() instanceof \ZfcDatagrid\Column\Type\DateTime) && (!$this->getColumn()->getType()->isDaterangePickerEnabled()))
+        {
+            /*
+             * Handle multiple values
+             */
+            if (is_string($value)) {
+                $value = explode(',', $value);
+            }
+            foreach ($value as &$val) {
+                $val = trim($val);
+            }
         }
         $this->operator = $operator;
+
         
         if ($operator == self::BETWEEN) {
-            $value = array(
-                min($value),
-                max($value)
-            );
-            $this->displayColumnValue = sprintf($operator, $value[0], $value[1]);
+            //Check if column is a DateTime type and if Daterange picker is enabled
+            if (($this->getColumn()->getType() instanceof \ZfcDatagrid\Column\Type\DateTime) && ($this->getColumn()->getType()->isDaterangePickerEnabled()))
+            {
+                $dateSplit = split(' - ', $value);
+                $value = array(
+                    $dateSplit[0],
+                    $dateSplit[1]
+                );
+                $this->displayColumnValue = implode(' - ', $dateSplit);
+            }
+            else
+            {
+                $value = array(
+                    min($value),
+                    max($value)
+                );
+                $this->displayColumnValue = sprintf($operator, $value[0], $value[1]);
+            }
         } else {
             $this->displayColumnValue = sprintf($operator, implode(',', $value));
         }
-        
+
         /*
          * The searched value must be converted maybe.... - Translation - Replace - DateTime - ...
          */
@@ -219,6 +239,7 @@ class Filter
             
             // @TODO Translation + Replace
         }
+
         
         $this->value = $value;
     }

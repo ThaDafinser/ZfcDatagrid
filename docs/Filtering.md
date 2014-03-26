@@ -15,6 +15,14 @@ use ZfcDatagrid\Column\Type;
 $column->setType(new Type\Number());
 ```
 
+If you are using a bootstrapTable and you want a daterange picker as filter on your column remember to enable it on the config file and in every column where you want it
+```php
+use ZfcDatagrid\Column\Type;
+$dateType = new Type\DateTime();
+$dateType->setDaterangePickerEnabled();
+$column->setType($dateType);
+```
+
 ## Currently available filters
 > Note: the entered filter is trimmed automatically (left/right and between the operator/value)
 

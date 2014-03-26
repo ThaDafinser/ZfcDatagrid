@@ -24,7 +24,7 @@ If you want to help out on this project:
 
 ## Features
 * Datasources: Doctrine2 (QueryBuilder + Collections), Zend\Db, PhpArray, ... (others possible)
-* Output types: jqGrid, Bootstrap table, PDF, Excel, console, ... (others possible)
+* Output types: jqGrid, Bootstrap table (with Daterange Filter need to load manually js and css), PDF, Excel, console, ... (others possible)
 * different column types
 * custom formatting, type based formatting (string, date, number, array...)
 * column/row styling for all or based on value comparison

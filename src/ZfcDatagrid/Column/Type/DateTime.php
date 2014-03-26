@@ -9,6 +9,7 @@ use DateTimeZone;
 
 class DateTime extends AbstractType
 {
+    protected $daterangePickerEnabled = false;
 
     protected $sourceDateTimeFormat;
 
@@ -62,6 +63,23 @@ class DateTime extends AbstractType
     public function getTypeName ()
     {
         return 'dateTime';
+    }
+
+    /**
+    * Set Daterange Filter enabled true/false
+    * @param bool $val
+    */
+    public function setDaterangePickerEnabled($val = true)
+    {
+        $this->daterangePickerEnabled = $val;
+    }
+
+    /**
+    * Check if the Daterange Filter is enabled
+    */
+    public function isDaterangePickerEnabled()
+    {
+        return $this->daterangePickerEnabled;
     }
 
     public function setSourceDateTimeFormat ($format = 'Y-m-d H:i:s')
