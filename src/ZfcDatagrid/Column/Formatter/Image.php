@@ -13,6 +13,8 @@ class Image extends AbstractFormatter
     );
 
     protected $attributes = array();
+    
+    protected $prefix;
 
     protected $linkAttributes = array();
     
@@ -36,11 +38,29 @@ class Image extends AbstractFormatter
         return $this->linkAttributes;
     }
 
+    /**
+     * Get the prefix 
+     * @return string
+     */
+    public function getPrefix ()
+    {
+        return $this->prefix;
+    }
+    
+    /**
+     * Set the prefix of the image path and the prefix of the link
+     * @param string $prefix
+     */
+    public function setPrefix ($prefix)
+    {
+        $this->prefix = $prefix;
+    }
+    
     public function getFormattedValue(AbstractColumn $column)
     {
         $row = $this->getRowData();
         $value = $row[$column->getUniqueId()];
-        
+        $prefix = $this->getPrefix();
         
         if (is_array($value)) {
             $thumb = $value[0];
@@ -55,6 +75,7 @@ class Image extends AbstractFormatter
             $original = $value;
         }
         
+        
         $linkAttributes = array();
         foreach ($this->getLinkAttributes() as $key => $value) {
             $linkAttributes[] = $key . '="' . $value . '"';
@@ -65,6 +86,8 @@ class Image extends AbstractFormatter
             $attributes[] = $key . '="' . $value . '"';
         }
         
-        return '<a href="' . $original . '" ' . implode(' ', $linkAttributes) . '><img src="' . $thumb . '" ' . implode(' ', $attributes) . ' /></a>';
+        return '<a href="' . $prefix . $original . '" ' . implode(' ', $linkAttributes) . '><img src="' . $prefix . $thumb . '" ' . implode(' ', $attributes) . ' /></a>';
     }
+    
+
 }
