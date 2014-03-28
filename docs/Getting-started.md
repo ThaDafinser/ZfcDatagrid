@@ -7,6 +7,8 @@ it's here to **read data from different sources and display it in different outp
 ## Installation
 If ZfcDatagrid is not installed already, please continue reading here https://github.com/ThaDafinser/ZfcDatagrid#installation
 
+> If you want to use the **Date Range Picker** on bootstrapTable, please include the JS/CSS files from https://github.com/dangrossman/bootstrap-daterangepicker 
+
 > If you want to use the **JqGrid**, please include the JS/CSS files on your own (it's not part of ZfcDatagrid)
 
 ## Your first datagrid

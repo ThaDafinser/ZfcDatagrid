@@ -1,6 +1,7 @@
 <?php
 namespace ZfcDatagrid\Renderer\BootstrapTable;
 
+use ZfcDatagrid\Datagrid;
 use ZfcDatagrid\Renderer\AbstractRenderer;
 use Zend\Http\PhpEnvironment\Request as HttpRequest;
 
@@ -150,6 +151,28 @@ class Renderer extends AbstractRenderer
         }
         
         return (int) $this->currentPageNumber;
+    }
+    
+    public function prepareViewModel(Datagrid $grid)
+    {
+        parent::prepareViewModel($grid);
+
+        $options = $this->getOptionsRenderer();
+
+        $viewModel = $this->getViewModel();
+
+        // Check if the datarange picker is enabled
+        if (isset($options['daterange']['enabled']) && $options['daterange']['enabled'] === true)
+        {
+            $dateRangeParameters = $options['daterange']['options'];    
+
+            $viewModel->setVariable('daterangeEnabled', true);
+            $viewModel->setVariable('daterangeParameters', $dateRangeParameters);
+        }
+        else
+        {
+            $viewModel->setVariable('daterangeEnabled', false);
+        }
     }
 
     public function execute ()
