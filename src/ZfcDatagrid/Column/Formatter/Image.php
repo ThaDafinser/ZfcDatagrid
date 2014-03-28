@@ -86,7 +86,7 @@ class Image extends AbstractFormatter
             $attributes[] = $key . '="' . $value . '"';
         }
         
-        if(!empty($thumb)){
+        if(file_exists($prefix . $thumb)){
             return '<a href="' . $prefix . $original . '" ' . implode(' ', $linkAttributes) . '><img src="' . $prefix . $thumb . '" ' . implode(' ', $attributes) . ' /></a>';
         }else{
             return '<img src="http://placehold.it/1x1" alt="image not found" ' . implode(' ', $attributes) . ' />';
