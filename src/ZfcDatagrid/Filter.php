@@ -1,12 +1,12 @@
 <?php
 namespace ZfcDatagrid;
-
+ 
 use ZfcDatagrid\Column;
 use InvalidArgumentException;
-
+ 
 class Filter
 {
-
+ 
     /**
      * The constant values are used for display on the usergrid filter
      * This is for help, how the data is filtered really
@@ -53,21 +53,21 @@ class Filter
     
     // OK
     const NOT_IN = '!=(%s)';
-
+ 
     const BETWEEN = '%s <> %s';
-
+ 
     /**
      *
      * @var Column\AbstractColumn
      */
     private $column;
-
+ 
     private $operator = self::LIKE;
-
+ 
     private $value;
-
+ 
     private $displayColumnValue;
-
+ 
     /**
      * Apply a filter based on a column
      *
@@ -79,7 +79,7 @@ class Filter
         $this->column = $column;
         $this->setColumnOperator($inputFilterValue, $column->getFilterDefaultOperation());
     }
-
+ 
     /**
      * Convert the input filter to operator + filter + display filter value
      *
@@ -183,6 +183,7 @@ class Filter
             $operator = self::BETWEEN;
             $value = explode('<>', $inputFilterValue);
         }
+        $this->operator = $operator;
         
         if ($value === false) {
             // NO VALUE applied...maybe only "="
@@ -192,20 +193,30 @@ class Filter
         /*
          * Handle multiple values
          */
-        if (is_string($value)) {
+        if ($this->getColumn()->getType() instanceof Column\Type\DateTime && $this->getColumn()
+            ->getType()
+            ->isDaterangePickerEnabled() === true) {
+            $value = explode(' - ', $value);
+        } elseif (! is_array($value)) {
             $value = explode(',', $value);
         }
         foreach ($value as &$val) {
             $val = trim($val);
         }
-        $this->operator = $operator;
         
         if ($operator == self::BETWEEN) {
-            $value = array(
-                min($value),
-                max($value)
-            );
-            $this->displayColumnValue = sprintf($operator, $value[0], $value[1]);
+            // Check if column is a DateTime type and if Daterange picker is enabled
+            if ($this->getColumn()->getType() instanceof Column\Type\DateTime && $this->getColumn()
+                ->getType()
+                ->isDaterangePickerEnabled() === true) {
+                $this->displayColumnValue = implode(' - ', $value);
+            } else {
+                $value = array(
+                    min($value),
+                    max($value)
+                );
+                $this->displayColumnValue = sprintf($operator, $value[0], $value[1]);
+            }
         } else {
             $this->displayColumnValue = sprintf($operator, implode(',', $value));
         }
@@ -222,7 +233,7 @@ class Filter
         
         $this->value = $value;
     }
-
+ 
     /**
      * Is this a column filter
      *
@@ -236,7 +247,7 @@ class Filter
             return false;
         }
     }
-
+ 
     /**
      * Only needed for column filter
      *
@@ -246,7 +257,7 @@ class Filter
     {
         return $this->column;
     }
-
+ 
     /**
      *
      * @return array
@@ -255,7 +266,7 @@ class Filter
     {
         return $this->value;
     }
-
+ 
     /**
      *
      * @return string
@@ -264,7 +275,7 @@ class Filter
     {
         return $this->operator;
     }
-
+ 
     /**
      * Get the value displayed to the user
      *
@@ -274,7 +285,7 @@ class Filter
     {
         return $this->displayColumnValue;
     }
-
+ 
     /**
      * Check if a value is the same (used for style, display actions)
      *
@@ -381,7 +392,7 @@ class Filter
         
         return false;
     }
-
+ 
     /**
      *
      * @param unknown $currentValue            
