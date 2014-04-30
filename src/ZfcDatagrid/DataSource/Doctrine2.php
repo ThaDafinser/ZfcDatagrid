@@ -53,24 +53,15 @@ class Doctrine2 extends AbstractDataSource
         $selectColumns = array();
         foreach ($this->getColumns() as $column) {
             if ($column instanceof Column\Select) {
-                // If there's an expression on the column data i.e. CONCAT(...)
-                if ($column->getExpressionColumn() != '')
-                {
-                    $colString = $column->getExpressionColumn();
-                }
-                else
-                {
-                    $colString = $column->getSelectPart1();
-                    if ($column->getSelectPart2() != '') {
-                        $colString .= '.' . $column->getSelectPart2();
-                    }
+                $colString = $column->getSelectPart1();
+                if ($column->getSelectPart2() != '') {
+                    $colString .= '.' . $column->getSelectPart2();
                 }
                 $colString .= ' ' . $column->getUniqueId();
-
+                
                 $selectColumns[] = $colString;
             }
         }
-        
         $qb->resetDQLPart('select');
         $qb->select($selectColumns);
         

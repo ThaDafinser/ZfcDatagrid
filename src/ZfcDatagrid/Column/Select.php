@@ -12,7 +12,6 @@ class Select extends AbstractColumn
      */
     private $filterSelectExpression;
 
-    protected $expressionColumn = null;
     /**
      * Possible calls:
      * $column = new Column('id', 'user')
@@ -78,24 +77,4 @@ class Select extends AbstractColumn
         
         return false;
     }
-
-    /**
-     *
-     * @param string $expressionColumn           
-     */
-    public function setExpressionColumn ($expressionColumn)
-    {
-        $this->expressionColumn = $expressionColumn;
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getExpressionColumn()
-    {
-        return $this->expressionColumn;
-    }
-
-
 }
