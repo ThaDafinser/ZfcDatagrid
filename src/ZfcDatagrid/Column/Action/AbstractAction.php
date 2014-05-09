@@ -196,7 +196,6 @@ abstract class AbstractAction
     public function getTitle()
     {
         return $this->getAttribute('title');
-        return $this->title;
     }
 
     /**
