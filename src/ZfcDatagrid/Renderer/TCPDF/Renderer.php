@@ -1,28 +1,26 @@
 <?php
 /**
- * Output as an excel file
+ * Output as a PDF file
  */
 namespace ZfcDatagrid\Renderer\TCPDF;
 
-use ZfcDatagrid\Renderer\AbstractRenderer;
+use ZfcDatagrid\Renderer\AbstractExport;
 use ZfcDatagrid\Column;
 use Zend\Http\Response\Stream as ResponseStream;
 use Zend\Http\Headers;
 use TCPDF;
 use ZfcDatagrid\Library\ImageResize;
 
-class Renderer extends AbstractRenderer
+class Renderer extends AbstractExport
 {
 
-    private $allowedColumnTypes = array(
+    protected $allowedColumnTypes = array(
         'ZfcDatagrid\Column\Type\DateTime',
         'ZfcDatagrid\Column\Type\Image',
         'ZfcDatagrid\Column\Type\Number',
         'ZfcDatagrid\Column\Type\PhpArray',
         'ZfcDatagrid\Column\Type\String'
     );
-
-    private $columnsToExport;
 
     private $columnsPositionX = array();
 
@@ -173,35 +171,6 @@ class Renderer extends AbstractRenderer
         }
         
         return $this->pdf;
-    }
-
-    /**
-     * Decide which columns we want to display DO NOT display HTML, actions
-     * After we have all -> resize the width to the paper format
-     *
-     * @return multitype:\ZfcDatagrid\Column\AbstractColumn
-     */
-    private function getColumnsToExport()
-    {
-        if (is_array($this->columnsToExport)) {
-            return $this->columnsToExport;
-        }
-        
-        $columnsToExport = array();
-        foreach ($this->getColumns() as $column) {
-            /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-            
-            if (! $column instanceof Column\Action && $column->isHidden() === false && in_array(get_class($column->getType()), $this->allowedColumnTypes)) {
-                $columnsToExport[] = $column;
-            }
-        }
-        if (count($columnsToExport) === 0) {
-            throw new \Exception('No columns to export available');
-        }
-        
-        $this->columnsToExport = $columnsToExport;
-        
-        return $this->columnsToExport;
     }
 
     /**
@@ -386,11 +355,13 @@ class Renderer extends AbstractRenderer
                     // // without resize (dynamic width)
                     // $pdf->Image($link, $x + 1, $y + 1, 0, $rowHeight-2, '', '', 'L', false);
                     
-                    //resizing properly to width + height (and keeping the ratio)
+                    // resizing properly to width + height (and keeping the ratio)
                     $file = file_get_contents($link);
-                    list ($width, $height) = $this->calcImageSize($file, $column->getWidth() - 2, $rowHeight - 2);
-                    
-                    $pdf->Image('@' . $file, $x + 1, $y + 1, $width, $height, '', '', 'L', false);
+                    if ($file !== false) {
+                        list ($width, $height) = $this->calcImageSize($file, $column->getWidth() - 2, $rowHeight - 2);
+                        
+                        $pdf->Image('@' . $file, $x + 1, $y + 1, $width, $height, '', '', 'L', false);
+                    }
                     break;
                 
                 default:

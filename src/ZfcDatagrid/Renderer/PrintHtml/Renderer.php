@@ -2,33 +2,31 @@
 namespace ZfcDatagrid\Renderer\PrintHtml;
 
 use ZfcDatagrid\Renderer\AbstractRenderer;
-use Zend\Http\Response;
-use Zend\Http;
 use Zend\View\Model\ViewModel;
 
 class Renderer extends AbstractRenderer
 {
 
-    public function getName ()
+    public function getName()
     {
         return 'printHtml';
     }
 
-    public function isExport ()
+    public function isExport()
     {
         return true;
     }
 
-    public function isHtml ()
+    public function isHtml()
     {
         return true;
     }
 
     /**
      *
-     * @return Response\Stream
+     * @return \Zend\View\Model\ViewModel
      */
-    public function execute ()
+    public function execute()
     {
         $layout = $this->getViewModel();
         $layout->setTemplate($this->getTemplate());

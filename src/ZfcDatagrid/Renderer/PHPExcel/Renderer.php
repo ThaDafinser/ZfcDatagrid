@@ -4,7 +4,7 @@
  */
 namespace ZfcDatagrid\Renderer\PHPExcel;
 
-use ZfcDatagrid\Renderer\AbstractRenderer;
+use ZfcDatagrid\Renderer\AbstractExport;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Style;
 use PHPExcel;
@@ -14,15 +14,8 @@ use PHPExcel_Cell_DataType;
 use Zend\Http\Response\Stream as ResponseStream;
 use Zend\Http\Headers;
 
-class Renderer extends AbstractRenderer
+class Renderer extends AbstractExport
 {
-
-    private $allowedColumnTypes = array(
-        'ZfcDatagrid\Column\Type\DateTime',
-        'ZfcDatagrid\Column\Type\Number',
-        'ZfcDatagrid\Column\Type\PhpArray',
-        'ZfcDatagrid\Column\Type\String'
-    );
 
     public function getName()
     {
@@ -61,25 +54,11 @@ class Renderer extends AbstractRenderer
                 ->setSize(15);
         }
         
-        /*
-         * Decide which columns we want to display 
-         * DO NOT display HTML, actions, ... After we have all -> resize the width to the paper format
-         */
-        $columnsToExport = array();
-        foreach ($this->getColumns() as $column) {
-            /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-            if (! $column instanceof Column\Action && $column->isHidden() === false && in_array(get_class($column->getType()), $this->allowedColumnTypes)) {
-                $columnsToExport[] = $column;
-            }
-        }
-        if (count($columnsToExport) === 0) {
-            throw new \Exception('No columns to export available');
-        }
-        $this->calculateColumnWidth($columnsToExport);
+        $this->calculateColumnWidth($this->getColumnsToExport());
         
         $xColumn = 0;
         $yRow = $optionsRenderer['startRowData'];
-        foreach ($columnsToExport as $column) {
+        foreach ($this->getColumnsToExport() as $column) {
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
             $label = $this->getTranslator()->translate($column->getLabel());
             $sheet->setCellValueByColumnAndRow($xColumn, $yRow, $label);
@@ -97,7 +76,7 @@ class Renderer extends AbstractRenderer
         foreach ($this->getData() as $row) {
             
             $xColumn = 0;
-            foreach ($columnsToExport as $column) {
+            foreach ($this->getColumnsToExport() as $column) {
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */
                 $currentColumn = PHPExcel_Cell::stringFromColumnIndex($xColumn);
                 $sheet->getCell($currentColumn . $yRow)->setValueExplicit($row[$column->getUniqueId()], PHPExcel_Cell_DataType::TYPE_STRING);
@@ -156,7 +135,7 @@ class Renderer extends AbstractRenderer
          */
         // Letzte Zeile merken
         $endRow = $yRow - 1;
-        $endColumn = count($columnsToExport) - 1;
+        $endColumn = count($this->getColumnsToExport()) - 1;
         
         // Autofilter + Freeze
         $sheet->setAutoFilter('A' . $optionsRenderer['startRowData'] . ':' . PHPExcel_Cell::stringFromColumnIndex($endColumn) . $endRow);
