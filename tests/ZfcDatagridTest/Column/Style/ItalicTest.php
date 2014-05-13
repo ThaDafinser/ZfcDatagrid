@@ -8,7 +8,7 @@ use ZfcDatagrid\Column\Style;
  * @group Column
  * @covers ZfcDatagrid\Column\Style\Italic
  */
-class BoldTest extends PHPUnit_Framework_TestCase
+class ItalicTest extends PHPUnit_Framework_TestCase
 {
 
     public function testCanCreateInstance()
