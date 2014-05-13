@@ -21,6 +21,8 @@ return array(
                 // type => Displayname (Toolbar - you can use here HTML too...)
                 // 'printHtml' => 'Print',
                 // 'tcpdf' => 'PDF',
+                // 'csv' => 'CSV',
+                // 'PHPExcel' => 'Excel',
                 
                 // The output+save directory
                 'path' => 'data/ZfcDatagrid',
@@ -184,6 +186,13 @@ return array(
                         )
                     )
                 )
+            ),
+            
+            'csv' => array(
+                // draw a header with all column labels?
+                'header' => true,
+                'delimiter' => ',',
+                'enclosure' => '"'
             )
             
         ),
@@ -209,6 +218,7 @@ return array(
             'zfcDatagrid.renderer.printHtml' => 'ZfcDatagrid\Renderer\PrintHtml\Renderer',
             'zfcDatagrid.renderer.PHPExcel' => 'ZfcDatagrid\Renderer\PHPExcel\Renderer',
             'zfcDatagrid.renderer.TCPDF' => 'ZfcDatagrid\Renderer\TCPDF\Renderer',
+            'zfcDatagrid.renderer.csv' => 'ZfcDatagrid\Renderer\Csv\Renderer',
             
             // Datasources
             'zfcDatagrid.examples.data.phpArray' => 'ZfcDatagrid\Examples\Data\PhpArray',
