@@ -199,84 +199,6 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(40, $col2->getWidth());
     }
 
-    public function testPaperWidth()
-    {
-        
-        /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
-        $renderer->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('abstract'));
-        
-        $reflection = new ReflectionClass(get_class($renderer));
-        $method = $reflection->getMethod('getPaperWidth');
-        $method->setAccessible(true);
-        
-        /*
-         * A4 landscape
-         */
-        $options = array(
-            'renderer' => array(
-                'abstract' => array(
-                    'papersize' => 'A4',
-                    'orientation' => 'landscape'
-                )
-            )
-        );
-        $renderer->setOptions($options);
-        
-        $width = $method->invoke($renderer);
-        $this->assertEquals(297, $width);
-        
-        /*
-         * A4 portrait
-         */
-        $options = array(
-            'renderer' => array(
-                'abstract' => array(
-                    'papersize' => 'A4',
-                    'orientation' => 'portrait'
-                )
-            )
-        );
-        $renderer->setOptions($options);
-        
-        $width = $method->invoke($renderer);
-        $this->assertEquals(210, $width);
-        
-        /*
-         * A0 portrait
-         */
-        $options = array(
-            'renderer' => array(
-                'abstract' => array(
-                    'papersize' => 'A0',
-                    'orientation' => 'portrait'
-                )
-            )
-        );
-        $renderer->setOptions($options);
-        
-        $width = $method->invoke($renderer);
-        $this->assertEquals(841, $width);
-        
-        /*
-         * A0 portrait
-         */
-        $options = array(
-            'renderer' => array(
-                'abstract' => array(
-                    'papersize' => 'something',
-                    'orientation' => 'portrait'
-                )
-            )
-        );
-        $renderer->setOptions($options);
-        
-        $this->setExpectedException('Exception', 'Currently only "A" paper formats are supported!');
-        $width = $method->invoke($renderer);
-    }
-
     public function testData()
     {
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
@@ -366,24 +288,6 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         
         $renderer->setCacheId('a_cache_id');
         $this->assertEquals('a_cache_id', $renderer->getCacheId());
-    }
-
-    public function testFilename()
-    {
-        /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
-        
-        $reflection = new ReflectionClass(get_class($renderer));
-        $method = $reflection->getMethod('getFilename');
-        $method->setAccessible(true);
-        
-        $filename = $method->invokeArgs($renderer, array());
-        $this->assertEquals(date('Y-m-d_H-i-s'), $filename);
-        
-        $renderer->setTitle('My title');
-        
-        $filename = $method->invokeArgs($renderer, array());
-        $this->assertEquals(date('Y-m-d_H-i-s') . '_My_title', $filename);
     }
 
     public function testGetSortConditionsSortEmpty()

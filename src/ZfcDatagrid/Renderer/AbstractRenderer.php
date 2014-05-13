@@ -268,43 +268,6 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     * Get the paper width in MM (milimeter)
-     *
-     * @return float
-     */
-    protected function getPaperWidth()
-    {
-        $optionsRenderer = $this->getOptionsRenderer();
-        
-        $papersize = $optionsRenderer['papersize'];
-        $orientation = $optionsRenderer['orientation'];
-        
-        if (substr($papersize, 0, 1) != 'A') {
-            throw new \Exception('Currently only "A" paper formats are supported!');
-        }
-        
-        // calc from A0 to selected
-        $divisor = substr($papersize, 1, 1);
-        
-        // A0 dimensions = 841 x 1189 mm
-        $currentX = 841;
-        $currentY = 1189;
-        for ($i = 0; $i < $divisor; $i ++) {
-            $tempY = $currentX;
-            $tempX = floor($currentY / 2);
-            
-            $currentX = $tempX;
-            $currentY = $tempY;
-        }
-        
-        if ($orientation == 'landscape') {
-            return $currentY;
-        } else {
-            return $currentX;
-        }
-    }
-
-    /**
      * The prepared data
      *
      * @param array $data            
@@ -455,27 +418,6 @@ abstract class AbstractRenderer implements RendererInterface
     public function getCacheId()
     {
         return $this->cacheId;
-    }
-
-    /**
-     * Get a valid filename to save
-     * (WITHOUT the extension!)
-     *
-     * @return string
-     */
-    protected function getFilename()
-    {
-        $filenameParts = array();
-        $filenameParts[] = date('Y-m-d_H-i-s');
-        
-        if ($this->getTitle() != '') {
-            $title = $this->getTitle();
-            $title = str_replace(' ', '_', $title);
-            
-            $filenameParts[] = preg_replace("/[^a-z0-9_-]+/i", "", $title);
-        }
-        
-        return implode('_', $filenameParts);
     }
 
     /**
