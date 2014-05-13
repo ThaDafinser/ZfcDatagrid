@@ -8,4 +8,5 @@ namespace ZfcDatagrid\Column\Style;
 
 class Color extends AbstractColor
 {
+    //no methods (just needed to check for instanceof)
 }

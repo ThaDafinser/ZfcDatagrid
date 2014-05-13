@@ -1,9 +1,9 @@
 <?php
-namespace ZfcDatagrid\Column\Type;
-
 /**
  * Image type
  */
+namespace ZfcDatagrid\Column\Type;
+
 class Image extends AbstractType
 {
 
