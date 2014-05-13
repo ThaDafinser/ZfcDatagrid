@@ -7,10 +7,10 @@ class ImageResize
     /**
      * Calculate the width / height, respecting the ratio
      *
-     * @param float $width            
-     * @param float $height            
-     * @param float $maxWidth            
-     * @param float $maxHeight            
+     * @param  float $width
+     * @param  float $height
+     * @param  float $maxWidth
+     * @param  float $maxHeight
      * @return array
      */
     public static function getCalculatedSize($width, $height, $maxWidth, $maxHeight)
@@ -18,7 +18,7 @@ class ImageResize
         // $ratio = $width / $height;
         $widthDiffRatio = $maxWidth / $width;
         $heightDiffRatio = $maxHeight / $height;
-        
+
         if ($widthDiffRatio <= $heightDiffRatio) {
             // resize based on width
             $newWidth = $maxWidth;
@@ -28,7 +28,7 @@ class ImageResize
             $newWidth = $width * $heightDiffRatio;
             $newHeight = $maxHeight;
         }
-        
+
         return array(
             $newWidth,
             $newHeight

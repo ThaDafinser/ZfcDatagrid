@@ -39,11 +39,11 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $this->column->setUniqueId('myCol');
         $this->column->setSelect('myCol');
-        
+
         $this->column2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $this->column2->setUniqueId('myCol2');
         $this->column2->setSelect('myCol2');
-        
+
         $this->mockDriver = $this->getMock('Zend\Db\Adapter\Driver\DriverInterface');
         $this->mockConnection = $this->getMock('Zend\Db\Adapter\Driver\ConnectionInterface');
         $this->mockDriver->expects($this->any())
@@ -57,17 +57,17 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->mockDriver->expects($this->any())
             ->method('createStatement')
             ->will($this->returnValue($this->mockStatement));
-        
+
         $this->adapter = new Adapter($this->mockDriver, $this->mockPlatform);
-        
+
         $sql = new Sql($this->adapter, 'foo');
-        
+
         $select = new Select('myTable');
         $select->columns(array(
             'myCol',
             'myCol2'
         ));
-        
+
         $this->filterSelect = new FilterSelect($sql, $select);
     }
 
@@ -75,30 +75,30 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('Zend\Db\Sql\Select', $this->filterSelect->getSelect());
         $this->assertInstanceOf('Zend\Db\Sql\Sql', $this->filterSelect->getSql());
-        
+
         // Test two filters
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '~myValue,123');
-        
+
         $filter2 = new \ZfcDatagrid\Filter();
         $filter2->setFromColumn($this->column2, '~myValue,123');
-        
+
         $filterSelect = clone $this->filterSelect;
         $filterSelect->applyFilter($filter);
         $filterSelect->applyFilter($filter2);
-        
+
         $select = $filterSelect->getSelect();
         /* @var $where \Zend\Db\Sql\Where */
         $where = $select->getRawState('where');
-        
+
         $predicates = $where->getPredicates();
         $this->assertEquals(2, count($predicates));
     }
 
     /**
      *
-     * @param unknown $predicates            
-     * @param number $part            
+     * @param unknown $predicates
+     * @param number  $part
      *
      * @return \Zend\Db\Sql\Predicate\Expression
      */
@@ -106,11 +106,11 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         /* @var $predicateSet \Zend\Db\Sql\Predicate\PredicateSet */
         $predicateSet = $predicates[0][1];
-        
+
         $pred = $predicateSet->getPredicates();
         $where = $pred[$part][1];
         $wherePred = $where->getPredicates();
-        
+
         return $wherePred[0][1];
     }
 
@@ -118,21 +118,21 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '~myValue,123');
-        
+
         $filterSelect = clone $this->filterSelect;
         $filterSelect->applyFilter($filter);
-        
+
         $select = $filterSelect->getSelect();
         /* @var $where \Zend\Db\Sql\Where */
         $where = $select->getRawState('where');
-        
+
         $predicates = $where->getPredicates();
         $this->assertEquals(1, count($predicates));
-        
+
         $like = $this->getWherePart($predicates, 0);
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Like', $like);
         $this->assertEquals('%myValue%', $like->getLike());
-        
+
         $like = $this->getWherePart($predicates, 1);
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Like', $like);
         $this->assertEquals('%123%', $like->getLike());
@@ -142,20 +142,20 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '~%myValue,123');
-        
+
         $filterSelect = clone $this->filterSelect;
         $filterSelect->applyFilter($filter);
-        
+
         $select = $filterSelect->getSelect();
         /* @var $where \Zend\Db\Sql\Where */
         $where = $select->getRawState('where');
-        
+
         $predicates = $where->getPredicates();
-        
+
         $like = $this->getWherePart($predicates, 0);
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Like', $like);
         $this->assertEquals('%myValue', $like->getLike());
-        
+
         $like = $this->getWherePart($predicates, 1);
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Like', $like);
         $this->assertEquals('%123', $like->getLike());
@@ -165,16 +165,16 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '~myValue%');
-        
+
         $filterSelect = clone $this->filterSelect;
         $filterSelect->applyFilter($filter);
-        
+
         $select = $filterSelect->getSelect();
         /* @var $where \Zend\Db\Sql\Where */
         $where = $select->getRawState('where');
-        
+
         $predicates = $where->getPredicates();
-        
+
         $like = $this->getWherePart($predicates, 0);
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Like', $like);
         $this->assertEquals('myValue%', $like->getLike());
@@ -184,19 +184,19 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '!~myValue');
-        
+
         $filterSelect = clone $this->filterSelect;
         $filterSelect->applyFilter($filter);
-        
+
         $select = $filterSelect->getSelect();
         /* @var $where \Zend\Db\Sql\Where */
         $where = $select->getRawState('where');
-        
+
         $predicates = $where->getPredicates();
-        
+
         $notLike = $this->getWherePart($predicates, 0);
         $parameters = $notLike->getParameters();
-        
+
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Expression', $notLike);
         $this->assertEquals('NOT LIKE ?', $notLike->getExpression());
         $this->assertEquals('%myValue%', $parameters[0]);
@@ -206,19 +206,19 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '!~%myValue');
-        
+
         $filterSelect = clone $this->filterSelect;
         $filterSelect->applyFilter($filter);
-        
+
         $select = $filterSelect->getSelect();
         /* @var $where \Zend\Db\Sql\Where */
         $where = $select->getRawState('where');
-        
+
         $predicates = $where->getPredicates();
-        
+
         $notLike = $this->getWherePart($predicates, 0);
         $parameters = $notLike->getParameters();
-        
+
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Expression', $notLike);
         $this->assertEquals('NOT LIKE ?', $notLike->getExpression());
         $this->assertEquals('%myValue', $parameters[0]);
@@ -228,19 +228,19 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '!~myValue%');
-        
+
         $filterSelect = clone $this->filterSelect;
         $filterSelect->applyFilter($filter);
-        
+
         $select = $filterSelect->getSelect();
         /* @var $where \Zend\Db\Sql\Where */
         $where = $select->getRawState('where');
-        
+
         $predicates = $where->getPredicates();
-        
+
         $notLike = $this->getWherePart($predicates, 0);
         $parameters = $notLike->getParameters();
-        
+
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Expression', $notLike);
         $this->assertEquals('NOT LIKE ?', $notLike->getExpression());
         $this->assertEquals('myValue%', $parameters[0]);
@@ -250,18 +250,18 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '=myValue');
-        
+
         $filterSelect = clone $this->filterSelect;
         $filterSelect->applyFilter($filter);
-        
+
         $select = $filterSelect->getSelect();
         /* @var $where \Zend\Db\Sql\Where */
         $where = $select->getRawState('where');
-        
+
         $predicates = $where->getPredicates();
-        
+
         $operator = $this->getWherePart($predicates, 0);
-        
+
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Operator', $operator);
         $this->assertEquals(Operator::OP_EQ, $operator->getOperator());
         $this->assertEquals('myCol', $operator->getLeft());
@@ -272,18 +272,18 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '!=myValue');
-        
+
         $filterSelect = clone $this->filterSelect;
         $filterSelect->applyFilter($filter);
-        
+
         $select = $filterSelect->getSelect();
         /* @var $where \Zend\Db\Sql\Where */
         $where = $select->getRawState('where');
-        
+
         $predicates = $where->getPredicates();
-        
+
         $operator = $this->getWherePart($predicates, 0);
-        
+
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Operator', $operator);
         $this->assertEquals(Operator::OP_NE, $operator->getOperator());
         $this->assertEquals('myCol', $operator->getLeft());
@@ -294,18 +294,18 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '>=myValue');
-        
+
         $filterSelect = clone $this->filterSelect;
         $filterSelect->applyFilter($filter);
-        
+
         $select = $filterSelect->getSelect();
         /* @var $where \Zend\Db\Sql\Where */
         $where = $select->getRawState('where');
-        
+
         $predicates = $where->getPredicates();
-        
+
         $operator = $this->getWherePart($predicates, 0);
-        
+
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Operator', $operator);
         $this->assertEquals(Operator::OP_GTE, $operator->getOperator());
         $this->assertEquals('myCol', $operator->getLeft());
@@ -316,18 +316,18 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '>myValue');
-        
+
         $filterSelect = clone $this->filterSelect;
         $filterSelect->applyFilter($filter);
-        
+
         $select = $filterSelect->getSelect();
         /* @var $where \Zend\Db\Sql\Where */
         $where = $select->getRawState('where');
-        
+
         $predicates = $where->getPredicates();
-        
+
         $operator = $this->getWherePart($predicates, 0);
-        
+
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Operator', $operator);
         $this->assertEquals(Operator::OP_GT, $operator->getOperator());
         $this->assertEquals('myCol', $operator->getLeft());
@@ -338,18 +338,18 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '<=myValue');
-        
+
         $filterSelect = clone $this->filterSelect;
         $filterSelect->applyFilter($filter);
-        
+
         $select = $filterSelect->getSelect();
         /* @var $where \Zend\Db\Sql\Where */
         $where = $select->getRawState('where');
-        
+
         $predicates = $where->getPredicates();
-        
+
         $operator = $this->getWherePart($predicates, 0);
-        
+
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Operator', $operator);
         $this->assertEquals(Operator::OP_LTE, $operator->getOperator());
         $this->assertEquals('myCol', $operator->getLeft());
@@ -360,18 +360,18 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '<myValue');
-        
+
         $filterSelect = clone $this->filterSelect;
         $filterSelect->applyFilter($filter);
-        
+
         $select = $filterSelect->getSelect();
         /* @var $where \Zend\Db\Sql\Where */
         $where = $select->getRawState('where');
-        
+
         $predicates = $where->getPredicates();
-        
+
         $operator = $this->getWherePart($predicates, 0);
-        
+
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Operator', $operator);
         $this->assertEquals(Operator::OP_LT, $operator->getOperator());
         $this->assertEquals('myCol', $operator->getLeft());
@@ -382,18 +382,18 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '3 <> myValue');
-        
+
         $filterSelect = clone $this->filterSelect;
         $filterSelect->applyFilter($filter);
-        
+
         $select = $filterSelect->getSelect();
         /* @var $where \Zend\Db\Sql\Where */
         $where = $select->getRawState('where');
-        
+
         $predicates = $where->getPredicates();
-        
+
         $operator = $this->getWherePart($predicates, 0);
-        
+
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Between', $operator);
         $this->assertEquals('myCol', $operator->getIdentifier());
         $this->assertEquals('3', $operator->getMinValue());
@@ -414,7 +414,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $filter->expects($this->any())
             ->method('getOperator')
             ->will($this->returnValue(' () '));
-        
+
         $this->setExpectedException('InvalidArgumentException');
         $filterSelect = clone $this->filterSelect;
         $filterSelect->applyFilter($filter);

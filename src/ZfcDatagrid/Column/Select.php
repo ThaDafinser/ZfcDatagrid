@@ -21,15 +21,15 @@ class Select extends AbstractColumn
      * $column = new Column('(SELECT GROUP_CONCAT....)', 'someAlias')
      * Use the subselect -> UNIQUE will be the second parameter
      *
-     * @param string|object $columnOrIndexOrObject            
-     * @param string $tableOrAliasOrUniqueId            
+     * @param string|object $columnOrIndexOrObject
+     * @param string        $tableOrAliasOrUniqueId
      */
     public function __construct($columnOrIndexOrObject, $tableOrAliasOrUniqueId = null)
     {
         if ($tableOrAliasOrUniqueId !== null && ! is_string($tableOrAliasOrUniqueId)) {
             throw new \Exception('Variable $tableOrAliasOrUniqueId must be null or a string');
         }
-        
+
         if (is_string($columnOrIndexOrObject) && $tableOrAliasOrUniqueId !== null) {
             // $column = new Column('id', 'user')
             $this->setUniqueId($tableOrAliasOrUniqueId . '_' . $columnOrIndexOrObject);
@@ -49,7 +49,7 @@ class Select extends AbstractColumn
 
     /**
      *
-     * @param string $filterSelectExpression            
+     * @param string $filterSelectExpression
      */
     public function setFilterSelectExpression($filterSelectExpression)
     {
@@ -74,7 +74,7 @@ class Select extends AbstractColumn
         if ($this->filterSelectExpression !== null) {
             return true;
         }
-        
+
         return false;
     }
 }

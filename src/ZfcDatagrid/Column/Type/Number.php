@@ -77,7 +77,7 @@ class Number extends AbstractType
         if ($this->locale === null) {
             $this->locale = Locale::getDefault();
         }
-        
+
         return $this->locale;
     }
 
@@ -135,7 +135,7 @@ class Number extends AbstractType
 
     /**
      *
-     * @param string $val            
+     * @param  string $val
      * @return string
      */
     public function getFilterValue($val)
@@ -144,31 +144,31 @@ class Number extends AbstractType
         foreach ($this->getAttributes() as $attribute) {
             $formatter->setAttribute($attribute['attribute'], $attribute['value']);
         }
-        
+
         if (strlen($this->getPrefix()) > 0 && strpos($val, $this->getPrefix()) === 0) {
             $val = substr($val, strlen($this->getPrefix()));
         }
         if (strlen($this->getSuffix()) > 0 && strpos($val, $this->getSuffix()) > 0) {
             $val = substr($val, 0, - strlen($this->getSuffix()));
         }
-        
+
         try {
             $formattedValue = $formatter->parse($val);
         } catch (\Exception $e) {
             return $val;
         }
-        
-        if($formattedValue === false){
+
+        if ($formattedValue === false) {
             return $val;
         }
-        
+
         return $formattedValue;
     }
 
     /**
      * Convert the value from the source to the value, which the user will see
      *
-     * @param string $val            
+     * @param  string $val
      * @return string
      */
     public function getUserValue($val)
@@ -177,9 +177,9 @@ class Number extends AbstractType
         foreach ($this->getAttributes() as $attribute) {
             $formatter->setAttribute($attribute['attribute'], $attribute['value']);
         }
-        
+
         $formattedValue = $formatter->format($val, $this->getFormatType());
-        
+
         return (string) $this->getPrefix() . $formattedValue . $this->getSuffix();
     }
 }

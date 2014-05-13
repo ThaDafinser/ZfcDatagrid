@@ -24,7 +24,7 @@ class Group
 
     /**
      *
-     * @param integer $id            
+     * @param integer $id
      */
     public function setId($id)
     {
@@ -51,11 +51,10 @@ class Group
 
     /**
      *
-     * @param string $name            
+     * @param string $name
      */
     public function setName($name)
     {
         $this->name = $name;
     }
 }
-

@@ -28,7 +28,7 @@ abstract class AbstractFormatter
 
     /**
      *
-     * @param string $name            
+     * @param string $name
      */
     public function setRendererName($name = null)
     {
@@ -46,7 +46,7 @@ abstract class AbstractFormatter
 
     /**
      *
-     * @param array $validRendrerers            
+     * @param array $validRendrerers
      */
     public function setValidRendererNames(array $validRendrerers)
     {
@@ -71,13 +71,13 @@ abstract class AbstractFormatter
         if (in_array($this->getRendererName(), $this->validRenderers)) {
             return true;
         }
-        
+
         return false;
     }
 
     /**
      *
-     * @param AbstractColumn $column            
+     * @param  AbstractColumn $column
      * @return string
      */
     public function format(AbstractColumn $column)
@@ -86,13 +86,13 @@ abstract class AbstractFormatter
         if ($this->isApply() === true) {
             return $this->getFormattedValue($column);
         }
-        
+
         return $data[$column->getUniqueId()];
     }
 
     /**
      *
-     * @param AbstractColumn $columnUniqueId            
+     * @param AbstractColumn $columnUniqueId
      *
      * @return string
      */

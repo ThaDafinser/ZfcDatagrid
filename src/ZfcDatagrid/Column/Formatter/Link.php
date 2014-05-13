@@ -15,7 +15,7 @@ class Link extends AbstractFormatter
     {
         $row = $this->getRowData();
         $value = $row[$column->getUniqueId()];
-        
+
         return '<a href="' . $value . '">' . $value . '</a>';
     }
 }

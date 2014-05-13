@@ -14,7 +14,7 @@ class Filter
 
     /**
      *
-     * @param \ZfcDatagrid\Filter $filter            
+     * @param \ZfcDatagrid\Filter $filter
      */
     public function __construct(DatagridFilter $filter)
     {
@@ -33,7 +33,7 @@ class Filter
     /**
      * Does the value get filtered?
      *
-     * @param array $row            
+     * @param  array      $row
      * @throws \Exception
      * @return boolean
      */
@@ -41,17 +41,18 @@ class Filter
     {
         $wasTrueOneTime = false;
         $isApply = false;
-        
+
         foreach ($this->getFilter()->getValues() as $filterValue) {
             $filter = $this->getFilter();
             $col = $filter->getColumn();
-            
+
             $value = $row[$col->getUniqueId()];
             $value = $col->getType()->getFilterValue($value);
-            
+
             if ($filter->getOperator() == DatagridFilter::BETWEEN) {
                 //BETWEEN have to be tested in one call
                 $isApply = DatagridFilter::isApply($value, $this->getFilter()->getValues(), $filter->getOperator());
+
                 return $isApply;
             } else {
                 $isApply = DatagridFilter::isApply($value, $filterValue, $filter->getOperator());
@@ -59,9 +60,9 @@ class Filter
             if ($isApply === true) {
                 $wasTrueOneTime = true;
             }
-            
+
             switch ($filter->getOperator()) {
-                
+
                 case DatagridFilter::NOT_LIKE:
                 case DatagridFilter::NOT_LIKE_LEFT:
                 case DatagridFilter::NOT_LIKE_RIGHT:
@@ -76,11 +77,11 @@ class Filter
                     break;
             }
         }
-        
+
         if ($isApply === false && $wasTrueOneTime === true) {
             return true;
         }
-        
+
         return $isApply;
     }
 }

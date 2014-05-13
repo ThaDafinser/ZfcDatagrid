@@ -1,14 +1,12 @@
 <?php
 namespace ZfcDatagridTest\DataSource\Doctrine2;
 
-use PHPUnit_Framework_TestCase;
-use ZfcDatagrid\Filter;
 use ZfcDatagridTest\DataSource\DataSourceTestCase;
 
 /**
  *
  * @copyright goes to: https://github.com/doctrine/doctrine2/blob/master/tests/Doctrine/Tests/OrmTestCase.php
- *           
+ *
  *            @group DataSource
  *            @covers ZfcDatagrid\DataSource\Doctrine2
  */
@@ -37,8 +35,8 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
 
     /**
      *
-     * @param array $paths            
-     * @param mixed $alias            
+     * @param array $paths
+     * @param mixed $alias
      *
      * @return \Doctrine\ORM\Mapping\Driver\AnnotationDriver
      */
@@ -46,13 +44,13 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
     {
         if (version_compare(\Doctrine\Common\Version::VERSION, '3.0.0', '>=')) {
             $reader = new \Doctrine\Common\Annotations\CachedReader(new \Doctrine\Common\Annotations\AnnotationReader(), new ArrayCache());
-        } else 
+        } else
             if (version_compare(\Doctrine\Common\Version::VERSION, '2.2.0-DEV', '>=')) {
                 // Register the ORM Annotations in the AnnotationRegistry
                 $reader = new \Doctrine\Common\Annotations\SimpleAnnotationReader();
                 $reader->addNamespace('Doctrine\ORM\Mapping');
                 $reader = new \Doctrine\Common\Annotations\CachedReader($reader, new ArrayCache());
-            } else 
+            } else
                 if (version_compare(\Doctrine\Common\Version::VERSION, '2.1.0-BETA3-DEV', '>=')) {
                     $reader = new \Doctrine\Common\Annotations\AnnotationReader();
                     $reader->setIgnoreNotImportedAnnotations(true);
@@ -72,6 +70,7 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
                     }
                 }
         \Doctrine\Common\Annotations\AnnotationRegistry::registerFile(__DIR__ . "/../../../lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php");
+
         return new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($reader, (array) $paths);
     }
 
@@ -83,30 +82,30 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
      * be configured in the tests to simulate the DBAL behavior that is desired
      * for a particular test,
      *
-     * @param \Doctrine\DBAL\Connection|array $conn            
-     * @param mixed $conf            
-     * @param \Doctrine\Common\EventManager|null $eventManager            
-     * @param bool $withSharedMetadata            
+     * @param \Doctrine\DBAL\Connection|array    $conn
+     * @param mixed                              $conf
+     * @param \Doctrine\Common\EventManager|null $eventManager
+     * @param bool                               $withSharedMetadata
      *
      * @return \Doctrine\ORM\EntityManager
      */
     protected function _getTestEntityManager($conn = null, $conf = null, $eventManager = null, $withSharedMetadata = true)
     {
         $metadataCache = $withSharedMetadata ? self::getSharedMetadataCacheImpl() : new \Doctrine\Common\Cache\ArrayCache();
-        
+
         $config = new \Doctrine\ORM\Configuration();
-        
+
         $config->setMetadataCacheImpl($metadataCache);
         $config->setMetadataDriverImpl($config->newDefaultAnnotationDriver(array(), true));
         $config->setQueryCacheImpl(self::getSharedQueryCacheImpl());
         $config->setProxyDir(__DIR__ . '/Proxies');
         $config->setProxyNamespace('Doctrine\Tests\Proxies');
-        
+
         $config->setEntityNamespaces(array(
             'ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity',
             'ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity\Category'
         ));
-        
+
         if ($conn === null) {
             $conn = array(
                 'driverClass' => 'ZfcDatagridTest\DataSource\Doctrine2\Mocks\DriverMock',
@@ -115,11 +114,11 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
                 'password' => 'wayne'
             );
         }
-        
+
         if (is_array($conn)) {
             $conn = \Doctrine\DBAL\DriverManager::getConnection($conn, $config, $eventManager);
         }
-        
+
         return \ZfcDatagridTest\DataSource\Doctrine2\Mocks\EntityManagerMock::create($conn, $config, $eventManager);
     }
 
@@ -132,7 +131,7 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
         if (self::$_metadataCacheImpl === null) {
             self::$_metadataCacheImpl = new \Doctrine\Common\Cache\ArrayCache();
         }
-        
+
         return self::$_metadataCacheImpl;
     }
 
@@ -145,14 +144,14 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
         if (self::$_queryCacheImpl === null) {
             self::$_queryCacheImpl = new \Doctrine\Common\Cache\ArrayCache();
         }
-        
+
         return self::$_queryCacheImpl;
     }
 
     public function setUp()
     {
         $this->em = $this->_getTestEntityManager();
-        
+
         parent::setUp();
     }
 }

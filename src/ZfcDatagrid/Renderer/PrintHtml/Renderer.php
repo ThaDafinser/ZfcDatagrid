@@ -31,23 +31,23 @@ class Renderer extends AbstractRenderer
         $layout = $this->getViewModel();
         $layout->setTemplate($this->getTemplate());
         $layout->setTerminal(true);
-        
+
         $table = new ViewModel();
         $table->setTemplate('zfc-datagrid/renderer/printHtml/table');
         $table->setVariables($layout->getVariables());
-        
+
         $layout->addChild($table, 'table');
-        
+
         return $layout;
-        
+
         // $viewModel->setTemplate('zfc-datagrid/renderer/printHtml/layout');
-        
+
         // $viewChild = new ViewModel();
         // $viewChild->setVariables($viewModel->getVariables());
         // $viewChild->setTemplate($this->getTemplate());
-        
+
         // $viewModel->addChild($viewChild, 'table');
-        
+
         // return $viewModel;
     }
 }

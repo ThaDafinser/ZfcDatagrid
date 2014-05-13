@@ -22,10 +22,10 @@ class ZendDbAdapterFactoryTest extends PHPUnit_Framework_TestCase
     {
         $sm = new ServiceManager();
         $sm->setService('config', $this->config);
-        
+
         $factory = new ZendDbAdapterFactory();
         $grid = $factory->createService($sm);
-        
+
         $this->assertInstanceOf('Zend\Db\Adapter\Adapter', $grid);
     }
 }

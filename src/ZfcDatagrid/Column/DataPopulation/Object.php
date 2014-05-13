@@ -23,7 +23,7 @@ class Object implements DataPopulationInterface
 
     /**
      *
-     * @param ObjectAwareInterface $object            
+     * @param  ObjectAwareInterface $object
      * @throws \Exception
      */
     public function setObject(ObjectAwareInterface $object)
@@ -42,9 +42,9 @@ class Object implements DataPopulationInterface
 
     /**
      * Apply a dynamic parameter based on row/column value
-     * 
-     * @param string $objectParameterName            
-     * @param AbstractColumn $column            
+     *
+     * @param string         $objectParameterName
+     * @param AbstractColumn $column
      */
     public function addObjectParameterColumn($objectParameterName, Column\AbstractColumn $column)
     {
@@ -66,8 +66,8 @@ class Object implements DataPopulationInterface
     /**
      * Directly apply a "static" parameter
      *
-     * @param string $name            
-     * @param mixed $value            
+     * @param string $name
+     * @param mixed  $value
      */
     public function setParameterValue($name, $value)
     {

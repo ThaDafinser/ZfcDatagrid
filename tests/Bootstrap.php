@@ -9,7 +9,7 @@ $files = array(
 foreach ($files as $file) {
     if (file_exists($file)) {
         $loader = require $file;
-        
+
         break;
     }
 }
@@ -20,4 +20,3 @@ if (! isset($loader)) {
 
 /* @var $loader \Composer\Autoload\ClassLoader */
 $loader->add('ZfcDatagridTest\\', __DIR__);
-

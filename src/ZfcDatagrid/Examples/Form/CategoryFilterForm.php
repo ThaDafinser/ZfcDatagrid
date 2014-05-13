@@ -1,5 +1,5 @@
 <?php
-namespace ZfcDatagrid\Example\Form;
+namespace ZfcDatagrid\Examples\Form;
 
 use Zend\Form\Form;
 // use Zend\InputFilter\Factory as InputFactory; // <-- Add this import
@@ -9,10 +9,10 @@ use Zend\InputFilter\InputFilterInterface; // <-- Add this import
 class CategoryFilterForm extends Form implements InputFilterAwareInterface
 {
 
-    public function __construct ($name = null)
+    public function __construct($name = null)
     {
         parent::__construct('categoryFilter');
-        
+
         $this->setAttribute('method', 'post');
         $this->add(array(
             'name' => 'id',
@@ -47,19 +47,19 @@ class CategoryFilterForm extends Form implements InputFilterAwareInterface
             )
         ));
     }
-    
+
     // Add content to this method:
-    public function setInputFilter (InputFilterInterface $inputFilter)
+    public function setInputFilter(InputFilterInterface $inputFilter)
     {
         throw new \Exception("Not used");
     }
 
-    public function getInputFilter ()
+    public function getInputFilter()
     {
         // if (!$this->inputFilter) {
         // $inputFilter = new InputFilter();
         // $factory = new InputFactory();
-        
+
         // $inputFilter->add($factory->createInput(array(
         // 'name' => 'id',
         // 'required' => true,
@@ -67,7 +67,7 @@ class CategoryFilterForm extends Form implements InputFilterAwareInterface
         // array('name' => 'Int'),
         // ),
         // )));
-        
+
         // $inputFilter->add($factory->createInput(array(
         // 'name' => 'artist',
         // 'required' => true,
@@ -86,7 +86,7 @@ class CategoryFilterForm extends Form implements InputFilterAwareInterface
         // ),
         // ),
         // )));
-        
+
         // $inputFilter->add($factory->createInput(array(
         // 'name' => 'title',
         // 'required' => true,
@@ -105,7 +105,7 @@ class CategoryFilterForm extends Form implements InputFilterAwareInterface
         // ),
         // ),
         // )));
-        
+
         // $this->inputFilter = $inputFilter;
         // }
         return array();

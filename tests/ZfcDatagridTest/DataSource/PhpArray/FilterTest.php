@@ -29,9 +29,9 @@ class FilterTest extends PHPUnit_Framework_TestCase
         /* @var $filter \ZfcDatagrid\Filter */
         $filter = $this->getMock('ZfcDatagrid\Filter');
         $filter->setFromColumn($this->column, 'myValue,123');
-        
+
         $filterArray = new FilterArray($filter);
-        
+
         $this->assertInstanceOf('ZfcDatagrid\Filter', $filterArray->getFilter());
     }
 
@@ -40,9 +40,9 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '~myValue,123');
         $this->assertEquals(Filter::LIKE, $filter->getOperator());
-        
+
         $filterArray = new FilterArray($filter);
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '123'
         )));
@@ -52,7 +52,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '51237'
         )));
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '321'
         )));
@@ -62,9 +62,9 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '~%myValue,123');
-        
+
         $filterArray = new FilterArray($filter);
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '123'
         )));
@@ -74,15 +74,15 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => 'something.... myValue'
         )));
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '1234'
         )));
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '51237'
         )));
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '321'
         )));
@@ -92,9 +92,9 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '~myValue,123%');
-        
+
         $filterArray = new FilterArray($filter);
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '123'
         )));
@@ -104,18 +104,18 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => 'myValue....something'
         )));
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => 'something.... myValue'
         )));
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '4123'
         )));
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '51237'
         )));
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '321'
         )));
@@ -128,9 +128,9 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '!~myValue,123');
-        
+
         $filterArray = new FilterArray($filter);
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '123'
         )));
@@ -140,7 +140,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '51237'
         )));
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '321'
         )));
@@ -150,9 +150,9 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '!~%myValue,123');
-        
+
         $filterArray = new FilterArray($filter);
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '123'
         )));
@@ -162,15 +162,15 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => 'something.... myValue'
         )));
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '1234'
         )));
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '51237'
         )));
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '321'
         )));
@@ -180,9 +180,9 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '!~myValue,123%');
-        
+
         $filterArray = new FilterArray($filter);
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '123'
         )));
@@ -192,18 +192,18 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => 'myValue....something'
         )));
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => 'something.... myValue'
         )));
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '4123'
         )));
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '51237'
         )));
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '321'
         )));
@@ -213,16 +213,16 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '=myValue,123');
-        
+
         $filterArray = new FilterArray($filter);
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => 'myValue'
         )));
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '123'
         )));
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => 'myvalue'
         )));
@@ -235,16 +235,16 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '!=myValue,123');
-        
+
         $filterArray = new FilterArray($filter);
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => 'myValue'
         )));
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '123'
         )));
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => 'myvalue'
         )));
@@ -257,21 +257,21 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '>=myValue,123');
-        
+
         $filterArray = new FilterArray($filter);
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '123'
         )));
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '322'
         )));
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '11'
         )));
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '00'
         )));
@@ -281,21 +281,21 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '>myValue,123');
-        
+
         $filterArray = new FilterArray($filter);
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '322'
         )));
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '123'
         )));
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '11'
         )));
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '00'
         )));
@@ -305,25 +305,25 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '<=123');
-        
+
         $filterArray = new FilterArray($filter);
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '123'
         )));
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '11'
         )));
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '00'
         )));
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '322'
         )));
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => 'ZZZ'
         )));
@@ -333,21 +333,21 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '<123');
-        
+
         $filterArray = new FilterArray($filter);
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '322'
         )));
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '123'
         )));
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '11'
         )));
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '00'
         )));
@@ -357,16 +357,16 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '=(myValue,123)');
-        
+
         $filterArray = new FilterArray($filter);
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => 'myValue'
         )));
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '123'
         )));
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '321'
         )));
@@ -376,16 +376,16 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '!=(myValue,123)');
-        
+
         $filterArray = new FilterArray($filter);
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => 'myValue'
         )));
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '123'
         )));
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '321'
         )));
@@ -396,9 +396,9 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $filter = new \ZfcDatagrid\Filter();
         $filter->setFromColumn($this->column, '15 <> 30');
         $this->assertEquals(Filter::BETWEEN, $filter->getOperator());
-        
+
         $filterArray = new FilterArray($filter);
-        
+
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '15'
         )));
@@ -408,7 +408,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '30'
         )));
-        
+
         $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '14'
         )));
@@ -431,9 +431,9 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $filter->expects($this->any())
             ->method('getOperator')
             ->will($this->returnValue(' () '));
-        
+
         $this->setExpectedException('InvalidArgumentException');
-        
+
         $filterArray = new FilterArray($filter);
         $filterArray->applyFilter(array(
             'myCol' => '15'

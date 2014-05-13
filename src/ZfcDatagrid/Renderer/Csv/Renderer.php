@@ -35,7 +35,7 @@ class Renderer extends AbstractExport
     public function execute()
     {
         $optionsRenderer = $this->getOptionsRenderer();
-        
+
         $delimiter = ',';
         if (isset($optionsRenderer['delimiter'])) {
             $delimiter = $optionsRenderer['delimiter'];
@@ -44,15 +44,15 @@ class Renderer extends AbstractExport
         if (isset($optionsRenderer['enclosure'])) {
             $enclosure = $optionsRenderer['enclosure'];
         }
-        
+
         $options = $this->getOptions();
         $optionsExport = $options['settings']['export'];
-        
+
         $path = $optionsExport['path'];
         $saveFilename = $this->getCacheId() . '.csv';
-        
+
         $fp = fopen($path . '/' . $saveFilename, 'w');
-        
+
         /*
          * Save the file
          */
@@ -64,29 +64,29 @@ class Renderer extends AbstractExport
             }
             fputcsv($fp, $header, $delimiter, $enclosure);
         }
-        
+
         // data
         foreach ($this->getData() as $row) {
             $csvRow = array();
             foreach ($this->getColumnsToExport() as $col) {
                 $value = $row[$col->getUniqueId()];
-                
+
                 if ($col->getType() instanceof Type\PhpArray || $col->getType() instanceof Type\Image) {
                     $value = implode(',', $value);
                 }
-                
+
                 $csvRow[] = $value;
             }
             fputcsv($fp, $csvRow, $delimiter, $enclosure);
         }
         fclose($fp);
-        
+
         /*
          * Return the file
          */
         $response = new ResponseStream();
         $response->setStream(fopen($path . '/' . $saveFilename, 'r'));
-        
+
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Type' => array(
@@ -101,9 +101,9 @@ class Renderer extends AbstractExport
             'Pragma' => 'no-cache',
             'Expires' => 'Thu, 1 Jan 1970 00:00:00 GMT'
         ));
-        
+
         $response->setHeaders($headers);
-        
+
         return $response;
     }
 }

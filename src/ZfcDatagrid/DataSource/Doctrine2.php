@@ -19,7 +19,7 @@ class Doctrine2 extends AbstractDataSource
     /**
      * Data source
      *
-     * @param mixed $data            
+     * @param mixed $data
      */
     public function __construct($data)
     {
@@ -46,7 +46,7 @@ class Doctrine2 extends AbstractDataSource
     public function execute()
     {
         $qb = $this->getData();
-        
+
         /*
          * Step 1) Apply needed columns
          */
@@ -58,29 +58,29 @@ class Doctrine2 extends AbstractDataSource
                     $colString .= '.' . $column->getSelectPart2();
                 }
                 $colString .= ' ' . $column->getUniqueId();
-                
+
                 $selectColumns[] = $colString;
             }
         }
         $qb->resetDQLPart('select');
         $qb->select($selectColumns);
-        
+
         /*
          * Step 2) Apply sorting
          */
         if (count($this->getSortConditions()) > 0) {
             // Minimum one sort condition given -> so reset the default orderBy
             $qb->resetDQLPart('orderBy');
-            
+
             foreach ($this->getSortConditions() as $key => $sortCondition) {
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */
                 $column = $sortCondition['column'];
-                
+
                 $colString = $column->getSelectPart1();
                 if ($column->getSelectPart2() != '') {
                     $colString .= '.' . $column->getSelectPart2();
                 }
-                
+
                 if ($column->getType() === 'number') {
                     $qb->addSelect('ABS(' . $colString . ') sortColumn' . $key);
                     $qb->add('orderBy', new Expr\OrderBy('sortColumn' . $key, $sortCondition['sortDirection']), true);
@@ -89,7 +89,7 @@ class Doctrine2 extends AbstractDataSource
                 }
             }
         }
-        
+
         /*
          * Step 3) Apply filters
          */
@@ -100,7 +100,7 @@ class Doctrine2 extends AbstractDataSource
                 $filterColumn->applyFilter($filter);
             }
         }
-        
+
         /*
          * Step 4) Pagination
          */

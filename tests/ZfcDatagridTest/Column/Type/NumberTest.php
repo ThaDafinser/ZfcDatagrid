@@ -31,11 +31,11 @@ class NumberTest extends PHPUnit_Framework_TestCase
         if (! extension_loaded('intl')) {
             $this->markTestSkipped('ext/intl not enabled');
         }
-        
+
         $type = new Type\Number();
         $type->setLocale('de_AT');
         $this->numberFormatterAT = $type;
-        
+
         $type = new Type\Number();
         $type->setLocale('en_US');
         $this->numberFormatterEN = $type;
@@ -44,18 +44,18 @@ class NumberTest extends PHPUnit_Framework_TestCase
     public function testConstruct()
     {
         $type = new Type\Number();
-        
+
         $this->assertEquals(NumberFormatter::DECIMAL, $type->getFormatStyle());
         $this->assertEquals(NumberFormatter::TYPE_DEFAULT, $type->getFormatType());
         $this->assertEquals(Locale::getDefault(), $type->getLocale());
-        
+
         $this->assertEquals(Filter::EQUAL, $type->getFilterDefaultOperation());
     }
 
     public function testTypeName()
     {
         $type = new Type\Number();
-        
+
         $this->assertEquals('number', $type->getTypeName());
     }
 
@@ -83,9 +83,9 @@ class NumberTest extends PHPUnit_Framework_TestCase
     public function testAttribute()
     {
         $type = new Type\Number();
-        
+
         $this->assertCount(0, $type->getAttributes());
-        
+
         $type->addAttribute(NumberFormatter::MAX_FRACTION_DIGITS, 2);
         $this->assertCount(1, $type->getAttributes());
     }
@@ -93,13 +93,13 @@ class NumberTest extends PHPUnit_Framework_TestCase
     public function testSuffixPreffix()
     {
         $type = new Type\Number();
-        
+
         $this->assertEquals('', $type->getPrefix());
         $this->assertEquals('', $type->getSuffix());
-        
+
         $type->setPrefix('$');
         $this->assertEquals('$', $type->getPrefix());
-        
+
         $type->setSuffix('EURO');
         $this->assertEquals('EURO', $type->getSuffix());
     }
@@ -111,10 +111,10 @@ class NumberTest extends PHPUnit_Framework_TestCase
     {
         $type = clone $this->numberFormatterAT;
         $this->assertEquals('23.15', $type->getFilterValue('23,15'));
-        
+
         $type->setPrefix('€');
         $this->assertEquals('23.15', $type->getFilterValue('€23,15'));
-        
+
         $type->setSuffix('#');
         $this->assertEquals('23.15', $type->getFilterValue('€23,15#'));
     }
@@ -126,10 +126,10 @@ class NumberTest extends PHPUnit_Framework_TestCase
     {
         $type = clone $this->numberFormatterEN;
         $this->assertEquals('23.15', $type->getFilterValue('23.15'));
-        
+
         $type->setPrefix('€');
         $this->assertEquals('23.15', $type->getFilterValue('€23.15'));
-        
+
         $type->setSuffix('#');
         $this->assertEquals('23.15', $type->getFilterValue('€23.15#'));
     }
@@ -140,12 +140,12 @@ class NumberTest extends PHPUnit_Framework_TestCase
     public function testUserValueAT()
     {
         $type = clone $this->numberFormatterAT;
-        
+
         $this->assertEquals('23,15', $type->getUserValue(23.15));
-        
+
         $type->setPrefix('€');
         $this->assertEquals('€23,15', $type->getUserValue(23.15));
-        
+
         $type->setSuffix('#');
         $this->assertEquals('€23,15#', $type->getUserValue(23.15));
     }
@@ -153,10 +153,10 @@ class NumberTest extends PHPUnit_Framework_TestCase
     public function testWrongValues()
     {
         $type = clone $this->numberFormatterAT;
-        
+
         // Print the user a 0
         $this->assertEquals('0', $type->getUserValue('myString'));
-        
+
         // Filtering converting is dangerous, so keep the value...
         $this->assertEquals('myString', $type->getFilterValue('myString'));
     }

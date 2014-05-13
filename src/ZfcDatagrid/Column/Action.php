@@ -4,7 +4,7 @@ namespace ZfcDatagrid\Column;
 /**
  * Action Column
  * IMPORTANT: Will only be shown on HTML renderer
- * 
+ *
  * So Attributes for HTML are valid...
  *
  */
@@ -15,16 +15,16 @@ class Action extends AbstractColumn
 
     /**
      *
-     * @param string $uniqueId            
+     * @param string $uniqueId
      */
     public function __construct($uniqueId = 'action')
     {
         $this->setUniqueId($uniqueId);
         $this->setLabel('Actions');
-        
+
         $this->setUserSortDisabled(true);
         $this->setUserFilterDisabled(true);
-        
+
         $this->setRowClickDisabled(true);
     }
 
@@ -33,9 +33,10 @@ class Action extends AbstractColumn
      *
      * @return self
      */
-    public function addAction (Action\AbstractAction $action)
+    public function addAction(Action\AbstractAction $action)
     {
         $this->actions[] = $action;
+
         return $this;
     }
 
@@ -53,9 +54,10 @@ class Action extends AbstractColumn
      *
      * @return self
      */
-    public function setActions (array $actions)
+    public function setActions(array $actions)
     {
         $this->actions = $actions;
+
         return $this;
     }
 

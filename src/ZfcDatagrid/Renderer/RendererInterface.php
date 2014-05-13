@@ -20,11 +20,11 @@ interface RendererInterface
 
     /**
      * Return the name of the renderer
-     * 
+     *
      * @return string
      */
     public function getName();
-    
+
     /**
      * Determine if the renderer is for export
      *

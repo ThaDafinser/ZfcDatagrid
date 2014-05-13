@@ -13,7 +13,7 @@ class ZendSelect implements ServiceLocatorAwareInterface
     /**
      * Set service locator
      *
-     * @param ServiceLocatorInterface $serviceLocator            
+     * @param ServiceLocatorInterface $serviceLocator
      */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
@@ -43,7 +43,7 @@ class ZendSelect implements ServiceLocatorAwareInterface
         $select->join(array(
             'g' => 'group'
         ), 'g.id = p.primaryGroupId', 'name', 'left');
-        
+
         return $select;
     }
 }

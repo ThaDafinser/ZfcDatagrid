@@ -13,7 +13,7 @@ class Checkbox extends AbstractAction
     public function __construct($name = 'rowSelections')
     {
         parent::__construct();
-        
+
         $this->name = $name;
     }
 
@@ -33,7 +33,7 @@ class Checkbox extends AbstractAction
     {
         $this->removeAttribute('name');
         $this->removeAttribute('value');
-        
+
         return '<input type="checkbox" name="' . $this->name . '" value="' . $row['idConcated'] . '" ' . $this->getAttributesString($row) . ' />';
     }
 }

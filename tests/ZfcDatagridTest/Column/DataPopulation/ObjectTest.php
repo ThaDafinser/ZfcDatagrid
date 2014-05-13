@@ -17,12 +17,12 @@ class ObjectTest extends PHPUnit_Framework_TestCase
         $mock->expects($this->any())
             ->method('toString')
             ->will($this->returnValue('myReturn'));
-        
+
         $object = new Object();
-        
+
         $object->setObject($mock);
         $this->assertSame($mock, $object->getObject());
-        
+
         $this->assertEquals('myReturn', $object->toString());
     }
 
@@ -33,24 +33,23 @@ class ObjectTest extends PHPUnit_Framework_TestCase
         $mock->expects($this->any())
         ->method('toString')
         ->will($this->returnValue('myReturn'));
-        
+
         $object = new Object();
         $object->setObject($mock);
-        
+
         $this->assertCount(0, $object->getParameters());
-        
+
         $object->addObjectParameterColumn('idPara', $column);
-        
+
         $parameters = $object->getParameters();
-        
+
         $this->assertCount(1, $parameters);
         $this->assertEquals(array(
             'objectParameterName' => 'idPara',
             'column' => $column
         ), $parameters[0]);
-        
-        
+
         $object->setParameterValue('otherPara', '123');
-        
+
     }
 }

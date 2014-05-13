@@ -9,13 +9,13 @@ class Button extends AbstractAction
     public function __construct()
     {
         parent::__construct();
-        
+
         $this->addClass('btn');
     }
 
     /**
      *
-     * @param string $name            
+     * @param string $name
      */
     public function setLabel($name)
     {
@@ -41,7 +41,7 @@ class Button extends AbstractAction
         if ($this->getLabel() == '') {
             throw new \InvalidArgumentException('A label is required for this action type, please call $action->setLabel()!');
         }
-        
+
         return $this->getLabel();
     }
 }

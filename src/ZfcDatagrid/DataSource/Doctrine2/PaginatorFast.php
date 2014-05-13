@@ -3,7 +3,6 @@ namespace ZfcDatagrid\DataSource\Doctrine2;
 
 use Zend\Paginator\Adapter\AdapterInterface;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Query;
 
 class PaginatorFast implements AdapterInterface
 {
@@ -23,7 +22,7 @@ class PaginatorFast implements AdapterInterface
 
     /**
      *
-     * @param QueryBuilder $qb            
+     * @param QueryBuilder $qb
      */
     public function __construct(QueryBuilder $qb)
     {
@@ -42,15 +41,15 @@ class PaginatorFast implements AdapterInterface
     /**
      * Returns an array of items for a page.
      *
-     * @param integer $offset            
-     * @param integer $itemCountPerPage            
+     * @param  integer $offset
+     * @param  integer $itemCountPerPage
      * @return array
      */
     public function getItems($offset, $itemCountPerPage)
     {
         $qb = $this->getQueryBuilder();
         $qb->setFirstResult($offset)->setMaxResults($itemCountPerPage);
-        
+
         return $qb->getQuery()->getArrayResult();
     }
 
@@ -68,14 +67,14 @@ class PaginatorFast implements AdapterInterface
         if ($this->rowCount !== null) {
             return $this->rowCount;
         }
-        
+
         $qbOriginal = $this->getQueryBuilder();
         $qb = clone $qbOriginal;
-        
+
         $dqlParts = $qb->getDQLParts();
         $groupParts = $dqlParts['groupBy'];
         $selectParts = $dqlParts['select'];
-        
+
         /*
          * Reset things
          */
@@ -85,7 +84,7 @@ class PaginatorFast implements AdapterInterface
             'orderBy',
             'select'
         ));
-        
+
         if (count($groupParts) > 1) {
             /*
              * UGLY WORKAROUND!!! @todo
@@ -94,21 +93,21 @@ class PaginatorFast implements AdapterInterface
             // @todo finde something better...
             $qb->resetDQLPart('groupBy');
             $qb->select('CONCAT(' . implode(',', $groupParts) . ') as uniqueParts');
-            
+
             $items = array();
             $result = $qb->getQuery()->getResult();
             foreach ($result as $row) {
                 $items[] = $row['uniqueParts'];
             }
             $uniqueItems = array_unique($items);
-            
+
             $this->rowCount = count($uniqueItems);
         } elseif (count($groupParts) == 1) {
             $groupPart = $groupParts[0];
-            
+
             $qb->resetDQLPart('groupBy');
             $qb->select('COUNT(DISTINCT ' . $groupPart . ')');
-            
+
             $this->rowCount = $qb->getQuery()->getSingleScalarResult();
         } else {
             // NO GROUP BY
@@ -121,10 +120,10 @@ class PaginatorFast implements AdapterInterface
                 $fromPart = $dqlParts['from'];
                 $qb->select('COUNT(' . $fromPart[0]->getAlias() . ')');
             }
-            
+
             $this->rowCount = $qb->getQuery()->getSingleScalarResult();
         }
-        
+
         return $this->rowCount;
     }
 }

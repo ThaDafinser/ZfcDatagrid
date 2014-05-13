@@ -12,9 +12,9 @@ class PhpArray implements ServiceLocatorAwareInterface
     /**
      * Set service locator
      *
-     * @param ServiceLocatorInterface $serviceLocator            
+     * @param ServiceLocatorInterface $serviceLocator
      */
-    public function setServiceLocator (ServiceLocatorInterface $serviceLocator)
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
     }
@@ -24,7 +24,7 @@ class PhpArray implements ServiceLocatorAwareInterface
      *
      * @return ServiceLocatorInterface
      */
-    public function getServiceLocator ()
+    public function getServiceLocator()
     {
         return $this->serviceLocator;
     }
@@ -33,7 +33,7 @@ class PhpArray implements ServiceLocatorAwareInterface
      *
      * @return array
      */
-    public function getPersons ()
+    public function getPersons()
     {
         $row = array(
             'id' => 1,
@@ -107,7 +107,7 @@ class PhpArray implements ServiceLocatorAwareInterface
             'birthday' => '1991-10-03 00:00:00',
             'changeDate' => '2013-04-19 09:30:41'
         );
-        
+
         $data = array(
             $row,
             $row2,
@@ -116,7 +116,7 @@ class PhpArray implements ServiceLocatorAwareInterface
             $row5,
             $row6
         );
-        
+
         return $data;
     }
 
@@ -124,12 +124,12 @@ class PhpArray implements ServiceLocatorAwareInterface
      *
      * @return array
      */
-    public function getCategorys ()
+    public function getCategorys()
     {
         $id = 0;
-        
+
         $data = array();
-        
+
         $data[] = array(
             'id' => ++ $id,
             'parentId' => null,
@@ -137,7 +137,7 @@ class PhpArray implements ServiceLocatorAwareInterface
             'name' => 'Root',
             'tags' => 'Tag1,Tag2, Martin, ZfcDatagrid'
         );
-        
+
         $data[] = array(
             'id' => ++ $id,
             'parentId' => $id - 1,
@@ -146,7 +146,7 @@ class PhpArray implements ServiceLocatorAwareInterface
             'level' => 1,
             'tags' => 'Tag1,Root, Root2'
         );
-        
+
         $data[] = array(
             'id' => ++ $id,
             'parentId' => $id - 1,
@@ -154,21 +154,21 @@ class PhpArray implements ServiceLocatorAwareInterface
             'name' => 'Third level: entry 1',
             'tags' => 'cool, stuff'
         );
-        
+
         $data[] = array(
             'id' => ++ $id,
             'parentId' => $id - 2,
             'hasChildren' => 'n',
             'name' => 'Third level: entry 2'
         );
-        
+
         $data[] = array(
             'id' => ++ $id,
             'parentId' => null,
             'hasChildren' => 'y',
             'name' => 'Root2'
         );
-        
+
         $data[] = array(
             'id' => ++ $id,
             'parentId' => $id - 1,
@@ -176,16 +176,16 @@ class PhpArray implements ServiceLocatorAwareInterface
             'name' => 'Second level of Root2',
             'level' => 1
         );
-        
+
         return $data;
     }
 
-    public function getRandom ()
+    public function getRandom()
     {
         $maxRow = rand(100, 200);
-        
+
         $persons = $this->getPersons();
-        
+
         $data = array();
         for ($i = 1; $i <= $maxRow; $i ++) {
             $row = array(
@@ -193,10 +193,10 @@ class PhpArray implements ServiceLocatorAwareInterface
                 'number' => rand(0, 20000),
                 'name' => $persons[rand(0, 5)]['displayName']
             );
-            
+
             $data[] = $row;
         }
-        
+
         return $data;
     }
 }

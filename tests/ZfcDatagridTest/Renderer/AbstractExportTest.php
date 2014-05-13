@@ -1,12 +1,7 @@
 <?php
 namespace ZfcDatagridTest\Renderer;
 
-use ZfcDatagrid\Column\DataPopulation;
-use ZfcDatagrid\Filter;
-use ZfcDatagrid\Column\Type;
-use ZfcDatagrid\Column\Style;
 use PHPUnit_Framework_TestCase;
-use Zend\Paginator;
 use ReflectionClass;
 
 /**
@@ -30,16 +25,16 @@ class AbstractExportTest extends PHPUnit_Framework_TestCase
     public function testFilename()
     {
         $exportMock = clone $this->exportMock;
-        
+
         $reflection = new ReflectionClass(get_class($exportMock));
         $method = $reflection->getMethod('getFilename');
         $method->setAccessible(true);
-        
+
         $filename = $method->invokeArgs($exportMock, array());
         $this->assertEquals(date('Y-m-d_H-i-s'), $filename);
-        
+
         $exportMock->setTitle('My title');
-        
+
         $filename = $method->invokeArgs($exportMock, array());
         $this->assertEquals(date('Y-m-d_H-i-s') . '_My_title', $filename);
     }
@@ -50,11 +45,11 @@ class AbstractExportTest extends PHPUnit_Framework_TestCase
         $exportMock->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('abstract'));
-        
+
         $reflection = new ReflectionClass(get_class($exportMock));
         $method = $reflection->getMethod('getPaperWidth');
         $method->setAccessible(true);
-        
+
         /*
          * A4 landscape
          */
@@ -67,10 +62,10 @@ class AbstractExportTest extends PHPUnit_Framework_TestCase
             )
         );
         $exportMock->setOptions($options);
-        
+
         $width = $method->invoke($exportMock);
         $this->assertEquals(297, $width);
-        
+
         /*
          * A4 portrait
          */
@@ -83,10 +78,10 @@ class AbstractExportTest extends PHPUnit_Framework_TestCase
             )
         );
         $exportMock->setOptions($options);
-        
+
         $width = $method->invoke($exportMock);
         $this->assertEquals(210, $width);
-        
+
         /*
          * A0 portrait
          */
@@ -99,10 +94,10 @@ class AbstractExportTest extends PHPUnit_Framework_TestCase
             )
         );
         $exportMock->setOptions($options);
-        
+
         $width = $method->invoke($exportMock);
         $this->assertEquals(841, $width);
-        
+
         /*
          * A0 portrait
          */
@@ -115,7 +110,7 @@ class AbstractExportTest extends PHPUnit_Framework_TestCase
             )
         );
         $exportMock->setOptions($options);
-        
+
         $this->setExpectedException('Exception', 'Currently only "A" paper formats are supported!');
         $width = $method->invoke($exportMock);
     }

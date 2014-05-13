@@ -4,7 +4,7 @@ namespace ZfcDatagrid\Column\Type;
 class PhpArray extends AbstractType
 {
 
-    public function getTypeName ()
+    public function getTypeName()
     {
         return 'array';
     }
@@ -12,10 +12,10 @@ class PhpArray extends AbstractType
     /**
      * Convert a value into an array
      *
-     * @param mixed $value            
+     * @param  mixed $value
      * @return array
      */
-    public function getUserValue ($value)
+    public function getUserValue($value)
     {
         if (! is_array($value)) {
             if ($value == '') {
@@ -24,7 +24,7 @@ class PhpArray extends AbstractType
                 $value = explode(',', $value);
             }
         }
-        
+
         return $value;
     }
 }

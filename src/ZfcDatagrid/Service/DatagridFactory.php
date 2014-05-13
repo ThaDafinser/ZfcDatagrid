@@ -12,14 +12,14 @@ class DatagridFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $sm)
     {
         $config = $sm->get('config');
-        
+
         if (! isset($config['ZfcDatagrid'])) {
             throw new InvalidArgumentException('Config key "ZfcDatagrid" is missing');
         }
-        
+
         /* @var $application \Zend\Mvc\Application */
         $application = $sm->get('application');
-        
+
         $grid = new Datagrid();
         $grid->setOptions($config['ZfcDatagrid']);
         $grid->setMvcEvent($application->getMvcEvent());
@@ -27,7 +27,7 @@ class DatagridFactory implements FactoryInterface
             $grid->setTranslator($sm->get('translator'));
         }
         $grid->init();
-        
+
         return $grid;
     }
 }

@@ -36,9 +36,9 @@ abstract class AbstractDataSource implements DataSourceInterface
     /**
      * Set the columns
      *
-     * @param array $columns            
+     * @param array $columns
      */
-    public function setColumns (array $columns)
+    public function setColumns(array $columns)
     {
         $this->columns = $columns;
     }
@@ -47,7 +47,7 @@ abstract class AbstractDataSource implements DataSourceInterface
      *
      * @return Column\AbstractColumn[]
      */
-    public function getColumns ()
+    public function getColumns()
     {
         return $this->columns;
     }
@@ -55,10 +55,10 @@ abstract class AbstractDataSource implements DataSourceInterface
     /**
      * Set sort conditions
      *
-     * @param Column\AbstractColumn $column            
-     * @param string $sortDirection            
+     * @param Column\AbstractColumn $column
+     * @param string                $sortDirection
      */
-    public function addSortCondition (Column\AbstractColumn $column, $sortDirection = 'ASC')
+    public function addSortCondition(Column\AbstractColumn $column, $sortDirection = 'ASC')
     {
         $this->sortConditions[] = array(
             'column' => $column,
@@ -66,15 +66,16 @@ abstract class AbstractDataSource implements DataSourceInterface
         );
     }
 
-    public function setSortConditions(array $sortConditions){
+    public function setSortConditions(array $sortConditions)
+    {
         $this->sortConditions = $sortConditions;
     }
-    
+
     /**
      *
      * @return array
      */
-    public function getSortConditions ()
+    public function getSortConditions()
     {
         return $this->sortConditions;
     }
@@ -82,14 +83,15 @@ abstract class AbstractDataSource implements DataSourceInterface
     /**
      * Add a filter rule
      *
-     * @param Filter $filter            
+     * @param Filter $filter
      */
-    public function addFilter (Filter $filter)
+    public function addFilter(Filter $filter)
     {
         $this->filters[] = $filter;
     }
-    
-    public function setFilters(array $filters){
+
+    public function setFilters(array $filters)
+    {
         $this->filters = $filters;
     }
 
@@ -97,20 +99,21 @@ abstract class AbstractDataSource implements DataSourceInterface
      *
      * @return \ZfcDatagrid\Filter[]
      */
-    public function getFilters ()
+    public function getFilters()
     {
         return $this->filters;
     }
 
-    public function setPaginatorAdapter(PaginatorAdapterInterface $paginator){
+    public function setPaginatorAdapter(PaginatorAdapterInterface $paginator)
+    {
         $this->paginatorAdapter = $paginator;
     }
-    
+
     /**
      *
      * @return \Zend\Paginator\Adapter\AdapterInterface
      */
-    public function getPaginatorAdapter ()
+    public function getPaginatorAdapter()
     {
         return $this->paginatorAdapter;
     }

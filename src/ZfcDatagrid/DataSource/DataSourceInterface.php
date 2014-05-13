@@ -11,17 +11,17 @@ interface DataSourceInterface
      * - Doctrine2: Doctrine\ORM\QueryBuilder
      * - ...
      *
-     * @param mixed $data            
+     * @param mixed $data
      */
     public function __construct ($data);
 
     /**
      * Get the data back from construct
-     * 
+     *
      * @return mixed
      */
     public function getData();
-    
+
     /**
      * Execute the query and set the paginator
      * - with sort statements
@@ -29,4 +29,3 @@ interface DataSourceInterface
      */
     public function execute ();
 }
-

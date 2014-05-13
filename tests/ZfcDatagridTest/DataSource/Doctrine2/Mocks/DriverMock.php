@@ -37,6 +37,7 @@ class DriverMock implements \Doctrine\DBAL\Driver
         if (! $this->_platformMock) {
             $this->_platformMock = new DatabasePlatformMock();
         }
+
         return $this->_platformMock;
     }
 
@@ -51,12 +52,12 @@ class DriverMock implements \Doctrine\DBAL\Driver
             return $this->_schemaManagerMock;
         }
     }
-    
+
     /* MOCK API */
-    
+
     /**
      *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform            
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      *
      * @return void
      */
@@ -67,7 +68,7 @@ class DriverMock implements \Doctrine\DBAL\Driver
 
     /**
      *
-     * @param \Doctrine\DBAL\Schema\AbstractSchemaManager $sm            
+     * @param \Doctrine\DBAL\Schema\AbstractSchemaManager $sm
      *
      * @return void
      */

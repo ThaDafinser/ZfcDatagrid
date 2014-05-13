@@ -11,9 +11,10 @@ use PHPUnit_Framework_TestCase;
 class StringTest extends PHPUnit_Framework_TestCase
 {
 
-    public function testTypeName(){
+    public function testTypeName()
+    {
         $type = new Type\String();
-        
+
         $this->assertEquals('string', $type->getTypeName());
     }
 }

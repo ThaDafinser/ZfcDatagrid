@@ -18,14 +18,14 @@ abstract class AbstractStyle
     /**
      * Display the values with AND or OR (if multiple showOnValues are defined)
      *
-     * @param string $operator            
+     * @param string $operator
      */
     public function setByValueOperator($operator = 'OR')
     {
         if ($operator != 'AND' && $operator != 'OR') {
             throw new \InvalidArgumentException('not allowed operator: "' . $operator . '" (AND / OR is allowed)');
         }
-        
+
         $this->byValueOperator = (string) $operator;
     }
 
@@ -43,9 +43,9 @@ abstract class AbstractStyle
     /**
      * Set the style value based and not general
      *
-     * @param AbstractColumn $column            
-     * @param mixed $value            
-     * @param string $operator            
+     * @param AbstractColumn $column
+     * @param mixed          $value
+     * @param string         $operator
      */
     public function addByValue(AbstractColumn $column, $value, $operator = Filter::EQUAL)
     {
@@ -59,14 +59,14 @@ abstract class AbstractStyle
     /**
      * Set the style value based and not general
      *
-     * @param AbstractColumn $column            
-     * @param mixed $value            
-     * @param string $operator            
+     * @param AbstractColumn $column
+     * @param mixed          $value
+     * @param string         $operator
      */
     public function setByValue(AbstractColumn $column, $value, $operator = Filter::EQUAL)
     {
         trigger_error(__CLASS__ . '::setByValue() is deprecated, please use "addByValue" instead', E_USER_DEPRECATED);
-        
+
         $this->addByValue($column, $value, $operator);
     }
 
@@ -88,13 +88,13 @@ abstract class AbstractStyle
         if (count($this->byValues) > 0) {
             return true;
         }
-        
+
         return false;
     }
 
     /**
      *
-     * @param array $row            
+     * @param  array   $row
      * @return boolean
      */
     public function isApply(array $row)
@@ -102,14 +102,14 @@ abstract class AbstractStyle
         if ($this->hasByValues() === false) {
             return true;
         }
-        
+
         $isApply = false;
         foreach ($this->getByValues() as $rule) {
             $value = '';
             if (isset($row[$rule['column']->getUniqueId()])) {
                 $value = $row[$rule['column']->getUniqueId()];
             }
-            
+
             $isApplyMatch = Filter::isApply($value, $rule['value'], $rule['operator']);
             if ($this->getByValueOperator() == 'OR' && $isApplyMatch === true) {
                 // For OR one match is enough
@@ -120,7 +120,7 @@ abstract class AbstractStyle
                 $isApply = $isApplyMatch;
             }
         }
-        
+
         return $isApply;
     }
 }

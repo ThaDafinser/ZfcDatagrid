@@ -38,7 +38,7 @@ abstract class AbstractAction
     /**
      * Set the link
      *
-     * @param string $href            
+     * @param string $href
      */
     public function setLink($href)
     {
@@ -57,22 +57,22 @@ abstract class AbstractAction
     /**
      * This is needed public for rowClickAction...
      *
-     * @param array $row            
+     * @param  array  $row
      * @return string
      */
     public function getLinkReplaced(array $row)
     {
         $link = $this->getLink();
-        
+
         // Replace placeholders
         if (strpos($this->getLink(), self::ROW_ID_PLACEHOLDER) !== false) {
             $link = str_replace(self::ROW_ID_PLACEHOLDER, $row['idConcated'], $link);
         }
-        
+
         foreach ($this->getLinkColumnPlaceholders() as $col) {
             $link = str_replace(':' . $col->getUniqueId() . ':', $row[$col->getUniqueId()], $link);
         }
-        
+
         return $link;
     }
 
@@ -80,13 +80,13 @@ abstract class AbstractAction
      * Get the column row value placeholder
      * $action->setLink('/myLink/something/id/'.$action->getRowIdPlaceholder().'/something/'.$action->getColumnRowPlaceholder($myCol));
      *
-     * @param AbstractColumn $col            
+     * @param  AbstractColumn $col
      * @return string
      */
     public function getColumnValuePlaceholder(AbstractColumn $col)
     {
         $this->linkColumnPlaceholders[] = $col;
-        
+
         return ':' . $col->getUniqueId() . ':';
     }
 
@@ -114,8 +114,8 @@ abstract class AbstractAction
     /**
      * Set a HTML attributes
      *
-     * @param string $name            
-     * @param string $value            
+     * @param string $name
+     * @param string $value
      */
     public function setAttribute($name, $value)
     {
@@ -125,7 +125,7 @@ abstract class AbstractAction
     /**
      * Get a HTML attribute
      *
-     * @param string $name            
+     * @param  string $name
      * @return string
      */
     public function getAttribute($name)
@@ -133,14 +133,14 @@ abstract class AbstractAction
         if (isset($this->htmlAttributes[$name])) {
             return $this->htmlAttributes[$name];
         }
-        
+
         return '';
     }
 
     /**
      * Removes an HTML attribute
      *
-     * @param string $name            
+     * @param string $name
      */
     public function removeAttribute($name)
     {
@@ -162,7 +162,7 @@ abstract class AbstractAction
     /**
      * Get the string version of the attributes
      *
-     * @param array $row            
+     * @param  array  $row
      * @return string
      */
     protected function getAttributesString(array $row)
@@ -174,14 +174,14 @@ abstract class AbstractAction
             }
             $attributes[] = $attrKey . '="' . $attrValue . '"';
         }
-        
+
         return implode(' ', $attributes);
     }
 
     /**
      * Set the title attribute
      *
-     * @param string $name            
+     * @param string $name
      */
     public function setTitle($name)
     {
@@ -201,7 +201,7 @@ abstract class AbstractAction
     /**
      * Add a css class
      *
-     * @param string $className            
+     * @param string $className
      */
     public function addClass($className)
     {
@@ -209,21 +209,21 @@ abstract class AbstractAction
         if ($attr != '')
             $attr .= ' ';
         $attr .= (string) $className;
-        
+
         $this->setAttribute('class', $attr);
     }
 
     /**
      * Display the values with AND or OR (if multiple showOnValues are defined)
      *
-     * @param string $operator            
+     * @param string $operator
      */
     public function setShowOnValueOperator($operator = 'OR')
     {
         if ($operator != 'AND' && $operator != 'OR') {
             throw new \InvalidArgumentException('not allowed operator: "' . $operator . '" (AND / OR is allowed)');
         }
-        
+
         $this->showOnValueOperator = (string) $operator;
     }
 
@@ -241,9 +241,9 @@ abstract class AbstractAction
     /**
      * Show this action only on the values defined
      *
-     * @param Column\AbstractColumn $col            
-     * @param string $value            
-     * @param string $comparison            
+     * @param Column\AbstractColumn $col
+     * @param string                $value
+     * @param string                $comparison
      */
     public function addShowOnValue(Column\AbstractColumn $col, $value = null, $comparison = Filter::EQUAL)
     {
@@ -272,14 +272,14 @@ abstract class AbstractAction
         if (count($this->showOnValues) > 0) {
             return true;
         }
-        
+
         return false;
     }
 
     /**
      * Display this action on this row?
      *
-     * @param array $row            
+     * @param  array   $row
      * @return boolean
      */
     public function isDisplayed(array $row)
@@ -287,14 +287,14 @@ abstract class AbstractAction
         if ($this->hasShowOnValues() === false) {
             return true;
         }
-        
+
         $isDisplayed = false;
         foreach ($this->getShowOnValues() as $rule) {
             $value = '';
             if (isset($row[$rule['column']->getUniqueId()])) {
                 $value = $row[$rule['column']->getUniqueId()];
             }
-            
+
             $isDisplayedMatch = Filter::isApply($value, $rule['value'], $rule['comparison']);
             if ($this->getShowOnValueOperator() == 'OR' && $isDisplayedMatch === true) {
                 // For OR one match is enough
@@ -305,7 +305,7 @@ abstract class AbstractAction
                 $isDisplayed = $isDisplayedMatch;
             }
         }
-        
+
         return $isDisplayed;
     }
 
@@ -318,7 +318,7 @@ abstract class AbstractAction
 
     /**
      *
-     * @param array $row            
+     * @param  array  $row
      * @return string
      */
     public function toHtml(array $row)

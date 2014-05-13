@@ -8,7 +8,6 @@ namespace ZfcDatagrid\DataSource\Doctrine2;
 
 use Zend\Paginator\Adapter\AdapterInterface;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator as Doctrine2Paginator;
 use ZfcDatagrid\DataSource\Doctrine2\PaginatorFast as ZfcDatagridPaginator;
 
@@ -36,7 +35,7 @@ class Paginator implements AdapterInterface
 
     /**
      *
-     * @param QueryBuilder $qb            
+     * @param QueryBuilder $qb
      */
     public function __construct(QueryBuilder $qb)
     {
@@ -63,21 +62,20 @@ class Paginator implements AdapterInterface
         $platform = $qb->getEntityManager()
             ->getConnection()
             ->getDatabasePlatform();
-        
+
 //         if ($platform->getName() != 'mysql') {
 //             // Only tested mysql currently so all other i don't know, if my implementation is good...
 //             return false;
 //         }
-        
+
         $parts = $qb->getDQLParts();
-        
+
         if ($parts['having'] !== null || $parts['distinct'] === true) {
             // never tried having in such queries...
             return false;
         }
-        
+
         // @todo maybe more detection needed :-/
-        
         return true;
     }
 
@@ -90,22 +88,22 @@ class Paginator implements AdapterInterface
         if ($this->paginator !== null) {
             return $this->paginator;
         }
-        
+
         if ($this->useCustomPaginator() === true) {
             $this->paginator = new ZfcDatagridPaginator($this->getQueryBuilder());
         } else {
             // Doctrine2Paginator as fallback...they are using 3 queries
             $this->paginator = new Doctrine2Paginator($this->getQueryBuilder());
         }
-        
+
         return $this->paginator;
     }
 
     /**
      * Returns an array of items for a page.
      *
-     * @param integer $offset            
-     * @param integer $itemCountPerPage            
+     * @param  integer $offset
+     * @param  integer $itemCountPerPage
      * @return array
      */
     public function getItems($offset, $itemCountPerPage)
@@ -115,7 +113,7 @@ class Paginator implements AdapterInterface
             $this->getQueryBuilder()
                 ->setFirstResult($offset)
                 ->setMaxResults($itemCountPerPage);
-            
+
             return $paginator->getIterator()->getArrayCopy();
         } else {
             return $paginator->getItems($offset, $itemCountPerPage);

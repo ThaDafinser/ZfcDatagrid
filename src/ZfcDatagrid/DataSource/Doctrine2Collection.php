@@ -24,7 +24,7 @@ class Doctrine2Collection extends AbstractDataSource
     /**
      * Data source
      *
-     * @param mixed $data            
+     * @param mixed $data
      */
     public function __construct($data)
     {
@@ -65,17 +65,17 @@ class Doctrine2Collection extends AbstractDataSource
     public function execute()
     {
         $hydrator = new DoctrineHydrator($this->getEntityManager());
-        
+
         $dataPrepared = array();
         foreach ($this->getData() as $row) {
             $dataExtracted = $hydrator->extract($row);
-            
+
             $rowExtracted = array();
             foreach ($this->getColumns() as $column) {
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */
                 $part1 = $column->getSelectPart1();
                 $part2 = $column->getSelectPart2();
-                
+
                 if ($part2 === null) {
                     if (isset($dataExtracted[$part1])) {
                         $rowExtracted[$column->getUniqueId()] = $dataExtracted[$part1];
@@ -90,16 +90,16 @@ class Doctrine2Collection extends AbstractDataSource
                     }
                 }
             }
-            
+
             $dataPrepared[] = $rowExtracted;
         }
-        
+
         $source = new SourceArray($dataPrepared);
         $source->setColumns($this->getColumns());
         $source->setSortConditions($this->getSortConditions());
         $source->setFilters($this->getFilters());
         $source->execute();
-        
+
         $this->setPaginatorAdapter($source->getPaginatorAdapter());
     }
 }

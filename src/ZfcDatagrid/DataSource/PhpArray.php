@@ -11,7 +11,7 @@ class PhpArray extends AbstractDataSource
     /**
      * Set the data source
      *
-     * @param array $data            
+     * @param array $data
      */
     public function __construct($data)
     {
@@ -39,7 +39,7 @@ class PhpArray extends AbstractDataSource
     public function execute()
     {
         $data = $this->getData();
-        
+
         /**
          * Step 1) Apply sorting
          *
@@ -49,7 +49,7 @@ class PhpArray extends AbstractDataSource
         if (count($this->getSortConditions()) > 0) {
             $data = $this->sortArrayMultiple($data, $this->getSortConditions());
         }
-        
+
         /**
          * Step 2) Apply filters
          */
@@ -62,7 +62,7 @@ class PhpArray extends AbstractDataSource
                 ));
             }
         }
-        
+
         /**
          * Step 3) Remove unneeded columns
          *
@@ -72,7 +72,7 @@ class PhpArray extends AbstractDataSource
         foreach ($this->getColumns() as $column) {
             $selectedColumns[] = $column->getUniqueId();
         }
-        
+
         foreach ($data as &$row) {
             foreach ($row as $keyRowCol => $rowCol) {
                 if (! in_array($keyRowCol, $selectedColumns)) {
@@ -80,7 +80,7 @@ class PhpArray extends AbstractDataSource
                 }
             }
         }
-        
+
         /**
          * Step 4) Pagination
          */
@@ -89,7 +89,7 @@ class PhpArray extends AbstractDataSource
 
     /**
      *
-     * @param unknown $sortCondition            
+     * @param  unknown $sortCondition
      * @return array
      */
     private function getSortArrayParameter($sortCondition)
@@ -97,7 +97,7 @@ class PhpArray extends AbstractDataSource
         $sortArray = array(
             $sortCondition['column']->getSelectPart1()
         );
-        
+
         if ($sortCondition['sortDirection'] === 'DESC') {
             $desc = SORT_DESC;
             $sortArray[] = $desc;
@@ -105,22 +105,22 @@ class PhpArray extends AbstractDataSource
             $asc = SORT_ASC;
             $sortArray[] = $asc;
         }
-        
+
         // @todo Based on the column type -> SORT_NUMERIC, SORT_STRING, SORT_NATURAL, ...
         // $type = SORT_NUMERIC;
         switch (get_class($sortCondition['column']->getType())) {
-            
+
             case 'ZfcDatagrid\Column\Type\Number':
                 $numeric = SORT_NUMERIC;
                 $sortArray[] = $numeric;
                 break;
-            
+
             default:
                 $regular = SORT_REGULAR;
                 $sortArray[] = $regular;
                 break;
         }
-        
+
         return $sortArray;
     }
 
@@ -135,10 +135,10 @@ class PhpArray extends AbstractDataSource
         $sortArguments = array();
         foreach ($sortConditions as $sortCondition) {
             $sortParameters = $this->getSortArrayParameter($sortCondition);
-            
+
             // fetch column data
             $column = $sortParameters[0];
-            
+
             $dataCol = array();
             foreach ($data as $key => $row) {
                 if (! isset($row[$column])) {
@@ -148,22 +148,22 @@ class PhpArray extends AbstractDataSource
                 }
                 $dataCol[$key] = $value;
             }
-            
+
             $sortArguments[] = array(
                 $dataCol,
                 $sortParameters[1],
                 $sortParameters[2]
             );
         }
-        
+
         return $this->applyMultiSort($data, $sortArguments);
     }
 
     /**
      * Multisort an array
      *
-     * @param array $data            
-     * @param array $sortArguments            
+     * @param  array                     $data
+     * @param  array                     $sortArguments
      * @throws \InvalidArgumentException
      *
      * @return mixed
@@ -180,17 +180,17 @@ class PhpArray extends AbstractDataSource
             $args[] = $values[1]; // sort direction
             $args[] = $values[2]; // sort type
         }
-        
+
         $args[] = $data;
-        
+
         //possible 5.3.3 fix?
         $sortArgs = array();
         foreach ($args as $key => &$value) {
             $sortArgs[$key] = &$value;
         }
-        
+
         call_user_func_array('array_multisort', $sortArgs);
-        
+
         return end($args);
     }
 }

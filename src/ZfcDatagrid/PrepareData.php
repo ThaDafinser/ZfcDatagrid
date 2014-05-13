@@ -1,7 +1,6 @@
 <?php
 namespace ZfcDatagrid;
 
-use ZfcDatagrid\Column;
 use Zend\I18n\Translator\Translator;
 
 class PrepareData
@@ -35,8 +34,8 @@ class PrepareData
 
     /**
      *
-     * @param array $data            
-     * @param array $columns            
+     * @param array $data
+     * @param array $columns
      */
     public function __construct(array $data, array $columns)
     {
@@ -46,7 +45,7 @@ class PrepareData
 
     /**
      *
-     * @param array $columns            
+     * @param array $columns
      */
     public function setColumns(array $columns)
     {
@@ -64,7 +63,7 @@ class PrepareData
 
     /**
      *
-     * @param array $data            
+     * @param array $data
      */
     public function setData(array $data)
     {
@@ -73,7 +72,7 @@ class PrepareData
 
     /**
      *
-     * @param boolean $raw            
+     * @param  boolean $raw
      * @return array
      */
     public function getData($raw = false)
@@ -81,15 +80,15 @@ class PrepareData
         if ($raw === true) {
             return $this->data;
         }
-        
+
         $this->prepare();
-        
+
         return $this->dataPrepared;
     }
 
     /**
      *
-     * @param string $name            
+     * @param string $name
      */
     public function setRendererName($name = null)
     {
@@ -107,7 +106,7 @@ class PrepareData
 
     /**
      *
-     * @param Translator $translator            
+     * @param  Translator                $translator
      * @throws \InvalidArgumentException
      */
     public function setTranslator($translator)
@@ -115,7 +114,7 @@ class PrepareData
         if (! $translator instanceof Translator && ! $translator instanceof \Zend\I18n\Translator\TranslatorInterface) {
             throw new \InvalidArgumentException('Translator must be an instanceof "Zend\I18n\Translator\Translator" or "Zend\I18n\Translator\TranslatorInterface"');
         }
-        
+
         $this->translator = $translator;
     }
 
@@ -139,42 +138,42 @@ class PrepareData
         if (is_array($this->dataPrepared)) {
             return false;
         }
-        
+
         $data = $this->data;
-        
+
         foreach ($data as $key => &$row) {
             $ids = array();
-            
+
             foreach ($this->getColumns() as $col) {
                 /* @var $col \ZfcDatagrid\Column\AbstractColumn */
-                
+
                 if (isset($row[$col->getUniqueId()]) && $col->isIdentity() === true) {
                     $ids[] = $row[$col->getUniqueId()];
                 }
-                
+
                 /*
                  * Maybe the data come not from another DataSource?
                  */
                 if ($col instanceof Column\ExternalData) {
                     // @todo improve the interface...
                     $dataPopulation = $col->getDataPopulation();
-                    
+
                     foreach ($dataPopulation->getParameters() as $parameter) {
                         $dataPopulation->setParameterValue($parameter['objectParameterName'], $row[$parameter['column']->getUniqueId()]);
                     }
                     $row[$col->getUniqueId()] = $dataPopulation->toString();
                 }
-                
+
                 if (! isset($row[$col->getUniqueId()])) {
                     $row[$col->getUniqueId()] = '';
                 }
-                
+
                 /*
                  * Replace
                  */
                 if ($col->hasReplaceValues() === true) {
                     $replaceValues = $col->getReplaceValues();
-                    
+
                     if (is_array($row[$col->getUniqueId()])) {
                         foreach ($row[$col->getUniqueId()] as &$value) {
                             if (isset($replaceValues[$value])) {
@@ -191,12 +190,12 @@ class PrepareData
                         }
                     }
                 }
-                
+
                 /*
                  * Type converting
                  */
                 $row[$col->getUniqueId()] = $col->getType()->getUserValue($row[$col->getUniqueId()]);
-                
+
                 /*
                  * Translate (nach typ convertierung -> PhpArray...)
                  */
@@ -209,19 +208,18 @@ class PrepareData
                         $row[$col->getUniqueId()] = $this->getTranslator()->translate($row[$col->getUniqueId()]);
                     }
                 }
-                
+
                 /*
                  * Trim the values
                  */
                 if (is_array($row[$col->getUniqueId()])) {
-                    array_walk_recursive($row[$col->getUniqueId()], function (&$value)
-                    {
+                    array_walk_recursive($row[$col->getUniqueId()], function (&$value) {
                         $value = trim($value);
                     });
                 } else {
                     $row[$col->getUniqueId()] = trim($row[$col->getUniqueId()]);
                 }
-                
+
                 /*
                  * Custom formatter
                  */
@@ -230,19 +228,19 @@ class PrepareData
                     $formatter = $col->getFormatter($this->getRendererName());
                     $formatter->setRowData($row);
                     $formatter->setRendererName($this->getRendererName());
-                    
+
                     $row[$col->getUniqueId()] = $formatter->format($col);
                 }
             }
-            
+
             // Concat all identity columns
             if (count($ids) > 0) {
                 $data[$key]['idConcated'] = implode('~', $ids);
             }
         }
-        
+
         $this->dataPrepared = $data;
-        
+
         return true;
     }
 }

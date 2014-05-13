@@ -27,36 +27,36 @@ class RendererTest extends PHPUnit_Framework_TestCase
     public function testGetName()
     {
         $renderer = new JqGrid\Renderer();
-        
+
         $this->assertEquals('jqGrid', $renderer->getName());
     }
 
     public function testIsExport()
     {
         $renderer = new JqGrid\Renderer();
-        
+
         $this->assertFalse($renderer->isExport());
     }
 
     public function testIsHtml()
     {
         $renderer = new JqGrid\Renderer();
-        
+
         $this->assertTrue($renderer->isHtml());
     }
 
     public function testGetRequestException()
     {
         $request = $this->getMock('Zend\Console\Request', array(), array(), '', false);
-        
+
         $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', array(), array(), '', false);
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));
-        
+
         $renderer = new JqGrid\Renderer();
         $renderer->setMvcEvent($mvcEvent);
-        
+
         $this->setExpectedException('Exception', 'Request must be an instance of Zend\Http\PhpEnvironment\Request for HTML rendering');
         $renderer->getRequest();
     }
@@ -64,15 +64,15 @@ class RendererTest extends PHPUnit_Framework_TestCase
     public function testGetRequest()
     {
         $request = $this->getMock('Zend\Http\PhpEnvironment\Request', array(), array(), '', false);
-        
+
         $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', array(), array(), '', false);
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));
-        
+
         $renderer = new JqGrid\Renderer();
         $renderer->setMvcEvent($mvcEvent);
-        
+
         $this->assertEquals($request, $renderer->getRequest());
     }
 

@@ -16,7 +16,7 @@ class Doctrine2 implements ServiceLocatorAwareInterface
     /**
      * Set service locator
      *
-     * @param ServiceLocatorInterface $serviceLocator            
+     * @param ServiceLocatorInterface $serviceLocator
      */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
@@ -37,24 +37,24 @@ class Doctrine2 implements ServiceLocatorAwareInterface
     {
         /* @var $entityManager \Doctrine\ORM\EntityManager */
         $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_zfcDatagrid');
-        
+
         /* @var $cli \Symfony\Component\Console\Application */
         $cli = $this->getServiceLocator()->get('doctrine.cli');
         $helperSet = $cli->getHelperSet();
         $helperSet->set(new EntityManagerHelper($entityManager), 'em');
-        
+
         $fp = tmpfile();
-        
+
         // $input = new StringInput('orm:schema-tool:create --dump-sql');
         $input = new StringInput('orm:schema-tool:create');
-        
+
         /* @var $command \Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand */
         $command = $cli->get('orm:schema-tool:create');
         $returnCode = $command->run($input, new StreamOutput($fp));
-        
+
         $phpArray = $this->getServiceLocator()->get('zfcDatagrid.examples.data.phpArray');
         $persons = $phpArray->getPersons();
-        
+
         $this->createData(new Person(), $persons);
         // $entityManager->f
         // fseek($fp, 0);
@@ -63,7 +63,7 @@ class Doctrine2 implements ServiceLocatorAwareInterface
         // $output = fread($fp, 4096);
         // }
         // fclose($fp);
-        
+
         // echo '<pre>';
         // print_r($output);
         // print_r($returnCode);
@@ -75,18 +75,18 @@ class Doctrine2 implements ServiceLocatorAwareInterface
     {
         /* @var $entityManager \Doctrine\ORM\EntityManager */
         $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_zfcDatagrid');
-        
+
         foreach ($data as $row) {
-            
+
             $newEntity = clone $entity;
             foreach ($row as $key => $value) {
                 $method = 'set' . ucfirst($key);
                 $newEntity->{$method}($value);
             }
-            
+
             $entityManager->persist($newEntity);
         }
-        
+
         $entityManager->flush();
     }
 
@@ -99,11 +99,11 @@ class Doctrine2 implements ServiceLocatorAwareInterface
         /* @var $entityManager \Doctrine\ORM\EntityManager */
         $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_zfcDatagrid');
         $personRepo = $entityManager->getRepository('ZfcDatagrid\Examples\Entity\Person');
-        
-        // if($entityManager->getConnection()->isConnected() === true){
-        
+
+        // if ($entityManager->getConnection()->isConnected() === true) {
+
         // }
-        
+
         // Test if the SqLite is ready...
         try {
             $data = $personRepo->find(2);
@@ -111,11 +111,11 @@ class Doctrine2 implements ServiceLocatorAwareInterface
             $this->createTables();
             $data = $personRepo->find(2);
         }
-        
+
         $qb = $entityManager->createQueryBuilder();
         $qb->select('p');
         $qb->from('ZfcDatagrid\Examples\Entity\Person', 'p');
-        
+
         return $qb;
     }
 }

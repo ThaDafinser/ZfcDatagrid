@@ -14,7 +14,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
     public function testGetValidRendererNames()
     {
         $formatter = new Formatter\Image();
-        
+
         $this->assertEquals(array(
             'jqGrid',
             'bootstrapTable',

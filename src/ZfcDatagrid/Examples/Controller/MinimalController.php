@@ -12,7 +12,7 @@ class MinimalController extends AbstractActionController
      *
      * @return \ZfcDatagrid\Controller\ViewModel
      */
-    public function bootstrapAction ()
+    public function bootstrapAction()
     {
         $row = array(
             'displayName' => 'Wayne? John!',
@@ -20,26 +20,26 @@ class MinimalController extends AbstractActionController
         $row2 = array(
             'displayName' => 'Name2',
         );
-        
+
         $data = array(
             $row,
             $row2
         );
-        
+
         /* @var $grid \ZfcDatagrid\Datagrid */
         $grid = $this->getServiceLocator()->get('ZfcDatagrid\Datagrid');
         $grid->setTitle('Minimal grid');
-        
+
         //you can change here the renderer (allowed: bootstrapTable / jqgrid...default is bootstrapTable
         $grid->setRendererName('jqGrid');
         $grid->setDataSource($data);
-        
+
         $col = new Column\Select('displayName');
         $col->setLabel('Name');
         $grid->addColumn($col);
-        
+
         $grid->render();
-        
+
         return $grid->getResponse();
     }
 }

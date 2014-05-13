@@ -1,11 +1,11 @@
 <?php
 namespace ZfcDatagrid\Column\Type;
 
-interface TypeInterface{
-    
+interface TypeInterface
+{
     /**
      * Get the type name
-     * 
+     *
      * @return string
      */
     public function getTypeName();

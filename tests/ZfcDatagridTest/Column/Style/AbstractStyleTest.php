@@ -28,11 +28,11 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
     {
         /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
         $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
-        
+
         $this->assertEquals(array(), $style->getByValues());
-        
+
         $this->assertFalse($style->hasByValues());
-        
+
         $row = array(
             array(
                 'colName' => 'value2'
@@ -45,11 +45,11 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
     {
         /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
         $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
-        
+
         ErrorHandler::start(E_USER_DEPRECATED);
         $style->setByValue($this->column, 'test');
         $err = ErrorHandler::stop();
-        
+
         $this->assertInstanceOf('ErrorException', $err);
     }
 
@@ -57,7 +57,7 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
     {
         /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
         $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
-        
+
         $this->assertEquals(array(), $style->getByValues());
         $style->addByValue($this->column, 'myApplyValue', Filter::EQUAL);
         $this->assertEquals(array(
@@ -67,14 +67,14 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
                 'operator' => Filter::EQUAL
             )
         ), $style->getByValues());
-        
+
         $this->assertTrue($style->hasByValues());
-        
+
         $row = array(
             $this->column->getUniqueId() => 'value2'
         );
         $this->assertFalse($style->isApply($row));
-        
+
         $row = array(
             $this->column->getUniqueId() => 'myApplyValue'
         );
@@ -85,7 +85,7 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
     {
         /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
         $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
-        
+
         $this->assertEquals(array(), $style->getByValues());
         $style->addByValue($this->column, 'myApplyValue', Filter::NOT_EQUAL);
         $this->assertEquals(array(
@@ -95,12 +95,12 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
                 'operator' => Filter::NOT_EQUAL
             )
         ), $style->getByValues());
-        
+
         $row = array(
             $this->column->getUniqueId() => 'notEqualValue'
         );
         $this->assertTrue($style->isApply($row));
-        
+
         $row = array(
             $this->column->getUniqueId() => 'myApplyValue'
         );
@@ -111,7 +111,7 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
     {
         /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
         $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
-        
+
         $this->assertEquals(array(), $style->getByValues());
         $style->addByValue($this->column, 'myApplyValue', Filter::EQUAL);
         $style->addByValue($this->column, '2nd value', Filter::EQUAL);
@@ -127,17 +127,17 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
                 'operator' => Filter::EQUAL
             )
         ), $style->getByValues());
-        
+
         $row = array(
             $this->column->getUniqueId() => '2nd value'
         );
         $this->assertTrue($style->isApply($row));
-        
+
         $row = array(
             $this->column->getUniqueId() => 'myApplyValue'
         );
         $this->assertTrue($style->isApply($row));
-        
+
         $row = array(
             $this->column->getUniqueId() => 'another value'
         );
@@ -149,10 +149,10 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
         /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
         $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
         $style->setByValueOperator('AND');
-        
+
         $style->addByValue($this->column, '23', Filter::EQUAL);
         $style->addByValue($this->column, '2nd value', Filter::NOT_EQUAL);
-        
+
         $this->assertTrue($style->isApply(array(
             $this->column->getUniqueId() => '23'
         )));
@@ -163,10 +163,10 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
         /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
         $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
         $style->setByValueOperator('AND');
-        
+
         $style->addByValue($this->column, '23', Filter::EQUAL);
         $style->addByValue($this->column, '23', Filter::NOT_EQUAL);
-        
+
         $this->assertFalse($style->isApply(array(
             $this->column->getUniqueId() => '23'
         )));
@@ -176,7 +176,7 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
     {
         /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
         $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
-        
+
         $this->setExpectedException('InvalidArgumentException');
         $style->setByValueOperator('XOR');
     }

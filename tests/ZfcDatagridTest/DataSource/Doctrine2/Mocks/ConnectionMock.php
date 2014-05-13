@@ -41,17 +41,17 @@ class ConnectionMock extends \Doctrine\DBAL\Connection
 
     /**
      *
-     * @param array $params            
-     * @param \Doctrine\DBAL\Driver $driver            
-     * @param \Doctrine\DBAL\Configuration|null $config            
-     * @param \Doctrine\Common\EventManager|null $eventManager            
+     * @param array                              $params
+     * @param \Doctrine\DBAL\Driver              $driver
+     * @param \Doctrine\DBAL\Configuration|null  $config
+     * @param \Doctrine\Common\EventManager|null $eventManager
      */
     public function __construct(array $params, $driver, $config = null, $eventManager = null)
     {
         $this->_platformMock = new DatabasePlatformMock();
-        
+
         parent::__construct($params, $driver, $config, $eventManager);
-        
+
         // Override possible assignment of platform to database platform mock
         $this->_platform = $this->_platformMock;
     }
@@ -108,14 +108,15 @@ class ConnectionMock extends \Doctrine\DBAL\Connection
         if (is_string($input)) {
             return "'" . $input . "'";
         }
+
         return $input;
     }
-    
+
     /* Mock API */
-    
+
     /**
      *
-     * @param mixed $fetchOneResult            
+     * @param mixed $fetchOneResult
      *
      * @return void
      */
@@ -126,7 +127,7 @@ class ConnectionMock extends \Doctrine\DBAL\Connection
 
     /**
      *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform            
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      *
      * @return void
      */
@@ -137,7 +138,7 @@ class ConnectionMock extends \Doctrine\DBAL\Connection
 
     /**
      *
-     * @param int $id            
+     * @param int $id
      *
      * @return void
      */

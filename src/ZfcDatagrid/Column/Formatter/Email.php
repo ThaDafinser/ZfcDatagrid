@@ -14,7 +14,7 @@ class Email extends AbstractFormatter
     public function getFormattedValue(AbstractColumn $column)
     {
         $row = $this->getRowData();
-        
+
         return '<a href="mailto:' . $row[$column->getUniqueId()] . '">' . $row[$column->getUniqueId()] . '</a>';
     }
 }

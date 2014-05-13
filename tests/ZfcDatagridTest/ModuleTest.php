@@ -13,7 +13,7 @@ class ModuleTest extends PHPUnit_Framework_TestCase
     public function testInterfaces()
     {
         $module = new Module();
-        
+
         $this->assertInstanceOf('Zend\ModuleManager\Feature\AutoloaderProviderInterface', $module);
         $this->assertInstanceOf('Zend\ModuleManager\Feature\ConfigProviderInterface', $module);
         $this->assertInstanceOf('Zend\ModuleManager\Feature\ConsoleUsageProviderInterface', $module);
@@ -22,7 +22,7 @@ class ModuleTest extends PHPUnit_Framework_TestCase
     public function testGetAutoloaderConfig()
     {
         $module = new Module();
-        
+
         $this->assertTrue(is_array($module->getAutoloaderConfig()));
         $this->assertCount(2, $module->getAutoloaderConfig());
         $this->assertArrayHasKey('Zend\Loader\StandardAutoloader', $module->getAutoloaderConfig());
@@ -41,9 +41,9 @@ class ModuleTest extends PHPUnit_Framework_TestCase
     public function testSetGetConsoleUsage()
     {
         $module = new Module();
-        
+
         $console = $this->getMock('Zend\Console\Adapter\AbstractAdapter');
-        
+
         $this->assertTrue(is_array($module->getConsoleUsage($console)));
         $this->assertCount(8, $module->getConsoleUsage($console));
     }
@@ -51,12 +51,12 @@ class ModuleTest extends PHPUnit_Framework_TestCase
     public function testGetServiceConfig()
     {
         $module = new Module();
-        
+
         $this->assertTrue(is_array($module->getServiceConfig()));
-        
+
         $serviceConfig = $module->getServiceConfig();
         $this->assertCount(1, $serviceConfig);
-        
+
         $this->assertArrayHasKey('factories', $serviceConfig);
         $this->assertCount(7, $serviceConfig['factories']);
     }

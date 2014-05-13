@@ -34,29 +34,29 @@ class TableRowTest extends PHPUnit_Framework_TestCase
     {
         $myCol = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $myCol->setUniqueId('myCol');
-        
+
         $this->myCol = $myCol;
     }
 
     public function testCanExecute()
     {
         $helper = new TableRow();
-        
+
         $myCol = clone $this->myCol;
-        
+
         $cols = array(
             $myCol
         );
-        
+
         // without id
         $html = $helper($this->rowWithoutId, $cols);
-        
+
         $this->assertStringStartsWith('<tr>', $html);
         $this->assertStringEndsWith('</tr>', $html);
-        
+
         // with id
         $html = $helper($this->rowWithId, $cols);
-        
+
         $this->assertStringStartsWith('<tr id="1">', $html);
         $this->assertStringEndsWith('</tr>', $html);
     }
@@ -64,16 +64,16 @@ class TableRowTest extends PHPUnit_Framework_TestCase
     public function testHidden()
     {
         $helper = new TableRow();
-        
+
         $myCol = clone $this->myCol;
         $myCol->setHidden(true);
-        
+
         $cols = array(
             $myCol
         );
-        
+
         $html = $helper($this->rowWithId, $cols);
-        
+
         $this->assertContains('<td class="hidden"', $html);
     }
 
@@ -82,19 +82,19 @@ class TableRowTest extends PHPUnit_Framework_TestCase
         if (! extension_loaded('intl')) {
             $this->markTestSkipped('ext/intl not enabled');
         }
-        
+
         $helper = new TableRow();
-        
+
         $myCol = clone $this->myCol;
         $myCol->setType(new Type\Number());
-        
+
         $cols = array(
             $myCol
         );
-        
+
         $html = $helper($this->rowWithId, $cols);
         $this->assertContains('<td style="text-align: right"', $html);
-        
+
         $myCol->setType(new Type\PhpArray());
         $html = $helper($this->rowWithId, $cols);
         $this->assertContains('<pre>First value</pre>', $html);
@@ -103,58 +103,58 @@ class TableRowTest extends PHPUnit_Framework_TestCase
     public function testStyle()
     {
         $helper = new TableRow();
-        
+
         // bold
         $myCol = clone $this->myCol;
         $myCol->addStyle(new Style\Bold());
-        
+
         $cols = array(
             $myCol
         );
-        
+
         $html = $helper($this->rowWithId, $cols);
         $this->assertContains('<td style="font-weight: bold"', $html);
-        
+
         // italic
         $myCol = clone $this->myCol;
         $myCol->addStyle(new Style\Italic());
-        
+
         $cols = array(
             $myCol
         );
         $html = $helper($this->rowWithId, $cols);
         $this->assertContains('<td style="font-style: italic"', $html);
-        
+
         // color
         $myCol = clone $this->myCol;
         $myCol->addStyle(new Style\Color(AbstractColor::$RED));
-        
+
         $cols = array(
             $myCol
         );
         $html = $helper($this->rowWithId, $cols);
         $this->assertContains('<td style="color: #ff0000"', $html);
-        
+
         // background color
         $myCol = clone $this->myCol;
         $myCol->addStyle(new Style\BackgroundColor(AbstractColor::$GREEN));
-        
+
         $cols = array(
             $myCol
         );
         $html = $helper($this->rowWithId, $cols);
         $this->assertContains('<td style="background-color: #00ff00"', $html);
-        
+
         // exception
         $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
-        
+
         $myCol = clone $this->myCol;
         $myCol->addStyle($style);
-        
+
         $cols = array(
             $myCol
         );
-        
+
         $this->setExpectedException('InvalidArgumentException');
         $html = $helper($this->rowWithId, $cols);
     }
@@ -163,26 +163,26 @@ class TableRowTest extends PHPUnit_Framework_TestCase
     {
         $rowData = $this->rowWithId;
         $rowData['action'] = '';
-        
+
         $helper = new TableRow();
-        
+
         // must be instanceof Column\Select...
         $myCol = new Column\Select('myCol');
-        
+
         $action = new Column\Action\Checkbox();
         $action->setLink('http://example.com');
-        
+
         $colAction = new Column\Action();
         $colAction->addAction($action);
-        
+
         $cols = array(
             $myCol,
             $colAction
         );
-        
+
         $html = $helper($rowData, $cols);
         $this->assertContains('<input type="checkbox"', $html);
-        
+
         // row action
         $cols = array(
             $myCol,

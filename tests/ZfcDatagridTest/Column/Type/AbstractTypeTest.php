@@ -18,22 +18,22 @@ class AbstractTypeTest extends PHPUnit_Framework_TestCase
      */
     private $type;
 
-    public function setUp ()
+    public function setUp()
     {
         $this->type = $this->getMockForAbstractClass('ZfcDatagrid\Column\Type\AbstractType');
     }
 
-    public function testGetFilterDefaultOperation ()
+    public function testGetFilterDefaultOperation()
     {
         $this->assertEquals(Filter::LIKE, $this->type->getFilterDefaultOperation());
     }
 
-    public function testGetFilterValue ()
+    public function testGetFilterValue()
     {
         $this->assertEquals('01.05.12', $this->type->getFilterValue('01.05.12'));
     }
 
-    public function testGetUserValue ()
+    public function testGetUserValue()
     {
         $this->assertEquals('01.05.12', $this->type->getUserValue('01.05.12'));
     }

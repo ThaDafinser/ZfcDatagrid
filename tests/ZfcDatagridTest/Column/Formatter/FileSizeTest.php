@@ -1,5 +1,5 @@
 <?php
-namespace ZfcDatagridTest\Column\Type;
+namespace ZfcDatagridTest\Column\Formatter;
 
 use ZfcDatagrid\Column\Formatter;
 use PHPUnit_Framework_TestCase;
@@ -14,11 +14,11 @@ class FileSizeTest extends PHPUnit_Framework_TestCase
     public function testGetValidRendererNames()
     {
         $formatter = new Formatter\FileSize();
-        
+
         $this->assertEquals(array(), $formatter->getValidRendererNames());
-        
+
         $formatter->setRendererName('something');
-        
+
         // Always true!
         $this->assertTrue($formatter->isApply());
     }
@@ -27,44 +27,44 @@ class FileSizeTest extends PHPUnit_Framework_TestCase
     {
         $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $col->setUniqueId('myCol');
-        
+
         $formatter = new Formatter\FileSize();
-        
+
         $formatter->setRowData(array(
             'myCol' => null
         ));
         $this->assertNull($formatter->getFormattedValue($col));
-        
+
         $formatter->setRowData(array(
             'myCol' => ''
         ));
         $this->assertEquals('', $formatter->getFormattedValue($col));
-        
+
         $formatter->setRowData(array(
             'myCol' => null
         ));
         $this->assertNull($formatter->getFormattedValue($col));
-        
+
         $formatter->setRowData(array(
             'myCol' => 1
         ));
         $this->assertEquals('1.00 B', $formatter->getFormattedValue($col));
-        
+
         $formatter->setRowData(array(
             'myCol' => 1024
         ));
         $this->assertEquals('1.00 KB', $formatter->getFormattedValue($col));
-        
+
         $formatter->setRowData(array(
             'myCol' => 1030
         ));
         $this->assertEquals('1.01 KB', $formatter->getFormattedValue($col));
-        
+
         $formatter->setRowData(array(
             'myCol' => 1048576
         ));
         $this->assertEquals('1.00 MB', $formatter->getFormattedValue($col));
-    
+
         $formatter->setRowData(array(
         'myCol' => 1073741824
         ));
