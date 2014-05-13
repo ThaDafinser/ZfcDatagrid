@@ -1,0 +1,103 @@
+<?php
+use ZfcDatagrid\Column;
+
+$pages = $this->paginator->getPages();
+
+$paginatorOnclick = 'document.forms[\'form_'.$this->gridId.'\'].elements[\'' . $this->parameterNames['currentPage'] . '\'].value = %s;';
+$paginatorOnclick.= 'document.forms[\'form_'.$this->gridId.'\'].submit(); return false;';
+?>
+<!-- Start Pagination -->
+<div class="row-fluid row">
+    <div class="span4 col-md-4">
+        <?php 
+        ?>
+    </div>
+    <div class="span4 col-md-4">
+        <div class="pagination">
+        
+            <input type="hidden" name="<?php echo $this->parameterNames['currentPage']; ?>" value="<?php echo $pages->current; ?>" />
+            <?php if (count($pages->pagesInRange) > 1): ?>
+            <ul class="pagination">
+                <?php if($pages->current > 1):?>
+                    <li><a href="<?php echo 
+                            $this->url(null, 
+                                array(),
+                                array(
+                                    'query' => array_merge($this->activeParameters, array(
+                                            $this->parameterNames['currentPage'] => $pages->current - 1
+                                        )
+                                    )
+                                ),
+                                true
+                            );?>
+                        "  onclick="<?php echo sprintf($paginatorOnclick, $pages->current - 1);?>">
+                            &laquo;
+                        </a>
+                    </li>
+                <?php else: ?>
+                    <li class="disabled">
+                        <a href="#">&laquo;</a>
+                    </li>
+                <?php endif;?>
+                
+                <?php foreach($pages->pagesInRange as $page):?>
+                    <?php 
+                    $add = '';
+                    if($pages->current === $page){
+                        $add = 'class="active"';
+                    }
+                    
+                    if($pages->current != $page){
+                        $url = $this->url($this->matchedRouteName, 
+                            array(),
+                            array(
+                                'query' => array_merge($this->activeParameters, array(
+                                        $this->parameterNames['currentPage'] => $page
+                                    )
+                                )
+                            ),
+                            true
+                        );
+                    } else{
+                        $url = '#';
+                    }
+                    ?>
+                    <li <?php echo $add; ?>>
+                        <a href="<?php echo $url; ?>" onclick="<?php echo sprintf($paginatorOnclick, $page);?>">
+                            <?php echo $page; ?>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+                
+                <?php if($pages->current < $pages->pageCount): ?>
+                    <li>
+                        <a href="<?php echo 
+                            $this->url($this->matchedRouteName, 
+                                array(),
+                                array(
+                                    'query' => array_merge($this->activeParameters, array(
+                                            $this->parameterNames['currentPage'] => $pages->current + 1
+                                        )
+                                    )
+                                ),
+                                true
+                            );?>
+                        " onclick="<?php echo sprintf($paginatorOnclick, $pages->current + 1);?>">
+                            &raquo;
+                        </a>
+                    </li>
+                    
+                <?php else: ?>
+                    <li class="disabled">
+                        <a href="#">&raquo;</a>
+                    </li>
+                <?php endif;?>
+                
+            </ul>
+            <?php endif; ?>
+        </div>
+    </div>
+    <div class="span4 col-md-4 text-right">
+        <?php echo $this->translate('Showing').' '.$this->paginator->getCurrentItemCount().' '.$this->translate('of').' '.$this->paginator->getTotalItemCount().' '.$this->translate('items'); ?>
+    </div>
+</div><!-- End Pagination -->

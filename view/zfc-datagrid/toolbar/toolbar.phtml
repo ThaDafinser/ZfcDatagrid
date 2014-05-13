@@ -1,18 +1,20 @@
-<div class="row-fluid" style="margin-bottom: 5px;">
+<div class="row row-fluid" style="margin-bottom: 5px;">
 
     <!-- Actions (add, ...) -->
-    <div class="span2">
+    <div class="span2 col-md-2">
         Here your can add global actions like "Add".<br />
-        Change the toolbar with $grid-&gt;setToolbarTemplate('my-path/awesome-list/grid-toolbar');
     </div>
     
     <!-- Anything else (filter, ...) -->
-    <div class="span6">
-        E.g. you could add here custom filters from a select element
+    <div class="span6 col-md-6">
+        You could add here custom filters or other interesting things<br />
+        Change the toolbar with <code>$grid-&gt;setToolbarTemplate('my-path/awesome-list/grid-toolbar');</code>
     </div>
     
     <!-- Export buttons -->
-    <div class="span4 text-right">
+    <div class="span4 col-md-4 text-right">
+        Here are the enabled export types are shown<br />
+        Template: <code>zfc-datagrid/toolbar/export</code>
         <?php echo $this->partial('zfc-datagrid/toolbar/export');?>
     </div>
     

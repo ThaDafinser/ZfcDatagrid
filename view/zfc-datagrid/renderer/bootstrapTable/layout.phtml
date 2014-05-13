@@ -42,37 +42,37 @@ if($this->rowClickAction !== null){
 
 <table class="<?php echo implode(' ', $classes); ?>">
     <thead>
-        <tr>
+        <tr style="background-color: #EEE">
             <?php 
-            foreach($this->columns as $column){
-                /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+            foreach($this->columns as $col){
+                /* @var $col \ZfcDatagrid\Column\AbstractColumn */
                 $classes = array();
                 $styles = array();
                 
-                $id = $column->getUniqueId();
+                $id = $col->getUniqueId();
                 
                 $label = '';
-                if($column->getLabel() != ''){
-                    $label = $this->translate($column->getLabel());
+                if($col->getLabel() != ''){
+                    $label = $this->translate($col->getLabel());
                 }
                 
-                $width = $column->getWidth();
+                $width = $col->getWidth();
                 if($width != ''){
                     $styles[] = 'width: '.$this->escapehtmlattr($width).'%';
                 }
                 
                 
-                if($column->isHidden() === true){
+                if($col->isHidden() === true){
                     $classes[] = 'hidden';
                 }
-                if($column->getType() instanceof Type\Number){
+                if($col->getType() instanceof Type\Number){
                     $styles[] = 'text-align: right';
                 }
                 ?>
                 <th id="<?php echo $this->escapehtmlattr($id); ?>" class="<?php echo implode(',', $classes); ?>" style="<?php echo implode(';', $styles); ?>">
                     
-                    <?php if($column->isUserSortEnabled() === true): 
-                        if($column->isSortActive() === true && $column->getSortActiveDirection() === 'ASC'){
+                    <?php if($col->isUserSortEnabled() === true): 
+                        if($col->isSortActive() === true && $col->getSortActiveDirection() === 'ASC'){
                             $direction = 'DESC';
                         } else{
                             $direction = 'ASC';
@@ -83,14 +83,14 @@ if($this->rowClickAction !== null){
                                 array(),
                                 array(
                                     'query' => array_merge($this->activeParameters, array(
-                                            $this->parameterNames['sortColumns'] => $column->getUniqueId(),
+                                            $this->parameterNames['sortColumns'] => $col->getUniqueId(),
                                             $this->parameterNames['sortDirections'] => $direction,
                                         )
                                     )
                                 ),
                                 true
                             );?>
-                        " onclick="<?php echo sprintf($orderOnclick, $column->getUniqueId(), $direction); ?>">
+                        " onclick="<?php echo sprintf($orderOnclick, $col->getUniqueId(), $direction); ?>">
                             <?php echo $this->escapeHtml($label); ?>
                         </a>
                     <?php else: ?>
@@ -98,8 +98,8 @@ if($this->rowClickAction !== null){
                     <?php endif; ?>
                     
                     <?php 
-                    if($column->isSortActive() === true){
-                        if($column->getSortActiveDirection() === 'ASC'):?>
+                    if($col->isSortActive() === true){
+                        if($col->getSortActiveDirection() === 'ASC'):?>
                             <i class="icon-chevron-down glyphicon glyphicon-chevron-down"></i>
                         <?php else: ?>
                             <i class="icon-chevron-up glyphicon glyphicon-chevron-up"></i>
@@ -116,23 +116,23 @@ if($this->rowClickAction !== null){
         <?php if($this->isUserFilterEnabled === true):?>
             <tr>
                 <?php
-                foreach($this->columns as $column){
-                    /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+                foreach($this->columns as $col){
+                    /* @var $col \ZfcDatagrid\Column\AbstractColumn */
 
                     $classes = array();
-                    if($column->isHidden() === true){
+                    if($col->isHidden() === true){
                         $classes[] = 'hidden';
                     }
                     
                     $htmlFilter = '';
-                    if ($column->isUserFilterEnabled() === true) {
+                    if ($col->isUserFilterEnabled() === true) {
 
-                        if ($column->hasFilterSelectOptions() === true) {
-                            $htmlFilter = '<select name="toolbarFilters[' . $column->getUniqueId() . ']" style="width: 80%" onchange="this.form.submit()" >';
-                            foreach ($column->getFilterSelectOptions() as $value => $option) {
-                                if ($column->getFilterActiveValue() == sprintf($column->getFilterDefaultOperation(), $value)) {
+                        if ($col->hasFilterSelectOptions() === true) {
+                            $htmlFilter = '<select name="toolbarFilters[' . $col->getUniqueId() . ']" style="width: 80%" onchange="this.form.submit()" >';
+                            foreach ($col->getFilterSelectOptions() as $value => $option) {
+                                if ($col->getFilterActiveValue() == sprintf($col->getFilterDefaultOperation(), $value)) {
                                     $htmlFilter .= '<option value="' . $value . '" selected="selected">' . $option . '</option>';
-                                } else if (($column->getFilterActiveValue() == '') && ($value == '')){
+                                } else if (($col->getFilterActiveValue() == '') && ($value == '')){
                                     $htmlFilter .= '<option value="' . $value . '" selected="selected">' . $option . '</option>';
                                 } else {
                                     $htmlFilter .= '<option value="' . $value . '">' . $option . '</option>';
@@ -140,10 +140,10 @@ if($this->rowClickAction !== null){
                             }
                             $htmlFilter .= '</select>';
 
-                        } else if ($column->getType() instanceof \ZfcDatagrid\Column\Type\DateTime){
-                            $htmlFilter = '<input type="text" name="toolbarFilters[' . $column->getUniqueId() . ']" style="width: 80%" value="' . $column->getFilterActiveValue() . '" class="daterange" />';
+                        } else if ($col->getType() instanceof \ZfcDatagrid\Column\Type\DateTime){
+                            $htmlFilter = '<input type="text" name="toolbarFilters[' . $col->getUniqueId() . ']" style="width: 80%" value="' . $col->getFilterActiveValue() . '" class="daterange" />';
                         } else {
-                            $htmlFilter = '<input type="text" name="toolbarFilters[' . $column->getUniqueId() . ']" style="width: 80%" value="' . $column->getFilterActiveValue() . '" />';
+                            $htmlFilter = '<input type="text" name="toolbarFilters[' . $col->getUniqueId() . ']" style="width: 80%" value="' . $col->getFilterActiveValue() . '" />';
                         }
                     }
                     ?>
@@ -165,104 +165,5 @@ if($this->rowClickAction !== null){
     </tbody>
 </table>
 
-<?php
-$pages = $this->paginator->getPages();
-
-$paginatorOnclick = 'document.forms[\'form_'.$this->gridId.'\'].elements[\'' . $this->parameterNames['currentPage'] . '\'].value = %s;';
-$paginatorOnclick.= 'document.forms[\'form_'.$this->gridId.'\'].submit(); return false;';
-?>
-<!-- Start Pagination -->
-<div class="row-fluid row">
-    <div class="span4 col-md-4">
-        <?php echo $this->translate('Page').' '.$this->paginator->getCurrentPageNumber().' '.$this->translate('of').' '.$this->paginator->count(); ?>
-    </div>
-    <div class="span4 col-md-4">
-        <div class="pagination">
-        
-            <input type="hidden" name="<?php echo $this->parameterNames['currentPage']; ?>" value="<?php echo $pages->current; ?>" />
-            <?php if (count($pages->pagesInRange) > 1): ?>
-            <ul class="pagination">
-                <?php if($pages->current > 1):?>
-                    <li><a href="<?php echo 
-                            $this->url(null, 
-                                array(),
-                                array(
-                                    'query' => array_merge($this->activeParameters, array(
-                                            $this->parameterNames['currentPage'] => $pages->current - 1
-                                        )
-                                    )
-                                ),
-                                true
-                            );?>
-                        "  onclick="<?php echo sprintf($paginatorOnclick, $pages->current - 1);?>">
-                            &laquo;
-                        </a>
-                    </li>
-                <?php else: ?>
-                    <li class="disabled">
-                        <a href="#">&laquo;</a>
-                    </li>
-                <?php endif;?>
-                
-                <?php foreach($pages->pagesInRange as $page):?>
-                    <?php 
-                    $add = '';
-                    if($pages->current === $page){
-                        $add = 'class="active"';
-                    }
-                    
-                    if($pages->current != $page){
-                        $url = $this->url($this->matchedRouteName, 
-                            array(),
-                            array(
-                                'query' => array_merge($this->activeParameters, array(
-                                        $this->parameterNames['currentPage'] => $page
-                                    )
-                                )
-                            ),
-                            true
-                        );
-                    } else{
-                        $url = '#';
-                    }
-                    ?>
-                    <li <?php echo $add; ?>>
-                        <a href="<?php echo $url; ?>" onclick="<?php echo sprintf($paginatorOnclick, $page);?>">
-                            <?php echo $page; ?>
-                        </a>
-                    </li>
-                <?php endforeach; ?>
-                
-                <?php if($pages->current < $pages->pageCount): ?>
-                    <li>
-                        <a href="<?php echo 
-                            $this->url($this->matchedRouteName, 
-                                array(),
-                                array(
-                                    'query' => array_merge($this->activeParameters, array(
-                                            $this->parameterNames['currentPage'] => $pages->current + 1
-                                        )
-                                    )
-                                ),
-                                true
-                            );?>
-                        " onclick="<?php echo sprintf($paginatorOnclick, $pages->current + 1);?>">
-                            &raquo;
-                        </a>
-                    </li>
-                    
-                <?php else: ?>
-                    <li class="disabled">
-                        <a href="#">&raquo;</a>
-                    </li>
-                <?php endif;?>
-                
-            </ul>
-            <?php endif; ?>
-        </div>
-    </div>
-    <div class="span4 col-md-4 text-right">
-        <?php echo $this->translate('Showing').' '.$this->paginator->getCurrentItemCount().' '.$this->translate('of').' '.$this->paginator->getTotalItemCount().' '.$this->translate('items'); ?>
-    </div>
-</div><!-- End Pagination -->
+    <?php echo $this->partial('zfc-datagrid/renderer/bootstrapTable/footer'); ?>
 </form>
