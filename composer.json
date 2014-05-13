@@ -38,6 +38,7 @@
     "require-dev": {
         "phpunit/PHPUnit": "~3.7",
         "satooshi/php-coveralls": "dev-master",
+        "fabpot/php-cs-fixer": "*@dev",
         
         "zendframework/zendframework": "~2.2",
         "doctrine/doctrine-orm-module": ">=0.8"
