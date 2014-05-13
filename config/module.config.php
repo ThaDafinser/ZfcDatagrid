@@ -64,7 +64,7 @@ return array(
                 ),
                 // Daterange bootstrapTable filter configuration example
                 'daterange' => array(
-                    'enabled' => true,
+                    'enabled' => false,
                     'options' => array(
                         'ranges' => array(
                             'Today' => new \Zend\Json\Expr("[moment().startOf('day'), moment().endOf('day')]"),
