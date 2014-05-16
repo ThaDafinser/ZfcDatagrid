@@ -148,6 +148,7 @@ if($paginator->getItemCountPerPage() === $paginator->getTotalItemCount()){
 <input type="hidden" id="<?php echo $this->gridId.'_'.$parameterNames['columnsGroupByLocal']; ?>" name="<?php echo $this->gridId.'_'.$parameterNames['columnsGroupByLocal']; ?>" value="" />
 
 <?php $this->inlineScript()->captureStart(); ?>
+
 //Row background-color + column background-color
 function grid_<?php echo $this->gridId; ?>_loadComplete(data){
     if(data.data && data.data.rows){
@@ -178,7 +179,7 @@ var grid_<?php echo $this->gridId; ?> = $('#<?php echo $this->gridId; ?>').jqGri
     grouping: true,
     
     rowNum: <?php echo $itemCountPerPage; ?>,
-    	    
+
 	mtype : 'POST',
     postData: {
     	<?php echo $parameterNames['columnsHidden']?>: function(){
