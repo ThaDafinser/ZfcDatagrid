@@ -18,13 +18,14 @@ If you need help, please use following ressources
 - [Issues/Help](https://github.com/ThaDafinser/ZfcDatagrid/issues)
 
 If you want to help out on this project:
-- seek through the issues
-- documentation
-- ...any help
+- seek through the [issues](https://github.com/ThaDafinser/ZfcDatagrid/issues)
+- [documentation](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/docs/)
+- ...any other help
 
 ## Features
 * Datasources: Doctrine2 (QueryBuilder + Collections), Zend\Db, PhpArray, ... (others possible)
-* Output types: jqGrid, Bootstrap table (with Daterange Filter need to load manually js and css), PDF, Excel, console, ... (others possible)
+* Output types: jqGrid, Bootstrap table, PDF, Excel, CSV, console, ... (others possible)
+  *  Bootstrap table with Daterange Filter need to load manually js and css
 * different column types
 * custom formatting, type based formatting (string, date, number, array...)
 * column/row styling for all or based on value comparison
