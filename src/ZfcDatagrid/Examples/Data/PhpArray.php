@@ -182,19 +182,13 @@ class PhpArray implements ServiceLocatorAwareInterface
 
     public function getRandom()
     {
-        $maxRow = rand(100, 200);
+        $maxRow = 9999;
 
         $persons = $this->getPersons();
 
         $data = array();
         for ($i = 1; $i <= $maxRow; $i ++) {
-            $row = array(
-                'id' => $i,
-                'number' => rand(0, 20000),
-                'name' => $persons[rand(0, 5)]['displayName']
-            );
-
-            $data[] = $row;
+            $data[] = $persons[rand(0, 5)];
         }
 
         return $data;

@@ -139,6 +139,12 @@ class Datagrid implements ServiceLocatorAwareInterface
     protected $rowClickAction;
 
     /**
+     *
+     * @var Action\Mass
+     */
+    protected $massActions = array();
+
+    /**
      * The prepared data
      *
      * @var array
@@ -798,6 +804,38 @@ class Datagrid implements ServiceLocatorAwareInterface
     }
 
     /**
+     * Add a mass action
+     *
+     * @param Action\Mass $action
+     */
+    public function addMassAction(Action\Mass $action)
+    {
+        $this->massActions[] = $action;
+    }
+
+    /**
+     *
+     * @return Action\Mass[]
+     */
+    public function getMassActions()
+    {
+        return $this->massActions;
+    }
+
+    /**
+     *
+     * @return boolean
+     */
+    public function hasMassAction()
+    {
+        if (count($this->massActions) > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      *
      * @deprecated use setRendererName()
      */
@@ -951,6 +989,8 @@ class Datagrid implements ServiceLocatorAwareInterface
         {
             $this->getDataSource()->execute();
             $paginatorAdapter = $this->getDataSource()->getPaginatorAdapter();
+
+            \Zend\Paginator\Paginator::setDefaultScrollingStyle('Sliding');
 
             $this->paginator = new Paginator($paginatorAdapter);
             $this->paginator->setCurrentPageNumber($renderer->getCurrentPageNumber());

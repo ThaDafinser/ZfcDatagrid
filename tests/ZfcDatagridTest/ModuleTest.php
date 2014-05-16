@@ -10,15 +10,6 @@ use ZfcDatagrid\Module;
 class ModuleTest extends PHPUnit_Framework_TestCase
 {
 
-    public function testInterfaces()
-    {
-        $module = new Module();
-
-        $this->assertInstanceOf('Zend\ModuleManager\Feature\AutoloaderProviderInterface', $module);
-        $this->assertInstanceOf('Zend\ModuleManager\Feature\ConfigProviderInterface', $module);
-        $this->assertInstanceOf('Zend\ModuleManager\Feature\ConsoleUsageProviderInterface', $module);
-    }
-
     public function testGetAutoloaderConfig()
     {
         $module = new Module();

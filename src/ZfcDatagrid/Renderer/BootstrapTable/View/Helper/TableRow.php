@@ -48,9 +48,13 @@ class TableRow extends AbstractHelper
      * @throws \Exception
      * @return string
      */
-    public function __invoke($row, array $cols, AbstractAction $rowClickAction = null, array $rowStyles = array())
+    public function __invoke($row, array $cols, AbstractAction $rowClickAction = null, array $rowStyles = array(), $hasMassActions = false)
     {
         $return = $this->getTr($row);
+
+        if ($hasMassActions === true) {
+            $return .= '<td><input type="checkbox" name="massActionSelected[]" value="' . $row['id'] . '" /></td>';
+        }
 
         foreach ($cols as $col) {
             /* @var $col \ZfcDatagrid\Column\AbstractColumn */

@@ -1,0 +1,130 @@
+
+<!-- Start footer -->
+<div class="row-fluid row" id="<?php echo $this->gridId; ?>_pager">
+
+    <!-- mass actions -->
+    <div class="span3 col-md-3" id="<?php echo $this->gridId; ?>_pager_left">
+        <?php 
+        foreach($this->massActions as $action){
+            /* @var $action \ZfcDatagrid\Action\Mass */
+            ?>
+            <a href="#" class="btn btn-default massAction" data-url="<?php echo $action->getLink(); ?>">
+                <?php echo $this->translate($action->getTitle()); ?>
+            </a>
+            <?php
+        }
+        ?>
+    </div>
+    <!-- Pagination -->
+    <div class="span6 col-md-6 text-center" id="<?php echo $this->gridId; ?>_pager_center">
+    </div>
+    <!-- Info -->
+    <div class="span3 col-md-3 text-right hidden" id="<?php echo $this->gridId; ?>_pager_right">
+        <?php echo $this->translate('Showing').' '.$this->paginator->getCurrentItemCount().' '.$this->translate('of').' '.$this->paginator->getTotalItemCount().' '.$this->translate('items'); ?>
+    </div>
+</div><!-- End footer -->
+
+
+<?php $this->headScript()->captureStart(); ?>
+$( document ).ready(function() {
+    $('#<?php echo $this->gridId; ?>_pager_left a.massAction').click( function() {
+    	var grid = $("#<?php echo $this->gridId; ?>");
+    	
+        $.post($(this).attr('data-url'), { '<?php echo $this->parameterNames['massIds']; ?>[]': grid.jqGrid('getGridParam','selarrrow') })
+        .done(function( data ) {
+        	grid.trigger('reloadGrid');
+        });
+    });
+});
+
+function loadPage(gridId, newPage){
+	$('#' + gridId).trigger('reloadGrid',[{page: newPage}]);
+}
+
+function customPaginator(gridId){
+	
+	var myPageRefresh = function(e) {
+	    var newPage = $(e.target).attr('data-page');
+	    $('#' + gridId).trigger('reloadGrid',[{page:newPage}]);
+	    e.preventDefault();
+	};
+    
+	var grid = $('#' + gridId).jqGrid();
+	var currentPage = grid.getGridParam('page');
+	var totalPages = grid.getGridParam('lastpage');
+	
+	var html = '';
+	if(totalPages < 2){
+	    //only 1 page (or no page)
+	    return html;
+	}
+
+	//to first page
+    if(currentPage > 1){
+        html += '<li><a href="#" onclick="loadPage(\'' + gridId + '\', 1);">&laquo;</a></li>';
+    } else{
+    	html += '<li class="disabled"><a href="#">&laquo;</a></li>';
+    }
+
+    //one page left
+    if(currentPage > 1){
+        html += '<li><a href="#" onclick="loadPage(\'' + gridId + '\', ' + (currentPage - 1) + ');">&lt;</a></li>';
+    } else{
+    	html += '<li class="disabled"><a href="#">&lt;</a></li>';
+    }
+
+    //ported from  Zend\Paginator\ScrollingStyle\Sliding
+    var pageRange = 10;
+    if(pageRange > totalPages){
+        pageRange = totalPages;
+    }
+
+    var delta = Math.ceil(pageRange / 2);
+
+    var lowerBound;
+    var upperBound;
+    if(currentPage - delta > totalPages - pageRange){
+        lowerBound = totalPages - pageRange + 1;
+        upperBound = totalPages;
+    } else{
+        if(currentPage - delta < 0){
+            delta = currentPage;
+        }
+
+        var offset = currentPage - delta;
+        lowerBound = offset + 1;
+        upperBound = offset + pageRange;
+    }
+
+    var pageRangeStart = lowerBound;
+    var pageRangeEnd = upperBound;
+
+    //"normal" pages
+    for (usePage = pageRangeStart; usePage <= pageRangeEnd; usePage++) {
+
+        if(usePage != currentPage){
+     	   html += '<li><a href="#" onclick="loadPage(\'' + gridId + '\', ' + usePage + ');">' + usePage + '</a></li>';
+        } else{
+        	html += '<li class="active"><a href="#">' + usePage + '</a></li>';
+        }
+	}
+
+    //one page right
+    if(currentPage < totalPages){
+        html += '<li><a href="#" onclick="">&gt;</a></li>';
+    } else{
+    	html += '<li class="disabled"><a href="#">&gt;</a></li>';
+    }
+
+    //to last page
+    if(currentPage < totalPages){
+        html += '<li><a href="#" onclick="loadPage(\'' + gridId + '\', ' + totalPages + ');">&raquo;</a></li>';
+    } else{
+    	html += '<li class="disabled"><a href="#">&raquo;</a></li>';
+    }
+    
+    html = '<ul class="pagination">' + html + '</ul>';
+    
+	return html;
+}
+<?php $this->headScript()->captureEnd(); ?>

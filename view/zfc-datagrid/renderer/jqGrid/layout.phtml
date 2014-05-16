@@ -154,7 +154,8 @@ if($paginator->getItemCountPerPage() === $paginator->getTotalItemCount()){
 <?php echo $this->partial($this->templateToolbar);?>
 
 <table id="<?php echo $this->gridId; ?>" class="<?php echo implode(' ', $tableClasses); ?>"></table>
-<div id="<?php echo $this->gridId; ?>_pager"></div>
+<?php echo $this->partial('zfc-datagrid/renderer/jqGrid/footer'); ?>
+
 <iframe name="<?php echo $this->gridId; ?>_fileFrame" id="<?php echo $this->gridId; ?>_fileFrame" src="about:none" style="display: none;"></iframe>
 
 <input type="hidden" id="<?php echo $this->gridId.'_'.$parameterNames['columnsHidden']; ?>" name="<?php echo $this->gridId.'_'.$parameterNames['columnsHidden']; ?>" value="<?php echo implode(',',$this->columnsHidden); ?>" />
@@ -170,8 +171,6 @@ function grid_<?php echo $this->gridId; ?>_loadComplete(data){
     }
 }
 
-var grid_<?php echo $this->gridId; ?>_columnsRowClickDisabled = <?php echo json_encode($this->columnsRowClickDisabled) ?>;
-
 var grid_<?php echo $this->gridId; ?> = $('#<?php echo $this->gridId; ?>').jqGrid({
 
 	url: '<?php echo $url; ?>',
@@ -186,6 +185,10 @@ var grid_<?php echo $this->gridId; ?> = $('#<?php echo $this->gridId; ?>').jqGri
     hoverrows : true,
     viewrecords : true,
 
+    <?php if(count($this->massActions) > 0): ?>
+    multiselect: true,
+    <?php endif; ?>
+    
     grouping: true,
     
     rowNum: <?php echo $itemCountPerPage; ?>,
@@ -218,7 +221,7 @@ var grid_<?php echo $this->gridId; ?> = $('#<?php echo $this->gridId; ?>').jqGri
 		search: '<?php echo $parameterNames['isSearch']; ?>',
 	},
 	
-	pager : '#<?php echo $this->gridId; ?>_pager',
+	//pager : '#<?php echo $this->gridId; ?>_pager',
 
     colModel: <?php echo $this->jqgridColumns($this->columns); ?>,
 
@@ -258,30 +261,35 @@ var grid_<?php echo $this->gridId; ?> = $('#<?php echo $this->gridId; ?>').jqGri
 
     <?php if($rowClickLink != ''): ?>
         onSelectRow: function(rowId, status, e){
+        	var colModel = grid_<?php echo $this->gridId; ?>.jqGrid('getGridParam','colModel');
+        	var name = colModel[$.jgrid.getCellIndex(e.target)];
+        	var colIndex = name.index;
+
+            var specialColumns = $.parseJSON('<?php echo json_encode($this->columnsRowClickDisabled); ?>');
+        	if ($.inArray( colIndex, specialColumns) !== -1 || colIndex === undefined) {
+                return false;
+            }
+            
             var rowClickLink = '<?php echo $rowClickLink; ?>';
             rowClickLink = rowClickLink.replace('<?php echo Button::ROW_ID_PLACEHOLDER; ?>', rowId);
             window.location.href = rowClickLink;
         },
     <?php endif; ?>
 
-    <?php if($styleString != ''): ?>
-        loadComplete: function (data) {
-            if(data !== undefined){
-                //on inti we load the first page, but locale type do not know about json data
-                grid_<?php echo $this->gridId; ?>_loadComplete(data);
-            }
-        },
-    <?php endif; ?>
+    loadComplete: function (data) {
+    	//custom pagination
+    	var paginator = customPaginator('<?php echo $this->gridId; ?>');
+    	$('#<?php echo $this->gridId; ?>_pager_center').html(paginator);
+    	
+        <?php if($styleString != ''): ?>
+        if(data !== undefined){
+            //on inti we load the first page, but locale type do not know about json data
+            grid_<?php echo $this->gridId; ?>_loadComplete(data);
+        }
+        <?php endif; ?>
+    },
     
     beforeSelectRow: function (rowId, e) {
-    	var colModel = grid_<?php echo $this->gridId; ?>.jqGrid('getGridParam','colModel');
-    	var name = colModel[$.jgrid.getCellIndex(e.target)];
-    	var colIndex = name.index;
-    	
-    	if (grid_<?php echo $this->gridId; ?>_columnsRowClickDisabled.colIndex) {
-            return false;
-        }
-        
         return true;
     }
 });
@@ -299,4 +307,8 @@ grid_<?php echo $this->gridId; ?>.jqGrid('setGridParam', {
 grid_<?php echo $this->gridId; ?>.jqGrid()[0].addJSONData(grid_<?php echo $this->gridId; ?>.jqGrid('getGridParam', 'data'));
 grid_<?php echo $this->gridId; ?>.trigger('reload');
 grid_<?php echo $this->gridId; ?>_loadComplete(grid_<?php echo $this->gridId; ?>.jqGrid('getGridParam', 'data'));
+
+//custom pagination
+var paginator = customPaginator('<?php echo $this->gridId; ?>');
+$('#<?php echo $this->gridId; ?>_pager_center').html(paginator);
 </script>

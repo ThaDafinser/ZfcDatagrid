@@ -1,7 +1,10 @@
 <?php 
-use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Type;
-use ZfcDatagrid\Column\Style;
+
+$hasMassActions = false;
+if(count($this->massActions) > 0){
+    $hasMassActions = true;
+}
 ?>
 
 <?php $this->headScript()->captureStart();?>
@@ -27,7 +30,6 @@ $(function(){
 <?php echo $this->toolbar; ?>
 
 <?php 
-
 $orderOnclick = 'document.forms[\'form_'.$this->gridId.'\'].elements[\'' . $this->parameterNames['sortColumns'] . '\'].value = \'%s\';';
 $orderOnclick .= 'document.forms[\'form_'.$this->gridId.'\'].elements[\'' . $this->parameterNames['sortDirections'] . '\'].value = \'%s\';';
 $orderOnclick.= 'document.forms[\'form_'.$this->gridId.'\'].submit(); return false;';
@@ -44,6 +46,10 @@ if($this->rowClickAction !== null){
     <thead>
         <tr style="background-color: #EEE">
             <?php 
+            if($hasMassActions === true){
+                echo '<th><input type="checkbox" onclick="toggleCheckboxes(this);" /></th>';
+            }
+            
             foreach($this->columns as $col){
                 /* @var $col \ZfcDatagrid\Column\AbstractColumn */
                 $classes = array();
@@ -116,6 +122,9 @@ if($this->rowClickAction !== null){
         <?php if($this->isUserFilterEnabled === true):?>
             <tr style="background-color: #EEE">
                 <?php
+                if($hasMassActions === true){
+                    echo '<td></td>';
+                }
                 foreach($this->columns as $col){
                     /* @var $col \ZfcDatagrid\Column\AbstractColumn */
 
@@ -156,14 +165,14 @@ if($this->rowClickAction !== null){
             </tr>
         <?php endif; ?>
     </thead><!-- END table header -->
-    
+     
     <!-- Start table BODY -->
     <tbody>
         <?php foreach($this->data as $row): ?>
-            <?php echo $this->bootstrapTableRow($row, $this->columns, $this->rowClickAction, $this->rowStyles); ?>
+            <?php echo $this->bootstrapTableRow($row, $this->columns, $this->rowClickAction, $this->rowStyles, $hasMassActions); ?>
         <?php endforeach; ?>
     </tbody>
 </table>
 
-    <?php echo $this->partial('zfc-datagrid/renderer/bootstrapTable/footer'); ?>
+<?php echo $this->partial('zfc-datagrid/renderer/bootstrapTable/footer'); ?>
 </form>

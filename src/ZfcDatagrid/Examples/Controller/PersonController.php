@@ -2,6 +2,7 @@
 namespace ZfcDatagrid\Examples\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use ZfcDatagrid\Action;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Type;
 use ZfcDatagrid\Column\Style;
@@ -24,11 +25,10 @@ class PersonController extends AbstractActionController
         $col->setIdentity();
         $grid->addColumn($col);
 
-        $action = new Column\Action\Checkbox();
-
-        $col = new Column\Action('checkboxes');
-        $col->addAction($action);
-        $grid->addColumn($col);
+        $action = new Action\Mass();
+        $action->setTitle('test');
+        $action->setLink('/test');
+        $grid->addMassAction($action);
 
         {
             /**

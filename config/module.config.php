@@ -60,7 +60,9 @@ return array(
                     // Internal => bootstrapTable
                     'currentPage' => 'currentPage',
                     'sortColumns' => 'sortByColumns',
-                    'sortDirections' => 'sortDirections'
+                    'sortDirections' => 'sortDirections',
+                    
+                    'massIds' => 'ids'
                 )
             ),
             
@@ -74,7 +76,9 @@ return array(
                     'isSearch' => 'isSearch',
                     
                     'columnsHidden' => 'columnsHidden',
-                    'columnsGroupByLocal' => 'columnsGroupBy'
+                    'columnsGroupByLocal' => 'columnsGroupBy',
+                    
+                    'massIds' => 'ids'
                 )
             ),
             

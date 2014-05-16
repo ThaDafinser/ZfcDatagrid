@@ -635,6 +635,7 @@ abstract class AbstractRenderer implements RendererInterface
         $viewModel->setVariable('filters', $this->getFilters());
 
         $viewModel->setVariable('rowClickAction', $grid->getRowClickAction());
+        $viewModel->setVariable('massActions', $grid->getMassActions());
 
         $viewModel->setVariable('isUserFilterEnabled', $grid->isUserFilterEnabled());
 

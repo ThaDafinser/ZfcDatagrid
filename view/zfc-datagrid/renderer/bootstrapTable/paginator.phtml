@@ -1,0 +1,138 @@
+<?php 
+$paginatorOnclick = 'document.forms[\'form_'.$this->gridId.'\'].elements[\'' . $this->parameterNames['currentPage'] . '\'].value = %s;';
+$paginatorOnclick.= 'document.forms[\'form_'.$this->gridId.'\'].submit(); return false;';
+?>
+<div class="pagination" style="margin: 0px;">
+    
+<?php if (count($this->pagesInRange) > 1): ?>
+    <ul class="pagination" style="margin: 0px;">
+    
+        <!-- to first page -->
+        <?php if($this->current > 1):?>
+            <li><a href="<?php echo 
+                    $this->url(null, 
+                        array(),
+                        array(
+                            'query' => array_merge($this->activeParameters, array(
+                                    $this->parameterNames['currentPage'] => 1
+                                )
+                            )
+                        ),
+                        true
+                    );?>
+                "  onclick="<?php echo sprintf($paginatorOnclick, 1);?>">
+                    &laquo;
+                </a>
+            </li>
+        <?php else: ?>
+            <li class="disabled">
+                <a href="#">&laquo;</a>
+            </li>
+        <?php endif;?>
+        
+        <!-- one page left -->
+        <?php if($this->current > 1): ?>
+            <li><a href="<?php echo 
+                    $this->url(null, 
+                        array(),
+                        array(
+                            'query' => array_merge($this->activeParameters, array(
+                                    $this->parameterNames['currentPage'] => $this->current - 1
+                                )
+                            )
+                        ),
+                        true
+                    );?>
+                "  onclick="<?php echo sprintf($paginatorOnclick, $this->current - 1);?>">
+                    &lt;
+                </a>
+            </li>
+        <?php else: ?>
+            <li class="disabled">
+                <a href="#">&lt;</a>
+            </li>
+        <?php endif;?>
+        
+        <!-- general pages in rnage -->
+        <?php foreach($this->pagesInRange as $page):?>
+            <?php 
+            $add = '';
+            if($this->current === $page){
+                $add = 'class="active"';
+            }
+            
+            if($this->current != $page){
+                $url = $this->url($this->matchedRouteName, 
+                    array(),
+                    array(
+                        'query' => array_merge($this->activeParameters, array(
+                                $this->parameterNames['currentPage'] => $page
+                            )
+                        )
+                    ),
+                    true
+                );
+            } else{
+                $url = '#';
+            }
+            ?>
+            <li <?php echo $add; ?>>
+                <a href="<?php echo $url; ?>" onclick="<?php echo sprintf($paginatorOnclick, $page);?>">
+                    <?php echo $page; ?>
+                </a>
+            </li>
+        <?php endforeach; ?>
+        
+        <!-- one page right -->
+        <?php if($this->current < $this->pageCount): ?>
+            <li>
+                <a href="<?php echo 
+                    $this->url($this->matchedRouteName, 
+                        array(),
+                        array(
+                            'query' => array_merge($this->activeParameters, array(
+                                    $this->parameterNames['currentPage'] => $this->current + 1
+                                )
+                            )
+                        ),
+                        true
+                    );?>
+                " onclick="<?php echo sprintf($paginatorOnclick, $this->current + 1);?>">
+                    &gt;
+                </a>
+            </li>
+            
+        <?php else: ?>
+            <li class="disabled">
+                <a href="#">&gt;</a>
+            </li>
+        <?php endif;?>
+        
+        <!-- to last page -->
+        <?php if($this->current < $this->pageCount): ?>
+            <li>
+                <a href="<?php echo 
+                    $this->url($this->matchedRouteName, 
+                        array(),
+                        array(
+                            'query' => array_merge($this->activeParameters, array(
+                                    $this->parameterNames['currentPage'] => $this->pageCount
+                                )
+                            )
+                        ),
+                        true
+                    );?>
+                " onclick="<?php echo sprintf($paginatorOnclick, $this->pageCount);?>">
+                    &raquo;
+                </a>
+            </li>
+            
+        <?php else: ?>
+            <li class="disabled">
+                <a href="#">&raquo;</a>
+            </li>
+        <?php endif;?>
+        
+    </ul>
+<?php endif; ?>
+</div>

@@ -12,7 +12,7 @@ class Module
             'Zend\Loader\ClassMapAutoloader' => array(
                 __DIR__ . '/../../autoload_classmap.php'
             ),
-            
+
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__
@@ -27,7 +27,7 @@ class Module
         $configNoCache = array(
             'ZfcDatagrid' => array(
                 'renderer' => array(
-                    
+
                     'bootstrapTable' => array(
                         // Daterange bootstrapTable filter configuration example
                         'daterange' => array(
@@ -49,7 +49,7 @@ class Module
                 )
             )
         );
-        
+
         return array_merge_recursive($config, $configNoCache);
     }
 
@@ -62,7 +62,7 @@ class Module
                     'doctrine.connection.orm_zfcDatagrid' => new \DoctrineORMModule\Service\DBALConnectionFactory('orm_zfcDatagrid'),
                     'doctrine.configuration.orm_zfcDatagrid' => new \DoctrineORMModule\Service\ConfigurationFactory('orm_zfcDatagrid'),
                     'doctrine.entitymanager.orm_zfcDatagrid' => new \DoctrineORMModule\Service\EntityManagerFactory('orm_zfcDatagrid'),
-                    
+
                     'doctrine.driver.orm_zfcDatagrid' => new \DoctrineModule\Service\DriverFactory('orm_zfcDatagrid'),
                     'doctrine.eventmanager.orm_zfcDatagrid' => new \DoctrineModule\Service\EventManagerFactory('orm_zfcDatagrid'),
                     'doctrine.entity_resolver.orm_zfcDatagrid' => new \DoctrineORMModule\Service\EntityResolverFactory('orm_zfcDatagrid'),
@@ -70,7 +70,7 @@ class Module
                 )
             );
         }
-        
+
         return array();
     }
 
@@ -80,7 +80,7 @@ class Module
             'Display the example console datagrid',
             'datagrid person' => 'Show person datagrid',
             'datagrid category' => 'Show category datagrid',
-            
+
             'Options:',
             array(
                 '--page=NUMBER',
