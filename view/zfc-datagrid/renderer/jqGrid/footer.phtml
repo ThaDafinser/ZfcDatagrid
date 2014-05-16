@@ -25,7 +25,7 @@
 </div><!-- End footer -->
 
 
-<?php $this->headScript()->captureStart(); ?>
+<?php $this->inlineScript()->captureStart(); ?>
 $( document ).ready(function() {
     $('#<?php echo $this->gridId; ?>_pager_left a.massAction').click( function() {
     	var grid = $("#<?php echo $this->gridId; ?>");
@@ -127,4 +127,4 @@ function <?php echo $this->gridId; ?>_customPaginator(gridId){
     
 	return html;
 }
-<?php $this->headScript()->captureEnd(); ?>
+<?php $this->inlineScript()->captureEnd(); ?>

@@ -7,18 +7,19 @@ if(count($this->massActions) > 0){
 }
 ?>
 
-<?php $this->headScript()->captureStart();?>
-$(function(){
-    <?php //If daterange bootstrapTable filter is enable show it ?>
-    <?php if ($this->daterangeEnabled): ?>
-        $('input.daterange').daterangepicker(
-        <?= Zend\Json\Json::encode($this->daterangeParameters, false, array('enableJsonExprFinder' => true)); ?>
-        ).on('apply.daterangepicker', function(ev,picker){
-            this.form.submit();
-        });
-    <?php endif; ?>
-});
-<?php $this->headScript()->captureEnd(); ?>
+<?php if ($this->daterangeEnabled): ?>
+    <?php $this->inlineScript()->captureStart();?>
+    $(function(){
+        <?php //If daterange bootstrapTable filter is enable show it ?>
+            $('input.daterange').daterangepicker(
+            <?= Zend\Json\Json::encode($this->daterangeParameters, false, array('enableJsonExprFinder' => true)); ?>
+            ).on('apply.daterangepicker', function(ev,picker){
+                this.form.submit();
+            });
+        
+    });
+    <?php $this->inlineScript()->captureEnd(); ?>
+<?php endif; ?>
 
 <form name="form_<?php echo $this->gridId; ?>" method="post" action="<?php echo $this->url(null, array(), array(), true); ?>">
 

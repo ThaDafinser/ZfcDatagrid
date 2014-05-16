@@ -32,7 +32,7 @@
     </div>
 </div><!-- End footer -->
 
-<?php $this->headScript()->captureStart();?>
+<?php $this->inlineScript()->captureStart();?>
 function <?php echo $this->gridId; ?>_toggleCheckboxes(element){
     var elements = document.getElementsByName('massActionSelected[]');
     
@@ -62,4 +62,4 @@ $( document ).ready(function() {
     });
 });
 
-<?php $this->headScript()->captureEnd(); ?>
+<?php $this->inlineScript()->captureEnd(); ?>

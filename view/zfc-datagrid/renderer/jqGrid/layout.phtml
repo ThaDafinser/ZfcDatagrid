@@ -7,20 +7,6 @@ $paginator = $this->paginator;
 
 $parameterNames = $this->optionsRenderer['parameterNames'];
 
-// $sortColumns = explode(',', $this->activeParameters[$parameterNames['sortColumns']]);
-// $sortDirections = explode(',', $this->activeParameters[$parameterNames['sortDirections']]);
-
-// $sortDirection = strtolower(array_pop($sortDirections));
-// $sortBys = array();
-// foreach($sortColumns as $key => $value){
-//     $sortBy = $value;
-//     if(isset($sortDirections[$key]))
-//         $sortBy .= ' '.strtolower($sortDirections[$key]);
-    
-//     $sortBys[] = $sortBy;
-// }
-// $sortBys = implode(', ', $sortBys);
-
 $url = $this->url(null, array(), array(), true);
 if($this->overwriteUrl != ''){
     $url = $this->overwriteUrl;
@@ -31,8 +17,8 @@ foreach($this->parameters as $name => $value){
 }
 
 $tableClasses = array();
-
 $rowClickLink = '';
+
 if($this->rowClickAction){
     $tableClasses[] = 'clickable';
     
@@ -161,7 +147,7 @@ if($paginator->getItemCountPerPage() === $paginator->getTotalItemCount()){
 <input type="hidden" id="<?php echo $this->gridId.'_'.$parameterNames['columnsHidden']; ?>" name="<?php echo $this->gridId.'_'.$parameterNames['columnsHidden']; ?>" value="<?php echo implode(',',$this->columnsHidden); ?>" />
 <input type="hidden" id="<?php echo $this->gridId.'_'.$parameterNames['columnsGroupByLocal']; ?>" name="<?php echo $this->gridId.'_'.$parameterNames['columnsGroupByLocal']; ?>" value="" />
 
-<script>
+<?php $this->inlineScript()->captureStart(); ?>
 //Row background-color + column background-color
 function grid_<?php echo $this->gridId; ?>_loadComplete(data){
     if(data.data && data.data.rows){
@@ -311,4 +297,5 @@ grid_<?php echo $this->gridId; ?>_loadComplete(grid_<?php echo $this->gridId; ?>
 //custom pagination
 var paginator = <?php echo $this->gridId; ?>_customPaginator('<?php echo $this->gridId; ?>');
 $('#<?php echo $this->gridId; ?>_pager_center').html(paginator);
-</script>
+
+<?php $this->inlineScript()->captureEnd(); ?>
