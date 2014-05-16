@@ -37,11 +37,11 @@ $( document ).ready(function() {
     });
 });
 
-function loadPage(gridId, newPage){
+function <?php echo $this->gridId; ?>_loadPage(gridId, newPage){
 	$('#' + gridId).trigger('reloadGrid',[{page: newPage}]);
 }
 
-function customPaginator(gridId){
+function <?php echo $this->gridId; ?>_customPaginator(gridId){
 	
 	var myPageRefresh = function(e) {
 	    var newPage = $(e.target).attr('data-page');
@@ -61,14 +61,14 @@ function customPaginator(gridId){
 
 	//to first page
     if(currentPage > 1){
-        html += '<li><a href="#" onclick="loadPage(\'' + gridId + '\', 1);">&laquo;</a></li>';
+        html += '<li><a href="#" onclick="<?php echo $this->gridId; ?>_loadPage(\'' + gridId + '\', 1);">&laquo;</a></li>';
     } else{
     	html += '<li class="disabled"><a href="#">&laquo;</a></li>';
     }
 
     //one page left
     if(currentPage > 1){
-        html += '<li><a href="#" onclick="loadPage(\'' + gridId + '\', ' + (currentPage - 1) + ');">&lt;</a></li>';
+        html += '<li><a href="#" onclick="<?php echo $this->gridId; ?>_loadPage(\'' + gridId + '\', ' + (currentPage - 1) + ');">&lt;</a></li>';
     } else{
     	html += '<li class="disabled"><a href="#">&lt;</a></li>';
     }
@@ -103,7 +103,7 @@ function customPaginator(gridId){
     for (usePage = pageRangeStart; usePage <= pageRangeEnd; usePage++) {
 
         if(usePage != currentPage){
-     	   html += '<li><a href="#" onclick="loadPage(\'' + gridId + '\', ' + usePage + ');">' + usePage + '</a></li>';
+     	   html += '<li><a href="#" onclick="<?php echo $this->gridId; ?>_loadPage(\'' + gridId + '\', ' + usePage + ');">' + usePage + '</a></li>';
         } else{
         	html += '<li class="active"><a href="#">' + usePage + '</a></li>';
         }
@@ -118,7 +118,7 @@ function customPaginator(gridId){
 
     //to last page
     if(currentPage < totalPages){
-        html += '<li><a href="#" onclick="loadPage(\'' + gridId + '\', ' + totalPages + ');">&raquo;</a></li>';
+        html += '<li><a href="#" onclick="<?php echo $this->gridId; ?>_loadPage(\'' + gridId + '\', ' + totalPages + ');">&raquo;</a></li>';
     } else{
     	html += '<li class="disabled"><a href="#">&raquo;</a></li>';
     }

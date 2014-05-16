@@ -278,7 +278,7 @@ var grid_<?php echo $this->gridId; ?> = $('#<?php echo $this->gridId; ?>').jqGri
 
     loadComplete: function (data) {
     	//custom pagination
-    	var paginator = customPaginator('<?php echo $this->gridId; ?>');
+    	var paginator = <?php echo $this->gridId; ?>_customPaginator('<?php echo $this->gridId; ?>');
     	$('#<?php echo $this->gridId; ?>_pager_center').html(paginator);
     	
         <?php if($styleString != ''): ?>
@@ -309,6 +309,6 @@ grid_<?php echo $this->gridId; ?>.trigger('reload');
 grid_<?php echo $this->gridId; ?>_loadComplete(grid_<?php echo $this->gridId; ?>.jqGrid('getGridParam', 'data'));
 
 //custom pagination
-var paginator = customPaginator('<?php echo $this->gridId; ?>');
+var paginator = <?php echo $this->gridId; ?>_customPaginator('<?php echo $this->gridId; ?>');
 $('#<?php echo $this->gridId; ?>_pager_center').html(paginator);
 </script>

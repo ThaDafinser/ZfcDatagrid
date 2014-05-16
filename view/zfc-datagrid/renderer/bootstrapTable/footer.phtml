@@ -33,7 +33,7 @@
 </div><!-- End footer -->
 
 <?php $this->headScript()->captureStart();?>
-function toggleCheckboxes(element){
+function <?php echo $this->gridId; ?>_toggleCheckboxes(element){
     var elements = document.getElementsByName('massActionSelected[]');
     
     var useThis = element.checked;

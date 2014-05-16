@@ -47,7 +47,7 @@ if($this->rowClickAction !== null){
         <tr style="background-color: #EEE">
             <?php 
             if($hasMassActions === true){
-                echo '<th><input type="checkbox" onclick="toggleCheckboxes(this);" /></th>';
+                echo '<th><input type="checkbox" onclick="' . $this->gridId . '_toggleCheckboxes(this);" /></th>';
             }
             
             foreach($this->columns as $col){
