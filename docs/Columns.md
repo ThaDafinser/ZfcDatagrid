@@ -58,6 +58,13 @@ $style = new Style\Color(Style\Color::$RED);
 $style->setByValue($col, 20, Filter::EQUAL); //or NOT_EQUAL
 $col->addStyle($style);
 
+//you can add multiple class names
+//by default bootstrapTable will add the class name 'btn' when type is of 'Action'
+$col->addClass('btn-primary'); // generates "btn btn-primary"
+
+//you can override this default behaviour by (re-)setting the complete class attribute
+$col->setAttribute('class', 'non-twb-class'); // overrides all existing class names
+
 //disable or enable user sorting on this column
 //default: on, e.g. on Type\Image default disabled)
 $col->setUserSortDisabled($bool);
