@@ -31,7 +31,7 @@ abstract class AbstractDataSource implements DataSourceInterface
      *
      * @var \Zend\Paginator\Adapter\AdapterInterface
      */
-    private $paginatorAdapter;
+    protected $paginatorAdapter;
 
     /**
      * Set the columns
