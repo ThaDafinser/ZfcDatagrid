@@ -158,8 +158,8 @@ class PrepareData
                     // @todo improve the interface...
                     $dataPopulation = $col->getDataPopulation();
 
-                    foreach ($dataPopulation->getParameters() as $parameter) {
-                        $dataPopulation->setParameterValue($parameter['objectParameterName'], $row[$parameter['column']->getUniqueId()]);
+                    foreach ($dataPopulation->getObjectParametersColumn() as $parameter) {
+                        $dataPopulation->setObjectParameter($parameter['objectParameterName'], $row[$parameter['column']->getUniqueId()]);
                     }
                     $row[$col->getUniqueId()] = $dataPopulation->toString();
                 }

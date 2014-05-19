@@ -22,13 +22,6 @@ class ZendSelect extends AbstractDataSource
     private $sqlObject;
 
     /**
-     * The data result
-     *
-     * @var PaginatorAdapter
-     */
-    private $paginatorAdapter;
-
-    /**
      * Data source
      *
      * @param mixed $data

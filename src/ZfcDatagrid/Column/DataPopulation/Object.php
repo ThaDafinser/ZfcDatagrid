@@ -19,7 +19,7 @@ class Object implements DataPopulationInterface
      *
      * @var array
      */
-    private $parameters = array();
+    private $objectParameters = array();
 
     /**
      *
@@ -48,7 +48,7 @@ class Object implements DataPopulationInterface
      */
     public function addObjectParameterColumn($objectParameterName, Column\AbstractColumn $column)
     {
-        $this->parameters[] = array(
+        $this->objectParameters[] = array(
             'objectParameterName' => $objectParameterName,
             'column' => $column
         );
@@ -58,9 +58,9 @@ class Object implements DataPopulationInterface
      *
      * @return array
      */
-    public function getParameters()
+    public function getObjectParametersColumn()
     {
-        return $this->parameters;
+        return $this->objectParameters;
     }
 
     /**
@@ -69,7 +69,7 @@ class Object implements DataPopulationInterface
      * @param string $name
      * @param mixed  $value
      */
-    public function setParameterValue($name, $value)
+    public function setObjectParameter($name, $value)
     {
         $this->getObject()->setParameterFromColumn($name, $value);
     }

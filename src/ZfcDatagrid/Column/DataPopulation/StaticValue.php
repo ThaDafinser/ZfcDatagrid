@@ -21,7 +21,12 @@ class StaticValue implements DataPopulationInterface
         return $this->value;
     }
 
-    public function getParameters()
+    public function setObjectParameter($name, $value)
+    {
+        throw new \Exception('setObjectParameter() is not supported by this class');
+    }
+
+    public function getObjectParametersColumn()
     {
         return array();
     }

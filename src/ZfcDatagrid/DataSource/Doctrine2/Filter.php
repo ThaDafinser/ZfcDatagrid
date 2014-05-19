@@ -2,6 +2,7 @@
 namespace ZfcDatagrid\DataSource\Doctrine2;
 
 use ZfcDatagrid\Filter as DatagridFilter;
+use ZfcDatagrid\Column;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
 

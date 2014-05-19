@@ -2,6 +2,7 @@
 namespace ZfcDatagrid\DataSource\ZendSelect;
 
 use ZfcDatagrid\Filter as DatagridFilter;
+use ZfcDatagrid\Column;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Where;
@@ -57,9 +58,6 @@ class Filter
         $adapter = $this->getSql()->getAdapter();
         $qi = function ($name) use ($adapter) {
             return $adapter->getPlatform()->quoteIdentifier($name);
-        };
-        $qv = function ($value) use ($adapter) {
-            return $adapter->getPlatform()->quoteValue($value);
         };
 
         $column = $filter->getColumn();

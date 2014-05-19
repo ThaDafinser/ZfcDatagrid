@@ -37,7 +37,6 @@ class Button extends AbstractAction
      */
     protected function getHtmlType()
     {
-        $attributes = $this->getAttributes();
         if ($this->getLabel() == '') {
             throw new \InvalidArgumentException('A label is required for this action type, please call $action->setLabel()!');
         }

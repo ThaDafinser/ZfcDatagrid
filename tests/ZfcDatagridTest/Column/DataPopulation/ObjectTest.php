@@ -37,11 +37,11 @@ class ObjectTest extends PHPUnit_Framework_TestCase
         $object = new Object();
         $object->setObject($mock);
 
-        $this->assertCount(0, $object->getParameters());
+        $this->assertCount(0, $object->getObjectParametersColumn());
 
         $object->addObjectParameterColumn('idPara', $column);
 
-        $parameters = $object->getParameters();
+        $parameters = $object->getObjectParametersColumn();
 
         $this->assertCount(1, $parameters);
         $this->assertEquals(array(
@@ -49,7 +49,7 @@ class ObjectTest extends PHPUnit_Framework_TestCase
             'column' => $column
         ), $parameters[0]);
 
-        $object->setParameterValue('otherPara', '123');
+        $object->setObjectParameter('otherPara', '123');
 
     }
 }

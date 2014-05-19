@@ -16,6 +16,8 @@ abstract class AbstractExport extends AbstractRenderer
         'ZfcDatagrid\Column\Type\PhpArray',
         'ZfcDatagrid\Column\Type\String'
     );
+    
+    protected $columnsToExport;
 
     /**
      * Decide which columns we want to display
