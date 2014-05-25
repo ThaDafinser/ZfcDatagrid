@@ -1,0 +1,15 @@
+{
+  "name": "zfc-datagrid",
+  "version": "0.8.3",
+  "dependencies": {
+    "bootstrap": ">=2.3.x",
+    "jquery": ">=1.9.x",
+    "jqgrid": ">=4.5.x",
+    "bootstrap-daterangepicker": ">=1.3.0",
+  },
+  "authors": [
+    "Martin Keckeis <martin.keckeis1@gmail.com>"
+  ],
+  "description": "thadafinser/zfc-datagrid: a datagrid for ZF2 (jqGrid, bootstrapTable, PDF, Excel, CSV, console)",
+  "license": "WTFPL"
+}
