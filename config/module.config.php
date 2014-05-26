@@ -63,6 +63,10 @@ return array(
                     'sortDirections' => 'sortDirections',
                     
                     'massIds' => 'ids'
+                ),
+                
+                'daterange' => array(
+                    'enabled' => false
                 )
             ),
             
