@@ -17,10 +17,10 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
     private $translator;
 
     private $validCellAttributes = [
-		'cellattr',
-		'sorttype',
-		'summaryType',
-		'summaryTpl'
+	'cellattr',
+	'sorttype',
+	'summaryType',
+	'summaryTpl'
     ];
     
     const STYLE_BOLD = 'cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';';
@@ -124,7 +124,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
             if (isset($rendererParameters['summaryType'])) {
                 $options['summaryType'] = (string) $rendererParameters['summaryType'];
             }
-			if (isset($rendererParameters['summaryTpl'])) {
+	    if (isset($rendererParameters['summaryTpl'])) {
                 $options['summaryTpl'] = (string) $rendererParameters['summaryTpl'];
             }
             
