@@ -16,6 +16,13 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
 
     private $translator;
 
+    private $validCellAttributes = [
+		'cellattr',
+		'sorttype',
+		'summaryType',
+		'summaryTpl'
+    ];
+    
     const STYLE_BOLD = 'cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';';
 
     const STYLE_ITALIC = 'cellvalue = \'<span style="font-style: italic;">\' + cellvalue + \'</span>\';';
@@ -110,6 +117,15 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
             $rendererParameters = $column->getRendererParameters('jqGrid');
             if (isset($rendererParameters['cellattr'])) {
                 $options['cellattr'] = (string) $rendererParameters['cellattr'];
+            }
+            if (isset($rendererParameters['sorttype'])) {
+                $options['sorttype'] = (string) $rendererParameters['sorttype'];
+            }
+            if (isset($rendererParameters['summaryType'])) {
+                $options['summaryType'] = (string) $rendererParameters['summaryType'];
+            }
+			if (isset($rendererParameters['summaryTpl'])) {
+                $options['summaryTpl'] = (string) $rendererParameters['summaryTpl'];
             }
             
             /**
