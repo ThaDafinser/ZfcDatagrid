@@ -197,8 +197,8 @@ class Renderer extends AbstractRenderer
                     $actions = array();
                     foreach ($column->getActions() as $action) {
                         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
-
                         if ($action->isDisplayed($row) === true) {
+                            $action->setTitle($this->getTranslator()->translate($action->getTitle()));
                             $actions[] = $action->toHtml($row);
                         }
                     }

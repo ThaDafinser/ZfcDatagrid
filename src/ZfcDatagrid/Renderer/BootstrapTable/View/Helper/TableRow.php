@@ -113,8 +113,8 @@ class TableRow extends AbstractHelper
                 $actions = array();
                 foreach ($col->getActions() as $action) {
                     /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
-
                     if ($action->isDisplayed($row) === true) {
+                        $action->setTitle($this->getTranslator()->translate($action->getTitle()));
                         $actions[] = $action->toHtml($row);
                     }
                 }
