@@ -212,7 +212,7 @@ return array(
             'zfcDatagrid.examples.data.phpArray'        => 'ZfcDatagrid\Examples\Data\PhpArray',
             'zfcDatagrid.examples.data.doctrine2'       => 'ZfcDatagrid\Examples\Data\Doctrine2',
             'zfcDatagrid.examples.data.zendSelect'      => 'ZfcDatagrid\Examples\Data\ZendSelect',
-        	'zfcDatagrid.examples.data.jqgrid.phpArray' => 'ZfcDatagrid\Examples\Data\JqGrid\PhpArray',
+            'zfcDatagrid.examples.data.jqgrid.phpArray' => 'ZfcDatagrid\Examples\Data\JqGrid\PhpArray',
         ),
         
         'factories' => array(
@@ -229,7 +229,7 @@ return array(
     'view_helpers' => array(
         'invokables' => array(
             'bootstrapTableRow' => 'ZfcDatagrid\Renderer\BootstrapTable\View\Helper\TableRow',
-            'jqgridColumns' => 'ZfcDatagrid\Renderer\JqGrid\View\Helper\Columns'
+            'jqgridColumns'     => 'ZfcDatagrid\Renderer\JqGrid\View\Helper\Columns'
         )
     ),
     
@@ -244,7 +244,7 @@ return array(
             'zfc-datagrid/renderer/printHtml/layout'           => __DIR__ . '/../view/zfc-datagrid/renderer/printHtml/layout.phtml',
             'zfc-datagrid/renderer/printHtml/table'            => __DIR__ . '/../view/zfc-datagrid/renderer/printHtml/table.phtml',
             'zfc-datagrid/renderer/jqGrid/layout'              => __DIR__ . '/../view/zfc-datagrid/renderer/jqGrid/layout.phtml',
-        	'zfc-datagrid/renderer/jqGrid/layout-groupingview' => __DIR__ . '/../view/zfc-datagrid/renderer/jqGrid/layout-groupingview.phtml'
+            'zfc-datagrid/renderer/jqGrid/layout-groupingview' => __DIR__ . '/../view/zfc-datagrid/renderer/jqGrid/layout-groupingview.phtml'
         ),
         
         'template_path_stack' => array(
@@ -262,7 +262,7 @@ return array(
             'ZfcDatagrid\Examples\Controller\PersonZend'      => 'ZfcDatagrid\Examples\Controller\PersonZendController',
             'ZfcDatagrid\Examples\Controller\Minimal'         => 'ZfcDatagrid\Examples\Controller\MinimalController',
             'ZfcDatagrid\Examples\Controller\Category'        => 'ZfcDatagrid\Examples\Controller\CategoryController',
-        	'ZfcDatagrid\Examples\Controller\JqGrid'          => 'ZfcDatagrid\Examples\Controller\JqGridController',
+            'ZfcDatagrid\Examples\Controller\JqGrid'          => 'ZfcDatagrid\Examples\Controller\JqGridController',
         )
     ),
     
