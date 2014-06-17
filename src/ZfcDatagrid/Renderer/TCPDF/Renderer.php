@@ -49,11 +49,6 @@ class Renderer extends AbstractExport
     {
         $pdf = $this->getPdf();
 
-        // Check for PDF image header
-        $headerData = $pdf->getHeaderData();
-        if ($headerData['logo'] == '') {
-            $pdf->setHeaderData('./tcpdf_logo.jpg');
-        }
         $pdf->AddPage();
 
         $columns = $this->getColumnsToExport();
@@ -155,7 +150,7 @@ class Renderer extends AbstractExport
             13
         ));
 
-        $pdf->setHeaderData($header['logo'], $header['logoWidth'], $this->getTitle());
+        $pdf->setHeaderData('', 0, $this->getTitle());
 
         $this->pdf = $pdf;
     }
