@@ -49,52 +49,65 @@ class Renderer extends AbstractRenderer
         if (is_array($this->sortConditions)) {
             return $this->sortConditions;
         }
-        
         $request = $this->getRequest();
-        
+
         $optionsRenderer = $this->getOptionsRenderer();
         $parameterNames = $optionsRenderer['parameterNames'];
-        
-        $sortConditions = array();
-        
+
+        $sortConditions   = array();
+        $groupSortColumns = array();
+
         $sortColumns = $request->getPost($parameterNames['sortColumns']);
         $sortDirections = $request->getPost($parameterNames['sortDirections']);
+
+        // Handle user sorting
         if ($sortColumns != '') {
-            $sortColumns = explode(',', $sortColumns);
+            $sortColumns    = explode(',', $sortColumns);
             $sortDirections = explode(',', $sortDirections);
-            
-            if (count($sortColumns) != count($sortDirections)) {
-                throw new \Exception('Count missmatch order columns/direction');
-            }
-            
+
             foreach ($sortColumns as $key => $sortColumn) {
-                $sortDirection = strtoupper($sortDirections[$key]);
-                
-                if ($sortDirection != 'ASC' && $sortDirection != 'DESC') {
-                    $sortDirection = 'ASC';
-                }
-                
-                foreach ($this->getColumns() as $column) {
-                    /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-                    if ($column->getUniqueId() == $sortColumn) {
-                        $sortConditions[] = array(
-                            'sortDirection' => $sortDirection,
-                            'column' => $column
-                        );
-                        
-                        $column->setSortActive($sortDirection);
-                    }
+           		// Sometimes jqGrid creates empty strings inside sortByColumns when using groupingView
+            	if ($sortColumn == ' ') continue;
+
+            	if (strpos($sortColumn, 'asc') !== false || strpos($sortColumn, 'desc') !== false) {
+            		list($groupSortColumn, $groupSortDirection) = explode(" ", trim($sortColumn));
+
+            		$groupSortColumns[$groupSortColumn] = $groupSortDirection;
+            	} else {
+            		// Find sortDirection for column by next `sortDirections` value
+	                $sortDirection = current($sortDirections);
+
+	                // Set default direction
+	                if ($sortDirection != 'asc' && $sortDirection != 'desc') {
+	                    $sortDirection = 'asc';
+	                }
+	                $groupSortColumns[$sortColumn] = strtoupper($sortDirection);
+
+	                next($sortDirections);
+            	}
+            }
+
+            foreach ($this->getColumns() as $column) {
+                /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+            	if (key_exists($column->getUniqueId(), $groupSortColumns)) {
+            		$sortDirection = $groupSortColumns[$column->getUniqueId()];
+
+                    $sortConditions[] = array(
+                        'sortDirection' => $sortDirection,
+                        'column'        => $column
+                    );
+                    $column->setSortActive($sortDirection);
                 }
             }
         }
-        
+
         if (count($sortConditions) > 0) {
             $this->sortConditions = $sortConditions;
         } else {
             // No user sorting -> get default sorting
             $this->sortConditions = $this->getSortConditionsDefault();
         }
-        
+
         return $this->sortConditions;
     }
 
