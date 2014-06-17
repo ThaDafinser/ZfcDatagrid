@@ -68,11 +68,13 @@ class Renderer extends AbstractRenderer
             foreach ($sortColumns as $key => $sortColumn) {
            	// Sometimes jqGrid creates empty strings inside sortByColumns when using groupingView
             	if ($sortColumn == ' ') continue;
+            	
+            	$sortColumn = trim($sortColumn);
 
             	if (strpos($sortColumn, 'asc') !== false || strpos($sortColumn, 'desc') !== false) {
             	    list($groupSortColumn, $groupSortDirection) = explode(" ", trim($sortColumn));
 
-            	    $groupSortColumns[$groupSortColumn] = $groupSortDirection;
+            	    $groupSortColumns[$groupSortColumn] = strtoupper($groupSortDirection);
             	} else {
             	    // Find sortDirection for column by next `sortDirections` value
 	            $sortDirection = current($sortDirections);
