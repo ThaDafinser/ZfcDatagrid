@@ -66,31 +66,31 @@ class Renderer extends AbstractRenderer
             $sortDirections = explode(',', $sortDirections);
 
             foreach ($sortColumns as $key => $sortColumn) {
-           		// Sometimes jqGrid creates empty strings inside sortByColumns when using groupingView
+           	// Sometimes jqGrid creates empty strings inside sortByColumns when using groupingView
             	if ($sortColumn == ' ') continue;
 
             	if (strpos($sortColumn, 'asc') !== false || strpos($sortColumn, 'desc') !== false) {
-            		list($groupSortColumn, $groupSortDirection) = explode(" ", trim($sortColumn));
+            	    list($groupSortColumn, $groupSortDirection) = explode(" ", trim($sortColumn));
 
-            		$groupSortColumns[$groupSortColumn] = $groupSortDirection;
+            	    $groupSortColumns[$groupSortColumn] = $groupSortDirection;
             	} else {
-            		// Find sortDirection for column by next `sortDirections` value
-	                $sortDirection = current($sortDirections);
+            	    // Find sortDirection for column by next `sortDirections` value
+	            $sortDirection = current($sortDirections);
 
-	                // Set default direction
-	                if ($sortDirection != 'asc' && $sortDirection != 'desc') {
-	                    $sortDirection = 'asc';
-	                }
-	                $groupSortColumns[$sortColumn] = strtoupper($sortDirection);
+	            // Set default direction
+	            if ($sortDirection != 'asc' && $sortDirection != 'desc') {
+	                $sortDirection = 'asc';
+	            }
+	            $groupSortColumns[$sortColumn] = strtoupper($sortDirection);
 
-	                next($sortDirections);
+	            next($sortDirections);
             	}
             }
 
             foreach ($this->getColumns() as $column) {
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */
             	if (key_exists($column->getUniqueId(), $groupSortColumns)) {
-            		$sortDirection = $groupSortColumns[$column->getUniqueId()];
+            	    $sortDirection = $groupSortColumns[$column->getUniqueId()];
 
                     $sortConditions[] = array(
                         'sortDirection' => $sortDirection,
