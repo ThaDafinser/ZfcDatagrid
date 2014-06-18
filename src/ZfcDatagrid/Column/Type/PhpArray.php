@@ -1,9 +1,16 @@
 <?php
 namespace ZfcDatagrid\Column\Type;
 
+/**
+ * Class PhpArray
+ * @package ZfcDatagrid\Column\Type
+ */
 class PhpArray extends AbstractType
 {
 
+    /**
+     * @return string
+     */
     public function getTypeName()
     {
         return 'array';

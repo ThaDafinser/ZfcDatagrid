@@ -16,10 +16,13 @@ class Button extends AbstractAction
     /**
      *
      * @param string $name
+     * @return Button
      */
     public function setLabel($name)
     {
         $this->label = (string) $name;
+
+        return $this;
     }
 
     /**

@@ -38,10 +38,13 @@ class Mass
     /**
      *
      * @param string $title
+     * @return Mass
      */
     public function setTitle($title)
     {
         $this->title = $title;
+
+        return $this;
     }
 
     /**
@@ -56,10 +59,13 @@ class Mass
     /**
      *
      * @param string $link
+     * @return Mass
      */
     public function setLink($link)
     {
         $this->link = $link;
+
+        return $this;
     }
 
     /**
@@ -74,10 +80,13 @@ class Mass
     /**
      *
      * @param boolean $mode
+     * @return Mass
      */
     public function setConfirm($mode = true)
     {
         $this->confirm = (bool) $mode;
+
+        return $this;
     }
 
     /**

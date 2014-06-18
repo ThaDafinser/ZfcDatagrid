@@ -39,10 +39,13 @@ abstract class AbstractAction
      * Set the link
      *
      * @param string $href
+     * @return AbstractAction
      */
     public function setLink($href)
     {
         $this->setAttribute('href', $href);
+
+        return $this;
     }
 
     /**
@@ -116,10 +119,13 @@ abstract class AbstractAction
      *
      * @param string $name
      * @param string $value
+     * @return AbstractAction
      */
     public function setAttribute($name, $value)
     {
         $this->htmlAttributes[$name] = (string) $value;
+
+        return $this;
     }
 
     /**
@@ -141,12 +147,15 @@ abstract class AbstractAction
      * Removes an HTML attribute
      *
      * @param string $name
+     * @return AbstractAction
      */
     public function removeAttribute($name)
     {
         if (isset($this->htmlAttributes[$name])) {
             unset($this->htmlAttributes[$name]);
         }
+
+        return $this;
     }
 
     /**
@@ -182,10 +191,13 @@ abstract class AbstractAction
      * Set the title attribute
      *
      * @param string $name
+     * @return AbstractAction
      */
     public function setTitle($name)
     {
         $this->setAttribute('title', $name);
+
+        return $this;
     }
 
     /**
@@ -202,6 +214,7 @@ abstract class AbstractAction
      * Add a css class
      *
      * @param string $className
+     * @return AbstractAction
      */
     public function addClass($className)
     {
@@ -211,12 +224,15 @@ abstract class AbstractAction
         $attr .= (string) $className;
 
         $this->setAttribute('class', $attr);
+
+        return $this;
     }
 
     /**
      * Display the values with AND or OR (if multiple showOnValues are defined)
      *
      * @param string $operator
+     * @return AbstractAction
      */
     public function setShowOnValueOperator($operator = 'OR')
     {
@@ -225,6 +241,8 @@ abstract class AbstractAction
         }
 
         $this->showOnValueOperator = (string) $operator;
+
+        return $this;
     }
 
     /**
@@ -244,6 +262,7 @@ abstract class AbstractAction
      * @param Column\AbstractColumn $col
      * @param string                $value
      * @param string                $comparison
+     * @return AbstractAction
      */
     public function addShowOnValue(Column\AbstractColumn $col, $value = null, $comparison = Filter::EQUAL)
     {
@@ -252,6 +271,8 @@ abstract class AbstractAction
             'value' => $value,
             'comparison' => $comparison
         );
+
+        return $this;
     }
 
     /**

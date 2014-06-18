@@ -66,57 +66,100 @@ class DateTime extends AbstractType
     }
 
     /**
-    * Set Daterange Filter enabled true/false
-    * @param bool $val
-    */
+     * Set Daterange Filter enabled true/false
+     * @param bool $val
+     * @return DateTime
+     */
     public function setDaterangePickerEnabled($val = true)
     {
         $this->daterangePickerEnabled = $val;
+
+        return $this;
     }
 
     /**
-    * Check if the Daterange Filter is enabled
-    */
+     * Check if the Daterange Filter is enabled
+     */
     public function isDaterangePickerEnabled()
     {
         return $this->daterangePickerEnabled;
     }
 
+    /**
+     * @param string $format
+     *
+     * @return $this
+     */
     public function setSourceDateTimeFormat($format = 'Y-m-d H:i:s')
     {
         $this->sourceDateTimeFormat = $format;
+
+        return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getSourceDateTimeFormat()
     {
         return $this->sourceDateTimeFormat;
     }
 
+    /**
+     * @param int $dateType
+     *
+     * @return $this
+     */
     public function setOutputDateType($dateType = IntlDateFormatter::MEDIUM)
     {
         $this->outputDateType = $dateType;
+
+        return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getOutputDateType()
     {
         return $this->outputDateType;
     }
 
+    /**
+     * @param int $timeType
+     *
+     * @return $this
+     */
     public function setOutputTimeType($timeType = IntlDateFormatter::NONE)
     {
         $this->outputTimeType = $timeType;
+
+        return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getOutputTimeType()
     {
         return $this->outputTimeType;
     }
 
+    /**
+     * @param null $locale
+     *
+     * @return $this
+     */
     public function setLocale($locale = null)
     {
         $this->locale = $locale;
+
+        return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getLocale()
     {
         if ($this->locale === null) {
@@ -126,21 +169,41 @@ class DateTime extends AbstractType
         return $this->locale;
     }
 
+    /**
+     * @param string $timezone
+     *
+     * @return $this
+     */
     public function setSourceTimezone($timezone = 'UTC')
     {
         $this->sourceTimezone = $timezone;
+
+        return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getSourceTimezone()
     {
         return $this->sourceTimezone;
     }
 
+    /**
+     * @param null $timezone
+     *
+     * @return $this
+     */
     public function setOutputTimezone($timezone = null)
     {
         $this->outputTimezone = $timezone;
+
+        return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getOutputTimezone()
     {
         if ($this->outputTimezone === null) {
@@ -160,11 +223,17 @@ class DateTime extends AbstractType
         $this->outputPattern = $pattern;
     }
 
+    /**
+     * @return mixed
+     */
     public function getOutputPattern()
     {
         return $this->outputPattern;
     }
 
+    /**
+     * @return string
+     */
     public function getFilterDefaultOperation()
     {
         return Filter::GREATER_EQUAL;
