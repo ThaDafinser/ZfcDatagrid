@@ -9,6 +9,7 @@ If you are looking for some information that is not listed in the documentation,
    2. [Features of ZfcDatagrid](/docs/01. Introduction.md#Features-of-zfcdatagrid)
 
 2. [Quick Start](/docs/02. Quick Start.md)
-   1. [Installation](/docs/02. Quick Start.md#installation)
-   2. [Basic Example](/docs/02. Quick Start.md#basic-example)
+   1. [Requirements](/docs/02. Quick Start.md#requirements)
+   2. [Installation](/docs/02. Quick Start.md#installation)
+   3. [Configuration](/docs/02. Quick Start.md#configuration)
 
