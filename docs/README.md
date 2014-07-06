@@ -6,7 +6,7 @@ If you are looking for some information that is not listed in the documentation,
 
 1. [Introduction](/docs/01. Introduction.md)
    1. [What is ZfcDatagrid?](/docs/01. Introduction.md#what-is-zfcdatagrid)
-   2. [Features of ZfcDatagrid](/docs/01. Introduction.md#features)
+   2. [Features of ZfcDatagrid](/docs/01. Introduction.md#Features-of-zfcdatagrid)
 
 2. [Quick Start](/docs/02. Quick Start.md)
    1. [Installation](/docs/02. Quick Start.md#installation)
