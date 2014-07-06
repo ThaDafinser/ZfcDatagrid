@@ -13,3 +13,13 @@ If you are looking for some information that is not listed in the documentation,
    2. [Installation](/docs/02. Quick Start.md#installation)
    3. [Configuration](/docs/02. Quick Start.md#configuration)
    3. [Basic Example](/docs/02. Quick Start.md#basic-example)
+
+3. [Columns](/docs/03. Columns.md)
+
+4. [Filtering](/docs/04. Filtering.md)
+
+5. [Toolbar and Custom Filtering](/docs/05. Toolbar and Custom Filtering.md)
+
+6. [Exporting](/docs/06. Exporting.md)
+
+7. [Other Usage](/docs/07. Other Usage.md)
