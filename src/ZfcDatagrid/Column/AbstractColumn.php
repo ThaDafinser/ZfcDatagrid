@@ -193,6 +193,7 @@ abstract class AbstractColumn
     {
         if ($type instanceof Type\Image && $this->hasFormatter() === false) {
             $this->setFormatter(new Formatter\Image());
+            $this->setRowClickDisabled(true);
         }
 
         $this->type = $type;

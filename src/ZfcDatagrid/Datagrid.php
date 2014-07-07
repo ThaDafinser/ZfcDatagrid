@@ -340,9 +340,9 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function getCacheId()
     {
         if ($this->cacheId === null) {
-            $this->cacheId = $this->getSession()
+            $this->cacheId = md5($this->getSession()
                 ->getManager()
-                ->getId() . '_' . $this->getId();
+                ->getId() . '_' . $this->getId());
         }
         
         return $this->cacheId;
@@ -917,9 +917,8 @@ class Datagrid implements ServiceLocatorAwareInterface
                 $renderer->setTitle($this->getTitle());
                 $renderer->setColumns($this->getColumns());
                 $renderer->setRowStyles($this->getRowStyles());
+                $renderer->setCache($this->getCache());
                 $renderer->setCacheId($this->getCacheId());
-                $renderer->setCacheData($this->getCache()
-                    ->getItem($this->getCacheId()));
                 
                 $this->renderer = $renderer;
             } else {
@@ -1028,7 +1027,7 @@ class Datagrid implements ServiceLocatorAwareInterface
             $success = $this->getCache()->setItem($this->getCacheId(), $cacheData);
             if ($success !== true) {
                 $options = $this->getCache()->getOptions();
-                throw new \Exception('Could not save the datagrid cache. Does the directory "' . $options->getCacheDir() . '" exists and is writeable?');
+                throw new \Exception('Could not save the datagrid cache. Does the directory "' . $options->getCacheDir() . '" exists and is writeable? CacheId: '.$this->getCacheId());
             }
         }
         

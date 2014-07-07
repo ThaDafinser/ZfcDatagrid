@@ -1,4 +1,7 @@
-
+<?php 
+/* @var $paginator \Zend\Paginator\Paginator */
+$paginator = $this->paginator;
+?>
 <!-- Start footer -->
 <div class="row-fluid row" id="<?php echo $this->gridId; ?>_pager">
 
@@ -19,8 +22,9 @@
     <div class="span6 col-md-6 text-center" id="<?php echo $this->gridId; ?>_pager_center">
     </div>
     <!-- Info -->
-    <div class="span3 col-md-3 text-right hidden" id="<?php echo $this->gridId; ?>_pager_right">
-        <?php echo $this->translate('Showing').' '.$this->paginator->getCurrentItemCount().' '.$this->translate('of').' '.$this->paginator->getTotalItemCount().' '.$this->translate('items'); ?>
+    <div class="span3 col-md-3 text-right" id="<?php echo $this->gridId; ?>_pager_right">
+        <?php echo $this->translate('Showing').' '.$paginator->getCurrentItemCount().' '.$this->translate('of').' '.$paginator->getTotalItemCount().' '.$this->translate('items'); ?><br />
+        <?php echo $this->translate('Page') . ' ' . $paginator->getCurrentPageNumber() . ' ' . $this->translate('of') . ' ' .$paginator->count();?>
     </div>
 </div><!-- End footer -->
 
@@ -56,6 +60,13 @@ function <?php echo $this->gridId; ?>_customPaginator(gridId){
 	var html = '';
 	if(totalPages < 2){
 	    //only 1 page (or no page)
+	    html += '<li class="disabled"><a href="#">&laquo;</a></li>';
+	    html += '<li class="disabled"><a href="#">&lt;</a></li>';
+	    html += '<li class="active"><a href="#">1</a></li>';
+	    html += '<li class="disabled"><a href="#">&gt;</a></li>';
+	    html += '<li class="disabled"><a href="#">&raquo;</a></li>';
+	    html = '<div class="pagination"><ul class="pagination">' + html + '</ul></div>';
+	    
 	    return html;
 	}
 

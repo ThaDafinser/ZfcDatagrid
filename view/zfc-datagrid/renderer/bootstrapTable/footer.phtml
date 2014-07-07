@@ -1,3 +1,7 @@
+<?php 
+/* @var $paginator \Zend\Paginator\Paginator */
+$paginator = $this->paginator;
+?>
 <!-- Start footer -->
 <div class="row-fluid row" id="<?php echo $this->gridId; ?>_footer">
 
@@ -28,7 +32,8 @@
     </div>
     <!-- Info -->
     <div class="span4 col-md-4 text-right">
-        <?php echo $this->translate('Showing').' '.$this->paginator->getCurrentItemCount().' '.$this->translate('of').' '.$this->paginator->getTotalItemCount().' '.$this->translate('items'); ?>
+        <?php echo $this->translate('Showing').' '.$paginator->getCurrentItemCount().' '.$this->translate('of').' '.$paginator->getTotalItemCount().' '.$this->translate('item(s)'); ?><br />
+        <?php echo $this->translate('Page') . ' ' . $paginator->getCurrentPageNumber() . ' ' . $this->translate('of') . ' ' .$paginator->count();?>
     </div>
 </div><!-- End footer -->
 
