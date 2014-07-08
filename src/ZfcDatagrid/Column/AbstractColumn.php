@@ -4,15 +4,31 @@ namespace ZfcDatagrid\Column;
 use ZfcDatagrid\Filter;
 use ZfcDatagrid\Column\Formatter\AbstractFormatter;
 
+/**
+ * Class AbstractColumn
+ * @package ZfcDatagrid\Column
+ */
 abstract class AbstractColumn
 {
 
+    /**
+     * @var
+     */
     protected $label;
 
+    /**
+     * @var
+     */
     protected $uniqueId;
 
+    /**
+     * @var
+     */
     protected $selectPart1;
 
+    /**
+     * @var null
+     */
     protected $selectPart2 = null;
 
     /**
@@ -21,22 +37,49 @@ abstract class AbstractColumn
      */
     protected $type = null;
 
+    /**
+     * @var array
+     */
     protected $styles = array();
 
+    /**
+     * @var int
+     */
     protected $width = 5;
 
+    /**
+     * @var bool
+     */
     protected $isHidden = false;
 
+    /**
+     * @var bool
+     */
     protected $isIdentity = false;
 
+    /**
+     * @var bool
+     */
     protected $userSortEnabled = true;
 
+    /**
+     * @var array
+     */
     protected $sortDefault = array();
 
+    /**
+     * @var null
+     */
     protected $sortActive = null;
 
+    /**
+     * @var null
+     */
     protected $filterDefaultValue = null;
 
+    /**
+     * @var null
+     */
     protected $filterDefaultOperation = null;
 
     /**
@@ -45,27 +88,61 @@ abstract class AbstractColumn
      */
     protected $filterSelectOptions;
 
+    /**
+     * @var null
+     */
     protected $filterActive = null;
 
+    /**
+     * @var string
+     */
     protected $filterActiveValue = '';
 
+    /**
+     * @var bool
+     */
     protected $userFilterEnabled = true;
 
+    /**
+     * @var bool
+     */
     protected $translationEnabled = false;
 
+    /**
+     * @var array
+     */
     protected $replaceValues = array();
 
+    /**
+     * @var bool
+     */
     protected $notReplacedGetEmpty = true;
 
+    /**
+     * @var bool
+     */
     protected $rowClickEnabled = true;
 
+    /**
+     * @var array
+     */
     protected $rendererParameter = array();
 
+    /**
+     * @var
+     */
     protected $formatter;
 
+    /**
+     * @param $name
+     *
+     * @return $this
+     */
     public function setLabel($name)
     {
         $this->label = (string) $name;
+
+        return $this;
     }
 
     /**
@@ -78,11 +155,21 @@ abstract class AbstractColumn
         return $this->label;
     }
 
+    /**
+     * @param $id
+     *
+     * @return $this
+     */
     public function setUniqueId($id)
     {
         $this->uniqueId = $id;
+
+        return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getUniqueId()
     {
         return $this->uniqueId;
@@ -97,6 +184,8 @@ abstract class AbstractColumn
     {
         $this->selectPart1 = $part1;
         $this->selectPart2 = $part2;
+
+        return $this;
     }
 
     /**
@@ -129,6 +218,8 @@ abstract class AbstractColumn
     public function setWidth($percent)
     {
         $this->width = (float) $percent;
+
+        return $this;
     }
 
     /**
@@ -149,6 +240,8 @@ abstract class AbstractColumn
     public function setHidden($mode = true)
     {
         $this->isHidden = (bool) $mode;
+
+        return $this;
     }
 
     /**
@@ -172,6 +265,8 @@ abstract class AbstractColumn
 
         // Because IDs are normally hidden
         $this->setHidden($mode);
+
+        return $this;
     }
 
     /**
@@ -196,6 +291,8 @@ abstract class AbstractColumn
         }
 
         $this->type = $type;
+
+        return $this;
     }
 
     /**
@@ -223,6 +320,8 @@ abstract class AbstractColumn
         foreach ($styles as $style) {
             $this->addStyle($style);
         }
+
+        return $this;
     }
 
     /**
@@ -232,6 +331,8 @@ abstract class AbstractColumn
     public function addStyle(Style\AbstractStyle $style)
     {
         $this->styles[] = $style;
+
+        return $this;
     }
 
     /**
@@ -264,6 +365,8 @@ abstract class AbstractColumn
     public function setUserSortDisabled($mode = true)
     {
         $this->userSortEnabled = (bool) ! $mode;
+
+        return $this;
     }
 
     /**
@@ -289,6 +392,8 @@ abstract class AbstractColumn
             'priority' => $priority,
             'sortDirection' => $direction
         );
+
+        return $this;
     }
 
     /**
@@ -323,6 +428,8 @@ abstract class AbstractColumn
     public function setSortActive($direction = 'ASC')
     {
         $this->sortActive = $direction;
+
+        return $this;
     }
 
     /**
@@ -354,6 +461,8 @@ abstract class AbstractColumn
     public function setUserFilterDisabled($mode = true)
     {
         $this->userFilterEnabled = (bool) ! $mode;
+
+        return $this;
     }
 
     /**
@@ -371,6 +480,8 @@ abstract class AbstractColumn
         if ($value != '') {
             $this->filterDefaultValue = (string) $value;
         }
+
+        return $this;
     }
 
     /**
@@ -402,6 +513,8 @@ abstract class AbstractColumn
     public function setFilterDefaultOperation($operation = Filter::LIKE)
     {
         $this->filterDefaultOperation = $operation;
+
+        return $this;
     }
 
     /**
@@ -433,6 +546,8 @@ abstract class AbstractColumn
         }
 
         $this->filterSelectOptions = $options;
+
+        return $this;
     }
 
     /**
@@ -441,6 +556,8 @@ abstract class AbstractColumn
     public function unsetFilterSelectOptions()
     {
         $this->filterSelectOptions = null;
+
+        return $this;
     }
 
     /**
@@ -473,6 +590,8 @@ abstract class AbstractColumn
     {
         $this->filterActive = (bool) true;
         $this->filterActiveValue = $value;
+
+        return $this;
     }
 
     /**
@@ -510,6 +629,8 @@ abstract class AbstractColumn
     public function setTranslationEnabled($mode = true)
     {
         $this->translationEnabled = (bool) $mode;
+
+        return $this;
     }
 
     /**
@@ -535,6 +656,8 @@ abstract class AbstractColumn
 
         $this->setFilterDefaultOperation(Filter::EQUAL);
         $this->setFilterSelectOptions($values);
+
+        return $this;
     }
 
     /**
@@ -584,6 +707,8 @@ abstract class AbstractColumn
         $parameters[$name] = $value;
 
         $this->rendererParameter[$rendererType] = $parameters;
+
+        return $this;
     }
 
     /**
@@ -608,6 +733,8 @@ abstract class AbstractColumn
     public function setFormatter(AbstractFormatter $formatter)
     {
         $this->formatter = $formatter;
+
+        return $this;
     }
 
     /**
@@ -641,6 +768,8 @@ abstract class AbstractColumn
     public function setRowClickDisabled($mode = true)
     {
         $this->rowClickEnabled = (bool) ! $mode;
+
+        return $this;
     }
 
     /**

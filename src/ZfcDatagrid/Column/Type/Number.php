@@ -5,6 +5,10 @@ use ZfcDatagrid\Filter;
 use Locale;
 use NumberFormatter;
 
+/**
+ * Class Number
+ * @package ZfcDatagrid\Column\Type
+ */
 class Number extends AbstractType
 {
 
@@ -29,12 +33,26 @@ class Number extends AbstractType
      */
     protected $formatType;
 
+    /**
+     * @var array
+     */
     protected $attributes = array();
 
+    /**
+     * @var string
+     */
     protected $prefix = '';
 
+    /**
+     * @var string
+     */
     protected $suffix = '';
 
+    /**
+     * @param int  $formatStyle
+     * @param int  $formatType
+     * @param null $locale
+     */
     public function __construct($formatStyle = NumberFormatter::DECIMAL, $formatType = NumberFormatter::TYPE_DEFAULT, $locale = null)
     {
         $this->setFormatStyle($formatStyle);
@@ -42,36 +60,69 @@ class Number extends AbstractType
         $this->setLocale($locale);
     }
 
+    /**
+     * @return string
+     */
     public function getTypeName()
     {
         return 'number';
     }
 
+    /**
+     * @param int $style
+     *
+     * @return $this
+     */
     public function setFormatStyle($style = NumberFormatter::DECIMAL)
     {
         $this->formatStyle = $style;
+
+        return $this;
     }
 
+    /**
+     * @return int
+     */
     public function getFormatStyle()
     {
         return $this->formatStyle;
     }
 
+    /**
+     * @param int $type
+     *
+     * @return $this
+     */
     public function setFormatType($type = NumberFormatter::TYPE_DEFAULT)
     {
         $this->formatType = $type;
+
+        return $this;
     }
 
+    /**
+     * @return int
+     */
     public function getFormatType()
     {
         return $this->formatType;
     }
 
+    /**
+     * @param null $locale
+     *
+     * @return $this
+     */
     public function setLocale($locale = null)
     {
         $this->locale = $locale;
+
+        return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getLocale()
     {
         if ($this->locale === null) {
@@ -103,31 +154,57 @@ class Number extends AbstractType
         );
     }
 
+    /**
+     * @return array
+     */
     public function getAttributes()
     {
         return $this->attributes;
     }
 
+    /**
+     * @param string $string
+     *
+     * @return $this
+     */
     public function setSuffix($string = '')
     {
         $this->suffix = (string) $string;
+
+        return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getSuffix()
     {
         return $this->suffix;
     }
 
+    /**
+     * @param string $string
+     *
+     * @return $this
+     */
     public function setPrefix($string = '')
     {
         $this->prefix = (string) $string;
+
+        return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getPrefix()
     {
         return $this->prefix;
     }
 
+    /**
+     * @return string
+     */
     public function getFilterDefaultOperation()
     {
         return Filter::EQUAL;
