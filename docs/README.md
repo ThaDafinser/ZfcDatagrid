@@ -15,6 +15,33 @@ If you are looking for some information that is not listed in the documentation,
    3. [Basic Example](/docs/02. Quick Start.md#basic-example)
 
 3. [Columns](/docs/03. Columns.md)
+  1. [Columns Introduction](/docs/03. Columns.md#columns-introduction)
+  2. [Column Types](/docs/03. Columns.md#column-types)
+    * Select
+    * Action
+        * Button
+        * Checkbox
+        * Icon
+        * Actions Options
+    * ExternalData
+    * Columns Options
+  3. [Column Data Types](/docs/03. Columns.md#column-data-types)
+    * String
+    * DateTime
+    * Image
+    * Number
+    * PhpArray
+  4. [Column Data Styles](/docs/03. Columns.md#column-data-styles)
+    * Background color
+    * Bold
+    * Color
+    * Italic
+    * Applying Style
+  5. [Column Data Formatters](/docs/03. Columns.md#column-data-formatters)
+    * Email
+    * File Size
+    * Image Formatter
+    * Link
 
 4. [Filtering](/docs/04. Filtering.md)
 
