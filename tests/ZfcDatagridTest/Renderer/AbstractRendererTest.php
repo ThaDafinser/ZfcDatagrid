@@ -216,11 +216,11 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
 //     public function testCacheData()
 //     {
 //         $cache = $this->getMockForAbstractClass('Zend\Cache\Storage\Adapter\AbstractAdapter');
-        
+
 //         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
 //         $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
 //         $renderer->setCache($cache);
-        
+
 //         $this->assertEquals(array(), $renderer->getCacheData());
 
 //         $data = array(

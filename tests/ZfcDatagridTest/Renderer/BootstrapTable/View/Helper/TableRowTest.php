@@ -36,7 +36,7 @@ class TableRowTest extends PHPUnit_Framework_TestCase
         $myCol->setUniqueId('myCol');
 
         $this->myCol = $myCol;
-        
+
         $this->serviceLocator = $this->getMock('Zend\ServiceManager\ServiceManager');
     }
 
@@ -168,7 +168,7 @@ class TableRowTest extends PHPUnit_Framework_TestCase
 
         $helper = new TableRow();
         $helper->setServiceLocator($this->serviceLocator);
-        
+
         // must be instanceof Column\Select...
         $myCol = new Column\Select('myCol');
 
