@@ -3,7 +3,45 @@ namespace ZfcDatagrid\Column\Type;
 
 class PhpArray extends AbstractType
 {
-
+    /**
+     * Separator of the string to be used to explode the array
+     *
+     * @var string
+     */
+    protected $separator;
+    
+    /**
+     *
+     * @param string  $separator
+     */
+    public function __construct($separator = ',')
+    {
+        $this->setSeparator($separator);
+    }
+    
+    /*
+     * Set separator of the string to be used to explode the array
+     * 
+     * @param string  $separator
+     * @return PhpArray
+     */
+    public function setSeparator($separator)
+    {
+        $this->separator = $separator;
+        
+        return $this;
+    }
+    
+    /*
+     * Get the string separator
+     * 
+     * @return string
+     */
+    public function getSeparator()
+    {
+        return $this->separator;
+    }
+    
     public function getTypeName()
     {
         return 'array';
@@ -21,7 +59,7 @@ class PhpArray extends AbstractType
             if ($value == '') {
                 $value = array();
             } else {
-                $value = explode(',', $value);
+                $value = explode($this->getSeparator(), $value);
             }
         }
 
