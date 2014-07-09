@@ -62,7 +62,17 @@ class Renderer extends AbstractExport
         /*
          * Display used filters etc...
          */
+        // @todo
+        
+        $this->printGrid();
+        
+        return $this->saveAndSend();
+    }
 
+    protected function printGrid()
+    {
+        $pdf = $this->getPdf();
+        
         /*
          * Print the header
          */
@@ -94,10 +104,12 @@ class Renderer extends AbstractExport
             $pageBeforeRow = $pdf->getPage();
             $this->printTableRow($row, $rowHeight);
         }
+    }
+
+    protected function saveAndSend()
+    {
+        $pdf = $this->getPdf();
         
-        /*
-         * Save the file
-         */
         $options = $this->getOptions();
         $optionsExport = $options['settings']['export'];
         
@@ -202,7 +214,7 @@ class Renderer extends AbstractExport
      * @param array $row            
      * @return number
      */
-    private function getRowHeight(array $row)
+    protected function getRowHeight(array $row)
     {
         $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
@@ -357,7 +369,7 @@ class Renderer extends AbstractExport
                         }
                     } else {
                         $pdf->Image($link, $x + 1, $y + 1, 0, $resizeHeight, '', '', 'L', false);
-                                            }
+                    }
                     break;
                 
                 default:
@@ -381,7 +393,7 @@ class Renderer extends AbstractExport
      * @param number $maxHeight            
      * @return array
      */
-    private function calcImageSize($imageData, $maxWidth, $maxHeight)
+    protected function calcImageSize($imageData, $maxWidth, $maxHeight)
     {
         $pdf = $this->getPdf();
         
@@ -397,7 +409,7 @@ class Renderer extends AbstractExport
         );
     }
 
-    private function setFontHeader()
+    protected function setFontHeader()
     {
         $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
@@ -416,7 +428,7 @@ class Renderer extends AbstractExport
         $pdf->setTextRenderingMode(0.15, true, false);
     }
 
-    private function setFontData()
+    protected function setFontData()
     {
         $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
@@ -434,13 +446,13 @@ class Renderer extends AbstractExport
         $pdf->setTextRenderingMode();
     }
 
-    private function setBold()
+    protected function setBold()
     {
         $pdf = $this->getPdf();
         $pdf->setTextRenderingMode(0.15, true, false);
     }
 
-    private function setItalic()
+    protected function setItalic()
     {
         $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
@@ -456,7 +468,7 @@ class Renderer extends AbstractExport
      *
      * @param array $rgb            
      */
-    private function setColor(array $rgb)
+    protected function setColor(array $rgb)
     {
         $pdf = $this->getPdf();
         $pdf->SetTextColor($rgb['red'], $rgb['green'], $rgb['blue']);
@@ -466,7 +478,7 @@ class Renderer extends AbstractExport
      *
      * @param array $rgb            
      */
-    private function setBackgroundColor(array $rgb)
+    protected function setBackgroundColor(array $rgb)
     {
         $pdf = $this->getPdf();
         $pdf->SetFillColor($rgb['red'], $rgb['green'], $rgb['blue']);

@@ -34,6 +34,8 @@ class Number extends AbstractType
     protected $prefix = '';
 
     protected $suffix = '';
+    
+    protected $pattern;
 
     public function __construct($formatStyle = NumberFormatter::DECIMAL, $formatType = NumberFormatter::TYPE_DEFAULT, $locale = null)
     {
@@ -127,10 +129,34 @@ class Number extends AbstractType
     {
         return $this->prefix;
     }
+    
+    public function setPattern($pattern){
+        $this->pattern = $pattern;
+    }
+    
+    public function getPattern(){
+        return $this->pattern;
+    }
 
     public function getFilterDefaultOperation()
     {
         return Filter::EQUAL;
+    }
+    
+    /**
+     * 
+     * @return NumberFormatter
+     */
+    protected function getFormatter(){
+        $formatter = new NumberFormatter($this->getLocale(), $this->getFormatStyle());
+        if($this->getPattern() !== null){
+            $formatter->setPattern($this->getPattern());
+        }
+        foreach ($this->getAttributes() as $attribute) {
+            $formatter->setAttribute($attribute['attribute'], $attribute['value']);
+        }
+        
+        return $formatter;
     }
 
     /**
@@ -140,10 +166,7 @@ class Number extends AbstractType
      */
     public function getFilterValue($val)
     {
-        $formatter = new NumberFormatter($this->getLocale(), $this->getFormatStyle());
-        foreach ($this->getAttributes() as $attribute) {
-            $formatter->setAttribute($attribute['attribute'], $attribute['value']);
-        }
+        $formatter = $this->getFormatter();
 
         if (strlen($this->getPrefix()) > 0 && strpos($val, $this->getPrefix()) === 0) {
             $val = substr($val, strlen($this->getPrefix()));
@@ -173,10 +196,7 @@ class Number extends AbstractType
      */
     public function getUserValue($val)
     {
-        $formatter = new NumberFormatter($this->getLocale(), $this->getFormatStyle());
-        foreach ($this->getAttributes() as $attribute) {
-            $formatter->setAttribute($attribute['attribute'], $attribute['value']);
-        }
+        $formatter = $this->getFormatter();
 
         $formattedValue = $formatter->format($val, $this->getFormatType());
 
