@@ -34,7 +34,7 @@ class Number extends AbstractType
     protected $prefix = '';
 
     protected $suffix = '';
-    
+
     protected $pattern;
 
     public function __construct($formatStyle = NumberFormatter::DECIMAL, $formatType = NumberFormatter::TYPE_DEFAULT, $locale = null)
@@ -129,12 +129,14 @@ class Number extends AbstractType
     {
         return $this->prefix;
     }
-    
-    public function setPattern($pattern){
+
+    public function setPattern($pattern)
+    {
         $this->pattern = $pattern;
     }
-    
-    public function getPattern(){
+
+    public function getPattern()
+    {
         return $this->pattern;
     }
 
@@ -142,20 +144,21 @@ class Number extends AbstractType
     {
         return Filter::EQUAL;
     }
-    
+
     /**
-     * 
+     *
      * @return NumberFormatter
      */
-    protected function getFormatter(){
+    protected function getFormatter()
+    {
         $formatter = new NumberFormatter($this->getLocale(), $this->getFormatStyle());
-        if($this->getPattern() !== null){
+        if ($this->getPattern() !== null) {
             $formatter->setPattern($this->getPattern());
         }
         foreach ($this->getAttributes() as $attribute) {
             $formatter->setAttribute($attribute['attribute'], $attribute['value']);
         }
-        
+
         return $formatter;
     }
 

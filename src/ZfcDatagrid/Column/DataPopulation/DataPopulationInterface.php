@@ -14,8 +14,8 @@ interface DataPopulationInterface
     /**
      * Directy set a parameter for the object
      *
-     * @param string $name            
-     * @param mixed $value            
+     * @param string $name
+     * @param mixed  $value
      */
     public function setObjectParameter($name, $value);
 

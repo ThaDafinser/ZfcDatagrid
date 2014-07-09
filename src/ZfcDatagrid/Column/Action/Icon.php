@@ -12,7 +12,7 @@ class Icon extends AbstractAction
      * Set the icon class (CSS)
      * - used for HTML if provided, overwise the iconLink is used
      *
-     * @param string $name            
+     * @param string $name
      */
     public function setIconClass($name)
     {
@@ -37,14 +37,14 @@ class Icon extends AbstractAction
         if ($this->getIconClass() != '') {
             return true;
         }
-        
+
         return false;
     }
 
     /**
      * Set the icon link (is used, if no icon class is provided)
      *
-     * @param string $httpLink            
+     * @param string $httpLink
      */
     public function setIconLink($httpLink)
     {
@@ -70,7 +70,7 @@ class Icon extends AbstractAction
         if ($this->getIconLink() != '') {
             return true;
         }
-        
+
         return false;
     }
 
@@ -87,7 +87,7 @@ class Icon extends AbstractAction
             // no css class -> use the icon link instead
             return '<img src="' . $this->getIconLink() . '" />';
         }
-        
+
         throw new \InvalidArgumentException('Either a link or a class for the icon is required');
     }
 }

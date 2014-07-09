@@ -29,7 +29,7 @@ class Image extends AbstractType
     /**
      * Set the resize type for TCPDF export
      *
-     * @param string $type            
+     * @param  string                   $type
      * @throws InvalidArgumentException
      */
     public function setResizeType($type)
@@ -37,7 +37,7 @@ class Image extends AbstractType
         if ($type != 'fixed' && $type != 'dynamic') {
             throw new InvalidArgumentException('Only dynamic or fixed is allowed as Type');
         }
-        
+
         $this->resizeType = $type;
     }
 
@@ -52,7 +52,7 @@ class Image extends AbstractType
 
     /**
      *
-     * @param float $height            
+     * @param float $height
      */
     public function setResizeHeight($height)
     {
