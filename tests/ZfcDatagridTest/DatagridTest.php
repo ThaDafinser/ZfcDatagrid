@@ -90,7 +90,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
             ->getManager()
             ->getId();
 
-        $this->assertEquals($sessionId . '_defaultGrid', $this->grid->getCacheId());
+        $this->assertEquals(md5($sessionId . '_defaultGrid'), $this->grid->getCacheId());
 
         $this->grid->setCacheId('myCacheId');
         $this->assertEquals('myCacheId', $this->grid->getCacheId());
