@@ -1,17 +1,18 @@
 <?php
 namespace ZfcDatagrid\Renderer\BootstrapTable\View\Helper;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Helper\AbstractHelper;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Action\AbstractAction;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * View Helper
  */
 class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
 {
+
     /**
      *
      * @var ServiceLocatorInterface
@@ -57,22 +58,23 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
         return $name;
     }
 
-    private function getTr($row, $open = true)
+    private function getTr($row, $open = true, array $classes = null)
     {
         if ($open !== true) {
             return '</tr>';
         } else {
+            $class = empty($classes) ? '' : ' class="' . implode(' ' , $classes) . '"';
             if (isset($row['idConcated'])) {
-                return '<tr id="' . $row['idConcated'] . '">';
+                return '<tr' . $class . ' id="' . $row['idConcated'] . '">';
             } else {
-                return '<tr>';
+                return '<tr' . $class . '>';
             }
         }
     }
 
-    private function getTd($dataValue, $attributes = [])
+    private function getTd($dataValue, $attributes = array())
     {
-        $attr = [];
+        $attr = array();
         foreach ($attributes as $name => $value) {
             if ($value != '') {
                 $attr[] = $name . '="' . $value . '"';
@@ -93,21 +95,18 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
      * @throws \Exception
      * @return string
      */
-    public function __invoke($row, array $cols, AbstractAction $rowClickAction = null, array $rowStyles = [], $hasMassActions = false)
+    public function __invoke($row, array $cols, AbstractAction $rowClickAction = null, array $rowStyles = array(), $hasMassActions = false)
     {
-        $return = $this->getTr($row);
-
-        if (true === $hasMassActions) {
-            $return .= '<td><input type="checkbox" name="massActionSelected[]" value="' . $row['idConcated'] . '" /></td>';
-        }
+        $cells = '';
+        $rowClasses = array();
 
         foreach ($cols as $col) {
             /* @var $col \ZfcDatagrid\Column\AbstractColumn */
 
             $value = $row[$col->getUniqueId()];
 
-            $cssStyles = [];
-            $classes   = [];
+            $cssStyles = array();
+            $classes = array();
 
             if ($col->isHidden() === true) {
                 $classes[] = 'hidden';
@@ -128,6 +127,7 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
             foreach ($styles as $style) {
                 /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
                 if ($style->isApply($row) === true) {
+
                     switch (get_class($style)) {
 
                         case 'ZfcDatagrid\Column\Style\Bold':
@@ -145,11 +145,12 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
                         case 'ZfcDatagrid\Column\Style\BackgroundColor':
                             $cssStyles[] = 'background-color: #' . $style->getRgbHexString();
                             break;
-                        case 'ZfcDatagrid\Column\Style\Align':
-                            $cssStyles[] = 'text-align: ' . $style->getAlignment();
-                            break;
-                        case 'ZfcDatagrid\Column\Style\Strikethrough':
-                            $value = '<s>' . $value . '</s>';
+                        case 'ZfcDatagrid\Column\Style\CSSClass':
+                            if ($style->getForRow()) {
+                                $rowClasses[] = $style->getClass();
+                            } else {
+                                $classes[] = $style->getClass();
+                            }
                             break;
                         default:
                             throw new \InvalidArgumentException('Not defined style: "' . get_class($style) . '"');
@@ -160,7 +161,7 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
 
             if ($col instanceof Column\Action) {
                 /* @var $col \ZfcDatagrid\Column\Action */
-                $actions = [];
+                $actions = array();
                 foreach ($col->getActions() as $action) {
                     /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
                     if ($action->isDisplayed($row) === true) {
@@ -173,21 +174,24 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
             }
 
             // "rowClick" action
-            if ($col instanceof Column\Select && $rowClickAction instanceof AbstractAction
-                    && $col->isRowClickEnabled()) {
+            if ($col instanceof Column\Select && $rowClickAction instanceof AbstractAction) {
                 $value = '<a href="' . $rowClickAction->getLinkReplaced($row) . '">' . $value . '</a>';
             }
 
-            $attributes = [
-                'class'               => implode(',', $classes),
-                'style'               => implode(';', $cssStyles),
-                'data-columnUniqueId' => $col->getUniqueId(),
-            ];
+            $attributes = array(
+                'class' => implode(' ', $classes),
+                'style' => implode(';', $cssStyles),
+                'data-columnUniqueId' => $col->getUniqueId()
+            );
 
-            $return .= $this->getTd($value, $attributes);
+            $cells .= $this->getTd($value, $attributes);
         }
 
-        $return .= $this->getTr($row, false);
+        $return = $this->getTr($row, true, $rowClasses);
+        if ($hasMassActions === true) {
+            $return .= '<td><input type="checkbox" name="massActionSelected[]" value="' . $row['id'] . '" /></td>';
+        }
+        $return .= $cells . $this->getTr($row, false);
 
         return $return;
     }
