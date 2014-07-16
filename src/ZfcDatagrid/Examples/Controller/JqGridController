@@ -1,0 +1,96 @@
+<?php
+namespace ZfcDatagrid\Examples\Controller;
+
+use Zend\Mvc\Controller\AbstractActionController;
+use ZfcDatagrid\Column;
+use ZfcDatagrid\Column\Type;
+use ZfcDatagrid\Column\Style;
+use ZfcDatagrid\Column\Formatter\Email;
+
+class JqgridController extends AbstractActionController
+{
+	/**
+	 * @see http://trirand.com/blog/jqgrid/jqgrid.html - Grouping - Grouping row(s) collapsed
+	 * @return \ZfcDatagrid\Datagrid
+	 */
+    private function getGrid()
+    {
+        /* @var $grid \ZfcDatagrid\Datagrid */
+        $grid = $this->getServiceLocator()->get('ZfcDatagrid\Datagrid');
+        $grid->setTitle('Initially hidden data');
+        $grid->setDefaultItemsPerPage(30);
+        $grid->setUserFilterDisabled(true);
+        $grid->setDataSource($this->getServiceLocator()
+            ->get('zfcDatagrid.examples.data.jqgrid.phpArray')
+            ->getData());
+
+        $col = new Column\Select('id');
+        $col->setIdentity();
+        $col->setLabel('Inv No');
+        $col->setHidden(false);
+        $grid->addColumn($col);
+
+        {
+            $colType = new Type\DateTime('Y-m-d', \IntlDateFormatter::SHORT, \IntlDateFormatter::NONE);
+            $colType->setSourceTimezone('Europe/Vienna');
+            $colType->setOutputTimezone('UTC');
+
+            $col = new Column\Select('invdate');
+            $col->setLabel('Date');
+            $col->setWidth(15);
+            $col->setType($colType);
+            $grid->addColumn($col);
+        }
+
+        $col = new Column\Select('name');
+        $col->setLabel('Client');
+        $col->setWidth(25);
+        #$col->setUserSortDisabled(true); // Prevent overwriting of `groupOrder`
+        $col->setSortDefault(1, 'ASC');
+        $grid->addColumn($col);
+
+        $colType = new Type\Number();
+        $colType->addAttribute(\NumberFormatter::FRACTION_DIGITS, 2);
+
+        $col = new Column\Select('amount');
+        $col->setLabel('Amount');
+        $col->setWidth(10);
+        $col->setType($colType);
+        $grid->addColumn($col);
+
+        $col = new Column\Select('tax');
+        $col->setLabel('Tax');
+        $col->setWidth(10);
+        $col->setType($colType);
+        $grid->addColumn($col);
+
+        $col = new Column\Select('total');
+        $col->setLabel('Total');
+        $col->setWidth(10);
+        $col->setType($colType);
+        $grid->addColumn($col);
+
+        $col = new Column\Select('note');
+        $col->setLabel('Note');
+        $col->setWidth(25);
+        $grid->addColumn($col);
+
+        return $grid;
+    }
+
+    /**
+     * JqGrid
+     *
+     * @return \ZfcDatagrid\Controller\ViewModel
+     */
+    public function groupingviewAction()
+    {
+        $grid = $this->getGrid();
+        $grid->setRendererName('jqGrid');
+        $grid->getRenderer()->setTemplate('zfc-datagrid/renderer/jqGrid/layout-groupingview');
+
+        $grid->render();
+
+        return $grid->getResponse();
+    }
+}
