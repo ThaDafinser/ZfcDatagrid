@@ -39,15 +39,5 @@ class Renderer extends AbstractRenderer
         $layout->addChild($table, 'table');
 
         return $layout;
-
-        // $viewModel->setTemplate('zfc-datagrid/renderer/printHtml/layout');
-
-        // $viewChild = new ViewModel();
-        // $viewChild->setVariables($viewModel->getVariables());
-        // $viewChild->setTemplate($this->getTemplate());
-
-        // $viewModel->addChild($viewChild, 'table');
-
-        // return $viewModel;
     }
 }
