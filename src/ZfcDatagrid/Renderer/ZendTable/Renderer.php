@@ -210,7 +210,6 @@ class Renderer extends AbstractRenderer
 
         $table = new TextTable($options);
         $table->setDecorator('ascii');
-        // $table->setAutoSeparate(TextTable::AUTO_SEPARATE_HEADER);
 
         /*
          * Title
