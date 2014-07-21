@@ -103,8 +103,6 @@ class CategoryController extends AbstractActionController
 
     public function jqgridAction()
     {
-        $viewModel = new ViewModel();
-
         $grid = $this->getGrid();
         $grid->setRendererName('jqGrid');
         $grid->setUserFilterDisabled(true);
