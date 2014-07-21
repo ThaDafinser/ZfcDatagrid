@@ -183,8 +183,6 @@ class Renderer extends AbstractRenderer
 
     public function execute()
     {
-        $viewModel = $this->getViewModel();
-
         $textTable = $this->getTable();
 
         $response = $this->getMvcEvent()->getResponse();
