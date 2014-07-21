@@ -4,7 +4,6 @@ namespace ZfcDatagrid\Examples\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Type;
-use ZfcDatagrid\Example\Form\CategoryFilterForm;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 
@@ -106,8 +105,6 @@ class CategoryController extends AbstractActionController
 
     public function jqgridAction()
     {
-//         $form = new CategoryFilterForm();
-
         $viewModel = new ViewModel();
 
         $grid = $this->getGrid();
