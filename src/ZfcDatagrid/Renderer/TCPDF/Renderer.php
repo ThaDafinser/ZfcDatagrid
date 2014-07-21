@@ -190,7 +190,6 @@ class Renderer extends AbstractExport
         // First make sure the columns width is 100 "percent"
         $this->calculateColumnWidthPercent($cols);
 
-        $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
         $margins = $optionsRenderer['margins'];
 
@@ -211,7 +210,6 @@ class Renderer extends AbstractExport
      */
     protected function getRowHeight(array $row)
     {
-        $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
         $sizePoint = $optionsRenderer['style']['data']['size'];
         // Points to MM
@@ -401,7 +399,6 @@ class Renderer extends AbstractExport
 
     protected function setFontHeader()
     {
-        $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
         $style = $optionsRenderer['style']['header'];
 
@@ -420,7 +417,6 @@ class Renderer extends AbstractExport
 
     protected function setFontData()
     {
-        $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
         $style = $optionsRenderer['style']['data'];
 
@@ -444,7 +440,6 @@ class Renderer extends AbstractExport
 
     protected function setItalic()
     {
-        $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
         $style = $optionsRenderer['style']['data'];
         $font = $style['font'];
