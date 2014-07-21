@@ -147,29 +147,5 @@ class CategoryController extends AbstractActionController
         $viewModel->setVariable('data', $data);
 
         return $viewModel;
-
-        return '
-       [
-            {"id":1,"parentId":"","hasChildren":"y","name":"Root","tags":["Tag1","Tag2"," Martin"," ZfcDatagrid"],"expandAction":"","action":"\u003Ca class=\u0022btn\u0022 href=\u0022#\u0022 onclick=\u0022alert(\u0027clicked\u0027);\u0022\u003Eblubb\u003C\/a\u003E","idConcated":"1"}
-            ,{"id":5,"parentId":"","hasChildren":"y","name":"Root2","tags":[""],"expandAction":"", action":"\u003Ca class=\u0022btn\u0022 href=\u0022#\u0022 onclick=\u0022alert(\u0027clicked\u0027);\u0022\u003Eblubb\u003C\/a\u003E","idConcated":"5"}
-            ,{"id":6,"parentId":5,"hasChildren":"n","name":"Second level of Root2","tags":[""],"expandAction":"","action":"","idConcated":"6"}
-            ,{"id":2,"parentId":1,"hasChildren":"y","name":"Second level: entry 1","tags":["Tag1","Root"," Root2"],"expandAction":"","action":"\u003Ca class=\u0022btn\u0022 href=\u0022#\u0022 onclick=\u0022alert(\u0027clicked\u0027);\u0022\u003Eblubb\u003C\/a\u003E","idConcated":"2"}
-            ,{"id":3,"parentId":2,"hasChildren":"n","name":"Third level: entry 1","tags":["cool"," stuff"],"expandAction":"","action":"","idConcated":"3"}
-        ];
-
-        ';
-        /*
-         * var myData= [
-         {"id":1,"parentId":"","hasChildren":"y","name":"&nbsp;&nbsp;&nbsp;&nbsp;<i class=\"icon-leaf\"></i> asdf <b>test</b>","action": "","idConcated":"10"}
-         ,{"id":5,"parentId":"","hasChildren":"y","name":"&nbsp;&nbsp;&nbsp;&nbsp;asdf2","action":"","idConcated":"50"}
-         ,{"id":6,"parentId":5,"hasChildren":"n","name":"&nbsp;&nbsp;&nbsp;&nbsp;asdf3 level of Root2","action":"","idConcated":"60"} ,{"id":2,"parentId":1,"hasChildren":"y","name":"&nbsp;&nbsp;&nbsp;&nbsp;asdf4 level: entry 1","action":"","idConcated":"20"} ,{"id":3,"parentId":2,"hasChildren":"n","name":"&nbsp;&nbsp;&nbsp;&nbsp;asdf5 level: entry 1","action":"","idConcated":"30"}
-         ];
-
-         $.each(myData, function (index, value) {
-             $('#defaultGrid').jqGrid('addRowData', value.idConcated, value, 'after', 5);
-         });
-
-         //$('#defaultGrid').jqGrid('addRowData', 'idConcated', myData, 'first', 5);
-         */
     }
 }
