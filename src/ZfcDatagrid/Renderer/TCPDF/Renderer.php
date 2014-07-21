@@ -137,7 +137,6 @@ class Renderer extends AbstractExport
 
     public function initPdf()
     {
-        $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
 
         $papersize = $optionsRenderer['papersize'];
