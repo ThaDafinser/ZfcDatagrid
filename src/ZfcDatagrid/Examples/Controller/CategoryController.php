@@ -4,7 +4,6 @@ namespace ZfcDatagrid\Examples\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Type;
-use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 
 class CategoryController extends AbstractActionController
