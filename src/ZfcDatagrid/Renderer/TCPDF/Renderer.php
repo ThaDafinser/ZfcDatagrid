@@ -330,11 +330,6 @@ class Renderer extends AbstractExport
             $text = '';
             switch (get_class($col->getType())) {
 
-                // case 'ZfcDatagrid\Column\Type\PhpArray':
-                // print_r($row[$col->getUniqueId()]);
-                // exit();
-                // break;
-
                 case 'ZfcDatagrid\Column\Type\Icon':
                     $text = '';
 
