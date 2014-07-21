@@ -21,8 +21,6 @@ class Renderer extends AbstractExport
         'ZfcDatagrid\Column\Type\String'
     );
 
-    private $colsPositionX = array();
-
     /**
      *
      * @var TCPDF
