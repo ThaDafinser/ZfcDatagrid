@@ -49,7 +49,7 @@ class Doctrine2 implements ServiceLocatorAwareInterface
 
         /* @var $command \Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand */
         $command = $cli->get('orm:schema-tool:create');
-        $returnCode = $command->run($input, new StreamOutput($fp));
+        $command->run($input, new StreamOutput($fp));
 
         $phpArray = $this->getServiceLocator()->get('zfcDatagrid.examples.data.phpArray');
         $persons = $phpArray->getPersons();
