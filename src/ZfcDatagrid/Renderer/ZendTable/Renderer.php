@@ -147,8 +147,6 @@ class Renderer extends AbstractRenderer
      */
     public function getFilters()
     {
-        $request = $this->getRequest();
-
         return array();
     }
 
