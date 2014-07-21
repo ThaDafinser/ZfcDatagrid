@@ -82,7 +82,6 @@ class CategoryController extends AbstractActionController
         $toggle->setAttribute('onclick', 'alert(\'clicked\');');
 
         $col = new Column\Action();
-//         $col->setLabel('A');
         $col->addAction($toggle);
         $grid->addColumn($col);
 
@@ -97,7 +96,6 @@ class CategoryController extends AbstractActionController
     public function bootstrapAction()
     {
         $grid = $this->getGrid();
-//         $grid->setRendererName('bootstrapTable');
         $grid->render();
 
         return $grid->getResponse();
