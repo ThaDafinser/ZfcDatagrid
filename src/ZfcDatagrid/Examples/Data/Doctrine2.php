@@ -88,7 +88,7 @@ class Doctrine2 implements ServiceLocatorAwareInterface
 
         // Test if the SqLite is ready...
         try {
-            $data = $personRepo->find(2);
+            $personRepo->find(2);
         } catch (\Exception $e) {
             $this->createTables();
             $data = $personRepo->find(2);
