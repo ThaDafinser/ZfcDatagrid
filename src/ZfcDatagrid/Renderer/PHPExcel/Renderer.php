@@ -61,7 +61,6 @@ class Renderer extends AbstractExport
             $label = $this->getTranslator()->translate($column->getLabel());
             $sheet->setCellValueByColumnAndRow($xColumn, $yRow, $label);
 
-            // $sheet->getColumnDimension(PHPExcel_Cell::stringFromColumnIndex($xColumn))->setCollapsed(true);
             $sheet->getColumnDimension(PHPExcel_Cell::stringFromColumnIndex($xColumn))->setWidth($column->getWidth());
 
             $xColumn ++;
