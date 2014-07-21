@@ -73,7 +73,6 @@ class PaginatorFast implements AdapterInterface
 
         $dqlParts = $qb->getDQLParts();
         $groupParts = $dqlParts['groupBy'];
-        $selectParts = $dqlParts['select'];
 
         /*
          * Reset things
