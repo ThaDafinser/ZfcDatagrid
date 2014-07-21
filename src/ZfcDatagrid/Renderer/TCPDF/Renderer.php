@@ -98,7 +98,6 @@ class Renderer extends AbstractExport
                 }
             }
 
-            $pageBeforeRow = $pdf->getPage();
             $this->printTableRow($row, $rowHeight);
         }
     }
