@@ -45,7 +45,6 @@ class Doctrine2 implements ServiceLocatorAwareInterface
 
         $fp = tmpfile();
 
-        // $input = new StringInput('orm:schema-tool:create --dump-sql');
         $input = new StringInput('orm:schema-tool:create');
 
         /* @var $command \Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand */
@@ -56,19 +55,6 @@ class Doctrine2 implements ServiceLocatorAwareInterface
         $persons = $phpArray->getPersons();
 
         $this->createData(new Person(), $persons);
-        // $entityManager->f
-        // fseek($fp, 0);
-        // $output = '';
-        // while (! feof($fp)) {
-        // $output = fread($fp, 4096);
-        // }
-        // fclose($fp);
-
-        // echo '<pre>';
-        // print_r($output);
-        // print_r($returnCode);
-        // echo 'DONE!';
-        // exit();
     }
 
     private function createData($entity, $data)
@@ -99,10 +85,6 @@ class Doctrine2 implements ServiceLocatorAwareInterface
         /* @var $entityManager \Doctrine\ORM\EntityManager */
         $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_zfcDatagrid');
         $personRepo = $entityManager->getRepository('ZfcDatagrid\Examples\Entity\Person');
-
-        // if ($entityManager->getConnection()->isConnected() === true) {
-
-        // }
 
         // Test if the SqLite is ready...
         try {
