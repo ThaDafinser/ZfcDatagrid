@@ -897,8 +897,6 @@ class Datagrid implements ServiceLocatorAwareInterface
     {
         if ($this->renderer === null) {
 
-            $options = $this->getOptions();
-
             $rendererName = 'zfcDatagrid.renderer.' . $this->getRendererName();
 
             if ($this->getServiceLocator()->has($rendererName) === true) {
