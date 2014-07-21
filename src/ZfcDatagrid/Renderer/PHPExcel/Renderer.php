@@ -5,7 +5,6 @@
 namespace ZfcDatagrid\Renderer\PHPExcel;
 
 use ZfcDatagrid\Renderer\AbstractExport;
-use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Style;
 use PHPExcel;
 use PHPExcel_Worksheet_PageSetup;
