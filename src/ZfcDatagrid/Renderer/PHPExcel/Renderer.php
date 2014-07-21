@@ -206,7 +206,6 @@ class Renderer extends AbstractExport
      */
     protected function setPrinting(PHPExcel $phpExcel)
     {
-        $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
 
         $phpExcel->getProperties()
