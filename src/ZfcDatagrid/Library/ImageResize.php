@@ -15,7 +15,6 @@ class ImageResize
      */
     public static function getCalculatedSize($width, $height, $maxWidth, $maxHeight)
     {
-        // $ratio = $width / $height;
         $widthDiffRatio = $maxWidth / $width;
         $heightDiffRatio = $maxHeight / $height;
 

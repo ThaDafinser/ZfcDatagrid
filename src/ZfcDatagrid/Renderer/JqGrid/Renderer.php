@@ -215,8 +215,6 @@ class Renderer extends AbstractRenderer
 
     private function getDataJqGrid()
     {
-        $data = $this->getData();
-
         return array(
             'rows' => $this->getData(),
             'page' => $this->getPaginator()->getCurrentPageNumber(),

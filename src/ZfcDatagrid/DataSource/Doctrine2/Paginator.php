@@ -59,15 +59,6 @@ class Paginator implements AdapterInterface
     private function useCustomPaginator()
     {
         $qb = $this->getQueryBuilder();
-        $platform = $qb->getEntityManager()
-            ->getConnection()
-            ->getDatabasePlatform();
-
-//         if ($platform->getName() != 'mysql') {
-//             // Only tested mysql currently so all other i don't know, if my implementation is good...
-//             return false;
-//         }
-
         $parts = $qb->getDQLParts();
 
         if ($parts['having'] !== null || $parts['distinct'] === true) {

@@ -5,8 +5,6 @@
 namespace ZfcDatagrid\Renderer\PHPExcel;
 
 use ZfcDatagrid\Renderer\AbstractExport;
-use ZfcDatagrid\Column;
-use ZfcDatagrid\Column\Style;
 use PHPExcel;
 use PHPExcel_Worksheet_PageSetup;
 use PHPExcel_Cell;
@@ -63,7 +61,6 @@ class Renderer extends AbstractExport
             $label = $this->getTranslator()->translate($column->getLabel());
             $sheet->setCellValueByColumnAndRow($xColumn, $yRow, $label);
 
-            // $sheet->getColumnDimension(PHPExcel_Cell::stringFromColumnIndex($xColumn))->setCollapsed(true);
             $sheet->getColumnDimension(PHPExcel_Cell::stringFromColumnIndex($xColumn))->setWidth($column->getWidth());
 
             $xColumn ++;
@@ -209,7 +206,6 @@ class Renderer extends AbstractExport
      */
     protected function setPrinting(PHPExcel $phpExcel)
     {
-        $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
 
         $phpExcel->getProperties()

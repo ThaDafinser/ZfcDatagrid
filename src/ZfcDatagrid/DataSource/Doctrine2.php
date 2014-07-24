@@ -1,7 +1,6 @@
 <?php
 namespace ZfcDatagrid\DataSource;
 
-use ZfcDatagrid\Filter;
 use ZfcDatagrid\DataSource\Doctrine2\Paginator as PaginatorAdapter;
 use ZfcDatagrid\Column;
 use Doctrine\ORM;

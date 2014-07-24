@@ -5,7 +5,6 @@
 namespace ZfcDatagrid\Renderer\TCPDF;
 
 use ZfcDatagrid\Renderer\AbstractExport;
-use ZfcDatagrid\Column;
 use Zend\Http\Response\Stream as ResponseStream;
 use Zend\Http\Headers;
 use TCPDF;
@@ -21,8 +20,6 @@ class Renderer extends AbstractExport
         'ZfcDatagrid\Column\Type\PhpArray',
         'ZfcDatagrid\Column\Type\String'
     );
-
-    private $colsPositionX = array();
 
     /**
      *
@@ -101,7 +98,6 @@ class Renderer extends AbstractExport
                 }
             }
 
-            $pageBeforeRow = $pdf->getPage();
             $this->printTableRow($row, $rowHeight);
         }
     }
@@ -141,7 +137,6 @@ class Renderer extends AbstractExport
 
     public function initPdf()
     {
-        $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
 
         $papersize = $optionsRenderer['papersize'];
@@ -195,7 +190,6 @@ class Renderer extends AbstractExport
         // First make sure the columns width is 100 "percent"
         $this->calculateColumnWidthPercent($cols);
 
-        $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
         $margins = $optionsRenderer['margins'];
 
@@ -216,7 +210,6 @@ class Renderer extends AbstractExport
      */
     protected function getRowHeight(array $row)
     {
-        $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
         $sizePoint = $optionsRenderer['style']['data']['size'];
         // Points to MM
@@ -331,11 +324,6 @@ class Renderer extends AbstractExport
             $text = '';
             switch (get_class($col->getType())) {
 
-                // case 'ZfcDatagrid\Column\Type\PhpArray':
-                // print_r($row[$col->getUniqueId()]);
-                // exit();
-                // break;
-
                 case 'ZfcDatagrid\Column\Type\Icon':
                     $text = '';
 
@@ -411,7 +399,6 @@ class Renderer extends AbstractExport
 
     protected function setFontHeader()
     {
-        $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
         $style = $optionsRenderer['style']['header'];
 
@@ -430,7 +417,6 @@ class Renderer extends AbstractExport
 
     protected function setFontData()
     {
-        $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
         $style = $optionsRenderer['style']['data'];
 
@@ -454,7 +440,6 @@ class Renderer extends AbstractExport
 
     protected function setItalic()
     {
-        $options = $this->getOptions();
         $optionsRenderer = $this->getOptionsRenderer();
         $style = $optionsRenderer['style']['data'];
         $font = $style['font'];

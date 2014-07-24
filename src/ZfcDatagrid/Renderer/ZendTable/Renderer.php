@@ -147,8 +147,6 @@ class Renderer extends AbstractRenderer
      */
     public function getFilters()
     {
-        $request = $this->getRequest();
-
         return array();
     }
 
@@ -185,8 +183,6 @@ class Renderer extends AbstractRenderer
 
     public function execute()
     {
-        $viewModel = $this->getViewModel();
-
         $textTable = $this->getTable();
 
         $response = $this->getMvcEvent()->getResponse();
@@ -210,7 +206,6 @@ class Renderer extends AbstractRenderer
 
         $table = new TextTable($options);
         $table->setDecorator('ascii');
-        // $table->setAutoSeparate(TextTable::AUTO_SEPARATE_HEADER);
 
         /*
          * Title
