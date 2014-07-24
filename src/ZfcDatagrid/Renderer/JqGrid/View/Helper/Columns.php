@@ -197,8 +197,6 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
 
         if ($column instanceof Column\Action) {
             $formatter .= ' cellvalue = cellvalue; ';
-        } elseif ($column instanceof Column\Icon) {
-            $formatter .= ' cellvalue = \'<i class="\' + cellvalue + \'" />\'; ';
         }
 
         if ($formatter != '') {
