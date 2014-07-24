@@ -24,7 +24,6 @@
 				<directory>./build</directory>
 				<directory>./config</directory>
 				<directory>./docs</directory>
-				<directory>./src/ZfcDatagrid/Examples</directory>
 				<directory>./tests</directory>
 				<directory>./view</directory>
 			</exclude>
