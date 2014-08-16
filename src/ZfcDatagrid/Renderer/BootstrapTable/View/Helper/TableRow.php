@@ -170,7 +170,8 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
             }
 
             // "rowClick" action
-            if ($col instanceof Column\Select && $rowClickAction instanceof AbstractAction) {
+            if ($col instanceof Column\Select && $rowClickAction instanceof AbstractAction
+                    && $col->isRowClickEnabled()) {
                 $value = '<a href="' . $rowClickAction->getLinkReplaced($row) . '">' . $value . '</a>';
             }
 
