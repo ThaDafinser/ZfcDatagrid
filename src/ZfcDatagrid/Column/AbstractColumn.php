@@ -429,7 +429,7 @@ abstract class AbstractColumn
         // array(0 => 'zero', 1 => 'once', 2 => 'double', 3 => 'triple'....)
 
         if ($noSelect === true) {
-           $options = array_merge(array(''=>'-'), $options);
+            $options = array('' => '-') + $options;
             $this->setFilterDefaultValue('');
         }
 
