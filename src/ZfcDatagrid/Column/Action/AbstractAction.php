@@ -259,18 +259,67 @@ abstract class AbstractAction
     /**
      * Show this action only on the values defined
      *
-     * @param Column\AbstractColumn $col
-     * @param string                $value
-     * @param string                $comparison
-     * @return AbstractAction
+     * @param        $col
+     * @param null   $value
+     * @param string $comparison
+     *
+     * @return $this
+     * @throws \InvalidArgumentException
      */
-    public function addShowOnValue(Column\AbstractColumn $col, $value = null, $comparison = Filter::EQUAL)
+    public function addShowOnValue($col, $value = null, $comparison = Filter::EQUAL)
     {
-        $this->showOnValues[] = array(
-            'column' => $col,
-            'value' => $value,
-            'comparison' => $comparison
-        );
+        if (is_array($col)) {
+            $args = func_get_args();
+            if (count($args) > 2 && empty($value)) {
+                throw new \InvalidArgumentException(
+                    'The second argument cannot be empty and must be a value operator (OR, AND)'
+                );
+            }
+
+            if (!isset($col['columns']) || !isset($col['values']) || !isset($col['comparison'])) {
+                throw new \InvalidArgumentException(
+                    'The first argument must contains "columns", "values" and "comparison" keys'
+                );
+            }
+            if (count($col['columns']) !== count($col['values'])) {
+                throw new \InvalidArgumentException('You must supply the same ammount of values and columns');
+            }
+
+            if (is_array($col['comparison']) && count($col['columns']) !== count($col['comparison'])) {
+                throw new \InvalidArgumentException(
+                    'If $comparison argument is and array, you must supply one comparison for each column'
+                );
+            }
+
+            $rules = array();
+            foreach ($col['columns'] as $key => $column) {
+                if (!$column instanceof Column\AbstractColumn) {
+                    throw new \InvalidArgumentException(
+                        'If first argument is an array it must contains a collection of elements implementing '.
+                        'AbstractColumn, (' . gettype($column) === 'object'
+                            ? get_class($column) . ')'
+                            : gettype($column) .
+                            ' found)'
+                    );
+                }
+
+                $rules[] = array(
+                    'column' => $column,
+                    'value' => $col['values'][$key],
+                    'comparison' => is_array($col['comparison']) ? $col['comparison'][$key] : $col['comparison'],
+                );
+            }
+            $this->showOnValues[] = array(
+                'column' => $rules,
+                'comparison' => $value
+            );
+        } else {
+            $this->showOnValues[] = array(
+                'column' => $col,
+                'value' => $value,
+                'comparison' => $comparison
+            );
+        }
 
         return $this;
     }
@@ -311,14 +360,13 @@ abstract class AbstractAction
 
         $isDisplayed = false;
         foreach ($this->getShowOnValues() as $rule) {
-            $value = '';
-            if (isset($row[$rule['column']->getUniqueId()])) {
-                $value = $row[$rule['column']->getUniqueId()];
+            if (is_array($rule['column'])) {
+                $isDisplayedMatch = $this->applyFilters($row, $rule['column'], null, null, $rule['comparison']);
+            } else {
+                $isDisplayedMatch = $this->applyFilters($row, $rule['column'], $rule['value'], $rule['comparison']);
             }
 
-            $isDisplayedMatch = Filter::isApply($value, $rule['value'], $rule['comparison']);
             if ($this->getShowOnValueOperator() == 'OR' && $isDisplayedMatch === true) {
-                // For OR one match is enough
                 return true;
             } elseif ($this->getShowOnValueOperator() == 'AND' && $isDisplayedMatch === false) {
                 return false;
@@ -328,6 +376,54 @@ abstract class AbstractAction
         }
 
         return $isDisplayed;
+    }
+
+    /**
+     * @param array                         $row
+     * @param Column\AbstractColumn|array   $column
+     * @param null|string                   $valueCompare
+     * @param null|string                   $comparison
+     * @param null|string                   $showOnValueOperator
+     *
+     * @return bool
+     */
+    protected function applyFilters(
+        $row,
+        $column,
+        $valueCompare = null,
+        $comparison = null,
+        $showOnValueOperator = null
+    ) {
+        if ($showOnValueOperator === null) {
+            $showOnValueOperator = $this->getShowOnValueOperator();
+        }
+
+        $value = '';
+        if (is_array($column)) {
+            $isDisplayedMatch = false;
+            foreach ($column as $rule) {
+                $isDisplayedMatch = $this->applyFilters(
+                    $row,
+                    $rule['column'],
+                    $rule['value'],
+                    $rule['comparison'],
+                    $showOnValueOperator
+                );
+                if ($rule['comparison'] == 'OR' && $isDisplayedMatch === true) {
+                    return true;
+                } elseif ($rule['comparison'] && 'AND' && $isDisplayedMatch === false) {
+                    return false;
+                }
+            }
+
+            return $isDisplayedMatch;
+        } else {
+            if (isset($row[$column->getUniqueId()])) {
+                $value = $row[$column->getUniqueId()];
+            }
+
+            return Filter::isApply($value, $valueCompare, $comparison);
+        }
     }
 
     /**
