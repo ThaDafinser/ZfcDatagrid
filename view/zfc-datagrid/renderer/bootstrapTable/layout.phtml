@@ -142,7 +142,7 @@ if($this->rowClickAction !== null){
                             foreach ($col->getFilterSelectOptions() as $value => $option) {
                                 if ($col->getFilterActiveValue() == sprintf($col->getFilterDefaultOperation(), $value)) {
                                     $htmlFilter .= '<option value="' . $value . '" selected="selected">' . $option . '</option>';
-                                } else if (($col->getFilterActiveValue() == '') && ($value == '')){
+                                } else if (($col->getFilterActiveValue() === '') && ($value === '')){
                                     $htmlFilter .= '<option value="' . $value . '" selected="selected">' . $option . '</option>';
                                 } else {
                                     $htmlFilter .= '<option value="' . $value . '">' . $option . '</option>';
