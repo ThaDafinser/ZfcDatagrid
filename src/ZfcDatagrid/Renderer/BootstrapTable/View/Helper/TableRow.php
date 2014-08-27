@@ -58,16 +58,16 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
         return $name;
     }
 
-    private function getTr($row, $open = true)
+    private function getTr($row, $open = true, array $classes = null)
     {
         if ($open !== true) {
             return '</tr>';
         } else {
-
+            $class = empty($classes) ? '' : ' class="' . implode(' ' , $classes) . '"';
             if (isset($row['idConcated'])) {
-                return '<tr id="' . $row['idConcated'] . '">';
+                return '<tr' . $class . ' id="' . $row['idConcated'] . '">';
             } else {
-                return '<tr>';
+                return '<tr' . $class . '>';
             }
         }
     }
@@ -97,11 +97,8 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
      */
     public function __invoke($row, array $cols, AbstractAction $rowClickAction = null, array $rowStyles = array(), $hasMassActions = false)
     {
-        $return = $this->getTr($row);
-
-        if ($hasMassActions === true) {
-            $return .= '<td><input type="checkbox" name="massActionSelected[]" value="' . $row['id'] . '" /></td>';
-        }
+        $cells = '';
+        $rowClasses = array();
 
         foreach ($cols as $col) {
             /* @var $col \ZfcDatagrid\Column\AbstractColumn */
@@ -148,6 +145,13 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
                         case 'ZfcDatagrid\Column\Style\BackgroundColor':
                             $cssStyles[] = 'background-color: #' . $style->getRgbHexString();
                             break;
+                        case 'ZfcDatagrid\Column\Style\CSSClass':
+                            if ($style->getForRow()) {
+                                $rowClasses[] = $style->getClass();
+                            } else {
+                                $classes[] = $style->getClass();
+                            }
+                            break;
                         default:
                             throw new \InvalidArgumentException('Not defined style: "' . get_class($style) . '"');
                             break;
@@ -176,15 +180,19 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
             }
 
             $attributes = array(
-                'class' => implode(',', $classes),
+                'class' => implode(' ', $classes),
                 'style' => implode(';', $cssStyles),
                 'data-columnUniqueId' => $col->getUniqueId()
             );
 
-            $return .= $this->getTd($value, $attributes);
+            $cells .= $this->getTd($value, $attributes);
         }
 
-        $return .= $this->getTr($row, false);
+        $return = $this->getTr($row, true, $rowClasses);
+        if ($hasMassActions === true) {
+            $return .= '<td><input type="checkbox" name="massActionSelected[]" value="' . $row['id'] . '" /></td>';
+        }
+        $return .= $cells . $this->getTr($row, false);
 
         return $return;
     }
