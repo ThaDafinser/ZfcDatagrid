@@ -374,7 +374,7 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(array(
             47,
-            31,
+            30,
         ), $result);
     }
 
@@ -403,7 +403,7 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(array(
             47,
-            31,
+            30,
         ), $result);
     }
 
@@ -431,7 +431,7 @@ class RendererTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($this->consoleWidth, array_sum($result));
 
         $this->assertEquals(array(
-            73,
+            72,
             5,
         ), $result);
     }
