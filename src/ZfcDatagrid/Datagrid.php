@@ -172,6 +172,12 @@ class Datagrid implements ServiceLocatorAwareInterface
 
     /**
      *
+     * @var array
+     */
+    protected $toolbarTemplateVariables = array();
+
+    /**
+     *
      * @var ViewModel
      */
     protected $viewModel;
@@ -907,6 +913,7 @@ class Datagrid implements ServiceLocatorAwareInterface
                 if ($this->getToolbarTemplate() !== null) {
                     $renderer->setToolbarTemplate($this->getToolbarTemplate());
                 }
+                $renderer->setToolbarTemplateVariables($this->getToolbarTemplateVariables());
                 $renderer->setViewModel($this->getViewModel());
                 $renderer->setTranslator($this->getTranslator());
                 $renderer->setTitle($this->getTitle());
@@ -1127,6 +1134,26 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function getToolbarTemplate()
     {
         return $this->toolbarTemplate;
+    }
+
+    /**
+     * Set the toolbar view template variables
+     *
+     * @param unknown $name
+     */
+    public function setToolbarTemplateVariables(array $variables)
+    {
+        $this->toolbarTemplateVariables = $variables;
+    }
+
+    /**
+     * Get the toolbar template variables
+     *
+     * @return array
+     */
+    public function getToolbarTemplateVariables()
+    {
+        return $this->toolbarTemplateVariables;
     }
 
     /**

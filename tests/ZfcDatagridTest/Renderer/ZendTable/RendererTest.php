@@ -24,6 +24,8 @@ class RendererTest extends PHPUnit_Framework_TestCase
         ),
     );
 
+    private $consoleWidth = 78;
+
     /**
      *
      * @var \Zend\Http\PhpEnvironment\Request
@@ -368,7 +370,7 @@ class RendererTest extends PHPUnit_Framework_TestCase
         ));
 
         $result = $method->invoke($renderer);
-        $this->assertEquals(78, array_sum($result));
+        $this->assertEquals($this->consoleWidth, array_sum($result));
 
         $this->assertEquals(array(
             47,
@@ -378,8 +380,6 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
     public function testGetColumnWidthsLarger()
     {
-        $widthAvailable = 78;
-
         $reflection = new ReflectionClass('ZfcDatagrid\Renderer\ZendTable\Renderer');
         $method = $reflection->getMethod('getColumnWidths');
         $method->setAccessible(true);
@@ -399,7 +399,7 @@ class RendererTest extends PHPUnit_Framework_TestCase
         ));
 
         $result = $method->invoke($renderer);
-        $this->assertEquals($widthAvailable, array_sum($result));
+        $this->assertEquals($this->consoleWidth, array_sum($result));
 
         $this->assertEquals(array(
             47,
@@ -409,8 +409,6 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
     public function testGetColumnWidthsRoundNecessary()
     {
-        $widthAvailable = 78;
-
         $reflection = new ReflectionClass('ZfcDatagrid\Renderer\ZendTable\Renderer');
         $method = $reflection->getMethod('getColumnWidths');
         $method->setAccessible(true);
@@ -430,7 +428,7 @@ class RendererTest extends PHPUnit_Framework_TestCase
         ));
 
         $result = $method->invoke($renderer);
-        $this->assertEquals($widthAvailable, array_sum($result));
+        $this->assertEquals($this->consoleWidth, array_sum($result));
 
         $this->assertEquals(array(
             73,

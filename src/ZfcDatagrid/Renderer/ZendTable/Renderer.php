@@ -327,7 +327,7 @@ class Renderer extends AbstractRenderer
         $cols = $this->getColumnsToDisplay();
 
         $this->calculateColumnWidthPercent($cols);
-        
+
         $border = count($cols) + 1;
 
         $widthAvailable = $this->getConsoleAdapter()->getWidth() - $border;

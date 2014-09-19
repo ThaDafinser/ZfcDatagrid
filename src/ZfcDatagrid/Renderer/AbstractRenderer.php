@@ -70,6 +70,12 @@ abstract class AbstractRenderer implements RendererInterface
 
     /**
      *
+     * @var array
+     */
+    protected $toolbarTemplateVariables = array();
+
+    /**
+     *
      * @var Translator
      */
     protected $translator;
@@ -184,6 +190,26 @@ abstract class AbstractRenderer implements RendererInterface
         }
 
         return $this->templateToolbar;
+    }
+
+    /**
+     * Set the toolbar view template variables
+     *
+     * @param unknown $name
+     */
+    public function setToolbarTemplateVariables(array $variables)
+    {
+        $this->toolbarTemplateVariables = $variables;
+    }
+
+    /**
+     * Get the toolbar template variables
+     *
+     * @return array
+     */
+    public function getToolbarTemplateVariables()
+    {
+        return $this->toolbarTemplateVariables;
     }
 
     /**
@@ -618,6 +644,7 @@ abstract class AbstractRenderer implements RendererInterface
         $viewModel->setVariable('overwriteUrl', $grid->getUrl());
 
         $viewModel->setVariable('templateToolbar', $this->getToolbarTemplate());
+        $viewModel->setVariable('templateToolbarVariables', $this->getToolbarTemplateVariables());
         $viewModel->setVariable('rendererName', $this->getName());
 
         $options = $this->getOptions();
