@@ -3,7 +3,6 @@ namespace ZfcDatagrid\Column\DataPopulation;
 
 interface DataPopulationInterface
 {
-
     /**
      * Return the result
      *

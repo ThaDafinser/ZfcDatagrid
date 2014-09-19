@@ -9,7 +9,6 @@ use ZfcDatagrid\Module;
  */
 class ModuleTest extends PHPUnit_Framework_TestCase
 {
-
     public function testGetAutoloaderConfig()
     {
         $module = new Module();

@@ -12,7 +12,6 @@ use ZfcDatagridTest\DataSource\DataSourceTestCase;
  */
 abstract class AbstractDoctrine2Test extends DataSourceTestCase
 {
-
     /**
      * The metadata cache that is shared between all ORM tests (except functional tests).
      *
@@ -44,32 +43,30 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
     {
         if (version_compare(\Doctrine\Common\Version::VERSION, '3.0.0', '>=')) {
             $reader = new \Doctrine\Common\Annotations\CachedReader(new \Doctrine\Common\Annotations\AnnotationReader(), new ArrayCache());
-        } else
-            if (version_compare(\Doctrine\Common\Version::VERSION, '2.2.0-DEV', '>=')) {
-                // Register the ORM Annotations in the AnnotationRegistry
+        } elseif (version_compare(\Doctrine\Common\Version::VERSION, '2.2.0-DEV', '>=')) {
+            // Register the ORM Annotations in the AnnotationRegistry
                 $reader = new \Doctrine\Common\Annotations\SimpleAnnotationReader();
-                $reader->addNamespace('Doctrine\ORM\Mapping');
-                $reader = new \Doctrine\Common\Annotations\CachedReader($reader, new ArrayCache());
-            } else
-                if (version_compare(\Doctrine\Common\Version::VERSION, '2.1.0-BETA3-DEV', '>=')) {
-                    $reader = new \Doctrine\Common\Annotations\AnnotationReader();
-                    $reader->setIgnoreNotImportedAnnotations(true);
-                    $reader->setEnableParsePhpImports(false);
-                    if ($alias) {
-                        $reader->setAnnotationNamespaceAlias('Doctrine\ORM\Mapping\\', $alias);
-                    } else {
-                        $reader->setDefaultAnnotationNamespace('Doctrine\ORM\Mapping\\');
-                    }
-                    $reader = new \Doctrine\Common\Annotations\CachedReader(new \Doctrine\Common\Annotations\IndexedReader($reader), new ArrayCache());
-                } else {
-                    $reader = new \Doctrine\Common\Annotations\AnnotationReader();
-                    if ($alias) {
-                        $reader->setAnnotationNamespaceAlias('Doctrine\ORM\Mapping\\', $alias);
-                    } else {
-                        $reader->setDefaultAnnotationNamespace('Doctrine\ORM\Mapping\\');
-                    }
-                }
-        \Doctrine\Common\Annotations\AnnotationRegistry::registerFile(__DIR__ . "/../../../lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php");
+            $reader->addNamespace('Doctrine\ORM\Mapping');
+            $reader = new \Doctrine\Common\Annotations\CachedReader($reader, new ArrayCache());
+        } elseif (version_compare(\Doctrine\Common\Version::VERSION, '2.1.0-BETA3-DEV', '>=')) {
+            $reader = new \Doctrine\Common\Annotations\AnnotationReader();
+            $reader->setIgnoreNotImportedAnnotations(true);
+            $reader->setEnableParsePhpImports(false);
+            if ($alias) {
+                $reader->setAnnotationNamespaceAlias('Doctrine\ORM\Mapping\\', $alias);
+            } else {
+                $reader->setDefaultAnnotationNamespace('Doctrine\ORM\Mapping\\');
+            }
+            $reader = new \Doctrine\Common\Annotations\CachedReader(new \Doctrine\Common\Annotations\IndexedReader($reader), new ArrayCache());
+        } else {
+            $reader = new \Doctrine\Common\Annotations\AnnotationReader();
+            if ($alias) {
+                $reader->setAnnotationNamespaceAlias('Doctrine\ORM\Mapping\\', $alias);
+            } else {
+                $reader->setDefaultAnnotationNamespace('Doctrine\ORM\Mapping\\');
+            }
+        }
+        \Doctrine\Common\Annotations\AnnotationRegistry::registerFile(__DIR__."/../../../lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php");
 
         return new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($reader, (array) $paths);
     }
@@ -98,12 +95,12 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
         $config->setMetadataCacheImpl($metadataCache);
         $config->setMetadataDriverImpl($config->newDefaultAnnotationDriver(array(), true));
         $config->setQueryCacheImpl(self::getSharedQueryCacheImpl());
-        $config->setProxyDir(__DIR__ . '/Proxies');
+        $config->setProxyDir(__DIR__.'/Proxies');
         $config->setProxyNamespace('Doctrine\Tests\Proxies');
 
         $config->setEntityNamespaces(array(
             'ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity',
-            'ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity\Category'
+            'ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity\Category',
         ));
 
         if ($conn === null) {
@@ -111,7 +108,7 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
                 'driverClass' => 'ZfcDatagridTest\DataSource\Doctrine2\Mocks\DriverMock',
                 'wrapperClass' => 'ZfcDatagridTest\DataSource\Doctrine2\Mocks\ConnectionMock',
                 'user' => 'john',
-                'password' => 'wayne'
+                'password' => 'wayne',
             );
         }
 

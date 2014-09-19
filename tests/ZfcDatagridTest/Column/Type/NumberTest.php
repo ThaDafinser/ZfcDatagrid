@@ -13,7 +13,6 @@ use ZfcDatagrid\Filter;
  */
 class NumberTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      *
      * @var Type\Number

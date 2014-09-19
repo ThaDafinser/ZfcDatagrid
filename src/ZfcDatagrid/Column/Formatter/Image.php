@@ -5,11 +5,10 @@ use ZfcDatagrid\Column\AbstractColumn;
 
 class Image extends AbstractFormatter
 {
-
     protected $validRenderers = array(
         'jqGrid',
         'bootstrapTable',
-        'printHtml'
+        'printHtml',
     );
 
     protected $attributes = array();
@@ -77,15 +76,14 @@ class Image extends AbstractFormatter
 
         $linkAttributes = array();
         foreach ($this->getLinkAttributes() as $key => $value) {
-            $linkAttributes[] = $key . '="' . $value . '"';
+            $linkAttributes[] = $key.'="'.$value.'"';
         }
 
         $attributes = array();
         foreach ($this->getAttributes() as $key => $value) {
-            $attributes[] = $key . '="' . $value . '"';
+            $attributes[] = $key.'="'.$value.'"';
         }
 
-        return '<a href="' . $prefix . $original . '" ' . implode(' ', $linkAttributes) . '><img src="' . $prefix . $thumb . '" ' . implode(' ', $attributes) . ' /></a>';
-
+        return '<a href="'.$prefix.$original.'" '.implode(' ', $linkAttributes).'><img src="'.$prefix.$thumb.'" '.implode(' ', $attributes).' /></a>';
     }
 }

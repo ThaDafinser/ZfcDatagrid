@@ -8,7 +8,6 @@ use InvalidArgumentException;
 
 class Image extends AbstractType
 {
-
     /**
      *
      * @var string

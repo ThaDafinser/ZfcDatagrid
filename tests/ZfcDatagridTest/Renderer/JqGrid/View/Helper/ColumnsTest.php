@@ -13,7 +13,6 @@ use ZfcDatagrid\Filter;
  */
 class ColumnsTest extends PHPUnit_Framework_TestCase
 {
-
     private $sm;
 
     /**
@@ -52,7 +51,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $helper->setServiceLocator($this->sm);
 
         $cols = array(
-            clone $this->myCol
+            clone $this->myCol,
         );
 
         $result = $helper($cols);
@@ -69,7 +68,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $col1 = clone $this->myCol;
         $col1->addStyle(new Style\Bold());
         $cols = array(
-            $col1
+            $col1,
         );
 
         $result = $helper($cols);
@@ -86,7 +85,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $col1 = clone $this->myCol;
         $col1->addStyle(new Style\Italic());
         $cols = array(
-            $col1
+            $col1,
         );
 
         $result = $helper($cols);
@@ -103,7 +102,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $col1 = clone $this->myCol;
         $col1->addStyle(new Style\Color(Style\Color::$RED));
         $cols = array(
-            $col1
+            $col1,
         );
 
         $result = $helper($cols);
@@ -120,7 +119,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $col1 = clone $this->myCol;
         $col1->addStyle(new Style\BackgroundColor(Style\BackgroundColor::$RED));
         $cols = array(
-            $col1
+            $col1,
         );
 
         $result = $helper($cols);
@@ -138,10 +137,10 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $col1 = clone $this->myCol;
         $col1->addStyle($styleMock);
         $cols = array(
-            $col1
+            $col1,
         );
 
-        $this->setExpectedException('Exception', 'Not defined style: "' . get_class($styleMock) . '"');
+        $this->setExpectedException('Exception', 'Not defined style: "'.get_class($styleMock).'"');
         $result = $helper($cols);
 
         $this->assertStringStartsWith('[{name:', $result);
@@ -160,7 +159,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
 
         $col1->addStyle($style);
         $cols = array(
-            $col1
+            $col1,
         );
 
         $result = $helper($cols);
@@ -181,7 +180,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
 
         $col1->addStyle($style);
         $cols = array(
-            $col1
+            $col1,
         );
 
         $result = $helper($cols);
@@ -202,10 +201,10 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
 
         $col1->addStyle($style);
         $cols = array(
-            $col1
+            $col1,
         );
 
-        $this->setExpectedException('Exception', 'Currently not supported filter operation: "' . Filter::IN . '"');
+        $this->setExpectedException('Exception', 'Currently not supported filter operation: "'.Filter::IN.'"');
         $result = $helper($cols);
     }
 }

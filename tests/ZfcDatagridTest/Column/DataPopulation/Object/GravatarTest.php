@@ -10,7 +10,6 @@ use ZfcDatagrid\Column\DataPopulation\Object\Gravatar;
  */
 class GravatarTest extends PHPUnit_Framework_TestCase
 {
-
     public function testAll()
     {
         $gravatar = new Gravatar();
@@ -20,14 +19,14 @@ class GravatarTest extends PHPUnit_Framework_TestCase
 
         // valid email
         $gravatar->setParameterFromColumn('email', 'martin.keckeis1@gmail.com');
-        $this->assertEquals('http://www.gravatar.com/avatar/' . md5('martin.keckeis1@gmail.com'), $gravatar->toString());
+        $this->assertEquals('http://www.gravatar.com/avatar/'.md5('martin.keckeis1@gmail.com'), $gravatar->toString());
     }
 
     public function testException()
     {
         $gravatar = new Gravatar();
 
-         $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('InvalidArgumentException');
         $gravatar->setParameterFromColumn('invalidPara', 'someValue');
     }
 }

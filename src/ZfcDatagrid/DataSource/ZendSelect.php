@@ -8,7 +8,6 @@ use Zend\Db\Sql\Expression;
 
 class ZendSelect extends AbstractDataSource
 {
-
     /**
      *
      * @var Sql\Select
@@ -84,7 +83,7 @@ class ZendSelect extends AbstractDataSource
             if ($column instanceof Column\Select) {
                 $colString = $column->getSelectPart1();
                 if ($column->getSelectPart2() != '') {
-                    $colString = new Expression($platform->quoteIdentifier($colString) . $platform->getIdentifierSeparator() . $platform->quoteIdentifier($column->getSelectPart2()));
+                    $colString = new Expression($platform->quoteIdentifier($colString).$platform->getIdentifierSeparator().$platform->quoteIdentifier($column->getSelectPart2()));
                 }
 
                 $selectColumns[$column->getUniqueId()] = $colString;
@@ -107,7 +106,7 @@ class ZendSelect extends AbstractDataSource
 
             foreach ($this->getSortConditions() as $sortCondition) {
                 $column = $sortCondition['column'];
-                $select->order($column->getUniqueId() . ' ' . $sortCondition['sortDirection']);
+                $select->order($column->getUniqueId().' '.$sortCondition['sortDirection']);
             }
         }
 
@@ -116,7 +115,6 @@ class ZendSelect extends AbstractDataSource
          */
         $filterColumn = new ZendSelect\Filter($this->getAdapter(), $select);
         foreach ($this->getFilters() as $filter) {
-
             /* @var $filter \ZfcDatagrid\Filter */
             if ($filter->isColumnFilter() === true) {
                 $filterColumn->applyFilter($filter);

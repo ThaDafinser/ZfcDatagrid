@@ -10,7 +10,6 @@ use ZfcDatagrid\Library\ImageResize;
  */
 class ImageResizeTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * Height + width is LESS than max
      *

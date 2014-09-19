@@ -8,7 +8,6 @@ use Zend\View\Model\JsonModel;
 
 class Renderer extends AbstractRenderer
 {
-
     public function getName()
     {
         return 'jqGrid';
@@ -79,7 +78,7 @@ class Renderer extends AbstractRenderer
                     if ($column->getUniqueId() == $sortColumn) {
                         $sortConditions[] = array(
                             'sortDirection' => $sortDirection,
-                            'column' => $column
+                            'column' => $column,
                         );
 
                         $column->setSortActive($sortDirection);
@@ -219,7 +218,7 @@ class Renderer extends AbstractRenderer
             'rows' => $this->getData(),
             'page' => $this->getPaginator()->getCurrentPageNumber(),
             'total' => $this->getPaginator()->count(),
-            'records' => $this->getPaginator()->getTotalItemCount()
+            'records' => $this->getPaginator()->getTotalItemCount(),
         );
     }
 }

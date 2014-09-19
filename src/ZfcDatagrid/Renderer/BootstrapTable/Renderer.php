@@ -7,7 +7,6 @@ use Zend\Http\PhpEnvironment\Request as HttpRequest;
 
 class Renderer extends AbstractRenderer
 {
-
     public function getName()
     {
         return 'bootstrapTable';
@@ -78,7 +77,7 @@ class Renderer extends AbstractRenderer
                     if ($column->getUniqueId() == $sortColumn) {
                         $sortConditions[] = array(
                             'sortDirection' => $sortDirection,
-                            'column' => $column
+                            'column' => $column,
                         );
 
                         $column->setSortActive($sortDirection);

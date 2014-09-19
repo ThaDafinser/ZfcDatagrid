@@ -13,7 +13,6 @@ use ReflectionClass;
  */
 class AbstractRendererTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      *
      * @var \ZfcDatagrid\Column\AbstractColumn
@@ -29,11 +28,11 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
     {
         $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
         $renderer->setOptions(array(
-            'test'
+            'test',
         ));
 
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $renderer->getOptions());
     }
 
@@ -49,13 +48,13 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         $renderer->setOptions(array(
             'renderer' => array(
                 'abstract' => array(
-                    'test'
-                )
-            )
+                    'test',
+                ),
+            ),
         ));
 
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $renderer->getOptionsRenderer());
     }
 
@@ -99,10 +98,10 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
                 'abstract' => array(
                     'templates' => array(
                         'layout' => 'config/my/template',
-                        'toolbar' => 'config/my/toolbar'
-                    )
-                )
-            )
+                        'toolbar' => 'config/my/toolbar',
+                    ),
+                ),
+            ),
         ));
 
         $this->assertEquals('config/my/template', $renderer->getTemplate());
@@ -130,11 +129,11 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
 
         $col = clone $this->colMock;
         $renderer->setColumns(array(
-            $col
+            $col,
         ));
 
         $this->assertEquals(array(
-            $col
+            $col,
         ), $renderer->getColumns());
     }
 
@@ -147,10 +146,10 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
 
         $bold = new Style\Bold();
         $renderer->setRowStyles(array(
-            $bold
+            $bold,
         ));
         $this->assertEquals(array(
-            $bold
+            $bold,
         ), $renderer->getRowStyles());
     }
 
@@ -165,7 +164,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
 
         $col1 = clone $this->colMock;
         $cols = array(
-            $col1
+            $col1,
         );
 
         /*
@@ -173,7 +172,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
          */
         $this->assertEquals(5, $col1->getWidth());
         $method->invokeArgs($renderer, array(
-            $cols
+            $cols,
         ));
         $this->assertEquals(100, $col1->getWidth());
 
@@ -187,11 +186,11 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         $col2->setWidth(60);
         $cols = array(
             $col1,
-            $col2
+            $col2,
         );
 
         $method->invokeArgs($renderer, array(
-            $cols
+            $cols,
         ));
         $this->assertEquals(60, $col1->getWidth());
         $this->assertEquals(40, $col2->getWidth());
@@ -206,8 +205,8 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
 
         $data = array(
             array(
-                'myCol' => 123
-            )
+                'myCol' => 123,
+            ),
         );
         $renderer->setData($data);
         $this->assertEquals($data, $renderer->getData());
@@ -314,15 +313,15 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         $col1->setUniqueId('myCol');
         $col1->setSortDefault(1);
         $renderer->setColumns(array(
-            $col1
+            $col1,
         ));
 
         $sortConditions = $renderer->getSortConditions();
         $this->assertEquals(array(
             1 => array(
                 'column' => $col1,
-                'sortDirection' => 'ASC'
-            )
+                'sortDirection' => 'ASC',
+            ),
         ), $sortConditions);
     }
 
@@ -346,7 +345,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         $col1->setUniqueId('myCol');
         $col1->setFilterDefaultValue('filterValue');
         $renderer->setColumns(array(
-            $col1
+            $col1,
         ));
 
         $filters = $renderer->getFiltersDefault();
@@ -369,7 +368,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         $col1->setUniqueId('myCol');
         $col1->setFilterDefaultValue('filterValue');
         $renderer->setColumns(array(
-            $col1
+            $col1,
         ));
     }
 

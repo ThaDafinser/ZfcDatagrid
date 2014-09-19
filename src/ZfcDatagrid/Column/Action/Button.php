@@ -3,7 +3,6 @@ namespace ZfcDatagrid\Column\Action;
 
 class Button extends AbstractAction
 {
-
     protected $label = '';
 
     public function __construct()

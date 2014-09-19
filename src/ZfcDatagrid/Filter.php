@@ -5,7 +5,6 @@ use InvalidArgumentException;
 
 class Filter
 {
-
     /**
      * The constant values are used for display on the usergrid filter
      * This is for help, how the data is filtered really
@@ -212,7 +211,7 @@ class Filter
             } else {
                 $value = array(
                     min($value),
-                    max($value)
+                    max($value),
                 );
                 $this->displayColumnValue = sprintf($operator, $value[0], $value[1]);
             }
@@ -380,12 +379,12 @@ class Filter
                         return true;
                     }
                 } else {
-                    throw new InvalidArgumentException('Between needs exactly an array of two expected values. Give: "' . print_r($expectedValue, true));
+                    throw new InvalidArgumentException('Between needs exactly an array of two expected values. Give: "'.print_r($expectedValue, true));
                 }
                 break;
 
             default:
-                throw new InvalidArgumentException('currently not implemented filter type: "' . $operator . '"');
+                throw new InvalidArgumentException('currently not implemented filter type: "'.$operator.'"');
                 break;
         }
 
@@ -416,7 +415,7 @@ class Filter
 
         return array(
             $currentValue,
-            $expectedValue
+            $expectedValue,
         );
     }
 }

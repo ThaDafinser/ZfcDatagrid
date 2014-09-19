@@ -10,7 +10,6 @@ use Zend\Db\Sql\Predicate\PredicateSet;
 
 class Filter
 {
-
     /**
      *
      * @var Sql
@@ -63,7 +62,7 @@ class Filter
         $column = $filter->getColumn();
         $colString = $column->getSelectPart1();
         if ($column->getSelectPart2() != '') {
-            $colString .= '.' . $column->getSelectPart2();
+            $colString .= '.'.$column->getSelectPart2();
         }
         if ($column instanceof Column\Select && $column->hasFilterSelectExpression()) {
             $colString = sprintf($column->getFilterSelectExpression(), $colString);
@@ -77,32 +76,32 @@ class Filter
             switch ($filter->getOperator()) {
 
                 case DatagridFilter::LIKE:
-                    $wheres[] = $where->like($colString, '%' . $value . '%');
+                    $wheres[] = $where->like($colString, '%'.$value.'%');
                     break;
 
                 case DatagridFilter::LIKE_LEFT:
-                    $wheres[] = $where->like($colString, '%' . $value);
+                    $wheres[] = $where->like($colString, '%'.$value);
                     break;
 
                 case DatagridFilter::LIKE_RIGHT:
-                    $wheres[] = $where->like($colString, $value . '%');
+                    $wheres[] = $where->like($colString, $value.'%');
                     break;
 
                 case DatagridFilter::NOT_LIKE:
-                    $wheres[] = $where->literal($qi($colString) . 'NOT LIKE ?', array(
-                        '%' . $value . '%'
+                    $wheres[] = $where->literal($qi($colString).'NOT LIKE ?', array(
+                        '%'.$value.'%',
                     ));
                     break;
 
                 case DatagridFilter::NOT_LIKE_LEFT:
-                    $wheres[] = $where->literal($qi($colString) . 'NOT LIKE ?', array(
-                        '%' . $value
+                    $wheres[] = $where->literal($qi($colString).'NOT LIKE ?', array(
+                        '%'.$value,
                     ));
                     break;
 
                 case DatagridFilter::NOT_LIKE_RIGHT:
-                    $wheres[] = $where->literal($qi($colString) . 'NOT LIKE ?', array(
-                        $value . '%'
+                    $wheres[] = $where->literal($qi($colString).'NOT LIKE ?', array(
+                        $value.'%',
                     ));
                     break;
 
@@ -135,7 +134,7 @@ class Filter
                     break 2;
 
                 default:
-                    throw new \InvalidArgumentException('This operator is currently not supported: ' . $filter->getOperator());
+                    throw new \InvalidArgumentException('This operator is currently not supported: '.$filter->getOperator());
                     break;
             }
         }

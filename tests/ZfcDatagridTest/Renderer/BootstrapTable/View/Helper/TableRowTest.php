@@ -14,14 +14,13 @@ use ZfcDatagrid\Column\Style\AbstractColor;
  */
 class TableRowTest extends PHPUnit_Framework_TestCase
 {
-
     private $rowWithoutId = array(
-        'myCol' => 'First value'
+        'myCol' => 'First value',
     );
 
     private $rowWithId = array(
         'idConcated' => 1,
-        'myCol' => 'First value'
+        'myCol' => 'First value',
     );
 
     /**
@@ -47,7 +46,7 @@ class TableRowTest extends PHPUnit_Framework_TestCase
         $myCol = clone $this->myCol;
 
         $cols = array(
-            $myCol
+            $myCol,
         );
 
         // without id
@@ -71,7 +70,7 @@ class TableRowTest extends PHPUnit_Framework_TestCase
         $myCol->setHidden(true);
 
         $cols = array(
-            $myCol
+            $myCol,
         );
 
         $html = $helper($this->rowWithId, $cols);
@@ -91,7 +90,7 @@ class TableRowTest extends PHPUnit_Framework_TestCase
         $myCol->setType(new Type\Number());
 
         $cols = array(
-            $myCol
+            $myCol,
         );
 
         $html = $helper($this->rowWithId, $cols);
@@ -111,7 +110,7 @@ class TableRowTest extends PHPUnit_Framework_TestCase
         $myCol->addStyle(new Style\Bold());
 
         $cols = array(
-            $myCol
+            $myCol,
         );
 
         $html = $helper($this->rowWithId, $cols);
@@ -122,7 +121,7 @@ class TableRowTest extends PHPUnit_Framework_TestCase
         $myCol->addStyle(new Style\Italic());
 
         $cols = array(
-            $myCol
+            $myCol,
         );
         $html = $helper($this->rowWithId, $cols);
         $this->assertContains('<td style="font-style: italic"', $html);
@@ -132,7 +131,7 @@ class TableRowTest extends PHPUnit_Framework_TestCase
         $myCol->addStyle(new Style\Color(AbstractColor::$RED));
 
         $cols = array(
-            $myCol
+            $myCol,
         );
         $html = $helper($this->rowWithId, $cols);
         $this->assertContains('<td style="color: #ff0000"', $html);
@@ -142,7 +141,7 @@ class TableRowTest extends PHPUnit_Framework_TestCase
         $myCol->addStyle(new Style\BackgroundColor(AbstractColor::$GREEN));
 
         $cols = array(
-            $myCol
+            $myCol,
         );
         $html = $helper($this->rowWithId, $cols);
         $this->assertContains('<td style="background-color: #00ff00"', $html);
@@ -154,7 +153,7 @@ class TableRowTest extends PHPUnit_Framework_TestCase
         $myCol->addStyle($style);
 
         $cols = array(
-            $myCol
+            $myCol,
         );
 
         $this->setExpectedException('InvalidArgumentException');
@@ -180,7 +179,7 @@ class TableRowTest extends PHPUnit_Framework_TestCase
 
         $cols = array(
             $myCol,
-            $colAction
+            $colAction,
         );
 
         $html = $helper($rowData, $cols);
@@ -189,7 +188,7 @@ class TableRowTest extends PHPUnit_Framework_TestCase
         // row action
         $cols = array(
             $myCol,
-            $colAction
+            $colAction,
         );
         $html = $helper($rowData, $cols, $action);
         $this->assertContains('<a href="http://example.com', $html);

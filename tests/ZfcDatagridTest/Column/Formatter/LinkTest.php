@@ -10,14 +10,13 @@ use PHPUnit_Framework_TestCase;
  */
 class LinkTest extends PHPUnit_Framework_TestCase
 {
-
     public function testGetValidRendererNames()
     {
         $formatter = new Formatter\Link();
 
         $this->assertEquals(array(
             'jqGrid',
-            'bootstrapTable'
+            'bootstrapTable',
         ), $formatter->getValidRendererNames());
     }
 
@@ -28,7 +27,7 @@ class LinkTest extends PHPUnit_Framework_TestCase
 
         $formatter = new Formatter\Link();
         $formatter->setRowData(array(
-            'myCol' => 'http://example.com'
+            'myCol' => 'http://example.com',
         ));
 
         $this->assertEquals('<a href="http://example.com">http://example.com</a>', $formatter->getFormattedValue($col));

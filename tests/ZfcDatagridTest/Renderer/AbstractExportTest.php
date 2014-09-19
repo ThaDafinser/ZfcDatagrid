@@ -10,7 +10,6 @@ use ReflectionClass;
  */
 class AbstractExportTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      *
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -36,7 +35,7 @@ class AbstractExportTest extends PHPUnit_Framework_TestCase
         $exportMock->setTitle('My title');
 
         $filename = $method->invokeArgs($exportMock, array());
-        $this->assertEquals(date('Y-m-d_H-i-s') . '_My_title', $filename);
+        $this->assertEquals(date('Y-m-d_H-i-s').'_My_title', $filename);
     }
 
     public function testPaperWidth()
@@ -57,9 +56,9 @@ class AbstractExportTest extends PHPUnit_Framework_TestCase
             'renderer' => array(
                 'abstract' => array(
                     'papersize' => 'A4',
-                    'orientation' => 'landscape'
-                )
-            )
+                    'orientation' => 'landscape',
+                ),
+            ),
         );
         $exportMock->setOptions($options);
 
@@ -73,9 +72,9 @@ class AbstractExportTest extends PHPUnit_Framework_TestCase
             'renderer' => array(
                 'abstract' => array(
                     'papersize' => 'A4',
-                    'orientation' => 'portrait'
-                )
-            )
+                    'orientation' => 'portrait',
+                ),
+            ),
         );
         $exportMock->setOptions($options);
 
@@ -89,9 +88,9 @@ class AbstractExportTest extends PHPUnit_Framework_TestCase
             'renderer' => array(
                 'abstract' => array(
                     'papersize' => 'A0',
-                    'orientation' => 'portrait'
-                )
-            )
+                    'orientation' => 'portrait',
+                ),
+            ),
         );
         $exportMock->setOptions($options);
 
@@ -105,9 +104,9 @@ class AbstractExportTest extends PHPUnit_Framework_TestCase
             'renderer' => array(
                 'abstract' => array(
                     'papersize' => 'something',
-                    'orientation' => 'portrait'
-                )
-            )
+                    'orientation' => 'portrait',
+                ),
+            ),
         );
         $exportMock->setOptions($options);
 

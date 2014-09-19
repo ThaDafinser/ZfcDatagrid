@@ -8,7 +8,6 @@ use ZfcDatagrid\Column;
  */
 class Object implements DataPopulationInterface
 {
-
     /**
      *
      * @var ObjectAwareInterface
@@ -50,7 +49,7 @@ class Object implements DataPopulationInterface
     {
         $this->objectParameters[] = array(
             'objectParameterName' => $objectParameterName,
-            'column' => $column
+            'column' => $column,
         );
     }
 

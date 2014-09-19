@@ -13,7 +13,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
 {
-
     private $translator;
 
     const STYLE_BOLD = 'cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';';
@@ -91,7 +90,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                 'width' => $column->getWidth(),
                 'hidden' => (bool) $column->isHidden(),
                 'sortable' => (bool) $column->isUserSortEnabled(),
-                'search' => (bool) $column->isUserFilterEnabled()
+                'search' => (bool) $column->isUserFilterEnabled(),
             );
 
             /**
@@ -150,21 +149,21 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                     }
                 } elseif ($key == 'formatter') {
                     if (stripos($value, 'formatter') === false && stripos($value, 'function') === false) {
-                        $value = '"' . $value . '"';
+                        $value = '"'.$value.'"';
                     }
                 } elseif ($key == 'cellattr') {
                     // SKIP THIS
                 } else {
-                    $value = '"' . $value . '"';
+                    $value = '"'.$value.'"';
                 }
 
-                $colModel[] = (string) $key . ': ' . $value;
+                $colModel[] = (string) $key.': '.$value;
             }
 
-            $return[] = '{' . implode(',', $colModel) . '}';
+            $return[] = '{'.implode(',', $colModel).'}';
         }
 
-        return '[' . implode(',', $return) . ']';
+        return '['.implode(',', $return).']';
     }
 
     /**
@@ -204,7 +203,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
             $prefix = 'function (cellvalue, options, rowObject) {';
             $suffix = ' return cellvalue; }';
 
-            $formatter = $prefix . $formatter . $suffix;
+            $formatter = $prefix.$formatter.$suffix;
         }
 
         return $formatter;
@@ -242,11 +241,11 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                         break;
 
                     default:
-                        throw new \Exception('Currently not supported filter operation: "' . $rule['operator'] . '"');
+                        throw new \Exception('Currently not supported filter operation: "'.$rule['operator'].'"');
                         break;
                 }
 
-                $prepend = 'if (rowObject.' . $colString . ' ' . $operator . ' \'' . $rule['value'] . '\') {';
+                $prepend = 'if (rowObject.'.$colString.' '.$operator.' \''.$rule['value'].'\') {';
                 $append .= '}';
             }
 
@@ -262,7 +261,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                     break;
 
                 case 'ZfcDatagrid\Column\Style\Color':
-                    $styleString = 'cellvalue = \'<span style="color: #' . $style->getRgbHexString() . ';">\' + cellvalue + \'</span>\';';
+                    $styleString = 'cellvalue = \'<span style="color: #'.$style->getRgbHexString().';">\' + cellvalue + \'</span>\';';
                     break;
 
                 case 'ZfcDatagrid\Column\Style\BackgroundColor':
@@ -271,11 +270,11 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                     break;
 
                 default:
-                    throw new \Exception('Not defined style: "' . get_class($style) . '"');
+                    throw new \Exception('Not defined style: "'.get_class($style).'"');
                     break;
             }
 
-            $styleFormatter[] = $prepend . $styleString . $append;
+            $styleFormatter[] = $prepend.$styleString.$append;
         }
 
         return $styleFormatter;

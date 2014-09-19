@@ -3,7 +3,6 @@ namespace ZfcDatagrid\Library;
 
 class ImageResize
 {
-
     /**
      * Calculate the width / height, respecting the ratio
      *
@@ -30,7 +29,7 @@ class ImageResize
 
         return array(
             $newWidth,
-            $newHeight
+            $newHeight,
         );
     }
 }

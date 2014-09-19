@@ -10,7 +10,6 @@ namespace ZfcDatagrid\Column;
  */
 class Action extends AbstractColumn
 {
-
     private $actions = array();
 
     /**

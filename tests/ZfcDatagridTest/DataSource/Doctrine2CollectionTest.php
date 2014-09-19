@@ -13,7 +13,6 @@ use ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity\Category;
  */
 class Doctrine2CollectionTest extends DataSourceTestCase
 {
-
     /**
      *
      * @var Doctrine2Collection
@@ -35,7 +34,7 @@ class Doctrine2CollectionTest extends DataSourceTestCase
         $source = new Doctrine2Collection($this->collection);
         $source->setColumns(array(
             $this->colVolumne,
-            $this->colEdition
+            $this->colEdition,
         ));
 
         $this->source = $source;

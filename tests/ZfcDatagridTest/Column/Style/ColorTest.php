@@ -10,7 +10,6 @@ use ZfcDatagrid\Column\Style\AbstractColor;
  */
 class ColorTest extends PHPUnit_Framework_TestCase
 {
-
     public function testConstruct()
     {
         $style = new AbstractColor(AbstractColor::$RED);
@@ -60,7 +59,7 @@ class ColorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(
             'red' => 33,
             'green' => 44,
-            'blue' => 55
+            'blue' => 55,
         ), $style->getRgbArray());
     }
 

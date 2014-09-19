@@ -10,7 +10,6 @@ use ZfcDatagrid\Filter;
  */
 class AbstractActionTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      *
      * @var \ZfcDatagrid\Column\AbstractColumn
@@ -40,22 +39,22 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
         $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
 
-        $action->setLink('/myLink/id/' . $action->getRowIdPlaceholder());
+        $action->setLink('/myLink/id/'.$action->getRowIdPlaceholder());
         $this->assertEquals('/myLink/id/:rowId:', $action->getLink());
 
         $this->assertEquals('/myLink/id/3', $action->getLinkReplaced(array(
-            'idConcated' => 3
+            'idConcated' => 3,
         )));
 
         // Column
         $column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $column->setUniqueId('myCol');
 
-        $action->setLink('/myLink/para1/' . $action->getColumnValuePlaceholder($column));
+        $action->setLink('/myLink/para1/'.$action->getColumnValuePlaceholder($column));
         $this->assertEquals('/myLink/para1/:myCol:', $action->getLink());
 
         $this->assertEquals('/myLink/para1/someValue', $action->getLinkReplaced(array(
-            'myCol' => 'someValue'
+            'myCol' => 'someValue',
         )));
     }
 
@@ -77,7 +76,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
 
         $this->assertCount(1, $action->getAttributes());
         $this->assertEquals(array(
-            'href' => '#'
+            'href' => '#',
         ), $action->getAttributes());
 
         $this->assertEquals('', $action->getAttribute('something'));
@@ -86,7 +85,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         $this->assertCount(2, $action->getAttributes());
         $this->assertEquals(array(
             'href' => '#',
-            'class' => 'error'
+            'class' => 'error',
         ), $action->getAttributes());
 
         $this->assertEquals('error', $action->getAttribute('class'));
@@ -138,18 +137,18 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
 
         $this->assertTrue($action->isDisplayed(array(
-            $this->column->getUniqueId() => '23'
+            $this->column->getUniqueId() => '23',
         )));
 
         // EQUAL
         $action->addShowOnValue($this->column, '23', Filter::EQUAL);
 
         $this->assertTrue($action->isDisplayed(array(
-            $this->column->getUniqueId() => '23'
+            $this->column->getUniqueId() => '23',
         )));
 
         $this->assertFalse($action->isDisplayed(array(
-            $this->column->getUniqueId() => '33'
+            $this->column->getUniqueId() => '33',
         )));
     }
 
@@ -161,11 +160,11 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         $action->addShowOnValue($this->column, '23', Filter::NOT_EQUAL);
 
         $this->assertTrue($action->isDisplayed(array(
-            $this->column->getUniqueId() => '32'
+            $this->column->getUniqueId() => '32',
         )));
 
         $this->assertFalse($action->isDisplayed(array(
-            $this->column->getUniqueId() => '23'
+            $this->column->getUniqueId() => '23',
         )));
     }
 
@@ -177,14 +176,14 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         $action->setShowOnValueOperator('AND');
 
         $this->assertTrue($action->isDisplayed(array(
-            $this->column->getUniqueId() => '23'
+            $this->column->getUniqueId() => '23',
         )));
 
         $action->addShowOnValue($this->column, '23', Filter::EQUAL);
         $action->addShowOnValue($this->column, '24', Filter::NOT_EQUAL);
 
         $this->assertTrue($action->isDisplayed(array(
-            $this->column->getUniqueId() => '23'
+            $this->column->getUniqueId() => '23',
         )));
     }
 
@@ -199,11 +198,11 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         $action->addShowOnValue($this->column, '23', Filter::NOT_EQUAL);
 
         $this->assertFalse($action->isDisplayed(array(
-            $this->column->getUniqueId() => '23'
+            $this->column->getUniqueId() => '23',
         )));
 
         $this->assertFalse($action->isDisplayed(array(
-            $this->column->getUniqueId() => '33'
+            $this->column->getUniqueId() => '33',
         )));
     }
 
@@ -224,7 +223,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('InvalidArgumentException');
         $action->addShowOnValue($this->column, '23', 'UNknownFilter');
         $action->isDisplayed(array(
-            $this->column->getUniqueId() => '32'
+            $this->column->getUniqueId() => '32',
         ));
     }
 }

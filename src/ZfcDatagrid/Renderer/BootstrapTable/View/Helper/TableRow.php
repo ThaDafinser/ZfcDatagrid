@@ -12,7 +12,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
 {
-
     /**
      *
      * @var ServiceLocatorInterface
@@ -63,9 +62,8 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
         if ($open !== true) {
             return '</tr>';
         } else {
-
             if (isset($row['idConcated'])) {
-                return '<tr id="' . $row['idConcated'] . '">';
+                return '<tr id="'.$row['idConcated'].'">';
             } else {
                 return '<tr>';
             }
@@ -77,13 +75,13 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
         $attr = array();
         foreach ($attributes as $name => $value) {
             if ($value != '') {
-                $attr[] = $name . '="' . $value . '"';
+                $attr[] = $name.'="'.$value.'"';
             }
         }
 
         $attr = implode(' ', $attr);
 
-        return '<td ' . $attr . '>' . $dataValue . '</td>';
+        return '<td '.$attr.'>'.$dataValue.'</td>';
     }
 
     /**
@@ -100,7 +98,7 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
         $return = $this->getTr($row);
 
         if ($hasMassActions === true) {
-            $return .= '<td><input type="checkbox" name="massActionSelected[]" value="' . $row['id'] . '" /></td>';
+            $return .= '<td><input type="checkbox" name="massActionSelected[]" value="'.$row['id'].'" /></td>';
         }
 
         foreach ($cols as $col) {
@@ -122,7 +120,7 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
                     break;
 
                 case 'ZfcDatagrid\Column\Type\PhpArray':
-                    $value = '<pre>' . print_r($value, true) . '</pre>';
+                    $value = '<pre>'.print_r($value, true).'</pre>';
                     break;
             }
 
@@ -130,7 +128,6 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
             foreach ($styles as $style) {
                 /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
                 if ($style->isApply($row) === true) {
-
                     switch (get_class($style)) {
 
                         case 'ZfcDatagrid\Column\Style\Bold':
@@ -142,14 +139,14 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
                             break;
 
                         case 'ZfcDatagrid\Column\Style\Color':
-                            $cssStyles[] = 'color: #' . $style->getRgbHexString();
+                            $cssStyles[] = 'color: #'.$style->getRgbHexString();
                             break;
 
                         case 'ZfcDatagrid\Column\Style\BackgroundColor':
-                            $cssStyles[] = 'background-color: #' . $style->getRgbHexString();
+                            $cssStyles[] = 'background-color: #'.$style->getRgbHexString();
                             break;
                         default:
-                            throw new \InvalidArgumentException('Not defined style: "' . get_class($style) . '"');
+                            throw new \InvalidArgumentException('Not defined style: "'.get_class($style).'"');
                             break;
                     }
                 }
@@ -172,13 +169,13 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
             // "rowClick" action
             if ($col instanceof Column\Select && $rowClickAction instanceof AbstractAction
                     && $col->isRowClickEnabled()) {
-                $value = '<a href="' . $rowClickAction->getLinkReplaced($row) . '">' . $value . '</a>';
+                $value = '<a href="'.$rowClickAction->getLinkReplaced($row).'">'.$value.'</a>';
             }
 
             $attributes = array(
                 'class' => implode(',', $classes),
                 'style' => implode(';', $cssStyles),
-                'data-columnUniqueId' => $col->getUniqueId()
+                'data-columnUniqueId' => $col->getUniqueId(),
             );
 
             $return .= $this->getTd($value, $attributes);

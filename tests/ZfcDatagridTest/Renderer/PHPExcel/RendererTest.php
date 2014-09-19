@@ -10,7 +10,6 @@ use ZfcDatagrid\Renderer\PHPExcel;
  */
 class RendererTest extends PHPUnit_Framework_TestCase
 {
-
     public function testGetName()
     {
         $renderer = new PHPExcel\Renderer();

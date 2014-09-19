@@ -9,7 +9,6 @@ use ZfcDatagrid\DataSource\Doctrine2\PaginatorFast;
  */
 class PaginatorFastTest extends AbstractDoctrine2Test
 {
-
     public function testConstruct()
     {
         $qb = $this->em->createQueryBuilder();
@@ -21,8 +20,7 @@ class PaginatorFastTest extends AbstractDoctrine2Test
 
     public function testGetItems()
     {
-
-//         $qb = $this->em->createQueryBuilder();
+        //         $qb = $this->em->createQueryBuilder();
 //         $qb->select('table1');
 //         $qb->from('ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity\Category', 'table1');
 

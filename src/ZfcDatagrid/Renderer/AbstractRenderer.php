@@ -14,7 +14,6 @@ use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 
 abstract class AbstractRenderer implements RendererInterface
 {
-
     protected $options = array();
 
     protected $title;
@@ -160,12 +159,12 @@ abstract class AbstractRenderer implements RendererInterface
         }
 
         if ($type === 'layout') {
-            return 'zfc-datagrid/renderer/' . $this->getName() . '/' . $type;
+            return 'zfc-datagrid/renderer/'.$this->getName().'/'.$type;
         } elseif ($type === 'toolbar') {
             return 'zfc-datagrid/toolbar/toolbar';
         }
 
-        throw new \Exception('Unknown type: "' . $type . '"');
+        throw new \Exception('Unknown type: "'.$type.'"');
     }
 
     /**
@@ -487,7 +486,7 @@ abstract class AbstractRenderer implements RendererInterface
 
                 $sortConditions[$sortDefaults['priority']] = array(
                     'column' => $column,
-                    'sortDirection' => $sortDefaults['sortDirection']
+                    'sortDirection' => $sortDefaults['sortDirection'],
                 );
 
                 $column->setSortActive($sortDefaults['sortDirection']);
@@ -549,11 +548,9 @@ abstract class AbstractRenderer implements RendererInterface
         // @todo skip this, if $grid->isUserFilterEnabled() ?
 
         if ($this->getRequest() instanceof ConsoleRequest || ($this->getRequest() instanceof HttpRequest && ! $this->getRequest()->isPost())) {
-
             foreach ($this->getColumns() as $column) {
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */
                 if ($column->hasFilterDefaultValue() === true) {
-
                     $filter = new Filter();
                     $filter->setFromColumn($column, $column->getFilterDefaultValue());
                     $filters[] = $filter;

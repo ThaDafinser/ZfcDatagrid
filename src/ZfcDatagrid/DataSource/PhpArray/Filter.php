@@ -5,7 +5,6 @@ use ZfcDatagrid\Filter as DatagridFilter;
 
 class Filter
 {
-
     /**
      *
      * @var \ZfcDatagrid\Filter

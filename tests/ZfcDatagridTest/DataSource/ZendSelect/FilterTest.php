@@ -15,7 +15,6 @@ use Zend\Db\Sql\Predicate\Operator;
  */
 class FilterTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      *
      * @var \ZfcDatagrid\Column\AbstractColumn
@@ -65,7 +64,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $select = new Select('myTable');
         $select->columns(array(
             'myCol',
-            'myCol2'
+            'myCol2',
         ));
 
         $this->filterSelect = new FilterSelect($sql, $select);
@@ -409,7 +408,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $filter->expects($this->any())
             ->method('getValues')
             ->will($this->returnValue(array(
-            1
+            1,
         )));
         $filter->expects($this->any())
             ->method('getOperator')

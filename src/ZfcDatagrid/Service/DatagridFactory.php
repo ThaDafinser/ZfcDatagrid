@@ -8,7 +8,6 @@ use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 
 class DatagridFactory implements FactoryInterface
 {
-
     public function createService(ServiceLocatorInterface $sm)
     {
         $config = $sm->get('config');

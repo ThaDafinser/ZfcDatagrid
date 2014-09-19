@@ -10,7 +10,6 @@ use PHPUnit_Framework_TestCase;
  */
 class StringTest extends PHPUnit_Framework_TestCase
 {
-
     public function testTypeName()
     {
         $type = new Type\String();

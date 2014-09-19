@@ -10,7 +10,6 @@ use PHPUnit_Framework_TestCase;
  */
 class ImageTest extends PHPUnit_Framework_TestCase
 {
-
     public function testGetValidRendererNames()
     {
         $formatter = new Formatter\Image();
@@ -18,7 +17,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(
             'jqGrid',
             'bootstrapTable',
-            'printHtml'
+            'printHtml',
         ), $formatter->getValidRendererNames());
     }
 }

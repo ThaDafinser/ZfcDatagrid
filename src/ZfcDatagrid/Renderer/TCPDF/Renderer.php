@@ -12,13 +12,12 @@ use ZfcDatagrid\Library\ImageResize;
 
 class Renderer extends AbstractExport
 {
-
     protected $allowedColumnTypes = array(
         'ZfcDatagrid\Column\Type\DateTime',
         'ZfcDatagrid\Column\Type\Image',
         'ZfcDatagrid\Column\Type\Number',
         'ZfcDatagrid\Column\Type\PhpArray',
-        'ZfcDatagrid\Column\Type\String'
+        'ZfcDatagrid\Column\Type\String',
     );
 
     /**
@@ -110,24 +109,24 @@ class Renderer extends AbstractExport
         $optionsExport = $options['settings']['export'];
 
         $path = $optionsExport['path'];
-        $saveFilename = $this->getCacheId() . '.pdf';
-        $pdf->Output($path . '/' . $saveFilename, 'F');
+        $saveFilename = $this->getCacheId().'.pdf';
+        $pdf->Output($path.'/'.$saveFilename, 'F');
 
         $response = new ResponseStream();
-        $response->setStream(fopen($path . '/' . $saveFilename, 'r'));
+        $response->setStream(fopen($path.'/'.$saveFilename, 'r'));
 
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Type' => array(
                 'application/force-download',
                 'application/octet-stream',
-                'application/download'
+                'application/download',
             ),
-            'Content-Length' => filesize($path . '/' . $saveFilename),
-            'Content-Disposition' => 'attachment;filename=' . $this->getFilename() . '.pdf',
+            'Content-Length' => filesize($path.'/'.$saveFilename),
+            'Content-Disposition' => 'attachment;filename='.$this->getFilename().'.pdf',
             'Cache-Control' => 'must-revalidate',
             'Pragma' => 'no-cache',
-            'Expires' => 'Thu, 1 Jan 1970 00:00:00 GMT'
+            'Expires' => 'Thu, 1 Jan 1970 00:00:00 GMT',
         ));
 
         $response->setHeaders($headers);
@@ -159,7 +158,7 @@ class Renderer extends AbstractExport
         $pdf->setHeaderFont(array(
             'Helvetica',
             '',
-            13
+            13,
         ));
 
         $pdf->setHeaderData($header['logo'], $header['logoWidth'], $this->getTitle());
@@ -314,7 +313,7 @@ class Renderer extends AbstractExport
                             break;
 
                         default:
-                            throw new \Exception('Not defined yet: "' . get_class($style) . '"');
+                            throw new \Exception('Not defined yet: "'.get_class($style).'"');
 
                             break;
                     }
@@ -344,7 +343,7 @@ class Renderer extends AbstractExport
                             if ($file !== false) {
                                 list ($width, $height) = $this->calcImageSize($file, $col->getWidth() - 2, $rowHeight - 2);
 
-                                $pdf->Image('@' . $file, $x + 1, $y + 1, $width, $height, '', '', 'L', false);
+                                $pdf->Image('@'.$file, $x + 1, $y + 1, $width, $height, '', '', 'L', false);
                             }
                         } else {
                             $pdf->Image($link, $x + 1, $y + 1, 0, $resizeHeight, '', '', 'L', false);
@@ -388,7 +387,7 @@ class Renderer extends AbstractExport
 
         return array(
             $newWidth,
-            $newHeight
+            $newHeight,
         );
     }
 
@@ -441,7 +440,7 @@ class Renderer extends AbstractExport
         $size = $style['size'];
 
         $pdf = $this->getPdf();
-        $pdf->setFont($font . 'I', '', $size);
+        $pdf->setFont($font.'I', '', $size);
     }
 
     /**

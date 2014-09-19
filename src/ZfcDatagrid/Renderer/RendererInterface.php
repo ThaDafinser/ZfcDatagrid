@@ -5,18 +5,17 @@ use Zend\View\Model\ViewModel;
 
 interface RendererInterface
 {
+    /**
+     *
+     * @return array
+     */
+    public function getSortConditions();
 
     /**
      *
      * @return array
      */
-    public function getSortConditions ();
-
-    /**
-     *
-     * @return array
-     */
-    public function getFilters ();
+    public function getFilters();
 
     /**
      * Return the name of the renderer
@@ -30,7 +29,7 @@ interface RendererInterface
      *
      * @return boolean
      */
-    public function isExport ();
+    public function isExport();
 
     /**
      * Determin if the renderer is HTML
@@ -39,12 +38,12 @@ interface RendererInterface
      *
      * @return boolean
      */
-    public function isHtml ();
+    public function isHtml();
 
     /**
      * Execute all...
      *
      * @return ViewModel Response\Stream
      */
-    public function execute ();
+    public function execute();
 }

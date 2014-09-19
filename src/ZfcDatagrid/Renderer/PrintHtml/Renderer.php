@@ -6,7 +6,6 @@ use Zend\View\Model\ViewModel;
 
 class Renderer extends AbstractRenderer
 {
-
     public function getName()
     {
         return 'printHtml';

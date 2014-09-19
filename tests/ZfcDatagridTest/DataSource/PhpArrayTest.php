@@ -11,7 +11,6 @@ use ZfcDatagrid\Filter;
  */
 class PhpArrayTest extends DataSourceTestCase
 {
-
     /**
      *
      * @var PhpArray
@@ -25,7 +24,7 @@ class PhpArrayTest extends DataSourceTestCase
         $source = new PhpArray($this->data);
         $source->setColumns(array(
             $this->colVolumne,
-            $this->colEdition
+            $this->colEdition,
         ));
 
         $this->source = $source;

@@ -10,7 +10,6 @@ use Doctrine\ORM\QueryBuilder;
  */
 class FilterTest extends AbstractDoctrine2Test
 {
-
     /**
      *
      * @var FilterDoctrine2
@@ -324,7 +323,7 @@ class FilterTest extends AbstractDoctrine2Test
         $filter->expects($this->any())
             ->method('getValues')
             ->will($this->returnValue(array(
-            1
+            1,
         )));
         $filter->expects($this->any())
             ->method('getOperator')

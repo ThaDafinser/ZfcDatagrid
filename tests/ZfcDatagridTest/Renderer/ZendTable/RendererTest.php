@@ -11,7 +11,6 @@ use ReflectionClass;
  */
 class RendererTest extends PHPUnit_Framework_TestCase
 {
-
     private $options = array(
         'renderer' => array(
             'zendTable' => array(
@@ -19,10 +18,10 @@ class RendererTest extends PHPUnit_Framework_TestCase
                     'sortColumns' => 'cols',
                     'sortDirections' => 'dirs',
                     'currentPage' => 'page',
-                    'itemsPerPage' => 'items'
-                )
-            )
-        )
+                    'itemsPerPage' => 'items',
+                ),
+            ),
+        ),
     );
 
     /**
@@ -168,19 +167,19 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
         $renderer->setColumns(array(
             $col1,
-            $col2
+            $col2,
         ));
 
         $sortConditions = $renderer->getSortConditions();
         $this->assertEquals(array(
             array(
                 'sortDirection' => 'ASC',
-                'column' => $col1
+                'column' => $col1,
             ),
             array(
                 'sortDirection' => 'DESC',
-                'column' => $col2
-            )
+                'column' => $col2,
+            ),
         ), $sortConditions);
     }
 
@@ -220,19 +219,19 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
         $renderer->setColumns(array(
             $col1,
-            $col2
+            $col2,
         ));
 
         $sortConditions = $renderer->getSortConditions();
         $this->assertEquals(array(
             array(
                 'sortDirection' => 'ASC',
-                'column' => $col1
+                'column' => $col1,
             ),
             array(
                 'sortDirection' => 'ASC',
-                'column' => $col2
-            )
+                'column' => $col2,
+            ),
         ), $sortConditions);
     }
 
@@ -325,7 +324,7 @@ class RendererTest extends PHPUnit_Framework_TestCase
         $renderer->setColumns(array(
             $col1,
             $col2,
-            $col3
+            $col3,
         ));
 
         $result = $method->invoke($renderer);
@@ -333,14 +332,14 @@ class RendererTest extends PHPUnit_Framework_TestCase
         // $col3 is substracted, because its an action
         $this->assertSame(array(
             $col1,
-            $col2
+            $col2,
         ), $result);
 
         // 2nd call from "cache"
         $result = $method->invoke($renderer);
         $this->assertSame(array(
             $col1,
-            $col2
+            $col2,
         ), $result);
 
         $this->setExpectedException('Exception', 'No columns to display available');
@@ -365,7 +364,7 @@ class RendererTest extends PHPUnit_Framework_TestCase
         $renderer->setConsoleAdapter($consoleAdapter);
         $renderer->setColumns(array(
             $col1,
-            $col2
+            $col2,
         ));
 
         $result = $method->invoke($renderer);
@@ -373,7 +372,7 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(array(
             47,
-            31
+            31,
         ), $result);
     }
 
@@ -396,7 +395,7 @@ class RendererTest extends PHPUnit_Framework_TestCase
         $renderer->setConsoleAdapter($consoleAdapter);
         $renderer->setColumns(array(
             $col1,
-            $col2
+            $col2,
         ));
 
         $result = $method->invoke($renderer);
@@ -404,7 +403,7 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(array(
             47,
-            31
+            31,
         ), $result);
     }
 
@@ -427,7 +426,7 @@ class RendererTest extends PHPUnit_Framework_TestCase
         $renderer->setConsoleAdapter($consoleAdapter);
         $renderer->setColumns(array(
             $col1,
-            $col2
+            $col2,
         ));
 
         $result = $method->invoke($renderer);
@@ -435,7 +434,7 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(array(
             73,
-            5
+            5,
         ), $result);
     }
 }

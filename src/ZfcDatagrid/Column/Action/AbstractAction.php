@@ -7,7 +7,6 @@ use ZfcDatagrid\Column\AbstractColumn;
 
 abstract class AbstractAction
 {
-
     const ROW_ID_PLACEHOLDER = ':rowId:';
 
     /**
@@ -74,7 +73,7 @@ abstract class AbstractAction
         }
 
         foreach ($this->getLinkColumnPlaceholders() as $col) {
-            $link = str_replace(':' . $col->getUniqueId() . ':', $row[$col->getUniqueId()], $link);
+            $link = str_replace(':'.$col->getUniqueId().':', $row[$col->getUniqueId()], $link);
         }
 
         return $link;
@@ -91,7 +90,7 @@ abstract class AbstractAction
     {
         $this->linkColumnPlaceholders[] = $col;
 
-        return ':' . $col->getUniqueId() . ':';
+        return ':'.$col->getUniqueId().':';
     }
 
     /**
@@ -176,7 +175,7 @@ abstract class AbstractAction
             if ($attrKey === 'href') {
                 $attrValue = $this->getLinkReplaced($row);
             }
-            $attributes[] = $attrKey . '="' . $attrValue . '"';
+            $attributes[] = $attrKey.'="'.$attrValue.'"';
         }
 
         return implode(' ', $attributes);
@@ -210,8 +209,9 @@ abstract class AbstractAction
     public function addClass($className)
     {
         $attr = $this->getAttribute('class');
-        if ($attr != '')
+        if ($attr != '') {
             $attr .= ' ';
+        }
         $attr .= (string) $className;
 
         $this->setAttribute('class', $attr);
@@ -225,7 +225,7 @@ abstract class AbstractAction
     public function setShowOnValueOperator($operator = 'OR')
     {
         if ($operator != 'AND' && $operator != 'OR') {
-            throw new \InvalidArgumentException('not allowed operator: "' . $operator . '" (AND / OR is allowed)');
+            throw new \InvalidArgumentException('not allowed operator: "'.$operator.'" (AND / OR is allowed)');
         }
 
         $this->showOnValueOperator = (string) $operator;
@@ -254,7 +254,7 @@ abstract class AbstractAction
         $this->showOnValues[] = array(
             'column' => $col,
             'value' => $value,
-            'comparison' => $comparison
+            'comparison' => $comparison,
         );
     }
 
@@ -327,6 +327,6 @@ abstract class AbstractAction
      */
     public function toHtml(array $row)
     {
-        return '<a ' . $this->getAttributesString($row) . '>' . $this->getHtmlType() . '</a>';
+        return '<a '.$this->getAttributesString($row).'>'.$this->getHtmlType().'</a>';
     }
 }

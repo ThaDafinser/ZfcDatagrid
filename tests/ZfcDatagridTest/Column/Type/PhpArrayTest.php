@@ -10,7 +10,6 @@ use PHPUnit_Framework_TestCase;
  */
 class PhpArrayTest extends PHPUnit_Framework_TestCase
 {
-
     public function testTypeName()
     {
         $type = new Type\PhpArray();
@@ -26,7 +25,7 @@ class PhpArrayTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(
             1,
             2,
-            3
+            3,
         ), $type->getUserValue($value));
 
         $value = '';
@@ -35,12 +34,12 @@ class PhpArrayTest extends PHPUnit_Framework_TestCase
         $value = array(
             1,
             2,
-            3
+            3,
         );
         $this->assertEquals(array(
             1,
             2,
-            3
+            3,
         ), $type->getUserValue($value));
     }
 }

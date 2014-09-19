@@ -14,7 +14,6 @@ use Zend\Http\Headers;
 
 class Renderer extends AbstractExport
 {
-
     public function getName()
     {
         return 'PHPExcel';
@@ -46,8 +45,8 @@ class Renderer extends AbstractExport
             ->translate($optionsRenderer['sheetName']));
 
         if ($optionsRenderer['displayTitle'] === true) {
-            $sheet->setCellValue('A' . $optionsRenderer['rowTitle'], $this->getTitle());
-            $sheet->getStyle('A' . $optionsRenderer['rowTitle'])
+            $sheet->setCellValue('A'.$optionsRenderer['rowTitle'], $this->getTitle());
+            $sheet->getStyle('A'.$optionsRenderer['rowTitle'])
                 ->getFont()
                 ->setSize(15);
         }
@@ -71,7 +70,6 @@ class Renderer extends AbstractExport
          */
         $yRow = $optionsRenderer['startRowData'] + 1;
         foreach ($this->getData() as $row) {
-
             $xColumn = 0;
             foreach ($this->getColumnsToExport() as $col) {
                 $value = $row[$col->getUniqueId()];
@@ -81,9 +79,9 @@ class Renderer extends AbstractExport
 
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */
                 $currentColumn = PHPExcel_Cell::stringFromColumnIndex($xColumn);
-                $sheet->getCell($currentColumn . $yRow)->setValueExplicit($value, PHPExcel_Cell_DataType::TYPE_STRING);
+                $sheet->getCell($currentColumn.$yRow)->setValueExplicit($value, PHPExcel_Cell_DataType::TYPE_STRING);
 
-                $columnStyle = $sheet->getStyle($currentColumn . $yRow);
+                $columnStyle = $sheet->getStyle($currentColumn.$yRow);
                 $columnStyle->getAlignment()->setWrapText(true);
 
                 /*
@@ -113,13 +111,13 @@ class Renderer extends AbstractExport
                                 $columnStyle->getFill()->applyFromArray(array(
                                     'type' => \PHPExcel_Style_Fill::FILL_SOLID,
                                     'color' => array(
-                                        'rgb' => $style->getRgbHexString()
-                                    )
+                                        'rgb' => $style->getRgbHexString(),
+                                    ),
                                 ));
                                 break;
 
                             default:
-                                throw new \Exception('Not defined yet: "' . get_class($style) . '"');
+                                throw new \Exception('Not defined yet: "'.get_class($style).'"');
 
                                 break;
                         }
@@ -140,9 +138,9 @@ class Renderer extends AbstractExport
         $endColumn = count($this->getColumnsToExport()) - 1;
 
         // Autofilter + Freeze
-        $sheet->setAutoFilter('A' . $optionsRenderer['startRowData'] . ':' . PHPExcel_Cell::stringFromColumnIndex($endColumn) . $endRow);
+        $sheet->setAutoFilter('A'.$optionsRenderer['startRowData'].':'.PHPExcel_Cell::stringFromColumnIndex($endColumn).$endRow);
         $freezeRow = $optionsRenderer['startRowData'] + 1;
-        $sheet->freezePane('A' . $freezeRow);
+        $sheet->freezePane('A'.$freezeRow);
 
         /*
          * Print settings
@@ -153,30 +151,30 @@ class Renderer extends AbstractExport
          * Save the file
          */
         $path = $optionsExport['path'];
-        $saveFilename = $this->getCacheId() . '.xlsx';
+        $saveFilename = $this->getCacheId().'.xlsx';
 
         $excelWriter = new \PHPExcel_Writer_Excel2007($phpExcel);
         $excelWriter->setPreCalculateFormulas(false);
-        $excelWriter->save($path . '/' . $saveFilename);
+        $excelWriter->save($path.'/'.$saveFilename);
 
         /*
          * Send the response stream
          */
         $response = new ResponseStream();
-        $response->setStream(fopen($path . '/' . $saveFilename, 'r'));
+        $response->setStream(fopen($path.'/'.$saveFilename, 'r'));
 
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Type' => array(
                 'application/force-download',
                 'application/octet-stream',
-                'application/download'
+                'application/download',
             ),
-            'Content-Length' => filesize($path . '/' . $saveFilename),
-            'Content-Disposition' => 'attachment;filename=' . $this->getFilename() . '.xlsx',
+            'Content-Length' => filesize($path.'/'.$saveFilename),
+            'Content-Disposition' => 'attachment;filename='.$this->getFilename().'.xlsx',
             'Cache-Control' => 'must-revalidate',
             'Pragma' => 'no-cache',
-            'Expires' => 'Thu, 1 Jan 1970 00:00:00 GMT'
+            'Expires' => 'Thu, 1 Jan 1970 00:00:00 GMT',
         ));
 
         $response->setHeaders($headers);

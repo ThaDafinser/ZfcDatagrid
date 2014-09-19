@@ -10,7 +10,6 @@ use ZfcDatagrid\Column\Style;
  */
 class ItalicTest extends PHPUnit_Framework_TestCase
 {
-
     public function testCanCreateInstance()
     {
         $bold = new Style\Italic();

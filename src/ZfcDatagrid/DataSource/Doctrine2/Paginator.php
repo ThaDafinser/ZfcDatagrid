@@ -13,7 +13,6 @@ use ZfcDatagrid\DataSource\Doctrine2\PaginatorFast as ZfcDatagridPaginator;
 
 class Paginator implements AdapterInterface
 {
-
     /**
      *
      * @var QueryBuilder

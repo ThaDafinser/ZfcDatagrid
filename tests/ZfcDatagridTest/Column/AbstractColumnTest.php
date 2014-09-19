@@ -13,7 +13,6 @@ use PHPUnit_Framework_TestCase;
  */
 class AbstractColumnTest extends PHPUnit_Framework_TestCase
 {
-
     public function testGeneral()
     {
         /* @var $col \ZfcDatagrid\Column\AbstractColumn */
@@ -107,7 +106,7 @@ class AbstractColumnTest extends PHPUnit_Framework_TestCase
         $col->setSortDefault(1, 'DESC');
         $this->assertEquals(array(
             'priority' => 1,
-            'sortDirection' => 'DESC'
+            'sortDirection' => 'DESC',
         ), $col->getSortDefault());
         $this->assertEquals(true, $col->hasSortDefault());
 
@@ -152,14 +151,14 @@ class AbstractColumnTest extends PHPUnit_Framework_TestCase
 
         $col->setFilterSelectOptions(array(
             1 => 'one',
-            2 => 'two'
+            2 => 'two',
         ));
         $this->assertEquals(3, count($col->getFilterSelectOptions()));
         $this->assertEquals(true, $col->hasFilterSelectOptions());
 
         $col->setFilterSelectOptions(array(
             1 => 'one',
-            2 => 'two'
+            2 => 'two',
         ), false);
         $this->assertEquals(2, count($col->getFilterSelectOptions()));
         $this->assertEquals(true, $col->hasFilterSelectOptions());
@@ -188,25 +187,25 @@ class AbstractColumnTest extends PHPUnit_Framework_TestCase
         $col->setReplaceValues(array(
             1,
             2,
-            3
+            3,
         ));
         $this->assertEquals(true, $col->hasReplaceValues());
         $this->assertEquals(array(
             1,
             2,
-            3
+            3,
         ), $col->getReplaceValues());
         $this->assertEquals(true, $col->notReplacedGetEmpty());
         $col->setReplaceValues(array(
             1,
             2,
-            3
+            3,
         ), false);
         $this->assertEquals(true, $col->hasReplaceValues());
         $this->assertEquals(array(
             1,
             2,
-            3
+            3,
         ), $col->getReplaceValues());
         $this->assertEquals(false, $col->notReplacedGetEmpty());
 
@@ -214,7 +213,7 @@ class AbstractColumnTest extends PHPUnit_Framework_TestCase
 
         $col->setRendererParameter('key', 'value', 'someRenderer');
         $this->assertEquals(array(
-            'key' => 'value'
+            'key' => 'value',
         ), $col->getRendererParameters('someRenderer'));
     }
 

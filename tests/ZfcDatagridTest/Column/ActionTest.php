@@ -10,7 +10,6 @@ use PHPUnit_Framework_TestCase;
  */
 class ActionTest extends PHPUnit_Framework_TestCase
 {
-
     public function testConstructDefaultBoth()
     {
         $column = new Column\Action();
@@ -45,7 +44,7 @@ class ActionTest extends PHPUnit_Framework_TestCase
 
         $actions = array(
             $this->getMock('ZfcDatagrid\Column\Action\Button'),
-            $this->getMock('ZfcDatagrid\Column\Action\Button')
+            $this->getMock('ZfcDatagrid\Column\Action\Button'),
         );
         $column->setActions($actions);
         $this->assertEquals($actions, $column->getActions());

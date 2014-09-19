@@ -10,7 +10,6 @@ use ZfcDatagrid\Action\Mass;
  */
 class MassTest extends PHPUnit_Framework_TestCase
 {
-
     public function testConstruct()
     {
         $mass = new Mass();

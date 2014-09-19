@@ -5,7 +5,6 @@ use Zend\I18n\Translator\Translator;
 
 class PrepareData
 {
-
     /**
      *
      * @var array

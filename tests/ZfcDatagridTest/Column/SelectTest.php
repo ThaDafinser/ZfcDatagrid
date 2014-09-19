@@ -10,7 +10,6 @@ use ZfcDatagrid\Column;
  */
 class SelectTest extends PHPUnit_Framework_TestCase
 {
-
     public function testConstructDefaultBoth()
     {
         $col = new Column\Select('id', 'user');

@@ -10,7 +10,6 @@ use ZfcDatagrid\Renderer\JqGrid;
  */
 class RendererTest extends PHPUnit_Framework_TestCase
 {
-
     private $options = array(
         'renderer' => array(
             'jqGrid' => array(
@@ -18,10 +17,10 @@ class RendererTest extends PHPUnit_Framework_TestCase
                     'sortColumns' => 'cols',
                     'sortDirections' => 'dirs',
                     'currentPage' => 'page',
-                    'itemsPerPage' => 'items'
-                )
-            )
-        )
+                    'itemsPerPage' => 'items',
+                ),
+            ),
+        ),
     );
 
     public function testGetName()

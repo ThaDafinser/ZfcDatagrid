@@ -9,7 +9,6 @@ use ZfcDatagrid\DataSource\Doctrine2\Paginator;
  */
 class PaginatorTest extends AbstractDoctrine2Test
 {
-
     public function testConstruct()
     {
         $qb = $this->em->createQueryBuilder();

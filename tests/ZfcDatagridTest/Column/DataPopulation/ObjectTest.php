@@ -10,7 +10,6 @@ use ZfcDatagrid\Column\DataPopulation\Object;
  */
 class ObjectTest extends PHPUnit_Framework_TestCase
 {
-
     public function testObject()
     {
         $mock = $this->getMock('ZfcDatagrid\Column\DataPopulation\Object\Gravatar');
@@ -46,10 +45,9 @@ class ObjectTest extends PHPUnit_Framework_TestCase
         $this->assertCount(1, $parameters);
         $this->assertEquals(array(
             'objectParameterName' => 'idPara',
-            'column' => $column
+            'column' => $column,
         ), $parameters[0]);
 
         $object->setObjectParameter('otherPara', '123');
-
     }
 }

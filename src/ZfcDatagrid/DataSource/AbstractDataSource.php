@@ -7,7 +7,6 @@ use Zend\Paginator\Adapter\AdapterInterface as PaginatorAdapterInterface;
 
 abstract class AbstractDataSource implements DataSourceInterface
 {
-
     /**
      *
      * @var array
@@ -62,7 +61,7 @@ abstract class AbstractDataSource implements DataSourceInterface
     {
         $this->sortConditions[] = array(
             'column' => $column,
-            'sortDirection' => $sortDirection
+            'sortDirection' => $sortDirection,
         );
     }
 

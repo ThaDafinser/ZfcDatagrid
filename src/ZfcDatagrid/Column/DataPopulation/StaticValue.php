@@ -3,7 +3,6 @@ namespace ZfcDatagrid\Column\DataPopulation;
 
 class StaticValue implements DataPopulationInterface
 {
-
     private $value;
 
     public function __construct($value = null)

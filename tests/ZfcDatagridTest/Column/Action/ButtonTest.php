@@ -10,14 +10,13 @@ use ZfcDatagrid\Column\Action\Button;
  */
 class ButtonTest extends PHPUnit_Framework_TestCase
 {
-
     public function testConstruct()
     {
         $button = new Button();
 
         $this->assertEquals(array(
             'href' => '#',
-            'class' => 'btn'
+            'class' => 'btn',
         ), $button->getAttributes());
     }
 

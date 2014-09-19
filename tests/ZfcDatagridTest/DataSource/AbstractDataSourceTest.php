@@ -8,7 +8,6 @@ use PHPUnit_Framework_TestCase;
  */
 class AbstractDataSourceTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      *
      * @var \ZfcDatagrid\DataSource\AbstractDataSource
@@ -21,7 +20,7 @@ class AbstractDataSourceTest extends PHPUnit_Framework_TestCase
         // $this->fail('HHVM Fatals');
         // }
         $this->dsMock = $this->getMockForAbstractClass('ZfcDatagrid\DataSource\AbstractDataSource', array(
-            array()
+            array(),
         ), '', false);
     }
 
@@ -45,7 +44,7 @@ class AbstractDataSourceTest extends PHPUnit_Framework_TestCase
         $col2->setUniqueId('test2');
         $columns = array(
             $col1->getUniqueId() => $col1,
-            $col2->getUniqueId() => $col2
+            $col2->getUniqueId() => $col2,
         );
         $ds->setColumns($columns);
 
@@ -66,8 +65,8 @@ class AbstractDataSourceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(
             array(
                 'column' => $col1,
-                'sortDirection' => 'ASC'
-            )
+                'sortDirection' => 'ASC',
+            ),
         ), $ds->getSortConditions());
 
         $ds->addSortCondition($col2, 'DESC');
@@ -75,12 +74,12 @@ class AbstractDataSourceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(
             array(
                 'column' => $col1,
-                'sortDirection' => 'ASC'
+                'sortDirection' => 'ASC',
             ),
             array(
                 'column' => $col2,
-                'sortDirection' => 'DESC'
-            )
+                'sortDirection' => 'DESC',
+            ),
         ), $ds->getSortConditions());
     }
 
@@ -92,7 +91,7 @@ class AbstractDataSourceTest extends PHPUnit_Framework_TestCase
         $ds->addFilter($filter);
 
         $this->assertEquals(array(
-            $filter
+            $filter,
         ), $ds->getFilters());
     }
 

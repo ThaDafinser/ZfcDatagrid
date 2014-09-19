@@ -21,7 +21,6 @@ use ZfcDatagrid\Column\Style;
 
 class Datagrid implements ServiceLocatorAwareInterface
 {
-
     /**
      *
      * @var array
@@ -206,7 +205,7 @@ class Datagrid implements ServiceLocatorAwareInterface
         'rendererParameter',
         'replaceValues',
         'select',
-        'sortDefault'
+        'sortDefault',
     );
 
     /**
@@ -342,7 +341,7 @@ class Datagrid implements ServiceLocatorAwareInterface
         if ($this->cacheId === null) {
             $this->cacheId = md5($this->getSession()
                 ->getManager()
-                ->getId() . '_' . $this->getId());
+                ->getId().'_'.$this->getId());
         }
 
         return $this->cacheId;
@@ -627,10 +626,10 @@ class Datagrid implements ServiceLocatorAwareInterface
         $colType = isset($config['colType']) ? $config['colType'] : 'Select';
         if (class_exists($colType, true)) {
             $class = $colType;
-        } elseif (class_exists('ZfcDatagrid\\Column\\' . $colType, true)) {
-            $class = 'ZfcDatagrid\\Column\\' . $colType;
+        } elseif (class_exists('ZfcDatagrid\\Column\\'.$colType, true)) {
+            $class = 'ZfcDatagrid\\Column\\'.$colType;
         } else {
-            throw new \InvalidArgumentException('Column type: "' . $colType . '" not found!');
+            throw new \InvalidArgumentException('Column type: "'.$colType.'" not found!');
         }
 
         if ($class == 'ZfcDatagrid\\Column\\Select') {
@@ -645,23 +644,22 @@ class Datagrid implements ServiceLocatorAwareInterface
         }
 
         foreach ($config as $key => $value) {
-            $method = 'set' . ucfirst($key);
+            $method = 'set'.ucfirst($key);
             if (method_exists($instance, $method)) {
-
                 if (in_array($key, $this->specialMethods)) {
                     if (! is_array($value)) {
                         $value = array(
-                            $value
+                            $value,
                         );
                     }
                     call_user_func_array(array(
                         $instance,
-                        $method
+                        $method,
                     ), $value);
                 } else {
                     call_user_func(array(
                         $instance,
-                        $method
+                        $method,
                     ), $value);
                 }
             }
@@ -896,8 +894,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function getRenderer()
     {
         if ($this->renderer === null) {
-
-            $rendererName = 'zfcDatagrid.renderer.' . $this->getRendererName();
+            $rendererName = 'zfcDatagrid.renderer.'.$this->getRendererName();
 
             if ($this->getServiceLocator()->has($rendererName) === true) {
                 /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
@@ -920,7 +917,7 @@ class Datagrid implements ServiceLocatorAwareInterface
 
                 $this->renderer = $renderer;
             } else {
-                throw new \Exception('Renderer service was not found, please register it: "' . $rendererName . '"');
+                throw new \Exception('Renderer service was not found, please register it: "'.$rendererName.'"');
             }
         }
 
@@ -1007,7 +1004,7 @@ class Datagrid implements ServiceLocatorAwareInterface
                     } else {
                         $add = '[no object]';
                     }
-                    throw new \Exception('The paginator returned an unknow result: ' . $add . ' (allowed: \ArrayIterator or a plain php array)');
+                    throw new \Exception('The paginator returned an unknow result: '.$add.' (allowed: \ArrayIterator or a plain php array)');
                 }
             }
         }
@@ -1020,12 +1017,12 @@ class Datagrid implements ServiceLocatorAwareInterface
             $cacheData = array(
                 'sortConditions' => $renderer->getSortConditions(),
                 'filters' => $renderer->getFilters(),
-                'currentPage' => $this->getPaginator()->getCurrentPageNumber()
+                'currentPage' => $this->getPaginator()->getCurrentPageNumber(),
             );
             $success = $this->getCache()->setItem($this->getCacheId(), $cacheData);
             if ($success !== true) {
                 $options = $this->getCache()->getOptions();
-                throw new \Exception('Could not save the datagrid cache. Does the directory "' . $options->getCacheDir() . '" exists and is writeable? CacheId: '.$this->getCacheId());
+                throw new \Exception('Could not save the datagrid cache. Does the directory "'.$options->getCacheDir().'" exists and is writeable? CacheId: '.$this->getCacheId());
             }
         }
 

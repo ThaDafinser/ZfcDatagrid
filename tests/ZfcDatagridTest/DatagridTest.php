@@ -13,7 +13,6 @@ use ZfcDatagrid\Column;
  */
 class DatagridTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      *
      * @var Datagrid
@@ -90,7 +89,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
             ->getManager()
             ->getId();
 
-        $this->assertEquals(md5($sessionId . '_defaultGrid'), $this->grid->getCacheId());
+        $this->assertEquals(md5($sessionId.'_defaultGrid'), $this->grid->getCacheId());
 
         $this->grid->setCacheId('myCacheId');
         $this->assertEquals('myCacheId', $this->grid->getCacheId());
@@ -141,7 +140,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('ZfcDatagrid\DataSource\PhpArray', $grid->getDataSource());
 
         $source = $this->getMock('ZfcDatagrid\DataSource\PhpArray', array(), array(
-            array()
+            array(),
         ));
         $grid->setDataSource($source);
         $this->assertTrue($grid->hasDataSource());
@@ -247,14 +246,14 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->grid->addParameter('myPara', 'test');
 
         $this->assertEquals(array(
-            'myPara' => 'test'
+            'myPara' => 'test',
         ), $this->grid->getParameters());
 
         $this->grid->setParameters(array(
-            'other' => 'blubb'
+            'other' => 'blubb',
         ));
         $this->assertEquals(array(
-            'other' => 'blubb'
+            'other' => 'blubb',
         ), $this->grid->getParameters());
         $this->assertTrue($this->grid->hasParameters());
     }
@@ -275,11 +274,11 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $this->grid->getExportRenderers());
 
         $this->grid->setExportRenderers(array(
-            'tcpdf' => 'PDF'
+            'tcpdf' => 'PDF',
         ));
 
         $this->assertEquals(array(
-            'tcpdf' => 'PDF'
+            'tcpdf' => 'PDF',
         ), $this->grid->getExportRenderers());
     }
 
@@ -317,8 +316,8 @@ class DatagridTest extends PHPUnit_Framework_TestCase
             'label' => 'My label',
             'select' => array(
                 'column' => 'myCol',
-                'table' => 'myTable'
-            )
+                'table' => 'myTable',
+            ),
         );
         $grid->addColumn($column);
 
@@ -336,7 +335,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
         $column = array(
             'colType' => 'ZfcDatagrid\Column\Unknown',
-            'label' => 'My label'
+            'label' => 'My label',
         );
 
         $this->setExpectedException('InvalidArgumentException', 'Column type: "ZfcDatagrid\Column\Unknown" not found!');
@@ -352,8 +351,8 @@ class DatagridTest extends PHPUnit_Framework_TestCase
             'label' => 'My label',
             'select' => array(
                 'column' => 'myCol',
-                'table' => 'myTable'
-            )
+                'table' => 'myTable',
+            ),
         );
         $grid->addColumn($column);
 
@@ -370,7 +369,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $grid->getColumns());
 
         $column = array(
-            'label' => 'My label'
+            'label' => 'My label',
         );
         $this->setExpectedException('InvalidArgumentException', 'For "ZfcDatagrid\Column\Select" the option select[column] must be defined!');
         $grid->addColumn($column);
@@ -382,7 +381,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
         $column = array(
             'colType' => 'action',
-            'label' => 'My action'
+            'label' => 'My action',
         );
         $grid->addColumn($column);
 
@@ -402,11 +401,11 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $column = array(
             'select' => array(
                 'column' => 'myCol',
-                'table' => 'myTable'
+                'table' => 'myTable',
             ),
             'styles' => array(
-                $bold
-            )
+                $bold,
+            ),
         );
         $grid->addColumn($column);
 
@@ -416,7 +415,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('ZfcDatagrid\Column\Select', $col);
 
         $this->assertEquals(array(
-            $bold
+            $bold,
         ), $col->getStyles());
     }
 
@@ -427,9 +426,9 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $column = array(
             'select' => array(
                 'column' => 'myCol',
-                'table' => 'myTable'
+                'table' => 'myTable',
             ),
-            'sortDefault' => 1
+            'sortDefault' => 1,
         );
         $grid->addColumn($column);
 
@@ -440,7 +439,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(array(
             'priority' => 1,
-            'sortDirection' => 'ASC'
+            'sortDirection' => 'ASC',
         ), $col->getSortDefault());
     }
 
@@ -451,12 +450,12 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $column = array(
             'select' => array(
                 'column' => 'myCol',
-                'table' => 'myTable'
+                'table' => 'myTable',
             ),
             'sortDefault' => array(
                 1,
-                'ASC'
-            )
+                'ASC',
+            ),
         );
         $grid->addColumn($column);
 
@@ -467,7 +466,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(array(
             'priority' => 1,
-            'sortDirection' => 'ASC'
+            'sortDirection' => 'ASC',
         ), $col->getSortDefault());
     }
 
@@ -485,7 +484,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
         $grid->setColumns(array(
             $col,
-            $col2
+            $col2,
         ));
 
         $this->assertCount(2, $grid->getColumns());
@@ -545,7 +544,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $_SERVER['argv'] = array(
             'foo.php',
             'foo' => 'baz',
-            'bar'
+            'bar',
         );
         $_ENV["FOO_VAR"] = "bar";
 

@@ -10,7 +10,6 @@ use PHPUnit_Framework_TestCase;
  */
 class AbstractFormatterTest extends PHPUnit_Framework_TestCase
 {
-
     public function testGetValidRendererNames()
     {
         $formatter = $this->getMockForAbstractClass('ZfcDatagrid\Column\Formatter\AbstractFormatter');
@@ -18,10 +17,10 @@ class AbstractFormatterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $formatter->getValidRendererNames());
 
         $formatter->setValidRendererNames(array(
-            'jqGrid'
+            'jqGrid',
         ));
         $this->assertEquals(array(
-            'jqGrid'
+            'jqGrid',
         ), $formatter->getValidRendererNames());
     }
 
@@ -32,7 +31,7 @@ class AbstractFormatterTest extends PHPUnit_Framework_TestCase
 
         $data = array(
             'myCol' => 123,
-            'myCol2' => 'text'
+            'myCol2' => 'text',
         );
 
         $formatter->setRowData($data);
@@ -53,7 +52,7 @@ class AbstractFormatterTest extends PHPUnit_Framework_TestCase
     {
         $formatter = $this->getMockForAbstractClass('ZfcDatagrid\Column\Formatter\AbstractFormatter');
         $formatter->setValidRendererNames(array(
-            'jqGrid'
+            'jqGrid',
         ));
 
         $formatter->setRendererName('jqGrid');
@@ -67,11 +66,11 @@ class AbstractFormatterTest extends PHPUnit_Framework_TestCase
     {
         $formatter = $this->getMockForAbstractClass('ZfcDatagrid\Column\Formatter\AbstractFormatter');
         $formatter->setValidRendererNames(array(
-            'jqGrid'
+            'jqGrid',
         ));
         $data = array(
             'myCol' => 123,
-            'myCol2' => 'text'
+            'myCol2' => 'text',
         );
         $formatter->setRowData($data);
 

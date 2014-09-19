@@ -6,7 +6,6 @@ use ZfcDatagrid\Column\Formatter\AbstractFormatter;
 
 abstract class AbstractColumn
 {
-
     protected $label = '';
 
     protected $uniqueId;
@@ -288,7 +287,7 @@ abstract class AbstractColumn
     {
         $this->sortDefault = array(
             'priority' => $priority,
-            'sortDirection' => $direction
+            'sortDirection' => $direction,
         );
     }
 
@@ -544,8 +543,9 @@ abstract class AbstractColumn
      */
     public function hasReplaceValues()
     {
-        if (count($this->replaceValues) > 0)
+        if (count($this->replaceValues) > 0) {
             return true;
+        }
 
         return false;
     }

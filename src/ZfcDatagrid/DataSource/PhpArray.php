@@ -5,7 +5,6 @@ use Zend\Paginator\Adapter\ArrayAdapter as PaginatorAdapter;
 
 class PhpArray extends AbstractDataSource
 {
-
     private $data = array();
 
     /**
@@ -58,7 +57,7 @@ class PhpArray extends AbstractDataSource
             if ($filter->isColumnFilter() === true) {
                 $data = array_filter($data, array(
                     new PhpArray\Filter($filter),
-                    'applyFilter'
+                    'applyFilter',
                 ));
             }
         }
@@ -95,7 +94,7 @@ class PhpArray extends AbstractDataSource
     private function getSortArrayParameter($sortCondition)
     {
         $sortArray = array(
-            $sortCondition['column']->getSelectPart1()
+            $sortCondition['column']->getSelectPart1(),
         );
 
         if ($sortCondition['sortDirection'] === 'DESC') {
@@ -150,7 +149,7 @@ class PhpArray extends AbstractDataSource
             $sortArguments[] = array(
                 $dataCol,
                 $sortParameters[1],
-                $sortParameters[2]
+                $sortParameters[2],
             );
         }
 
@@ -172,7 +171,7 @@ class PhpArray extends AbstractDataSource
         foreach ($sortArguments as $values) {
             $remain = count($values) % 3;
             if ($remain != 0) {
-                throw new \InvalidArgumentException('The parameter count for each sortArgument has to be three. Given count of: ' . count($values));
+                throw new \InvalidArgumentException('The parameter count for each sortArgument has to be three. Given count of: '.count($values));
             }
             $args[] = $values[0]; // column value
             $args[] = $values[1]; // sort direction

@@ -3,7 +3,6 @@ namespace ZfcDatagrid\Action;
 
 class Mass
 {
-
     /**
      *
      * @var string

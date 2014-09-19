@@ -7,7 +7,6 @@ use NumberFormatter;
 
 class Number extends AbstractType
 {
-
     /**
      * Locale to use instead of the default.
      *
@@ -101,7 +100,7 @@ class Number extends AbstractType
     {
         $this->attributes[] = array(
             'attribute' => $attr,
-            'value' => $value
+            'value' => $value,
         );
     }
 
@@ -203,6 +202,6 @@ class Number extends AbstractType
 
         $formattedValue = $formatter->format($val, $this->getFormatType());
 
-        return (string) $this->getPrefix() . $formattedValue . $this->getSuffix();
+        return (string) $this->getPrefix().$formattedValue.$this->getSuffix();
     }
 }

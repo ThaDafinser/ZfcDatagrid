@@ -8,7 +8,6 @@ use Doctrine\ORM\Query\Expr;
 
 class Filter
 {
-
     /**
      *
      * @var QueryBuilder
@@ -41,7 +40,7 @@ class Filter
         $column = $filter->getColumn();
         $colString = $column->getSelectPart1();
         if ($column->getSelectPart2() != '') {
-            $colString .= '.' . $column->getSelectPart2();
+            $colString .= '.'.$column->getSelectPart2();
         }
         if ($column instanceof Column\Select && $column->hasFilterSelectExpression()) {
             $colString = sprintf($column->getFilterSelectExpression(), $colString);
@@ -50,38 +49,38 @@ class Filter
 
         $wheres = array();
         foreach ($values as $key => $value) {
-            $valueParameterName = ':' . str_replace('.', '', $column->getUniqueId() . $key);
+            $valueParameterName = ':'.str_replace('.', '', $column->getUniqueId().$key);
 
             switch ($filter->getOperator()) {
 
                 case DatagridFilter::LIKE:
                     $wheres[] = $expr->like($colString, $valueParameterName);
-                    $qb->setParameter($valueParameterName, '%' . $value . '%');
+                    $qb->setParameter($valueParameterName, '%'.$value.'%');
                     break;
 
                 case DatagridFilter::LIKE_LEFT:
                     $wheres[] = $expr->like($colString, $valueParameterName);
-                    $qb->setParameter($valueParameterName, '%' . $value);
+                    $qb->setParameter($valueParameterName, '%'.$value);
                     break;
 
                 case DatagridFilter::LIKE_RIGHT:
                     $wheres[] = $expr->like($colString, $valueParameterName);
-                    $qb->setParameter($valueParameterName, $value . '%');
+                    $qb->setParameter($valueParameterName, $value.'%');
                     break;
 
                 case DatagridFilter::NOT_LIKE:
                     $wheres[] = $expr->notLike($colString, $valueParameterName);
-                    $qb->setParameter($valueParameterName, '%' . $value . '%');
+                    $qb->setParameter($valueParameterName, '%'.$value.'%');
                     break;
 
                 case DatagridFilter::NOT_LIKE_LEFT:
                     $wheres[] = $expr->notLike($colString, $valueParameterName);
-                    $qb->setParameter($valueParameterName, '%' . $value);
+                    $qb->setParameter($valueParameterName, '%'.$value);
                     break;
 
                 case DatagridFilter::NOT_LIKE_RIGHT:
                     $wheres[] = $expr->notLike($colString, $valueParameterName);
-                    $qb->setParameter($valueParameterName, $value . '%');
+                    $qb->setParameter($valueParameterName, $value.'%');
                     break;
 
                 case DatagridFilter::EQUAL:
@@ -115,8 +114,8 @@ class Filter
                     break;
 
                 case DatagridFilter::BETWEEN:
-                    $minParameterName = ':' . str_replace('.', '', $colString . '0');
-                    $maxParameterName = ':' . str_replace('.', '', $colString . '1');
+                    $minParameterName = ':'.str_replace('.', '', $colString.'0');
+                    $maxParameterName = ':'.str_replace('.', '', $colString.'1');
 
                     $wheres[] = $expr->between($colString, $minParameterName, $maxParameterName);
 
@@ -125,7 +124,7 @@ class Filter
                     break 2;
 
                 default:
-                    throw new \InvalidArgumentException('This operator is currently not supported: ' . $filter->getOperator());
+                    throw new \InvalidArgumentException('This operator is currently not supported: '.$filter->getOperator());
                     break;
             }
         }

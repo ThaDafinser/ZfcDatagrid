@@ -9,7 +9,6 @@ use ZfcDatagrid\Filter;
  */
 class FilterTest extends PHPUnit_Framework_TestCase
 {
-
     private $column;
 
     public function setUp()
@@ -34,7 +33,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('~ *test*', $filter->getDisplayColumnValue());
         $this->assertTrue(is_array($filter->getValues()));
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
 
         $this->assertTrue($filter->isColumnFilter());
@@ -50,7 +49,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('= ', $filter->getDisplayColumnValue());
         $this->assertTrue(is_array($filter->getValues()));
         $this->assertEquals(array(
-            ''
+            '',
         ), $filter->getValues());
 
         $this->assertTrue($filter->isColumnFilter());
@@ -64,7 +63,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::LIKE, $filter->getOperator());
         $this->assertEquals('~ *test*', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
 
         /*
@@ -76,7 +75,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::LIKE, $filter->getOperator());
         $this->assertEquals('~ *test*', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
 
         /*
@@ -88,7 +87,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::LIKE, $filter->getOperator());
         $this->assertEquals('~ *test*', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
     }
 
@@ -100,7 +99,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::LIKE_LEFT, $filter->getOperator());
         $this->assertEquals('~ *test', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
 
         /*
@@ -112,7 +111,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::LIKE_LEFT, $filter->getOperator());
         $this->assertEquals('~ *test', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
     }
 
@@ -124,7 +123,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::LIKE_RIGHT, $filter->getOperator());
         $this->assertEquals('~ test*', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
 
         /*
@@ -136,7 +135,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::LIKE_RIGHT, $filter->getOperator());
         $this->assertEquals('~ test*', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
     }
 
@@ -148,7 +147,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::NOT_LIKE, $filter->getOperator());
         $this->assertEquals('!~ *test*', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
 
         /*
@@ -160,7 +159,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::NOT_LIKE, $filter->getOperator());
         $this->assertEquals('!~ *test*', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
 
         /*
@@ -172,7 +171,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::NOT_LIKE, $filter->getOperator());
         $this->assertEquals('!~ *test*', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
     }
 
@@ -184,7 +183,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::NOT_LIKE_LEFT, $filter->getOperator());
         $this->assertEquals('!~ *test', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
 
         /*
@@ -196,7 +195,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::NOT_LIKE_LEFT, $filter->getOperator());
         $this->assertEquals('!~ *test', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
     }
 
@@ -208,7 +207,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::NOT_LIKE_RIGHT, $filter->getOperator());
         $this->assertEquals('!~ test*', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
 
         /*
@@ -220,7 +219,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::NOT_LIKE_RIGHT, $filter->getOperator());
         $this->assertEquals('!~ test*', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
     }
 
@@ -232,7 +231,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::EQUAL, $filter->getOperator());
         $this->assertEquals('= test', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
 
         /*
@@ -244,7 +243,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::EQUAL, $filter->getOperator());
         $this->assertEquals('= test', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
 
         /*
@@ -257,7 +256,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('= test,value2', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
             'test',
-            'value2'
+            'value2',
         ), $filter->getValues());
     }
 
@@ -269,7 +268,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::NOT_EQUAL, $filter->getOperator());
         $this->assertEquals('!= test', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
 
         /*
@@ -281,7 +280,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::NOT_EQUAL, $filter->getOperator());
         $this->assertEquals('!= test', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
     }
 
@@ -293,7 +292,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::GREATER_EQUAL, $filter->getOperator());
         $this->assertEquals('>= test', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
     }
 
@@ -305,7 +304,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::GREATER, $filter->getOperator());
         $this->assertEquals('> test', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
     }
 
@@ -317,7 +316,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::LESS_EQUAL, $filter->getOperator());
         $this->assertEquals('<= test', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
     }
 
@@ -329,7 +328,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Filter::LESS, $filter->getOperator());
         $this->assertEquals('< test', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
-            'test'
+            'test',
         ), $filter->getValues());
     }
 
@@ -344,7 +343,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         // @todo wrong?
         $this->assertEquals(array(
             'test',
-            'test2'
+            'test2',
         ), $filter->getValues());
     }
 
@@ -359,7 +358,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         // @todo wrong?
         $this->assertEquals(array(
             'test',
-            'test2'
+            'test2',
         ), $filter->getValues());
     }
 
@@ -372,7 +371,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('2 <> 3', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
             '2',
-            '3'
+            '3',
         ), $filter->getValues());
 
         $filter = new Filter();
@@ -382,7 +381,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('2 <> 4', $filter->getDisplayColumnValue());
         $this->assertEquals(array(
             '2',
-            '4'
+            '4',
         ), $filter->getValues());
     }
 
@@ -540,29 +539,29 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $filter = new Filter();
         $this->assertTrue($filter->isApply(70, array(
             50,
-            100
+            100,
         ), Filter::BETWEEN));
         $this->assertTrue($filter->isApply(50, array(
             50,
-            100
+            100,
         ), Filter::BETWEEN));
         $this->assertTrue($filter->isApply(100, array(
             50,
-            100
+            100,
         ), Filter::BETWEEN));
 
         $this->assertFalse($filter->isApply(49, array(
             50,
-            100
+            100,
         ), Filter::BETWEEN));
         $this->assertFalse($filter->isApply(101, array(
             50,
-            100
+            100,
         ), Filter::BETWEEN));
 
         $this->assertFalse($filter->isApply(49.99, array(
             50,
-            100
+            100,
         ), Filter::BETWEEN));
     }
 

@@ -13,7 +13,6 @@ use ZfcDatagrid\Filter;
  */
 class DateTimeTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      *
      * @var Type\DateTime

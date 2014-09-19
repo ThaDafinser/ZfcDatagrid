@@ -10,7 +10,6 @@ use ZfcDatagrid\Renderer\PrintHtml;
  */
 class RendererTest extends PHPUnit_Framework_TestCase
 {
-
     public function testGetName()
     {
         $renderer = new PrintHtml\Renderer();

@@ -5,7 +5,6 @@ use ZfcDatagrid\Column\AbstractColumn;
 
 class FileSize extends AbstractFormatter
 {
-
     /**
      * We implement isApply here ourself, because it's always valid!
      *
@@ -22,7 +21,7 @@ class FileSize extends AbstractFormatter
         'P',
         'E',
         'Z',
-        'Y'
+        'Y',
     );
 
     public function isApply()

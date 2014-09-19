@@ -8,7 +8,6 @@ use Doctrine\ORM\Query\Expr;
 
 class Doctrine2 extends AbstractDataSource
 {
-
     /**
      *
      * @var ORM\QueryBuilder
@@ -29,7 +28,7 @@ class Doctrine2 extends AbstractDataSource
             if (is_object($data)) {
                 $return = get_class($return);
             }
-            throw new \InvalidArgumentException("Unknown data input..." . $return);
+            throw new \InvalidArgumentException("Unknown data input...".$return);
         }
     }
 
@@ -54,9 +53,9 @@ class Doctrine2 extends AbstractDataSource
             if ($column instanceof Column\Select) {
                 $colString = $column->getSelectPart1();
                 if ($column->getSelectPart2() != '') {
-                    $colString .= '.' . $column->getSelectPart2();
+                    $colString .= '.'.$column->getSelectPart2();
                 }
-                $colString .= ' ' . $column->getUniqueId();
+                $colString .= ' '.$column->getUniqueId();
 
                 $selectColumns[] = $colString;
             }
@@ -77,12 +76,12 @@ class Doctrine2 extends AbstractDataSource
 
                 $colString = $column->getSelectPart1();
                 if ($column->getSelectPart2() != '') {
-                    $colString .= '.' . $column->getSelectPart2();
+                    $colString .= '.'.$column->getSelectPart2();
                 }
 
                 if ($column->getType() === 'number') {
-                    $qb->addSelect('ABS(' . $colString . ') sortColumn' . $key);
-                    $qb->add('orderBy', new Expr\OrderBy('sortColumn' . $key, $sortCondition['sortDirection']), true);
+                    $qb->addSelect('ABS('.$colString.') sortColumn'.$key);
+                    $qb->add('orderBy', new Expr\OrderBy('sortColumn'.$key, $sortCondition['sortDirection']), true);
                 } else {
                     $qb->add('orderBy', new Expr\OrderBy($column->getUniqueId(), $sortCondition['sortDirection']), true);
                 }

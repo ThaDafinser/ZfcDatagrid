@@ -5,7 +5,6 @@ use ZfcDatagrid\Column\AbstractColumn;
 
 abstract class AbstractFormatter
 {
-
     private $data = array();
 
     private $rendererName;

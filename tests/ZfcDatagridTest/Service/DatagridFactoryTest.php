@@ -10,15 +10,14 @@ use Zend\ServiceManager\ServiceManager;
  */
 class DatagridFactoryTest extends PHPUnit_Framework_TestCase
 {
-
     private $config = array(
         'ZfcDatagrid' => array(
             'cache' => array(
                 'adapter' => array(
-                    'name' => 'Filesystem'
-                )
-            )
-        )
+                    'name' => 'Filesystem',
+                ),
+            ),
+        ),
     );
 
     private $applicationMock;

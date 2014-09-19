@@ -11,7 +11,6 @@ use ZfcDatagridTest\DataSource\Doctrine2\AbstractDoctrine2Test;
  */
 class Doctrine2Test extends AbstractDoctrine2Test
 {
-
     /**
      *
      * @var Doctrine2
@@ -30,7 +29,7 @@ class Doctrine2Test extends AbstractDoctrine2Test
         $this->source->setColumns(array(
             $this->colVolumne,
             $this->colEdition,
-            $this->colUserDisplayName
+            $this->colUserDisplayName,
         ));
     }
 

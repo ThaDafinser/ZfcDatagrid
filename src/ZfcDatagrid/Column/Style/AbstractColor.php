@@ -6,7 +6,6 @@ namespace ZfcDatagrid\Column\Style;
  */
 class AbstractColor extends AbstractStyle
 {
-
     /**
      * Array values are RGB (red, green,blue)
      *
@@ -15,7 +14,7 @@ class AbstractColor extends AbstractStyle
     public static $RED = array(
         255,
         0,
-        0
+        0,
     );
 
     /**
@@ -25,7 +24,7 @@ class AbstractColor extends AbstractStyle
     public static $GREEN = array(
         0,
         255,
-        0
+        0,
     );
 
     /**
@@ -35,7 +34,7 @@ class AbstractColor extends AbstractStyle
     public static $BLUE = array(
         0,
         0,
-        255
+        255,
     );
 
     protected $red;
@@ -159,7 +158,7 @@ class AbstractColor extends AbstractStyle
         return array(
             'red' => $this->getRed(),
             'green' => $this->getGreen(),
-            'blue' => $this->getBlue()
+            'blue' => $this->getBlue(),
         );
     }
 
@@ -172,17 +171,17 @@ class AbstractColor extends AbstractStyle
     {
         $red = dechex($this->getRed());
         if (strlen($red) === 1) {
-            $red = '0' . $red;
+            $red = '0'.$red;
         }
         $green = dechex($this->getGreen());
         if (strlen($green) === 1) {
-            $green = '0' . $green;
+            $green = '0'.$green;
         }
         $blue = dechex($this->getBlue());
         if (strlen($blue) === 1) {
-            $blue = '0' . $blue;
+            $blue = '0'.$blue;
         }
 
-        return $red . $green . $blue;
+        return $red.$green.$blue;
     }
 }

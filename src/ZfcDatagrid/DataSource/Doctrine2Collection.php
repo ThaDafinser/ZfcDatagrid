@@ -8,7 +8,6 @@ use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 
 class Doctrine2Collection extends AbstractDataSource
 {
-
     /**
      *
      * @var Collection
@@ -33,9 +32,9 @@ class Doctrine2Collection extends AbstractDataSource
         } else {
             $return = $data;
             if (is_object($data)) {
-                $return = 'instanceof ' . get_class($return);
+                $return = 'instanceof '.get_class($return);
             }
-            throw new \InvalidArgumentException('Unknown data input: "' . $return . '"');
+            throw new \InvalidArgumentException('Unknown data input: "'.$return.'"');
         }
     }
 

@@ -9,12 +9,11 @@ use ZfcDatagrid\Column;
 
 abstract class AbstractExport extends AbstractRenderer
 {
-
     protected $allowedColumnTypes = array(
         'ZfcDatagrid\Column\Type\DateTime',
         'ZfcDatagrid\Column\Type\Number',
         'ZfcDatagrid\Column\Type\PhpArray',
-        'ZfcDatagrid\Column\Type\String'
+        'ZfcDatagrid\Column\Type\String',
     );
 
     protected $columnsToExport;

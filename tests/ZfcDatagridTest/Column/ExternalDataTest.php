@@ -11,7 +11,6 @@ use ZfcDatagrid\Column\DataPopulation;
  */
 class ExternalDataTest extends PHPUnit_Framework_TestCase
 {
-
     public function testConstruct()
     {
         $col = new Column\ExternalData('myData');

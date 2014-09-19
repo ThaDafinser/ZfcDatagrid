@@ -11,7 +11,6 @@ use PHPUnit_Framework_TestCase;
  */
 class AbstractTypeTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      *
      * @var \ZfcDatagrid\Column\Type\AbstractType

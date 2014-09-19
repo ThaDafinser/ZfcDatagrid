@@ -7,7 +7,6 @@ use ZfcDatagrid\Column\Type;
 
 class DataSourceTestCase extends PHPUnit_Framework_TestCase
 {
-
     /**
      *
      * @var array
@@ -38,31 +37,31 @@ class DataSourceTestCase extends PHPUnit_Framework_TestCase
         $data[] = array(
             'volume' => 67,
             'edition' => 2,
-            'unneededCol' => 'something'
+            'unneededCol' => 'something',
         );
         $data[] = array(
             'volume' => 86,
             'edition' => 1,
-            'unneded' => 'blubb'
+            'unneded' => 'blubb',
         );
         $data[] = array(
             'volume' => 85,
-            'edition' => 6
+            'edition' => 6,
         );
         $data[] = array(
             'volume' => 98,
-            'edition' => 2
+            'edition' => 2,
         );
         $data[] = array(
             'volume' => 86,
-            'edition' => 6
+            'edition' => 6,
         );
         $data[] = array(
             'volume' => 67,
             'edition' => 7,
             'user' => array(
-                'displayName' => 'Martin'
-            )
+                'displayName' => 'Martin',
+            ),
         );
 
         $this->data = $data;

@@ -5,7 +5,6 @@ use ZfcDatagrid\Filter;
 
 abstract class AbstractType implements TypeInterface
 {
-
     /**
      * the default filter operation
      *

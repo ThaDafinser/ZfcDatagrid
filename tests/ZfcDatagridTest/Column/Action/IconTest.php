@@ -10,13 +10,12 @@ use ZfcDatagrid\Column\Action\Icon;
  */
 class IconTest extends PHPUnit_Framework_TestCase
 {
-
     public function testConstruct()
     {
         $icon = new Icon();
 
         $this->assertEquals(array(
-            'href' => '#'
+            'href' => '#',
         ), $icon->getAttributes());
     }
 

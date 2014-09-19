@@ -5,7 +5,6 @@ use ZfcDatagrid\Column\DataPopulation\ObjectAwareInterface;
 
 class Gravatar implements ObjectAwareInterface
 {
-
     protected $email;
 
     /**
@@ -23,7 +22,7 @@ class Gravatar implements ObjectAwareInterface
                 break;
 
             default:
-                throw new \InvalidArgumentException('Not allowed parameter: ' . $name);
+                throw new \InvalidArgumentException('Not allowed parameter: '.$name);
                 break;
         }
     }
@@ -43,12 +42,11 @@ class Gravatar implements ObjectAwareInterface
      */
     public function toString()
     {
-
         $hash = '';
         if ($this->email != '') {
             $hash = md5($this->email);
         }
 
-        return 'http://www.gravatar.com/avatar/' .$hash;
+        return 'http://www.gravatar.com/avatar/'.$hash;
     }
 }

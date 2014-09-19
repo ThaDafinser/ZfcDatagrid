@@ -8,7 +8,6 @@ namespace ZfcDatagridTest\DataSource\Doctrine2\Mocks;
  */
 class ConnectionMock extends \Doctrine\DBAL\Connection
 {
-
     /**
      *
      * @var mixed
@@ -80,7 +79,7 @@ class ConnectionMock extends \Doctrine\DBAL\Connection
         $this->_executeUpdates[] = array(
             'query' => $query,
             'params' => $params,
-            'types' => $types
+            'types' => $types,
         );
     }
 
@@ -106,7 +105,7 @@ class ConnectionMock extends \Doctrine\DBAL\Connection
     public function quote($input, $type = null)
     {
         if (is_string($input)) {
-            return "'" . $input . "'";
+            return "'".$input."'";
         }
 
         return $input;

@@ -19,7 +19,6 @@ use Zend\Db\Sql\Select;
  */
 class ZendSelectTest extends DataSourceTestCase
 {
-
     /**
      *
      * @var Adapter
@@ -75,7 +74,7 @@ class ZendSelectTest extends DataSourceTestCase
         $this->source->setAdapter($this->sql);
         $this->source->setColumns(array(
             $this->colVolumne,
-            $this->colEdition
+            $this->colEdition,
         ));
     }
 
@@ -138,17 +137,17 @@ class ZendSelectTest extends DataSourceTestCase
 
         $select = new Select();
         $select->from(array(
-            'o' => 'orders'
+            'o' => 'orders',
         ));
         $select->join(array(
-            'u' => 'user'
+            'u' => 'user',
         ), 'u.order = o.id');
 
         $source = new ZendSelect($select);
         $source->setAdapter($this->sql);
         $source->setColumns(array(
             $col1,
-            $col2
+            $col2,
         ));
         $source->execute();
 

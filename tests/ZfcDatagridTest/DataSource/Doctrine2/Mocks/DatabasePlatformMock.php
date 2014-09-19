@@ -1,6 +1,7 @@
 <?php
 
 namespace ZfcDatagridTest\DataSource\Doctrine2\Mocks;
+
 /**
  * Mock class for DatabasePlatform.
  */

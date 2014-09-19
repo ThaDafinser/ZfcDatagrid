@@ -10,14 +10,13 @@ use PHPUnit_Framework_TestCase;
  */
 class EmailTest extends PHPUnit_Framework_TestCase
 {
-
     public function testGetValidRendererNames()
     {
         $formatter = new Formatter\Email();
 
         $this->assertEquals(array(
             'jqGrid',
-            'bootstrapTable'
+            'bootstrapTable',
         ), $formatter->getValidRendererNames());
     }
 
@@ -28,7 +27,7 @@ class EmailTest extends PHPUnit_Framework_TestCase
 
         $formatter = new Formatter\Email();
         $formatter->setRowData(array(
-            'myCol' => 'name@example.com'
+            'myCol' => 'name@example.com',
         ));
 
         $this->assertEquals('<a href="mailto:name@example.com">name@example.com</a>', $formatter->getFormattedValue($col));

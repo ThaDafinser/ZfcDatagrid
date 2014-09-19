@@ -3,7 +3,6 @@ namespace ZfcDatagrid\Column;
 
 class ExternalData extends AbstractColumn
 {
-
     /**
      *
      * @var DataPopulation\DataPopulationInterface

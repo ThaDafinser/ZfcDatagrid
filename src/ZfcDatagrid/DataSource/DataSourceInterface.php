@@ -3,7 +3,6 @@ namespace ZfcDatagrid\DataSource;
 
 interface DataSourceInterface
 {
-
     /**
      * Set the data source
      * - array
@@ -13,7 +12,7 @@ interface DataSourceInterface
      *
      * @param mixed $data
      */
-    public function __construct ($data);
+    public function __construct($data);
 
     /**
      * Get the data back from construct
@@ -27,5 +26,5 @@ interface DataSourceInterface
      * - with sort statements
      * - with filters statements
      */
-    public function execute ();
+    public function execute();
 }

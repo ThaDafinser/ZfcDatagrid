@@ -12,7 +12,6 @@ use ZfcDatagrid\Column\Type;
 
 class Renderer extends AbstractExport
 {
-
     public function getName()
     {
         return 'csv';
@@ -49,9 +48,9 @@ class Renderer extends AbstractExport
         $optionsExport = $options['settings']['export'];
 
         $path = $optionsExport['path'];
-        $saveFilename = $this->getCacheId() . '.csv';
+        $saveFilename = $this->getCacheId().'.csv';
 
-        $fp = fopen($path . '/' . $saveFilename, 'w');
+        $fp = fopen($path.'/'.$saveFilename, 'w');
 
         /*
          * Save the file
@@ -85,7 +84,7 @@ class Renderer extends AbstractExport
          * Return the file
          */
         $response = new ResponseStream();
-        $response->setStream(fopen($path . '/' . $saveFilename, 'r'));
+        $response->setStream(fopen($path.'/'.$saveFilename, 'r'));
 
         $headers = new Headers();
         $headers->addHeaders(array(
@@ -93,13 +92,13 @@ class Renderer extends AbstractExport
                 'application/force-download',
                 'application/octet-stream',
                 'application/download',
-                'text/csv; charset=utf-8'
+                'text/csv; charset=utf-8',
             ),
-            'Content-Length' => filesize($path . '/' . $saveFilename),
-            'Content-Disposition' => 'attachment;filename=' . $this->getFilename() . '.csv',
+            'Content-Length' => filesize($path.'/'.$saveFilename),
+            'Content-Disposition' => 'attachment;filename='.$this->getFilename().'.csv',
             'Cache-Control' => 'must-revalidate',
             'Pragma' => 'no-cache',
-            'Expires' => 'Thu, 1 Jan 1970 00:00:00 GMT'
+            'Expires' => 'Thu, 1 Jan 1970 00:00:00 GMT',
         ));
 
         $response->setHeaders($headers);

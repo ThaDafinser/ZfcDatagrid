@@ -7,7 +7,6 @@ use Zend\Db\Adapter\Adapter;
 
 class ZendDbAdapterFactory implements FactoryInterface
 {
-
     public function createService(ServiceLocatorInterface $sm)
     {
         $config = $sm->get('config');

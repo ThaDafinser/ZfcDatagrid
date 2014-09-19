@@ -6,7 +6,6 @@ use Doctrine\ORM\QueryBuilder;
 
 class PaginatorFast implements AdapterInterface
 {
-
     /**
      *
      * @var QueryBuilder
@@ -81,7 +80,7 @@ class PaginatorFast implements AdapterInterface
             ->setMaxResults(null)
             ->resetDQLParts(array(
             'orderBy',
-            'select'
+            'select',
         ));
 
         if (count($groupParts) > 1) {
@@ -91,7 +90,7 @@ class PaginatorFast implements AdapterInterface
             // more than one group part...tricky!
             // @todo finde something better...
             $qb->resetDQLPart('groupBy');
-            $qb->select('CONCAT(' . implode(',', $groupParts) . ') as uniqueParts');
+            $qb->select('CONCAT('.implode(',', $groupParts).') as uniqueParts');
 
             $items = array();
             $result = $qb->getQuery()->getResult();
@@ -105,7 +104,7 @@ class PaginatorFast implements AdapterInterface
             $groupPart = $groupParts[0];
 
             $qb->resetDQLPart('groupBy');
-            $qb->select('COUNT(DISTINCT ' . $groupPart . ')');
+            $qb->select('COUNT(DISTINCT '.$groupPart.')');
 
             $this->rowCount = $qb->getQuery()->getSingleScalarResult();
         } else {
@@ -117,7 +116,7 @@ class PaginatorFast implements AdapterInterface
                 $qb->select('COUNT_ONE() AS rowCount');
             } else {
                 $fromPart = $dqlParts['from'];
-                $qb->select('COUNT(' . $fromPart[0]->getAlias() . ')');
+                $qb->select('COUNT('.$fromPart[0]->getAlias().')');
             }
 
             $this->rowCount = $qb->getQuery()->getSingleScalarResult();

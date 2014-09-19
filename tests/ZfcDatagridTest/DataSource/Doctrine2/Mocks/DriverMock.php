@@ -8,7 +8,6 @@ namespace ZfcDatagridTest\DataSource\Doctrine2\Mocks;
  */
 class DriverMock implements \Doctrine\DBAL\Driver
 {
-
     /**
      *
      * @var \Doctrine\DBAL\Platforms\AbstractPlatform null

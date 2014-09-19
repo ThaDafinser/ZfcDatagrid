@@ -15,7 +15,6 @@ use Zend\Console\Adapter\AdapterInterface as ConsoleAdapter;
  */
 class Renderer extends AbstractRenderer
 {
-
     /**
      *
      * @var ConsoleAdapter
@@ -120,7 +119,7 @@ class Renderer extends AbstractRenderer
                     if ($column->getUniqueId() == $sortColumn) {
                         $sortConditions[] = array(
                             'sortDirection' => $sortDirection,
-                            'column' => $column
+                            'column' => $column,
                         );
 
                         $column->setSortActive($sortDirection);
@@ -201,7 +200,7 @@ class Renderer extends AbstractRenderer
         $translator = $this->getTranslator();
 
         $options = array(
-            'columnWidths' => $this->getColumnWidths()
+            'columnWidths' => $this->getColumnWidths(),
         );
 
         $table = new TextTable($options);
@@ -253,8 +252,9 @@ class Renderer extends AbstractRenderer
 
             foreach ($this->getColumnsToDisplay() as $column) {
                 $value = '';
-                if (isset($row[$column->getUniqueId()]))
+                if (isset($row[$column->getUniqueId()])) {
                     $value = $row[$column->getUniqueId()];
+                }
 
                 $tableColumn = new Table\Column($value);
                 if ($column->getType() instanceof Type\Number) {
@@ -273,12 +273,12 @@ class Renderer extends AbstractRenderer
          */
         $tableRow = new Table\Row();
 
-        $footer = $translator->translate('Page') . ' ';
-        $footer .= $paginator->getCurrentPageNumber() . ' ' . $translator->translate('of') . ' ' . $paginator->count();
+        $footer = $translator->translate('Page').' ';
+        $footer .= $paginator->getCurrentPageNumber().' '.$translator->translate('of').' '.$paginator->count();
 
         $footer .= ' / ';
 
-        $footer .= $translator->translate('Showing') . ' ' . $paginator->getCurrentItemCount() . ' ' . $translator->translate('of') . ' ' . $paginator->getTotalItemCount() . ' ' . $translator->translate('items');
+        $footer .= $translator->translate('Showing').' '.$paginator->getCurrentItemCount().' '.$translator->translate('of').' '.$paginator->getTotalItemCount().' '.$translator->translate('items');
 
         $tableColumn = new Table\Column($footer);
         $tableColumn->setColSpan(count($options['columnWidths']));
