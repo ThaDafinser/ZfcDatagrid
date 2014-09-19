@@ -24,7 +24,7 @@ class RendererTest extends PHPUnit_Framework_TestCase
         ),
     );
 
-    private $consoleWidth = 78;
+    private $consoleWidth = 77;
 
     /**
      *
