@@ -643,6 +643,9 @@ abstract class AbstractRenderer implements RendererInterface
         $viewModel->setVariable('massActions', $grid->getMassActions());
 
         $viewModel->setVariable('isUserFilterEnabled', $grid->isUserFilterEnabled());
+        
+        $viewModel->setVariable('globalActions', $grid->getGlobalActions());
+        $viewModel->setVariable('middleToolbarTemplate', $grid->getMiddleToolbarTemplate());
 
         /*
          * renderer specific parameter names

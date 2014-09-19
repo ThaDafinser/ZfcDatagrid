@@ -169,6 +169,21 @@ class Datagrid implements ServiceLocatorAwareInterface
     protected $exportRenderers;
 
     protected $toolbarTemplate;
+    
+    /**
+     * @var array
+     * 
+     * global actions array to be displayed in the toolbar
+     */
+    protected $globalActions = array();
+
+    /**
+     * @var string
+     * 
+     * a Middle Toolbar Template to be partially rendered in the toolbar.phtml 
+     * which will be used for example for cusom filtering
+     */
+    protected $middleToolbarTemplate = null;
 
     /**
      *
@@ -1127,6 +1142,61 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function getToolbarTemplate()
     {
         return $this->toolbarTemplate;
+    }
+
+    /**
+     * Set global actions array to be displayed in the toolbar
+     * The Actions array of format: link name => link URL
+     *
+     * @param array $actions
+     */
+    public function setGlobalActions($globalActions)
+    {
+        $this->globalActions = $globalActions;
+    }
+    
+    /**
+     * Add a global action to be displayed in the toolbar
+     *
+     * @param string $actionName
+     * @param string $actionURL
+     */
+    public function addGlobalAction($actionName, $actionURL)
+    {
+        $this->globalActions[$actionName] = $actionURL;
+    }
+
+    /**
+     * Get global actions array to be displayed in the toolbar
+     * Return null if nothing custom set
+     *
+     * @return array
+     */
+    public function getGlobalActions()
+    {
+        return $this->globalActions;
+    }
+    
+    /**
+     * Set Middle Toolbar Template which is the 
+     * above grid table middle area content
+     *
+     * @param string $middleToolbarTemplate
+     */
+    public function setMiddleToolbarTemplate($middleToolbarTemplate)
+    {
+        $this->middleToolbarTemplate = $middleToolbarTemplate;
+    }
+    
+    /**
+     * Set Middle Toolbar Template which is the 
+     * above grid table middle area content
+     *
+     * @return string
+     */
+    public function getMiddleToolbarTemplate()
+    {
+        return $this->middleToolbarTemplate;
     }
 
     /**

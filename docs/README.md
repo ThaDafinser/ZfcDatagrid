@@ -12,7 +12,7 @@ If you are looking for some information that is not listed in the documentation,
    1. [Requirements](/docs/02. Quick Start.md#requirements)
    2. [Installation](/docs/02. Quick Start.md#installation)
    3. [Configuration](/docs/02. Quick Start.md#configuration)
-   3. [Basic Example](/docs/02. Quick Start.md#basic-example)
+   4. [Basic Example](/docs/02. Quick Start.md#basic-example)
 
 3. [Columns](/docs/03. Columns.md)
   1. [Columns Introduction](/docs/03. Columns.md#columns-introduction)
@@ -46,6 +46,11 @@ If you are looking for some information that is not listed in the documentation,
 4. [Filtering](/docs/04. Filtering.md)
 
 5. [Toolbar and Custom Filtering](/docs/05. Toolbar and Custom Filtering.md)
+   1. [Introduction](/docs/05. Toolbar and Custom Filtering.md#introduction)
+   2. [Global Actions](/docs/05. Toolbar and Custom Filtering.md#global-actions)
+   3. [Custom Filtering (Middle Toolbar Template)](/docs/05. Toolbar and Custom Filtering.md#custom-filtering-middle-toolbar-template)
+   4. [Export Links](/docs/05. Toolbar and Custom Filtering.md#export-links)
+   5. [Use Custome Toolbar](/docs/05. Toolbar and Custom Filtering.md#use-custome-toolbar)
 
 6. [Exporting](/docs/06. Exporting.md)
 
