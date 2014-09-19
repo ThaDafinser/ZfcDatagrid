@@ -7,7 +7,7 @@ use ZfcDatagrid\Column\Formatter\AbstractFormatter;
 abstract class AbstractColumn
 {
 
-    protected $label;
+    protected $label = '';
 
     protected $uniqueId;
 

@@ -118,6 +118,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
              * Filtering
              */
             $searchoptions = array();
+            $searchoptions['clearSearch'] = false;
             if ($column->hasFilterSelectOptions() === true) {
                 $options['stype'] = 'select';
                 $searchoptions['value'] = $column->getFilterSelectOptions();

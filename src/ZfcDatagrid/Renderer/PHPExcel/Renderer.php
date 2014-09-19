@@ -56,12 +56,12 @@ class Renderer extends AbstractExport
 
         $xColumn = 0;
         $yRow = $optionsRenderer['startRowData'];
-        foreach ($this->getColumnsToExport() as $column) {
+        foreach ($this->getColumnsToExport() as $col) {
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-            $label = $this->getTranslator()->translate($column->getLabel());
+            $label = $this->getTranslator()->translate($col->getLabel());
             $sheet->setCellValueByColumnAndRow($xColumn, $yRow, $label);
 
-            $sheet->getColumnDimension(PHPExcel_Cell::stringFromColumnIndex($xColumn))->setWidth($column->getWidth());
+            $sheet->getColumnDimension(PHPExcel_Cell::stringFromColumnIndex($xColumn))->setWidth($col->getWidth());
 
             $xColumn ++;
         }
@@ -73,10 +73,15 @@ class Renderer extends AbstractExport
         foreach ($this->getData() as $row) {
 
             $xColumn = 0;
-            foreach ($this->getColumnsToExport() as $column) {
+            foreach ($this->getColumnsToExport() as $col) {
+                $value = $row[$col->getUniqueId()];
+                if (is_array($value)) {
+                    $value = implode(PHP_EOL, $value);
+                }
+
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */
                 $currentColumn = PHPExcel_Cell::stringFromColumnIndex($xColumn);
-                $sheet->getCell($currentColumn . $yRow)->setValueExplicit($row[$column->getUniqueId()], PHPExcel_Cell_DataType::TYPE_STRING);
+                $sheet->getCell($currentColumn . $yRow)->setValueExplicit($value, PHPExcel_Cell_DataType::TYPE_STRING);
 
                 $columnStyle = $sheet->getStyle($currentColumn . $yRow);
                 $columnStyle->getAlignment()->setWrapText(true);
@@ -84,7 +89,7 @@ class Renderer extends AbstractExport
                 /*
                  * Styles
                  */
-                $styles = array_merge($this->getRowStyles(), $column->getStyles());
+                $styles = array_merge($this->getRowStyles(), $col->getStyles());
                 foreach ($styles as $style) {
                     /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
                     if ($style->isApply($row) === true) {

@@ -25,7 +25,7 @@ class Renderer extends AbstractExport
      *
      * @var TCPDF
      */
-    private $pdf;
+    protected $pdf;
 
     public function getName()
     {
@@ -135,7 +135,7 @@ class Renderer extends AbstractExport
         return $response;
     }
 
-    public function initPdf()
+    protected function initPdf()
     {
         $optionsRenderer = $this->getOptionsRenderer();
 
@@ -190,8 +190,8 @@ class Renderer extends AbstractExport
         // First make sure the columns width is 100 "percent"
         $this->calculateColumnWidthPercent($cols);
 
-        $optionsRenderer = $this->getOptionsRenderer();
-        $margins = $optionsRenderer['margins'];
+        $pdf = $this->getPdf();
+        $margins = $pdf->getMargins();
 
         $paperWidth = $this->getPaperWidth();
         $paperWidth -= ($margins['left'] + $margins['right']);
@@ -324,16 +324,6 @@ class Renderer extends AbstractExport
             $text = '';
             switch (get_class($col->getType())) {
 
-                case 'ZfcDatagrid\Column\Type\Icon':
-                    $text = '';
-
-                    $link = K_BLANK_IMAGE;
-                    if ($col->getIconLink() != '') {
-                        $link = $col->getIconLink();
-                    }
-                    $pdf->Image($link, $x + 1, $y + 1, 0, 0, '', '', 'L', true);
-                    break;
-
                 case 'ZfcDatagrid\Column\Type\Image':
                     $text = '';
 
@@ -345,18 +335,23 @@ class Renderer extends AbstractExport
                         }
                     }
 
-                    $resizeType = $col->getType()->getResizeType();
-                    $resizeHeight = $col->getType()->getResizeHeight();
-                    if ($resizeType === 'dynamic') {
-                        // resizing properly to width + height (and keeping the ratio)
-                        $file = file_get_contents($link);
-                        if ($file !== false) {
-                            list ($width, $height) = $this->calcImageSize($file, $col->getWidth() - 2, $rowHeight - 2);
+                    try {
+                        $resizeType = $col->getType()->getResizeType();
+                        $resizeHeight = $col->getType()->getResizeHeight();
+                        if ($resizeType === 'dynamic') {
+                            // resizing properly to width + height (and keeping the ratio)
+                            $file = file_get_contents($link);
+                            if ($file !== false) {
+                                list ($width, $height) = $this->calcImageSize($file, $col->getWidth() - 2, $rowHeight - 2);
 
-                            $pdf->Image('@' . $file, $x + 1, $y + 1, $width, $height, '', '', 'L', false);
+                                $pdf->Image('@' . $file, $x + 1, $y + 1, $width, $height, '', '', 'L', false);
+                            }
+                        } else {
+                            $pdf->Image($link, $x + 1, $y + 1, 0, $resizeHeight, '', '', 'L', false);
                         }
-                    } else {
-                        $pdf->Image($link, $x + 1, $y + 1, 0, $resizeHeight, '', '', 'L', false);
+                    } catch (\Exception $e) {
+                        // if tcpdf couldnt find a image, continue and log it
+                        trigger_error($e->getMessage());
                     }
                     break;
 

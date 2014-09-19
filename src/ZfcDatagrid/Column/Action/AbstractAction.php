@@ -66,7 +66,11 @@ abstract class AbstractAction
 
         // Replace placeholders
         if (strpos($this->getLink(), self::ROW_ID_PLACEHOLDER) !== false) {
-            $link = str_replace(self::ROW_ID_PLACEHOLDER, $row['idConcated'], $link);
+            $id = '';
+            if (isset($row['idConcated'])) {
+                $id = $row['idConcated'];
+            }
+            $link = str_replace(self::ROW_ID_PLACEHOLDER, $id, $link);
         }
 
         foreach ($this->getLinkColumnPlaceholders() as $col) {

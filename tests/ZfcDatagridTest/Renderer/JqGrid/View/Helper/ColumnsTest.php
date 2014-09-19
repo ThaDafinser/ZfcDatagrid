@@ -58,7 +58,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $result = $helper($cols);
 
         $this->assertStringStartsWith('[{name:', $result);
-        $this->assertStringEndsWith('search: true}]', $result);
+        $this->assertStringEndsWith('"clearSearch":false}}]', $result);
     }
 
     public function testStyleBold()
@@ -75,7 +75,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $result = $helper($cols);
 
         $this->assertStringStartsWith('[{name:', $result);
-        $this->assertStringEndsWith('<span style="font-weight: bold;">\' + cellvalue + \'</span>\'; return cellvalue; }}]', $result);
+        $this->assertStringEndsWith('<span style="font-weight: bold;">\' + cellvalue + \'</span>\'; return cellvalue; },searchoptions: {"clearSearch":false}}]', $result);
     }
 
     public function testStyleItalic()
@@ -92,7 +92,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $result = $helper($cols);
 
         $this->assertStringStartsWith('[{name:', $result);
-        $this->assertStringEndsWith('<span style="font-style: italic;">\' + cellvalue + \'</span>\'; return cellvalue; }}]', $result);
+        $this->assertStringEndsWith('<span style="font-style: italic;">\' + cellvalue + \'</span>\'; return cellvalue; },searchoptions: {"clearSearch":false}}]', $result);
     }
 
     public function testStyleColor()
@@ -109,7 +109,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $result = $helper($cols);
 
         $this->assertStringStartsWith('[{name:', $result);
-        $this->assertStringEndsWith('<span style="color: #ff0000;">\' + cellvalue + \'</span>\'; return cellvalue; }}]', $result);
+        $this->assertStringEndsWith('<span style="color: #ff0000;">\' + cellvalue + \'</span>\'; return cellvalue; },searchoptions: {"clearSearch":false}}]', $result);
     }
 
     public function testStyleBackgroundColor()
@@ -126,7 +126,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $result = $helper($cols);
 
         $this->assertStringStartsWith('[{name:', $result);
-        $this->assertStringEndsWith('search: true}]', $result);
+        $this->assertStringEndsWith('search: true,searchoptions: {"clearSearch":false}}]', $result);
     }
 
     public function testStyleException()
@@ -166,7 +166,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $result = $helper($cols);
 
         $this->assertStringStartsWith('[{name:', $result);
-        $this->assertStringEndsWith('if (rowObject.myCol == \'123\') {cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';} return cellvalue; }}]', $result);
+        $this->assertStringEndsWith('if (rowObject.myCol == \'123\') {cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';} return cellvalue; },searchoptions: {"clearSearch":false}}]', $result);
     }
 
     public function testStyleByValueNotEqual()
@@ -187,7 +187,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $result = $helper($cols);
 
         $this->assertStringStartsWith('[{name:', $result);
-        $this->assertStringEndsWith('if (rowObject.myCol != \'123\') {cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';} return cellvalue; }}]', $result);
+        $this->assertStringEndsWith('if (rowObject.myCol != \'123\') {cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';} return cellvalue; },searchoptions: {"clearSearch":false}}]', $result);
     }
 
     public function testStyleByValueNotSupported()
