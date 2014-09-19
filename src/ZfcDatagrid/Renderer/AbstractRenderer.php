@@ -644,7 +644,9 @@ abstract class AbstractRenderer implements RendererInterface
         $viewModel->setVariable('overwriteUrl', $grid->getUrl());
 
         $viewModel->setVariable('templateToolbar', $this->getToolbarTemplate());
-        $viewModel->setVariable('templateToolbarVariables', $this->getToolbarTemplateVariables());
+        foreach ($this->getToolbarTemplateVariables() as $key => $value) {
+            $viewModel->setVariable($key, $value);
+        }
         $viewModel->setVariable('rendererName', $this->getName());
 
         $options = $this->getOptions();
