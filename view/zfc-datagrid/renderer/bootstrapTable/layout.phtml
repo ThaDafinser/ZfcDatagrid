@@ -138,7 +138,7 @@ if($this->rowClickAction !== null){
                     if ($col->isUserFilterEnabled() === true) {
 
                         if ($col->hasFilterSelectOptions() === true) {
-                            $htmlFilter = '<select name="toolbarFilters[' . $col->getUniqueId() . ']" style="width: 80%" onchange="this.form.submit()" >';
+                            $htmlFilter = '<select name="toolbarFilters[' . $col->getUniqueId() . ']" style="width: 80%" onchange="this.form.submit()" class="form-control" >';
                             foreach ($col->getFilterSelectOptions() as $value => $option) {
                                 if ($col->getFilterActiveValue() == sprintf($col->getFilterDefaultOperation(), $value)) {
                                     $htmlFilter .= '<option value="' . $value . '" selected="selected">' . $option . '</option>';
@@ -151,9 +151,9 @@ if($this->rowClickAction !== null){
                             $htmlFilter .= '</select>';
 
                         } else if ($col->getType() instanceof \ZfcDatagrid\Column\Type\DateTime){
-                            $htmlFilter = '<input type="text" name="toolbarFilters[' . $col->getUniqueId() . ']" style="width: 80%" value="' . $col->getFilterActiveValue() . '" class="daterange" />';
+                            $htmlFilter = '<input type="text" name="toolbarFilters[' . $col->getUniqueId() . ']" style="width: 80%" value="' . $col->getFilterActiveValue() . '" class="form-control daterange" />';
                         } else {
-                            $htmlFilter = '<input type="text" name="toolbarFilters[' . $col->getUniqueId() . ']" style="width: 80%" value="' . $col->getFilterActiveValue() . '" />';
+                            $htmlFilter = '<input type="text" name="toolbarFilters[' . $col->getUniqueId() . ']" style="width: 80%" value="' . $col->getFilterActiveValue() . '" class="form-control" />';
                         }
                     }
                     ?>
