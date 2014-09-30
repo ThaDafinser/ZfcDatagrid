@@ -9,6 +9,7 @@ use PHPExcel;
 use PHPExcel_Worksheet_PageSetup;
 use PHPExcel_Cell;
 use PHPExcel_Cell_DataType;
+use PHPExcel_Style_Alignment;
 use Zend\Http\Response\Stream as ResponseStream;
 use Zend\Http\Headers;
 
@@ -115,6 +116,29 @@ class Renderer extends AbstractExport
                                     ),
                                 ));
                                 break;
+                            
+                            case 'ZfcDatagrid\Column\Style\Align':
+                                switch($style->getAlignment()) {
+                                    case \ZfcDatagrid\Column\Style\Align::$RIGHT:
+                                        $columnStyle->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+                                        break;
+                                    case \ZfcDatagrid\Column\Style\Align::$LEFT:
+                                        $columnStyle->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+                                        break;
+                                    case \ZfcDatagrid\Column\Style\Align::$CENTER:
+                                        $columnStyle->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                                        break;
+                                    case \ZfcDatagrid\Column\Style\Align::$JUSTIFY:
+                                        $columnStyle->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_JUSTIFY);
+                                        break;
+                                    default:
+                                        //throw new \Exception('Not defined yet: "'.get_class($style->getAlignment()).'"');
+                                        break;
+                                }
+                                
+                                break;
+                            
+                                    
 
                             default:
                                 throw new \Exception('Not defined yet: "'.get_class($style).'"');

@@ -36,6 +36,7 @@ If you are looking for some information that is not listed in the documentation,
     * Bold
     * Color
     * Italic
+    * Align
     * Applying Style
   5. [Column Data Formatters](/docs/03. Columns.md#column-data-formatters)
     * Email
