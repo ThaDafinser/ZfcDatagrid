@@ -12,7 +12,7 @@ Over ***330 tests and 1000 assertions*** testing the stability currently!
 
 If you need help, please use following ressources
 - [Installation](https://github.com/ThaDafinser/ZfcDatagrid#installation) 
--  ["Getting started guide"](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/docs/Getting-started.md)
+-  ["Getting started guide"](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/docs/02.%20Quick%20Start.md)
 - [Documentation](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/docs/)
 - [Code examples](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/src/ZfcDatagrid/Examples/Controller/)
 - [Issues/Help](https://github.com/ThaDafinser/ZfcDatagrid/issues)
