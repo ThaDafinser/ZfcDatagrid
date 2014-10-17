@@ -50,7 +50,7 @@ If you are looking for some information that is not listed in the documentation,
    2. [Requirements](/docs/05. Toolbar and Custom Filtering.md#use-custome-toolbar)
    3. [Requirements](/docs/05. Toolbar and Custom Filtering.md#toolbar-variables)
    4. [Requirements](/docs/05. Toolbar and Custom Filtering.md#custome-toolbar-example)
-   4. [Requirements](/docs/05. Toolbar and Custom Filtering.md#custome-filtering)
+   5. [Requirements](/docs/05. Toolbar and Custom Filtering.md#custome-filtering)
 
 6. [Exporting](/docs/06. Exporting.md)
 
