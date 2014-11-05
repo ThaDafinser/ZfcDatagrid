@@ -153,24 +153,24 @@ class Renderer extends AbstractExport
 
         // highlight header line
         $style = array(
-            'font' => [
+            'font' => array(
                 'bold' => true,
-            ],
+            ),
 
-            'borders' => [
-                'allborders' => [
+            'borders' => array(
+                'allborders' => array(
                     'style' => PHPExcel_Style_Border::BORDER_MEDIUM,
                     'color' => array(
                         'argb' => PHPExcel_Style_Color::COLOR_BLACK,
                     ),
-                ],
-            ],
-            'fill' => [
+                ),
+            ),
+            'fill' => array(
                 'type' => PHPExcel_Style_Fill::FILL_SOLID,
                 'startcolor' => array(
                     'argb' => PHPExcel_Style_Color::COLOR_YELLOW,
                 ),
-            ],
+            ),
         );
         $range = 'A'.$optionsRenderer['startRowData'].':'.$highest['column'].$optionsRenderer['startRowData'];
         $sheet->getStyle($range)->applyFromArray($style);
