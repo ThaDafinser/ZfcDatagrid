@@ -119,7 +119,7 @@ class DateTime extends AbstractType
 
     public function getLocale()
     {
-        if ($this->locale === null) {
+        if (null === $this->locale) {
             $this->locale = Locale::getDefault();
         }
 
@@ -143,7 +143,7 @@ class DateTime extends AbstractType
 
     public function getOutputTimezone()
     {
-        if ($this->outputTimezone === null) {
+        if (null === $this->outputTimezone) {
             $this->outputTimezone = date_default_timezone_get();
         }
 
@@ -195,7 +195,7 @@ class DateTime extends AbstractType
      */
     public function getUserValue($val)
     {
-        if ($val == '') {
+        if ('' == $val) {
             return '';
         }
 
@@ -205,7 +205,7 @@ class DateTime extends AbstractType
             $date->setTimezone(new DateTimeZone($this->getOutputTimezone()));
         } else {
             $date = PhpDateTime::createFromFormat($this->getSourceDateTimeFormat(), $val, new DateTimeZone($this->getSourceTimezone()));
-            if ($date === false) {
+            if (false === $date) {
                 return '';
             }
             $date->setTimezone(new DateTimeZone($this->getOutputTimezone()));

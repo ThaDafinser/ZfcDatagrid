@@ -47,7 +47,7 @@ class Renderer extends AbstractExport
         $sheet->setTitle($this->getTranslator()
             ->translate($optionsRenderer['sheetName']));
 
-        if ($optionsRenderer['displayTitle'] === true) {
+        if (true === $optionsRenderer['displayTitle']) {
             $sheet->setCellValue('A'.$optionsRenderer['rowTitle'], $this->getTitle());
             $sheet->getStyle('A'.$optionsRenderer['rowTitle'])
                 ->getFont()
@@ -265,7 +265,7 @@ class Renderer extends AbstractExport
         $orientation = $optionsRenderer['orientation'];
         foreach ($phpExcel->getAllSheets() as $sheet) {
             /* @var $sheet \PHPExcel_Worksheet */
-            if ($orientation == 'landscape') {
+            if ('landscape' == $orientation) {
                 $sheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
             } else {
                 $sheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT);
@@ -306,9 +306,9 @@ class Renderer extends AbstractExport
     {
         $translator = $this->getTranslator();
 
-        $textRight = $translator->translate( 'Page' ).' &P / &N';
+        $textRight = $translator->translate('Page').' &P / &N';
 
-        $sheet->getHeaderFooter ()->setOddHeader ( '&L&16&G '.$translator->translate($this->getTitle()) );
-        $sheet->getHeaderFooter ()->setOddFooter ( '&R'.$textRight );
+        $sheet->getHeaderFooter ()->setOddHeader ('&L&16&G '.$translator->translate($this->getTitle()));
+        $sheet->getHeaderFooter ()->setOddFooter ('&R'.$textRight);
     }
 }

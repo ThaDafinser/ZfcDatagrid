@@ -47,7 +47,7 @@ class Renderer extends AbstractExport
 
         // Check for PDF image header
         $headerData = $pdf->getHeaderData();
-        if ($headerData['logo'] == '') {
+        if ('' == $headerData['logo']) {
             $pdf->setHeaderData('./tcpdf_logo.jpg');
         }
         $pdf->AddPage();
@@ -140,7 +140,7 @@ class Renderer extends AbstractExport
 
         $papersize = $optionsRenderer['papersize'];
         $orientation = $optionsRenderer['orientation'];
-        if ($orientation == 'landscape') {
+        if ('landscape' == $orientation) {
             $orientation = 'L';
         } else {
             $orientation = 'P';
@@ -172,7 +172,7 @@ class Renderer extends AbstractExport
      */
     public function getPdf()
     {
-        if ($this->pdf === null) {
+        if (null === $this->pdf) {
             $this->initPdf();
         }
 
@@ -337,7 +337,7 @@ class Renderer extends AbstractExport
                     try {
                         $resizeType = $col->getType()->getResizeType();
                         $resizeHeight = $col->getType()->getResizeHeight();
-                        if ($resizeType === 'dynamic') {
+                        if ('dynamic' === $resizeType) {
                             // resizing properly to width + height (and keeping the ratio)
                             $file = file_get_contents($link);
                             if ($file !== false) {

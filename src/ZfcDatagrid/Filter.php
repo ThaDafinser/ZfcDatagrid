@@ -183,7 +183,7 @@ class Filter
         }
         $this->operator = $operator;
 
-        if ($value === false) {
+        if (false === $value) {
             // NO VALUE applied...maybe only "="
             $value = '';
         }
@@ -202,7 +202,7 @@ class Filter
             $val = trim($val);
         }
 
-        if ($operator == self::BETWEEN) {
+        if (self::BETWEEN == $operator) {
             // Check if column is a DateTime type and if Daterange picker is enabled
             if ($this->getColumn()->getType() instanceof Column\Type\DateTime && $this->getColumn()
                 ->getType()

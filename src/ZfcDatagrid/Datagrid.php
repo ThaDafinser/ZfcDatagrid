@@ -277,7 +277,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function getId()
     {
-        if ($this->id === null) {
+        if (null === $this->id) {
             $this->id = 'defaultGrid';
         }
 
@@ -344,7 +344,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function getCacheId()
     {
-        if ($this->cacheId === null) {
+        if (null === $this->cacheId) {
             $this->cacheId = md5($this->getSession()
                 ->getManager()
                 ->getId().'_'.$this->getId());
@@ -604,7 +604,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function getExportRenderers()
     {
-        if ($this->exportRenderers === null) {
+        if (null === $this->exportRenderers) {
             $options = $this->getOptions();
             $this->exportRenderers = $options['settings']['export']['formats'];
         }
@@ -638,7 +638,7 @@ class Datagrid implements ServiceLocatorAwareInterface
             throw new \InvalidArgumentException('Column type: "'.$colType.'" not found!');
         }
 
-        if ($class == 'ZfcDatagrid\\Column\\Select') {
+        if ('ZfcDatagrid\\Column\\Select' == $class) {
             if (! isset($config['select']['column'])) {
                 throw new \InvalidArgumentException('For "ZfcDatagrid\Column\Select" the option select[column] must be defined!');
             }
@@ -899,7 +899,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function getRenderer()
     {
-        if ($this->renderer === null) {
+        if (null === $this->renderer) {
             $rendererName = 'zfcDatagrid.renderer.'.$this->getRendererName();
 
             if ($this->getServiceLocator()->has($rendererName) === true) {
@@ -941,7 +941,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function loadData()
     {
-        if ($this->isDataLoaded === true) {
+        if (true === $this->isDataLoaded) {
             return true;
         }
 
@@ -1099,7 +1099,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function getPaginator()
     {
-        if ($this->paginator === null) {
+        if (null === $this->paginator) {
             throw new \Exception('Paginator is only available after calling "loadData()"');
         }
 
@@ -1176,7 +1176,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function getViewModel()
     {
-        if ($this->viewModel === null) {
+        if (null === $this->viewModel) {
             $this->viewModel = new ViewModel();
         }
 

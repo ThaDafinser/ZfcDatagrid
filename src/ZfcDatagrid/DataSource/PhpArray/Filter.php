@@ -56,7 +56,7 @@ class Filter
             } else {
                 $isApply = DatagridFilter::isApply($value, $filterValue, $filter->getOperator());
             }
-            if ($isApply === true) {
+            if (true === $isApply) {
                 $wasTrueOneTime = true;
             }
 
@@ -67,7 +67,7 @@ class Filter
                 case DatagridFilter::NOT_LIKE_RIGHT:
                 case DatagridFilter::NOT_EQUAL:
                 case DatagridFilter::NOT_IN:
-                    if ($isApply === false) {
+                    if (false === $isApply) {
                         // normally one "match" is okay -> so it's applied
                         // but e.g. NOT_LIKE is not allowed to match so even if the othere rules are true
                         // it has to fail!
@@ -77,7 +77,7 @@ class Filter
             }
         }
 
-        if ($isApply === false && $wasTrueOneTime === true) {
+        if (false === $isApply && true === $wasTrueOneTime) {
             return true;
         }
 

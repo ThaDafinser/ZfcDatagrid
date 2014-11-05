@@ -111,7 +111,7 @@ class Renderer extends AbstractRenderer
 
         $request = $this->getRequest();
         $isSearch = $request->getPost($parameterNames['isSearch']);
-        if ($isSearch == 'true') {
+        if ('true' == $isSearch) {
             // User filtering
             foreach ($this->getColumns() as $column) {
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */

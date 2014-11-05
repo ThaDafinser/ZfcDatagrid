@@ -39,7 +39,7 @@ class FileSize extends AbstractFormatter
         $row = $this->getRowData();
         $value = $row[$column->getUniqueId()];
 
-        if ($value == '') {
+        if ('' == $value) {
             return $value;
         }
 

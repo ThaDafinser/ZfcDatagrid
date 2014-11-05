@@ -143,7 +143,7 @@ abstract class AbstractRenderer implements RendererInterface
      */
     public function getTemplate()
     {
-        if ($this->template === null) {
+        if (null === $this->template) {
             $this->template = $this->getTemplatePathDefault('layout');
         }
 
@@ -164,9 +164,9 @@ abstract class AbstractRenderer implements RendererInterface
             return $optionsRenderer['templates'][$type];
         }
 
-        if ($type === 'layout') {
+        if ('layout' === $type) {
             return 'zfc-datagrid/renderer/'.$this->getName().'/'.$type;
-        } elseif ($type === 'toolbar') {
+        } elseif ('toolbar' === $type) {
             return 'zfc-datagrid/toolbar/toolbar';
         }
 
@@ -185,7 +185,7 @@ abstract class AbstractRenderer implements RendererInterface
 
     public function getToolbarTemplate()
     {
-        if ($this->templateToolbar === null) {
+        if (null === $this->templateToolbar) {
             $this->templateToolbar = $this->getTemplatePathDefault('toolbar');
         }
 
@@ -606,7 +606,7 @@ abstract class AbstractRenderer implements RendererInterface
      */
     public function getCurrentPageNumber()
     {
-        if ($this->currentPageNumber === null) {
+        if (null === $this->currentPageNumber) {
             $this->currentPageNumber = 1;
         }
 

@@ -110,10 +110,10 @@ abstract class AbstractStyle
             }
 
             $isApplyMatch = Filter::isApply($value, $rule['value'], $rule['operator']);
-            if ($this->getByValueOperator() == 'OR' && $isApplyMatch === true) {
+            if ($this->getByValueOperator() == 'OR' && true === $isApplyMatch) {
                 // For OR one match is enough
                 return true;
-            } elseif ($this->getByValueOperator() == 'AND' && $isApplyMatch === false) {
+            } elseif ($this->getByValueOperator() == 'AND' && false === $isApplyMatch) {
                 return false;
             } else {
                 $isApply = $isApplyMatch;

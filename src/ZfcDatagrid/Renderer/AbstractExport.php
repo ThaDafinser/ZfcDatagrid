@@ -76,7 +76,7 @@ abstract class AbstractExport extends AbstractRenderer
             $currentY = $tempY;
         }
 
-        if ($orientation == 'landscape') {
+        if ('landscape' == $orientation) {
             return $currentY;
         } else {
             return $currentX;

@@ -97,7 +97,7 @@ class PhpArray extends AbstractDataSource
             $sortCondition['column']->getUniqueId(),
         );
 
-        if ($sortCondition['sortDirection'] === 'DESC') {
+        if ('DESC' === $sortCondition['sortDirection']) {
             $desc = SORT_DESC;
             $sortArray[] = $desc;
         } else {

@@ -56,7 +56,7 @@ class PhpArray extends AbstractType
     public function getUserValue($value)
     {
         if (! is_array($value)) {
-            if ($value == '') {
+            if ('' == $value) {
                 $value = array();
             } else {
                 $value = explode($this->getSeparator(), $value);

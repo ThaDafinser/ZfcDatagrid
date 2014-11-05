@@ -49,11 +49,11 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
      */
     private function translate($message)
     {
-        if ($this->translator === false) {
+        if (false === $this->translator) {
             return $message;
         }
 
-        if ($this->translator === null) {
+        if (null === $this->translator) {
             if ($this->getServiceLocator()
                 ->getServiceLocator()
                 ->has('translator')) {
@@ -142,16 +142,16 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                 if (is_array($value)) {
                     $value = json_encode($value);
                 } elseif (is_bool($value)) {
-                    if ($value === true) {
+                    if (true === $value) {
                         $value = 'true';
                     } else {
                         $value = 'false';
                     }
-                } elseif ($key == 'formatter') {
+                } elseif ('formatter' == $key) {
                     if (stripos($value, 'formatter') === false && stripos($value, 'function') === false) {
                         $value = '"'.$value.'"';
                     }
-                } elseif ($key == 'cellattr') {
+                } elseif ('cellattr' == $key) {
                     // SKIP THIS
                 } else {
                     $value = '"'.$value.'"';

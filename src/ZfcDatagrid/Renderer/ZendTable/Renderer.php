@@ -71,7 +71,7 @@ class Renderer extends AbstractRenderer
      */
     public function getConsoleAdapter()
     {
-        if ($this->consoleAdapter === null) {
+        if (null === $this->consoleAdapter) {
             $this->consoleAdapter = Console::getInstance();
         }
 
