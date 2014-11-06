@@ -341,7 +341,7 @@ class Renderer extends AbstractExport
                             // resizing properly to width + height (and keeping the ratio)
                             $file = file_get_contents($link);
                             if ($file !== false) {
-                                list ($width, $height) = $this->calcImageSize($file, $col->getWidth() - 2, $rowHeight - 2);
+                                list($width, $height) = $this->calcImageSize($file, $col->getWidth() - 2, $rowHeight - 2);
 
                                 $pdf->Image('@'.$file, $x + 1, $y + 1, $width, $height, '', '', 'L', false);
                             }
@@ -379,11 +379,11 @@ class Renderer extends AbstractExport
     {
         $pdf = $this->getPdf();
 
-        list ($width, $height) = getimagesizefromstring($imageData);
+        list($width, $height) = getimagesizefromstring($imageData);
         $width = $pdf->pixelsToUnits($width);
         $height = $pdf->pixelsToUnits($height);
 
-        list ($newWidth, $newHeight) = ImageResize::getCalculatedSize($width, $height, $maxWidth, $maxHeight);
+        list($newWidth, $newHeight) = ImageResize::getCalculatedSize($width, $height, $maxWidth, $maxHeight);
 
         return array(
             $newWidth,

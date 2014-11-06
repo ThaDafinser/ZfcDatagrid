@@ -297,7 +297,7 @@ class Filter
      */
     public static function isApply($currentValue, $expectedValue, $operator = Filter::EQUAL)
     {
-        list ($currentValue, $expectedValue) = self::convertValues($currentValue, $expectedValue, $operator);
+        list($currentValue, $expectedValue) = self::convertValues($currentValue, $expectedValue, $operator);
 
         switch ($operator) {
 

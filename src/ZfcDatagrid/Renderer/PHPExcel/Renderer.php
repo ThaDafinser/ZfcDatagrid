@@ -308,7 +308,7 @@ class Renderer extends AbstractExport
 
         $textRight = $translator->translate('Page').' &P / &N';
 
-        $sheet->getHeaderFooter ()->setOddHeader ('&L&16&G '.$translator->translate($this->getTitle()));
-        $sheet->getHeaderFooter ()->setOddFooter ('&R'.$textRight);
+        $sheet->getHeaderFooter()->setOddHeader('&L&16&G '.$translator->translate($this->getTitle()));
+        $sheet->getHeaderFooter()->setOddFooter('&R'.$textRight);
     }
 }
