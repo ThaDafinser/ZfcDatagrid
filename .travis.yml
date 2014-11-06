@@ -17,7 +17,7 @@ before_script:
  - composer update --prefer-source
 
 script:
- - vendor/bin/php-cs-fixer fix src --dry-run -v
+ - vendor/bin/php-cs-fixer fix src --level=psr2 --dry-run -v
  - mkdir -p build/logs
  - ./vendor/bin/phpunit -c travis.phpunit.xml --coverage-clover build/logs/clover.xml
 
