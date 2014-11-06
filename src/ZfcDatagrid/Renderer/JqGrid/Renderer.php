@@ -203,7 +203,7 @@ class Renderer extends AbstractRenderer
                     }
 
                     $row[$column->getUniqueId()] = implode(' ', $actions);
-                } elseif ($column instanceof Column\Icon) {
+                } elseif ($column instanceof Column\Action\Icon) {
                     $row[$column->getUniqueId()] = $column->getIconClass();
                 }
             }
