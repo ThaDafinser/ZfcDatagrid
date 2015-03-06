@@ -18,6 +18,8 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
     const STYLE_BOLD = 'cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';';
 
     const STYLE_ITALIC = 'cellvalue = \'<span style="font-style: italic;">\' + cellvalue + \'</span>\';';
+    
+    const STYLE_STRIKETHROUGH = 'cellvalue = \'<span style="text-decoration: line-through;">\' + cellvalue + \'</span>\';';
 
     /**
      * Set the service locator.
@@ -191,7 +193,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
         switch (get_class($column->getType())) {
 
             case 'ZfcDatagrid\Column\Type\PhpArray':
-                $formatter .= 'cellvalue = \'<pre>\' + cellvalue + \'</pre>\';';
+                $formatter .= 'cellvalue = \'<pre>\' + cellvalue.join(\'<br />\') + \'</pre>\';';
                 break;
         }
 
@@ -258,6 +260,10 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
 
                 case 'ZfcDatagrid\Column\Style\Italic':
                     $styleString = self::STYLE_ITALIC;
+                    break;
+                    
+                case 'ZfcDatagrid\Column\Style\Strikethrough':
+                    $styleString = self::STYLE_STRIKETHROUGH;
                     break;
 
                 case 'ZfcDatagrid\Column\Style\Color':

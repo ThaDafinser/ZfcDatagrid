@@ -182,7 +182,7 @@ class Renderer extends AbstractRenderer
 
     public function execute()
     {
-        $textTable = $this->getTable();
+        $textTable = clone $this->getTable();
 
         $response = $this->getMvcEvent()->getResponse();
         $response->setContent($textTable);
@@ -244,7 +244,7 @@ class Renderer extends AbstractRenderer
         }
         $table->appendRow($tableRow);
 
-        /**
+        /*
          * Data
          */
         foreach ($this->getData() as $row) {
@@ -254,6 +254,9 @@ class Renderer extends AbstractRenderer
                 $value = '';
                 if (isset($row[$column->getUniqueId()])) {
                     $value = $row[$column->getUniqueId()];
+                }
+                if(is_array($value)){
+                    $value = implode(', ', $value);
                 }
 
                 $tableColumn = new Table\Column($value);

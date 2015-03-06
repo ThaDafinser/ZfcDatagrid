@@ -86,6 +86,10 @@ foreach($this->rowStyles as $style){
         case 'ZfcDatagrid\Column\Style\Italic':
             $css = '\'font-style\', \'italic\'';
             break;
+        
+        case 'ZfcDatagrid\Column\Style\Strikethrough':
+            $css = '\'text-decoration\', \'line-through\'';
+            break;
 
         case 'ZfcDatagrid\Column\Style\Color':
             $css = '\'color\', \'#' . $style->getRgbHexString().'\'';
