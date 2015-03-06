@@ -133,7 +133,7 @@ foreach($this->rowStyles as $style){
 $itemCountPerPage = $paginator->getItemCountPerPage();
 if($paginator->getItemCountPerPage() === $paginator->getTotalItemCount()){
     //@see http://stackoverflow.com/questions/1237096/how-to-show-all-rows-in-the-jqgrid
-    $itemCountPerPage = 1000000;
+    $itemCountPerPage = -1;
 }
 ?>
 
