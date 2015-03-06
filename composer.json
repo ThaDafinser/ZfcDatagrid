@@ -26,13 +26,13 @@
     "require": {
         "php": ">=5.3.23",
         
-        "zendframework/zend-mvc": "~2.2",
-        "zendframework/zend-modulemanager": "~2.2",
-        "zendframework/zend-session": "~2.2",
-        "zendframework/zend-view": "~2.2",
-        "zendframework/zend-http": "~2.2",
-        "zendframework/zend-paginator": "~2.2",
-        "zendframework/zend-cache": "~2.2"
+        "zendframework/zend-mvc": "~2.3",
+        "zendframework/zend-modulemanager": "~2.3",
+        "zendframework/zend-session": "~2.3",
+        "zendframework/zend-view": "~2.3",
+        "zendframework/zend-http": "~2.3",
+        "zendframework/zend-paginator": "~2.3",
+        "zendframework/zend-cache": "~2.3"
     },
     
     "require-dev": {
@@ -40,7 +40,7 @@
         "satooshi/php-coveralls": "dev-master",
         "fabpot/php-cs-fixer": "*@dev",
         
-        "zendframework/zendframework": "~2.2",
+        "zendframework/zendframework": "~2.3",
         "doctrine/doctrine-orm-module": ">=0.8"
     },
     
