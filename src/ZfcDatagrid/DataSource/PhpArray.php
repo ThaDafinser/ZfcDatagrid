@@ -94,10 +94,10 @@ class PhpArray extends AbstractDataSource
     private function getSortArrayParameter($sortCondition)
     {
         $sortArray = array(
-            $sortCondition['column']->getSelectPart1(),
+            $sortCondition['column']->getUniqueId(),
         );
 
-        if ($sortCondition['sortDirection'] === 'DESC') {
+        if ('DESC' === $sortCondition['sortDirection']) {
             $desc = SORT_DESC;
             $sortArray[] = $desc;
         } else {

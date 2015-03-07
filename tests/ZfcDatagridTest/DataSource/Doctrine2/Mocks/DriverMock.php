@@ -45,7 +45,7 @@ class DriverMock implements \Doctrine\DBAL\Driver
      */
     public function getSchemaManager(\Doctrine\DBAL\Connection $conn)
     {
-        if ($this->_schemaManagerMock == null) {
+        if (null == $this->_schemaManagerMock) {
             return new SchemaManagerMock($conn);
         } else {
             return $this->_schemaManagerMock;

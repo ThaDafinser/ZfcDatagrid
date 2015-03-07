@@ -110,10 +110,10 @@ return array(
                 'sheetName' => 'Data',
                 
                 // If you only want to export data, set this to false
-                'displayTitle' => true,
+                'displayTitle' => false,
                 
                 'rowTitle' => 1,
-                'startRowData' => 3
+                'startRowData' => 1
             ),
             
             'TCPDF' => array(

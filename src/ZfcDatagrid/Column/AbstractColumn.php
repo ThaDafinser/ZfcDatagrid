@@ -204,7 +204,7 @@ abstract class AbstractColumn
      */
     public function getType()
     {
-        if ($this->type === null) {
+        if (null === $this->type) {
             $this->type = new Type\String();
         }
 
@@ -427,7 +427,7 @@ abstract class AbstractColumn
         // This work also with options with integer based array index such as
         // array(0 => 'zero', 1 => 'once', 2 => 'double', 3 => 'triple'....)
 
-        if ($noSelect === true) {
+        if (true === $noSelect) {
             $options = array('' => '-') + $options;
             $this->setFilterDefaultValue('');
         }

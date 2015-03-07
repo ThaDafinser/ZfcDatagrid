@@ -3,6 +3,7 @@ namespace ZfcDatagrid\DataSource;
 
 use ZfcDatagrid\DataSource\Doctrine2\Paginator as PaginatorAdapter;
 use ZfcDatagrid\Column;
+use ZfcDatagrid\Column\Type;
 use Doctrine\ORM;
 use Doctrine\ORM\Query\Expr;
 
@@ -79,7 +80,7 @@ class Doctrine2 extends AbstractDataSource
                     $colString .= '.'.$column->getSelectPart2();
                 }
 
-                if ($column->getType() === 'number') {
+                if ($column->getType() instanceof Type\Number) {
                     $qb->addSelect('ABS('.$colString.') sortColumn'.$key);
                     $qb->add('orderBy', new Expr\OrderBy('sortColumn'.$key, $sortCondition['sortDirection']), true);
                 } else {

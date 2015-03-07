@@ -9,6 +9,9 @@ use PHPExcel;
 use PHPExcel_Worksheet_PageSetup;
 use PHPExcel_Cell;
 use PHPExcel_Cell_DataType;
+use PHPExcel_Style_Border;
+use PHPExcel_Style_Color;
+use PHPExcel_Style_Fill;
 use PHPExcel_Style_Alignment;
 use Zend\Http\Response\Stream as ResponseStream;
 use Zend\Http\Headers;
@@ -45,7 +48,7 @@ class Renderer extends AbstractExport
         $sheet->setTitle($this->getTranslator()
             ->translate($optionsRenderer['sheetName']));
 
-        if ($optionsRenderer['displayTitle'] === true) {
+        if (true === $optionsRenderer['displayTitle']) {
             $sheet->setCellValue('A'.$optionsRenderer['rowTitle'], $this->getTitle());
             $sheet->getStyle('A'.$optionsRenderer['rowTitle'])
                 ->getFont()
@@ -54,6 +57,9 @@ class Renderer extends AbstractExport
 
         $this->calculateColumnWidth($this->getColumnsToExport());
 
+        /*
+         * Header
+         */
         $xColumn = 0;
         $yRow = $optionsRenderer['startRowData'];
         foreach ($this->getColumnsToExport() as $col) {
@@ -157,14 +163,51 @@ class Renderer extends AbstractExport
         /*
          * Autofilter, freezing, ...
          */
+        $highest = $sheet->getHighestRowAndColumn();
+
         // Letzte Zeile merken
-        $endRow = $yRow - 1;
-        $endColumn = count($this->getColumnsToExport()) - 1;
 
         // Autofilter + Freeze
-        $sheet->setAutoFilter('A'.$optionsRenderer['startRowData'].':'.PHPExcel_Cell::stringFromColumnIndex($endColumn).$endRow);
+        $sheet->setAutoFilter('A'.$optionsRenderer['startRowData'].':'.$highest['column'].$highest['row']);
         $freezeRow = $optionsRenderer['startRowData'] + 1;
         $sheet->freezePane('A'.$freezeRow);
+
+        // repeat the data header for each page!
+        $sheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd($optionsRenderer['startRowData'], $optionsRenderer['startRowData']);
+
+        // highlight header line
+        $style = array(
+            'font' => array(
+                'bold' => true,
+            ),
+
+            'borders' => array(
+                'allborders' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_MEDIUM,
+                    'color' => array(
+                        'argb' => PHPExcel_Style_Color::COLOR_BLACK,
+                    ),
+                ),
+            ),
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'startcolor' => array(
+                    'argb' => PHPExcel_Style_Color::COLOR_YELLOW,
+                ),
+            ),
+        );
+        $range = 'A'.$optionsRenderer['startRowData'].':'.$highest['column'].$optionsRenderer['startRowData'];
+        $sheet->getStyle($range)->applyFromArray($style);
+
+        // print borders
+        $range = 'A'.$freezeRow.':'.$highest['column'].$highest['row'];
+        $sheet->getStyle($range)->applyFromArray(array(
+            'borders' => array(
+                'allborders' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                ),
+            ),
+        ));
 
         /*
          * Print settings
@@ -246,7 +289,7 @@ class Renderer extends AbstractExport
         $orientation = $optionsRenderer['orientation'];
         foreach ($phpExcel->getAllSheets() as $sheet) {
             /* @var $sheet \PHPExcel_Worksheet */
-            if ($orientation == 'landscape') {
+            if ('landscape' == $orientation) {
                 $sheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
             } else {
                 $sheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT);
@@ -270,8 +313,26 @@ class Renderer extends AbstractExport
                     $sheet->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A2);
                     break;
             }
+
+            // Margins
+            $sheet->getPageMargins()->setTop(0.8);
+            $sheet->getPageMargins()->setBottom(0.5);
+            $sheet->getPageMargins()->setLeft(0.5);
+            $sheet->getPageMargins()->setRight(0.5);
+
+            $this->setHeaderFooter($sheet);
         }
 
         $phpExcel->setActiveSheetIndex(0);
+    }
+
+    protected function setHeaderFooter(\PHPExcel_Worksheet $sheet)
+    {
+        $translator = $this->getTranslator();
+
+        $textRight = $translator->translate('Page').' &P / &N';
+
+        $sheet->getHeaderFooter()->setOddHeader('&L&16&G '.$translator->translate($this->getTitle()));
+        $sheet->getHeaderFooter()->setOddFooter('&R'.$textRight);
     }
 }

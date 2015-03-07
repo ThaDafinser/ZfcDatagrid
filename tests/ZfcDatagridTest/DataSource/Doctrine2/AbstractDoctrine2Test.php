@@ -103,7 +103,7 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
             'ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity\Category',
         ));
 
-        if ($conn === null) {
+        if (null === $conn) {
             $conn = array(
                 'driverClass' => 'ZfcDatagridTest\DataSource\Doctrine2\Mocks\DriverMock',
                 'wrapperClass' => 'ZfcDatagridTest\DataSource\Doctrine2\Mocks\ConnectionMock',
@@ -125,7 +125,7 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
      */
     private static function getSharedMetadataCacheImpl()
     {
-        if (self::$_metadataCacheImpl === null) {
+        if (null === self::$_metadataCacheImpl) {
             self::$_metadataCacheImpl = new \Doctrine\Common\Cache\ArrayCache();
         }
 
@@ -138,7 +138,7 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
      */
     private static function getSharedQueryCacheImpl()
     {
-        if (self::$_queryCacheImpl === null) {
+        if (null === self::$_queryCacheImpl) {
             self::$_queryCacheImpl = new \Doctrine\Common\Cache\ArrayCache();
         }
 

@@ -53,7 +53,7 @@ class Renderer extends AbstractExport
 
         // Check for PDF image header
         $headerData = $pdf->getHeaderData();
-        if ($headerData['logo'] == '') {
+        if ('' == $headerData['logo']) {
             $pdf->setHeaderData('./tcpdf_logo.jpg');
         }
         $pdf->AddPage();
@@ -146,7 +146,7 @@ class Renderer extends AbstractExport
 
         $papersize = $optionsRenderer['papersize'];
         $orientation = $optionsRenderer['orientation'];
-        if ($orientation == 'landscape') {
+        if ('landscape' == $orientation) {
             $orientation = 'L';
         } else {
             $orientation = 'P';
@@ -178,7 +178,7 @@ class Renderer extends AbstractExport
      */
     public function getPdf()
     {
-        if ($this->pdf === null) {
+        if (null === $this->pdf) {
             $this->initPdf();
         }
 
@@ -363,11 +363,11 @@ class Renderer extends AbstractExport
                     try {
                         $resizeType = $col->getType()->getResizeType();
                         $resizeHeight = $col->getType()->getResizeHeight();
-                        if ($resizeType === 'dynamic') {
+                        if ('dynamic' === $resizeType) {
                             // resizing properly to width + height (and keeping the ratio)
                             $file = file_get_contents($link);
                             if ($file !== false) {
-                                list ($width, $height) = $this->calcImageSize($file, $col->getWidth() - 2, $rowHeight - 2);
+                                list($width, $height) = $this->calcImageSize($file, $col->getWidth() - 2, $rowHeight - 2);
 
                                 $pdf->Image('@'.$file, $x + 1, $y + 1, $width, $height, '', '', 'L', false);
                             }
@@ -405,11 +405,11 @@ class Renderer extends AbstractExport
     {
         $pdf = $this->getPdf();
 
-        list ($width, $height) = getimagesizefromstring($imageData);
+        list($width, $height) = getimagesizefromstring($imageData);
         $width = $pdf->pixelsToUnits($width);
         $height = $pdf->pixelsToUnits($height);
 
-        list ($newWidth, $newHeight) = ImageResize::getCalculatedSize($width, $height, $maxWidth, $maxHeight);
+        list($newWidth, $newHeight) = ImageResize::getCalculatedSize($width, $height, $maxWidth, $maxHeight);
 
         return array(
             $newWidth,

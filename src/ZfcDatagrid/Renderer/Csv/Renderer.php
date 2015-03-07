@@ -56,7 +56,7 @@ class Renderer extends AbstractExport
          * Save the file
          */
         // header
-        if (isset($optionsRenderer['header']) && $optionsRenderer['header'] === true) {
+        if (isset($optionsRenderer['header']) && true === $optionsRenderer['header']) {
             $header = array();
             foreach ($this->getColumnsToExport() as $col) {
                 $header[] = $this->getTranslator()->translate($col->getLabel());

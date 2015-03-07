@@ -1,5 +1,6 @@
 # Datagrid/Datatable module for Zend Framework 2 
 [![Master Branch Build Status](https://secure.travis-ci.org/ThaDafinser/ZfcDatagrid.png?branch=master)](http://travis-ci.org/ThaDafinser/ZfcDatagrid)
+[![HHVM Status](http://hhvm.h4cc.de/badge/thadafinser/zfc-datagrid.svg)](http://hhvm.h4cc.de/package/thadafinser/zfc-datagrid)
 [![Coverage Status](https://coveralls.io/repos/ThaDafinser/ZfcDatagrid/badge.png?branch=master)](https://coveralls.io/r/ThaDafinser/ZfcDatagrid?branch=master)
 [![Total Downloads](https://poser.pugx.org/thadafinser/zfc-datagrid/downloads.png)](https://packagist.org/packages/thadafinser/zfc-datagrid)
 [![Latest Stable Version](https://poser.pugx.org/thadafinser/zfc-datagrid/v/stable.png)](https://packagist.org/packages/thadafinser/zfc-datagrid)
@@ -12,7 +13,7 @@ Over ***330 tests and 1000 assertions*** testing the stability currently!
 
 If you need help, please use following ressources
 - [Installation](https://github.com/ThaDafinser/ZfcDatagrid#installation) 
--  ["Getting started guide"](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/docs/Getting-started.md)
+-  ["Getting started guide"](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/docs/02.%20Quick%20Start.md)
 - [Documentation](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/docs/)
 - [Code examples](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/src/ZfcDatagrid/Examples/Controller/)
 - [Issues/Help](https://github.com/ThaDafinser/ZfcDatagrid/issues)

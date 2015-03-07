@@ -111,7 +111,7 @@ class Renderer extends AbstractRenderer
 
         $request = $this->getRequest();
         $isSearch = $request->getPost($parameterNames['isSearch']);
-        if ($isSearch == 'true') {
+        if ('true' == $isSearch) {
             // User filtering
             foreach ($this->getColumns() as $column) {
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */
@@ -203,7 +203,7 @@ class Renderer extends AbstractRenderer
                     }
 
                     $row[$column->getUniqueId()] = implode(' ', $actions);
-                } elseif ($column instanceof Column\Icon) {
+                } elseif ($column instanceof Column\Action\Icon) {
                     $row[$column->getUniqueId()] = $column->getIconClass();
                 }
             }

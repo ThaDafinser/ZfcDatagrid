@@ -56,7 +56,7 @@ class AbstractColor extends AbstractStyle
     public function __construct($redOrStaticOrArray, $green = null, $blue = null)
     {
         if (is_array($redOrStaticOrArray) && count($redOrStaticOrArray) === 3) {
-            list ($red, $green, $blue) = $redOrStaticOrArray;
+            list($red, $green, $blue) = $redOrStaticOrArray;
         } else {
             $red = $redOrStaticOrArray;
         }

@@ -18,6 +18,8 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
     const STYLE_BOLD = 'cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';';
 
     const STYLE_ITALIC = 'cellvalue = \'<span style="font-style: italic;">\' + cellvalue + \'</span>\';';
+    
+    const STYLE_STRIKETHROUGH = 'cellvalue = \'<span style="text-decoration: line-through;">\' + cellvalue + \'</span>\';';
 
     /**
      * Set the service locator.
@@ -49,11 +51,11 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
      */
     private function translate($message)
     {
-        if ($this->translator === false) {
+        if (false === $this->translator) {
             return $message;
         }
 
-        if ($this->translator === null) {
+        if (null === $this->translator) {
             if ($this->getServiceLocator()
                 ->getServiceLocator()
                 ->has('translator')) {
@@ -142,16 +144,16 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                 if (is_array($value)) {
                     $value = json_encode($value);
                 } elseif (is_bool($value)) {
-                    if ($value === true) {
+                    if (true === $value) {
                         $value = 'true';
                     } else {
                         $value = 'false';
                     }
-                } elseif ($key == 'formatter') {
+                } elseif ('formatter' == $key) {
                     if (stripos($value, 'formatter') === false && stripos($value, 'function') === false) {
                         $value = '"'.$value.'"';
                     }
-                } elseif ($key == 'cellattr') {
+                } elseif ('cellattr' == $key) {
                     // SKIP THIS
                 } else {
                     $value = '"'.$value.'"';
@@ -191,7 +193,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
         switch (get_class($column->getType())) {
 
             case 'ZfcDatagrid\Column\Type\PhpArray':
-                $formatter .= 'cellvalue = \'<pre>\' + cellvalue + \'</pre>\';';
+                $formatter .= 'cellvalue = \'<pre>\' + cellvalue.join(\'<br />\') + \'</pre>\';';
                 break;
         }
 
@@ -258,6 +260,10 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
 
                 case 'ZfcDatagrid\Column\Style\Italic':
                     $styleString = self::STYLE_ITALIC;
+                    break;
+                    
+                case 'ZfcDatagrid\Column\Style\Strikethrough':
+                    $styleString = self::STYLE_STRIKETHROUGH;
                     break;
 
                 case 'ZfcDatagrid\Column\Style\Color':

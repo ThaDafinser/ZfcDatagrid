@@ -76,7 +76,7 @@ class PrepareData
      */
     public function getData($raw = false)
     {
-        if ($raw === true) {
+        if (true === $raw) {
             return $this->data;
         }
 

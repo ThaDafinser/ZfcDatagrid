@@ -60,7 +60,7 @@ class Paginator implements AdapterInterface
         $qb = $this->getQueryBuilder();
         $parts = $qb->getDQLParts();
 
-        if ($parts['having'] !== null || $parts['distinct'] === true) {
+        if ($parts['having'] !== null || true === $parts['distinct']) {
             // never tried having in such queries...
             return false;
         }

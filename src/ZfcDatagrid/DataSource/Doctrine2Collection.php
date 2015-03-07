@@ -75,7 +75,7 @@ class Doctrine2Collection extends AbstractDataSource
                 $part1 = $column->getSelectPart1();
                 $part2 = $column->getSelectPart2();
 
-                if ($part2 === null) {
+                if (null === $part2) {
                     if (isset($dataExtracted[$part1])) {
                         $rowExtracted[$column->getUniqueId()] = $dataExtracted[$part1];
                     }

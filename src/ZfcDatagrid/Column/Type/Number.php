@@ -75,7 +75,7 @@ class Number extends AbstractType
 
     public function getLocale()
     {
-        if ($this->locale === null) {
+        if (null === $this->locale) {
             $this->locale = Locale::getDefault();
         }
 
@@ -183,7 +183,7 @@ class Number extends AbstractType
             return $val;
         }
 
-        if ($formattedValue === false) {
+        if (false === $formattedValue) {
             return $val;
         }
 

@@ -172,7 +172,7 @@ abstract class AbstractAction
     {
         $attributes = array();
         foreach ($this->getAttributes() as $attrKey => $attrValue) {
-            if ($attrKey === 'href') {
+            if ('href' === $attrKey) {
                 $attrValue = $this->getLinkReplaced($row);
             }
             $attributes[] = $attrKey.'="'.$attrValue.'"';
@@ -300,10 +300,10 @@ abstract class AbstractAction
             }
 
             $isDisplayedMatch = Filter::isApply($value, $rule['value'], $rule['comparison']);
-            if ($this->getShowOnValueOperator() == 'OR' && $isDisplayedMatch === true) {
+            if ($this->getShowOnValueOperator() == 'OR' && true === $isDisplayedMatch) {
                 // For OR one match is enough
                 return true;
-            } elseif ($this->getShowOnValueOperator() == 'AND' && $isDisplayedMatch === false) {
+            } elseif ($this->getShowOnValueOperator() == 'AND' && false === $isDisplayedMatch) {
                 return false;
             } else {
                 $isDisplayed = $isDisplayedMatch;

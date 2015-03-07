@@ -97,7 +97,7 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
     {
         $return = $this->getTr($row);
 
-        if ($hasMassActions === true) {
+        if (true === $hasMassActions) {
             $return .= '<td><input type="checkbox" name="massActionSelected[]" value="'.$row['idConcated'].'" /></td>';
         }
 
