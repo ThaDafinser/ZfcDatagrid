@@ -168,6 +168,9 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     protected $exportRenderers;
 
+    /**
+     * @var string|null
+     */
     protected $toolbarTemplate;
 
     /**
@@ -206,6 +209,9 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     protected $forceRenderer;
 
+    /**
+     * @var array
+     */
     private $specialMethods = array(
         'filterSelectOptions',
         'rendererParameter',
@@ -313,6 +319,9 @@ class Datagrid implements ServiceLocatorAwareInterface
         return $this->session;
     }
 
+    /**
+     * @param Cache\Storage\StorageInterface $cache
+     */
     public function setCache(Cache\Storage\StorageInterface $cache)
     {
         $this->cache = $cache;
@@ -373,6 +382,9 @@ class Datagrid implements ServiceLocatorAwareInterface
         return $this->serviceLocator;
     }
 
+    /**
+     * @param MvcEvent $mvcEvent
+     */
     public function setMvcEvent(MvcEvent $mvcEvent)
     {
         $this->mvcEvent = $mvcEvent;
@@ -519,6 +531,9 @@ class Datagrid implements ServiceLocatorAwareInterface
         $this->title = (string) $title;
     }
 
+    /**
+     * @return string
+     */
     public function getTitle()
     {
         return $this->title;
@@ -561,11 +576,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function hasParameters()
     {
-        if (count($this->getParameters()) > 0) {
-            return true;
-        }
-
-        return false;
+        return (bool) $this->getParameters();
     }
 
     /**
@@ -727,7 +738,7 @@ class Datagrid implements ServiceLocatorAwareInterface
 
     /**
      *
-     * @param unknown $style
+     * @param Style\AbstractStyle $style
      */
     public function addRowStyle(Style\AbstractStyle $style)
     {
@@ -749,11 +760,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function hasRowStyles()
     {
-        if (count($this->rowStyles) > 0) {
-            return true;
-        }
-
-        return false;
+        return (bool) $this->rowStyles;
     }
 
     /**
@@ -832,11 +839,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function hasMassAction()
     {
-        if (count($this->massActions) > 0) {
-            return true;
-        }
-
-        return false;
+        return (bool) $this->massActions;
     }
 
     /**
@@ -915,7 +918,9 @@ class Datagrid implements ServiceLocatorAwareInterface
                 }
                 $renderer->setToolbarTemplateVariables($this->getToolbarTemplateVariables());
                 $renderer->setViewModel($this->getViewModel());
-                $renderer->setTranslator($this->getTranslator());
+                if ($this->hasTranslator()) {
+                    $renderer->setTranslator($this->getTranslator());
+                }
                 $renderer->setTitle($this->getTitle());
                 $renderer->setColumns($this->getColumns());
                 $renderer->setRowStyles($this->getRowStyles());
@@ -931,6 +936,9 @@ class Datagrid implements ServiceLocatorAwareInterface
         return $this->renderer;
     }
 
+    /**
+     * @return bool
+     */
     public function isDataLoaded()
     {
         return (bool) $this->isDataLoaded;
@@ -1038,7 +1046,9 @@ class Datagrid implements ServiceLocatorAwareInterface
          */
         $prepareData = new PrepareData($data, $this->getColumns());
         $prepareData->setRendererName($this->getRendererName());
-        $prepareData->setTranslator($this->getTranslator());
+        if ($this->hasTranslator()) {
+            $prepareData->setTranslator($this->getTranslator());
+        }
         $prepareData->prepare();
         $this->preparedData = $prepareData->getData();
 
