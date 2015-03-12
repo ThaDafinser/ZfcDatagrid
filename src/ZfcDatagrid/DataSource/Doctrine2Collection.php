@@ -63,34 +63,39 @@ class Doctrine2Collection extends AbstractDataSource
 
     public function execute()
     {
-        $hydrator = new DoctrineHydrator($this->getEntityManager());
+        if ($this->getData()->count() == 0) {
+            $dataPrepared = array();
+        } else {
+            $entityClass = get_class( $this->getData()->first() );
+            $hydrator    = new DoctrineHydrator( $this->getEntityManager(), $entityClass );
 
-        $dataPrepared = array();
-        foreach ($this->getData() as $row) {
-            $dataExtracted = $hydrator->extract($row);
+            $dataPrepared = array();
+            foreach ($this->getData() as $row) {
+                $dataExtracted = $hydrator->extract( $row );
 
-            $rowExtracted = array();
-            foreach ($this->getColumns() as $column) {
-                /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-                $part1 = $column->getSelectPart1();
-                $part2 = $column->getSelectPart2();
+                $rowExtracted = array();
+                foreach ($this->getColumns() as $column) {
+                    /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+                    $part1 = $column->getSelectPart1();
+                    $part2 = $column->getSelectPart2();
 
-                if (null === $part2) {
-                    if (isset($dataExtracted[$part1])) {
-                        $rowExtracted[$column->getUniqueId()] = $dataExtracted[$part1];
-                    }
-                } else {
-                    // NESTED
-                    if (isset($dataExtracted[$part1])) {
-                        $dataExtractedNested = $hydrator->extract($dataExtracted[$part1]);
-                        if (isset($dataExtractedNested[$part2])) {
-                            $rowExtracted[$column->getUniqueId()] = $dataExtractedNested[$part2];
+                    if (null === $part2) {
+                        if (isset( $dataExtracted[$part1] )) {
+                            $rowExtracted[$column->getUniqueId()] = $dataExtracted[$part1];
+                        }
+                    } else {
+                        // NESTED
+                        if (isset( $dataExtracted[$part1] )) {
+                            $dataExtractedNested = $hydrator->extract( $dataExtracted[$part1] );
+                            if (isset( $dataExtractedNested[$part2] )) {
+                                $rowExtracted[$column->getUniqueId()] = $dataExtractedNested[$part2];
+                            }
                         }
                     }
                 }
-            }
 
-            $dataPrepared[] = $rowExtracted;
+                $dataPrepared[] = $rowExtracted;
+            }
         }
 
         $source = new SourceArray($dataPrepared);
