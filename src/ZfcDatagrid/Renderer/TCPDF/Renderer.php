@@ -25,6 +25,12 @@ class Renderer extends AbstractExport
      * @var TCPDF
      */
     protected $pdf;
+    
+    /**
+     *
+     * @var Alignment
+     */
+    protected $alignment = 'L';
 
     public function getName()
     {
@@ -266,7 +272,7 @@ class Renderer extends AbstractExport
             $label = $this->getTranslator()->translate($col->getLabel());
 
             // Do not wrap header labels, it will look very ugly, that's why max height is set to 7!
-            $pdf->MultiCell($col->getWidth(), 7, $label, 1, 'L', true, 2, $x, $y, true, 0, false, true, 7);
+            $pdf->MultiCell($col->getWidth(), 7, $label, 1, $this->getTextAlignment(), true, 2, $x, $y, true, 0, false, true, 7);
         }
     }
 
@@ -310,6 +316,26 @@ class Renderer extends AbstractExport
                         case 'ZfcDatagrid\Column\Style\BackgroundColor':
                             $this->setBackgroundColor($style->getRgbArray());
                             $backgroundColor = true;
+                            break;
+                        
+                        case 'ZfcDatagrid\Column\Style\Align':
+                            switch($style->getAlignment()) {
+                                case \ZfcDatagrid\Column\Style\Align::$RIGHT:
+                                    $this->setTextAlignment('R');
+                                    break;
+                                case \ZfcDatagrid\Column\Style\Align::$LEFT:
+                                     $this->setTextAlignment('L');
+                                    break;
+                                case \ZfcDatagrid\Column\Style\Align::$CENTER:
+                                    $this->setTextAlignment('C');
+                                    break;
+                                case \ZfcDatagrid\Column\Style\Align::$JUSTIFY:
+                                    $this->setTextAlignment('J');
+                                    break;
+                                default:
+                                    //throw new \Exception('Not defined yet: "'.get_class($style->getAlignment()).'"');
+                                    break;
+                            }
                             break;
 
                         default:
@@ -364,7 +390,7 @@ class Renderer extends AbstractExport
             }
 
             // MultiCell($w, $h, $txt, $border=0, $align='J', $fill=false, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0, $valign='T', $fitcell=false)
-            $pdf->MultiCell($col->getWidth(), $rowHeight, $text, 1, 'L', $backgroundColor, 1, $x, $y, true, 0);
+            $pdf->MultiCell($col->getWidth(), $rowHeight, $text, 1, $this->getTextAlignment(), $backgroundColor, 1, $x, $y, true, 0);
         }
     }
 
@@ -461,5 +487,22 @@ class Renderer extends AbstractExport
     {
         $pdf = $this->getPdf();
         $pdf->SetFillColor($rgb['red'], $rgb['green'], $rgb['blue']);
+    }
+    
+    /**
+     *
+     * @param string $alignment
+     */
+    public function setTextAlignment($alignment)
+    {
+        $this->alignment = $alignment;
+    }
+    
+    /**
+     *
+     * @return string
+     */
+    public function getTextAlignment() {
+        return $this->alignment;
     }
 }
