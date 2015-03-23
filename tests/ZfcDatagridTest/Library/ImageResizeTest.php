@@ -18,14 +18,14 @@ class ImageResizeTest extends PHPUnit_Framework_TestCase
     public function testLandscapeLessBothResizeBothPossible()
     {
         // "landscape"
-        $width  = 10;
+        $width = 10;
         $height = 5;
 
-        $maxWidth  = 20;
+        $maxWidth = 20;
         $maxHeight = 10;
 
-        $resize                     = new ImageResize();
-        list($newWidth, $newHeight) = $resize->getCalculatedSize($width, $height, $maxWidth, $maxHeight);
+        $resize = new ImageResize();
+        list ($newWidth, $newHeight) = $resize->getCalculatedSize($width, $height, $maxWidth, $maxHeight);
 
         $this->assertEquals(20, $newWidth);
         $this->assertEquals(10, $newHeight);
@@ -39,14 +39,14 @@ class ImageResizeTest extends PHPUnit_Framework_TestCase
     public function testLandscapeLessBothResizeOnWidth()
     {
         // "landscape"
-        $width  = 10;
+        $width = 10;
         $height = 5;
 
-        $maxWidth  = 18;
+        $maxWidth = 18;
         $maxHeight = 10;
 
-        $resize                     = new ImageResize();
-        list($newWidth, $newHeight) = $resize->getCalculatedSize($width, $height, $maxWidth, $maxHeight);
+        $resize = new ImageResize();
+        list ($newWidth, $newHeight) = $resize->getCalculatedSize($width, $height, $maxWidth, $maxHeight);
 
         $this->assertEquals(18, $newWidth);
         $this->assertEquals(9, $newHeight);
@@ -60,14 +60,14 @@ class ImageResizeTest extends PHPUnit_Framework_TestCase
     public function testLandscapeLessBothResizeOnHeight()
     {
         // "landscape"
-        $width  = 10;
+        $width = 10;
         $height = 5;
 
-        $maxWidth  = 20;
+        $maxWidth = 20;
         $maxHeight = 8;
 
-        $resize                     = new ImageResize();
-        list($newWidth, $newHeight) = $resize->getCalculatedSize($width, $height, $maxWidth, $maxHeight);
+        $resize = new ImageResize();
+        list ($newWidth, $newHeight) = $resize->getCalculatedSize($width, $height, $maxWidth, $maxHeight);
 
         $this->assertEquals(16, $newWidth);
         $this->assertEquals(8, $newHeight);
@@ -81,14 +81,14 @@ class ImageResizeTest extends PHPUnit_Framework_TestCase
     public function testPortraitLessBothResizeBothPossible()
     {
         // "landscape"
-        $width  = 2.5;
+        $width = 2.5;
         $height = 5;
 
-        $maxWidth  = 20;
+        $maxWidth = 20;
         $maxHeight = 10;
 
-        $resize                     = new ImageResize();
-        list($newWidth, $newHeight) = $resize->getCalculatedSize($width, $height, $maxWidth, $maxHeight);
+        $resize = new ImageResize();
+        list ($newWidth, $newHeight) = $resize->getCalculatedSize($width, $height, $maxWidth, $maxHeight);
 
         $this->assertEquals(5, $newWidth);
         $this->assertEquals(10, $newHeight);
@@ -102,14 +102,14 @@ class ImageResizeTest extends PHPUnit_Framework_TestCase
     public function testPortraitLessBothResizeOnWidth()
     {
         // "landscape"
-        $width  = 10;
+        $width = 10;
         $height = 4;
 
-        $maxWidth  = 20;
+        $maxWidth = 20;
         $maxHeight = 10;
 
-        $resize                     = new ImageResize();
-        list($newWidth, $newHeight) = $resize->getCalculatedSize($width, $height, $maxWidth, $maxHeight);
+        $resize = new ImageResize();
+        list ($newWidth, $newHeight) = $resize->getCalculatedSize($width, $height, $maxWidth, $maxHeight);
 
         $this->assertEquals(20, $newWidth);
         $this->assertEquals(8, $newHeight);
@@ -123,14 +123,14 @@ class ImageResizeTest extends PHPUnit_Framework_TestCase
     public function testPortraitLessBothResizeOnHeight()
     {
         // "landscape"
-        $width  = 10;
+        $width = 10;
         $height = 6;
 
-        $maxWidth  = 30;
+        $maxWidth = 30;
         $maxHeight = 12;
 
-        $resize                     = new ImageResize();
-        list($newWidth, $newHeight) = $resize->getCalculatedSize($width, $height, $maxWidth, $maxHeight);
+        $resize = new ImageResize();
+        list ($newWidth, $newHeight) = $resize->getCalculatedSize($width, $height, $maxWidth, $maxHeight);
 
         $this->assertEquals(20, $newWidth);
         $this->assertEquals(12, $newHeight);
@@ -144,14 +144,14 @@ class ImageResizeTest extends PHPUnit_Framework_TestCase
     public function testLandscapeGreaterBoth()
     {
         // "landscape"
-        $width  = 30;
+        $width = 30;
         $height = 20;
 
-        $maxWidth  = 15;
+        $maxWidth = 15;
         $maxHeight = 10;
 
-        $resize                     = new ImageResize();
-        list($newWidth, $newHeight) = $resize->getCalculatedSize($width, $height, $maxWidth, $maxHeight);
+        $resize = new ImageResize();
+        list ($newWidth, $newHeight) = $resize->getCalculatedSize($width, $height, $maxWidth, $maxHeight);
 
         $this->assertEquals(15, $newWidth);
         $this->assertEquals(10, $newHeight);
@@ -165,14 +165,14 @@ class ImageResizeTest extends PHPUnit_Framework_TestCase
     public function testLandscapeGreaterWidth()
     {
         // "landscape"
-        $width  = 30;
+        $width = 30;
         $height = 10;
 
-        $maxWidth  = 15;
+        $maxWidth = 15;
         $maxHeight = 10;
 
-        $resize                     = new ImageResize();
-        list($newWidth, $newHeight) = $resize->getCalculatedSize($width, $height, $maxWidth, $maxHeight);
+        $resize = new ImageResize();
+        list ($newWidth, $newHeight) = $resize->getCalculatedSize($width, $height, $maxWidth, $maxHeight);
 
         $this->assertEquals(15, $newWidth);
         $this->assertEquals(5, $newHeight);
@@ -186,14 +186,14 @@ class ImageResizeTest extends PHPUnit_Framework_TestCase
     public function testLandscapeGreaterHeight()
     {
         // "landscape"
-        $width  = 15;
+        $width = 15;
         $height = 30;
 
-        $maxWidth  = 15;
+        $maxWidth = 15;
         $maxHeight = 10;
 
-        $resize                     = new ImageResize();
-        list($newWidth, $newHeight) = $resize->getCalculatedSize($width, $height, $maxWidth, $maxHeight);
+        $resize = new ImageResize();
+        list ($newWidth, $newHeight) = $resize->getCalculatedSize($width, $height, $maxWidth, $maxHeight);
 
         $this->assertEquals(5, $newWidth);
         $this->assertEquals(10, $newHeight);

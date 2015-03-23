@@ -23,7 +23,7 @@ class DriverMock implements \Doctrine\DBAL\Driver
     /**
      * @ERROR!!!
      */
-    public function connect(array $params, $username = null, $password = null, array $driverOptions = [])
+    public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
         return new DriverConnectionMock();
     }

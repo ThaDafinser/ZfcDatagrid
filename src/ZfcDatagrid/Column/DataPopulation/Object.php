@@ -18,7 +18,7 @@ class Object implements DataPopulationInterface
      *
      * @var array
      */
-    private $objectParameters = [];
+    private $objectParameters = array();
 
     /**
      *
@@ -47,10 +47,10 @@ class Object implements DataPopulationInterface
      */
     public function addObjectParameterColumn($objectParameterName, Column\AbstractColumn $column)
     {
-        $this->objectParameters[] = [
+        $this->objectParameters[] = array(
             'objectParameterName' => $objectParameterName,
-            'column'              => $column,
-        ];
+            'column' => $column,
+        );
     }
 
     /**

@@ -10,9 +10,9 @@ class FileSize extends AbstractFormatter
      *
      * @var unknown
      */
-    protected $validRenderers = [];
+    protected $validRenderers = array();
 
-    protected static $prefixes = [
+    protected static $prefixes = array(
         '',
         'K',
         'M',
@@ -22,7 +22,7 @@ class FileSize extends AbstractFormatter
         'E',
         'Z',
         'Y',
-    ];
+    );
 
     public function isApply()
     {
@@ -36,7 +36,7 @@ class FileSize extends AbstractFormatter
      */
     public function getFormattedValue(AbstractColumn $column)
     {
-        $row   = $this->getRowData();
+        $row = $this->getRowData();
         $value = $row[$column->getUniqueId()];
 
         if ('' == $value) {

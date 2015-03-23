@@ -1,8 +1,8 @@
 <?php
 namespace ZfcDatagridTest\Column\Formatter;
 
-use PHPUnit_Framework_TestCase;
 use ZfcDatagrid\Column\Formatter;
+use PHPUnit_Framework_TestCase;
 
 /**
  * @group Column
@@ -14,10 +14,10 @@ class ImageTest extends PHPUnit_Framework_TestCase
     {
         $formatter = new Formatter\Image();
 
-        $this->assertEquals([
+        $this->assertEquals(array(
             'jqGrid',
             'bootstrapTable',
             'printHtml',
-        ], $formatter->getValidRendererNames());
+        ), $formatter->getValidRendererNames());
     }
 }

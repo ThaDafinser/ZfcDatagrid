@@ -30,7 +30,7 @@ class SelectTest extends PHPUnit_Framework_TestCase
     public function testObject()
     {
         $expr = new \Zend\Db\Sql\Expression('Something...');
-        $col  = new Column\Select($expr, 'myAlias');
+        $col = new Column\Select($expr, 'myAlias');
 
         $this->assertEquals($expr, $col->getSelectPart1());
         $this->assertEquals('myAlias', $col->getUniqueId());
@@ -41,7 +41,7 @@ class SelectTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('Exception');
 
         $expr = new \Zend\Db\Sql\Expression('Something...');
-        $col  = new Column\Select($expr);
+        $col = new Column\Select($expr);
     }
 
     public function testExceptionNotString()
@@ -49,7 +49,7 @@ class SelectTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('Exception');
 
         $expr = new \Zend\Db\Sql\Expression('Something...');
-        $col  = new Column\Select($expr, new \stdClass());
+        $col = new Column\Select($expr, new \stdClass());
     }
 
     public function testGetFilterSelectExpression()

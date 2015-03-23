@@ -31,7 +31,7 @@ class Select extends AbstractColumn
 
         if (is_string($columnOrIndexOrObject) && $tableOrAliasOrUniqueId !== null) {
             // $column = new Column('id', 'user')
-            $this->setUniqueId($tableOrAliasOrUniqueId . '_' . $columnOrIndexOrObject);
+            $this->setUniqueId($tableOrAliasOrUniqueId.'_'.$columnOrIndexOrObject);
             $this->setSelect($tableOrAliasOrUniqueId, $columnOrIndexOrObject);
         } elseif (is_string($columnOrIndexOrObject)) {
             // $column = new Column('title')

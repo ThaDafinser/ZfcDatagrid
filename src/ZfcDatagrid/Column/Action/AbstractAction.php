@@ -2,8 +2,8 @@
 namespace ZfcDatagrid\Column\Action;
 
 use ZfcDatagrid\Column;
-use ZfcDatagrid\Column\AbstractColumn;
 use ZfcDatagrid\Filter;
+use ZfcDatagrid\Column\AbstractColumn;
 
 abstract class AbstractAction
 {
@@ -13,13 +13,13 @@ abstract class AbstractAction
      *
      * @var \ZfcDatagrid\Column\AbstractColumn[]
      */
-    protected $linkColumnPlaceholders = [];
+    protected $linkColumnPlaceholders = array();
 
     /**
      *
      * @var array
      */
-    protected $htmlAttributes = [];
+    protected $htmlAttributes = array();
 
     protected $showOnValueOperator = 'OR';
 
@@ -27,7 +27,7 @@ abstract class AbstractAction
      *
      * @var array
      */
-    protected $showOnValues = [];
+    protected $showOnValues = array();
 
     public function __construct()
     {
@@ -73,7 +73,7 @@ abstract class AbstractAction
         }
 
         foreach ($this->getLinkColumnPlaceholders() as $col) {
-            $link = str_replace(':' . $col->getUniqueId() . ':', $row[$col->getUniqueId()], $link);
+            $link = str_replace(':'.$col->getUniqueId().':', $row[$col->getUniqueId()], $link);
         }
 
         return $link;
@@ -90,7 +90,7 @@ abstract class AbstractAction
     {
         $this->linkColumnPlaceholders[] = $col;
 
-        return ':' . $col->getUniqueId() . ':';
+        return ':'.$col->getUniqueId().':';
     }
 
     /**
@@ -170,12 +170,12 @@ abstract class AbstractAction
      */
     protected function getAttributesString(array $row)
     {
-        $attributes = [];
+        $attributes = array();
         foreach ($this->getAttributes() as $attrKey => $attrValue) {
             if ('href' === $attrKey) {
                 $attrValue = $this->getLinkReplaced($row);
             }
-            $attributes[] = $attrKey . '="' . $attrValue . '"';
+            $attributes[] = $attrKey.'="'.$attrValue.'"';
         }
 
         return implode(' ', $attributes);
@@ -225,7 +225,7 @@ abstract class AbstractAction
     public function setShowOnValueOperator($operator = 'OR')
     {
         if ($operator != 'AND' && $operator != 'OR') {
-            throw new \InvalidArgumentException('not allowed operator: "' . $operator . '" (AND / OR is allowed)');
+            throw new \InvalidArgumentException('not allowed operator: "'.$operator.'" (AND / OR is allowed)');
         }
 
         $this->showOnValueOperator = (string) $operator;
@@ -251,11 +251,11 @@ abstract class AbstractAction
      */
     public function addShowOnValue(Column\AbstractColumn $col, $value = null, $comparison = Filter::EQUAL)
     {
-        $this->showOnValues[] = [
-            'column'     => $col,
-            'value'      => $value,
+        $this->showOnValues[] = array(
+            'column' => $col,
+            'value' => $value,
             'comparison' => $comparison,
-        ];
+        );
     }
 
     /**
@@ -327,6 +327,6 @@ abstract class AbstractAction
      */
     public function toHtml(array $row)
     {
-        return '<a ' . $this->getAttributesString($row) . '>' . $this->getHtmlType() . '</a>';
+        return '<a '.$this->getAttributesString($row).'>'.$this->getHtmlType().'</a>';
     }
 }

@@ -1,10 +1,10 @@
 <?php
 namespace ZfcDatagrid\Service;
 
-use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcDatagrid\Datagrid;
+use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 
 class DatagridFactory implements FactoryInterface
 {

@@ -1,8 +1,8 @@
 <?php
 namespace ZfcDatagridTest\Column;
 
-use PHPUnit_Framework_TestCase;
 use ZfcDatagrid\Column;
+use PHPUnit_Framework_TestCase;
 
 /**
  * @group Column
@@ -42,10 +42,10 @@ class ActionTest extends PHPUnit_Framework_TestCase
         $column->removeAction(2);
         $this->assertCount(2, $column->getActions());
 
-        $actions = [
+        $actions = array(
             $this->getMock('ZfcDatagrid\Column\Action\Button'),
             $this->getMock('ZfcDatagrid\Column\Action\Button'),
-        ];
+        );
         $column->setActions($actions);
         $this->assertEquals($actions, $column->getActions());
         $column->clearActions();

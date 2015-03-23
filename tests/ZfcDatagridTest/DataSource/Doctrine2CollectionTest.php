@@ -1,10 +1,10 @@
 <?php
 namespace ZfcDatagridTest\DataSource;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity\Category;
 use ZfcDatagrid\DataSource\Doctrine2Collection;
 use ZfcDatagrid\Filter;
+use Doctrine\Common\Collections\ArrayCollection;
+use ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity\Category;
 
 /**
  * @group DataSource
@@ -32,10 +32,10 @@ class Doctrine2CollectionTest extends DataSourceTestCase
         $this->collection = $collection;
 
         $source = new Doctrine2Collection($this->collection);
-        $source->setColumns([
+        $source->setColumns(array(
             $this->colVolumne,
             $this->colEdition,
-        ]);
+        ));
 
         $this->source = $source;
     }
@@ -61,7 +61,7 @@ class Doctrine2CollectionTest extends DataSourceTestCase
 
     public function testEntityManager()
     {
-        $em = $this->getMock('Doctrine\ORM\EntityManager', [], [], '', false);
+        $em = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
 
         $source = clone $this->source;
         $this->assertNull($source->getEntityManager());

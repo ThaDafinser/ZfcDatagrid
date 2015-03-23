@@ -1,9 +1,9 @@
 <?php
 namespace ZfcDatagrid\Column\Type;
 
+use ZfcDatagrid\Filter;
 use Locale;
 use NumberFormatter;
-use ZfcDatagrid\Filter;
 
 class Number extends AbstractType
 {
@@ -28,7 +28,7 @@ class Number extends AbstractType
      */
     protected $formatType;
 
-    protected $attributes = [];
+    protected $attributes = array();
 
     protected $prefix = '';
 
@@ -98,10 +98,10 @@ class Number extends AbstractType
      */
     public function addAttribute($attr, $value)
     {
-        $this->attributes[] = [
+        $this->attributes[] = array(
             'attribute' => $attr,
-            'value'     => $value,
-        ];
+            'value' => $value,
+        );
     }
 
     public function getAttributes()
@@ -202,6 +202,6 @@ class Number extends AbstractType
 
         $formattedValue = $formatter->format($val, $this->getFormatType());
 
-        return (string) $this->getPrefix() . $formattedValue . $this->getSuffix();
+        return (string) $this->getPrefix().$formattedValue.$this->getSuffix();
     }
 }

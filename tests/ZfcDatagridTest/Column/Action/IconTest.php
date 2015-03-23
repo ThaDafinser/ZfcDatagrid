@@ -14,9 +14,9 @@ class IconTest extends PHPUnit_Framework_TestCase
     {
         $icon = new Icon();
 
-        $this->assertEquals([
+        $this->assertEquals(array(
             'href' => '#',
-        ], $icon->getAttributes());
+        ), $icon->getAttributes());
     }
 
     public function testIconClass()
@@ -29,7 +29,7 @@ class IconTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('icon-add', $icon->getIconClass());
         $this->assertTrue($icon->hasIconClass());
 
-        $this->assertEquals('<a href="#"><i class="icon-add"></i></a>', $icon->toHtml([]));
+        $this->assertEquals('<a href="#"><i class="icon-add"></i></a>', $icon->toHtml(array()));
     }
 
     public function testIconLink()
@@ -42,7 +42,7 @@ class IconTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('/images/21/add.png', $icon->getIconLink());
         $this->assertTrue($icon->hasIconLink());
 
-        $this->assertEquals('<a href="#"><img src="/images/21/add.png" /></a>', $icon->toHtml([]));
+        $this->assertEquals('<a href="#"><img src="/images/21/add.png" /></a>', $icon->toHtml(array()));
     }
 
     public function testException()
@@ -51,6 +51,6 @@ class IconTest extends PHPUnit_Framework_TestCase
 
         $this->setExpectedException('InvalidArgumentException');
 
-        $icon->toHtml([]);
+        $icon->toHtml(array());
     }
 }

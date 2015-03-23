@@ -5,16 +5,16 @@ use ZfcDatagrid\Column\AbstractColumn;
 
 class Link extends AbstractFormatter
 {
-    protected $validRenderers = [
+    protected $validRenderers = array(
         'jqGrid',
         'bootstrapTable',
-    ];
+    );
 
     public function getFormattedValue(AbstractColumn $column)
     {
-        $row   = $this->getRowData();
+        $row = $this->getRowData();
         $value = $row[$column->getUniqueId()];
 
-        return '<a href="' . $value . '">' . $value . '</a>';
+        return '<a href="'.$value.'">'.$value.'</a>';
     }
 }

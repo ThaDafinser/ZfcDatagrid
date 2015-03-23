@@ -5,17 +5,17 @@ use ZfcDatagrid\Column\AbstractColumn;
 
 class Image extends AbstractFormatter
 {
-    protected $validRenderers = [
+    protected $validRenderers = array(
         'jqGrid',
         'bootstrapTable',
         'printHtml',
-    ];
+    );
 
-    protected $attributes = [];
+    protected $attributes = array();
 
     protected $prefix;
 
-    protected $linkAttributes = [];
+    protected $linkAttributes = array();
 
     public function setAttribute($name, $value)
     {
@@ -57,8 +57,8 @@ class Image extends AbstractFormatter
 
     public function getFormattedValue(AbstractColumn $column)
     {
-        $row    = $this->getRowData();
-        $value  = $row[$column->getUniqueId()];
+        $row = $this->getRowData();
+        $value = $row[$column->getUniqueId()];
         $prefix = $this->getPrefix();
 
         if (is_array($value)) {
@@ -70,20 +70,20 @@ class Image extends AbstractFormatter
                 $original = $thumb;
             }
         } else {
-            $thumb    = $value;
+            $thumb = $value;
             $original = $value;
         }
 
-        $linkAttributes = [];
+        $linkAttributes = array();
         foreach ($this->getLinkAttributes() as $key => $value) {
-            $linkAttributes[] = $key . '="' . $value . '"';
+            $linkAttributes[] = $key.'="'.$value.'"';
         }
 
-        $attributes = [];
+        $attributes = array();
         foreach ($this->getAttributes() as $key => $value) {
-            $attributes[] = $key . '="' . $value . '"';
+            $attributes[] = $key.'="'.$value.'"';
         }
 
-        return '<a href="' . $prefix . $original . '" ' . implode(' ', $linkAttributes) . '><img src="' . $prefix . $thumb . '" ' . implode(' ', $attributes) . ' /></a>';
+        return '<a href="'.$prefix.$original.'" '.implode(' ', $linkAttributes).'><img src="'.$prefix.$thumb.'" '.implode(' ', $attributes).' /></a>';
     }
 }

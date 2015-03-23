@@ -14,10 +14,10 @@ class ButtonTest extends PHPUnit_Framework_TestCase
     {
         $button = new Button();
 
-        $this->assertEquals([
-            'href'  => '#',
+        $this->assertEquals(array(
+            'href' => '#',
             'class' => 'btn',
-        ], $button->getAttributes());
+        ), $button->getAttributes());
     }
 
     public function testLabel()
@@ -28,7 +28,7 @@ class ButtonTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('My label', $button->getLabel());
 
         $html = '<a href="#" class="btn">My label</a>';
-        $this->assertEquals($html, $button->toHtml([]));
+        $this->assertEquals($html, $button->toHtml(array()));
     }
 
     public function testHtmlException()
@@ -36,6 +36,6 @@ class ButtonTest extends PHPUnit_Framework_TestCase
         $button = new Button();
 
         $this->setExpectedException('InvalidArgumentException');
-        $button->toHtml([]);
+        $button->toHtml(array());
     }
 }

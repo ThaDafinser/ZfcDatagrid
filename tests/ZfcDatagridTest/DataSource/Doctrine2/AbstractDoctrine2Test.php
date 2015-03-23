@@ -39,7 +39,7 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
      *
      * @return \Doctrine\ORM\Mapping\Driver\AnnotationDriver
      */
-    protected function createAnnotationDriver($paths = [], $alias = null)
+    protected function createAnnotationDriver($paths = array(), $alias = null)
     {
         if (version_compare(\Doctrine\Common\Version::VERSION, '3.0.0', '>=')) {
             $reader = new \Doctrine\Common\Annotations\CachedReader(new \Doctrine\Common\Annotations\AnnotationReader(), new ArrayCache());
@@ -66,7 +66,7 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
                 $reader->setDefaultAnnotationNamespace('Doctrine\ORM\Mapping\\');
             }
         }
-        \Doctrine\Common\Annotations\AnnotationRegistry::registerFile(__DIR__ . "/../../../lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php");
+        \Doctrine\Common\Annotations\AnnotationRegistry::registerFile(__DIR__."/../../../lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php");
 
         return new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($reader, (array) $paths);
     }
@@ -93,23 +93,23 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
         $config = new \Doctrine\ORM\Configuration();
 
         $config->setMetadataCacheImpl($metadataCache);
-        $config->setMetadataDriverImpl($config->newDefaultAnnotationDriver([], true));
+        $config->setMetadataDriverImpl($config->newDefaultAnnotationDriver(array(), true));
         $config->setQueryCacheImpl(self::getSharedQueryCacheImpl());
-        $config->setProxyDir(__DIR__ . '/Proxies');
+        $config->setProxyDir(__DIR__.'/Proxies');
         $config->setProxyNamespace('Doctrine\Tests\Proxies');
 
-        $config->setEntityNamespaces([
+        $config->setEntityNamespaces(array(
             'ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity',
             'ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity\Category',
-        ]);
+        ));
 
         if (null === $conn) {
-            $conn = [
-                'driverClass'  => 'ZfcDatagridTest\DataSource\Doctrine2\Mocks\DriverMock',
+            $conn = array(
+                'driverClass' => 'ZfcDatagridTest\DataSource\Doctrine2\Mocks\DriverMock',
                 'wrapperClass' => 'ZfcDatagridTest\DataSource\Doctrine2\Mocks\ConnectionMock',
-                'user'         => 'john',
-                'password'     => 'wayne',
-            ];
+                'user' => 'john',
+                'password' => 'wayne',
+            );
         }
 
         if (is_array($conn)) {

@@ -4,16 +4,16 @@
  */
 namespace ZfcDatagrid\Renderer\PHPExcel;
 
+use ZfcDatagrid\Renderer\AbstractExport;
 use PHPExcel;
+use PHPExcel_Worksheet_PageSetup;
 use PHPExcel_Cell;
 use PHPExcel_Cell_DataType;
 use PHPExcel_Style_Border;
 use PHPExcel_Style_Color;
 use PHPExcel_Style_Fill;
-use PHPExcel_Worksheet_PageSetup;
-use Zend\Http\Headers;
 use Zend\Http\Response\Stream as ResponseStream;
-use ZfcDatagrid\Renderer\AbstractExport;
+use Zend\Http\Headers;
 
 class Renderer extends AbstractExport
 {
@@ -34,7 +34,7 @@ class Renderer extends AbstractExport
 
     public function execute()
     {
-        $options       = $this->getOptions();
+        $options = $this->getOptions();
         $optionsExport = $options['settings']['export'];
 
         $optionsRenderer = $this->getOptionsRenderer();
@@ -48,8 +48,8 @@ class Renderer extends AbstractExport
             ->translate($optionsRenderer['sheetName']));
 
         if (true === $optionsRenderer['displayTitle']) {
-            $sheet->setCellValue('A' . $optionsRenderer['rowTitle'], $this->getTitle());
-            $sheet->getStyle('A' . $optionsRenderer['rowTitle'])
+            $sheet->setCellValue('A'.$optionsRenderer['rowTitle'], $this->getTitle());
+            $sheet->getStyle('A'.$optionsRenderer['rowTitle'])
                 ->getFont()
                 ->setSize(15);
         }
@@ -60,7 +60,7 @@ class Renderer extends AbstractExport
          * Header
          */
         $xColumn = 0;
-        $yRow    = $optionsRenderer['startRowData'];
+        $yRow = $optionsRenderer['startRowData'];
         foreach ($this->getColumnsToExport() as $col) {
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
             $label = $this->getTranslator()->translate($col->getLabel());
@@ -85,9 +85,9 @@ class Renderer extends AbstractExport
 
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */
                 $currentColumn = PHPExcel_Cell::stringFromColumnIndex($xColumn);
-                $sheet->getCell($currentColumn . $yRow)->setValueExplicit($value, PHPExcel_Cell_DataType::TYPE_STRING);
+                $sheet->getCell($currentColumn.$yRow)->setValueExplicit($value, PHPExcel_Cell_DataType::TYPE_STRING);
 
-                $columnStyle = $sheet->getStyle($currentColumn . $yRow);
+                $columnStyle = $sheet->getStyle($currentColumn.$yRow);
                 $columnStyle->getAlignment()->setWrapText(true);
 
                 /*
@@ -114,16 +114,16 @@ class Renderer extends AbstractExport
                                 break;
 
                             case 'ZfcDatagrid\Column\Style\BackgroundColor':
-                                $columnStyle->getFill()->applyFromArray([
-                                    'type'  => \PHPExcel_Style_Fill::FILL_SOLID,
-                                    'color' => [
+                                $columnStyle->getFill()->applyFromArray(array(
+                                    'type' => \PHPExcel_Style_Fill::FILL_SOLID,
+                                    'color' => array(
                                         'rgb' => $style->getRgbHexString(),
-                                    ],
-                                ]);
+                                    ),
+                                ));
                                 break;
 
                             default:
-                                throw new \Exception('Not defined yet: "' . get_class($style) . '"');
+                                throw new \Exception('Not defined yet: "'.get_class($style).'"');
 
                                 break;
                         }
@@ -144,46 +144,46 @@ class Renderer extends AbstractExport
         // Letzte Zeile merken
 
         // Autofilter + Freeze
-        $sheet->setAutoFilter('A' . $optionsRenderer['startRowData'] . ':' . $highest['column'] . $highest['row']);
+        $sheet->setAutoFilter('A'.$optionsRenderer['startRowData'].':'.$highest['column'].$highest['row']);
         $freezeRow = $optionsRenderer['startRowData'] + 1;
-        $sheet->freezePane('A' . $freezeRow);
+        $sheet->freezePane('A'.$freezeRow);
 
         // repeat the data header for each page!
         $sheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd($optionsRenderer['startRowData'], $optionsRenderer['startRowData']);
 
         // highlight header line
-        $style = [
-            'font' => [
+        $style = array(
+            'font' => array(
                 'bold' => true,
-            ],
+            ),
 
-            'borders' => [
-                'allborders' => [
+            'borders' => array(
+                'allborders' => array(
                     'style' => PHPExcel_Style_Border::BORDER_MEDIUM,
-                    'color' => [
+                    'color' => array(
                         'argb' => PHPExcel_Style_Color::COLOR_BLACK,
-                    ],
-                ],
-            ],
-            'fill' => [
-                'type'       => PHPExcel_Style_Fill::FILL_SOLID,
-                'startcolor' => [
+                    ),
+                ),
+            ),
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'startcolor' => array(
                     'argb' => PHPExcel_Style_Color::COLOR_YELLOW,
-                ],
-            ],
-        ];
-        $range = 'A' . $optionsRenderer['startRowData'] . ':' . $highest['column'] . $optionsRenderer['startRowData'];
+                ),
+            ),
+        );
+        $range = 'A'.$optionsRenderer['startRowData'].':'.$highest['column'].$optionsRenderer['startRowData'];
         $sheet->getStyle($range)->applyFromArray($style);
 
         // print borders
-        $range = 'A' . $freezeRow . ':' . $highest['column'] . $highest['row'];
-        $sheet->getStyle($range)->applyFromArray([
-            'borders' => [
-                'allborders' => [
+        $range = 'A'.$freezeRow.':'.$highest['column'].$highest['row'];
+        $sheet->getStyle($range)->applyFromArray(array(
+            'borders' => array(
+                'allborders' => array(
                     'style' => PHPExcel_Style_Border::BORDER_THIN,
-                ],
-            ],
-        ]);
+                ),
+            ),
+        ));
 
         /*
          * Print settings
@@ -193,32 +193,32 @@ class Renderer extends AbstractExport
         /*
          * Save the file
          */
-        $path         = $optionsExport['path'];
-        $saveFilename = $this->getCacheId() . '.xlsx';
+        $path = $optionsExport['path'];
+        $saveFilename = $this->getCacheId().'.xlsx';
 
         $excelWriter = new \PHPExcel_Writer_Excel2007($phpExcel);
         $excelWriter->setPreCalculateFormulas(false);
-        $excelWriter->save($path . '/' . $saveFilename);
+        $excelWriter->save($path.'/'.$saveFilename);
 
         /*
          * Send the response stream
          */
         $response = new ResponseStream();
-        $response->setStream(fopen($path . '/' . $saveFilename, 'r'));
+        $response->setStream(fopen($path.'/'.$saveFilename, 'r'));
 
         $headers = new Headers();
-        $headers->addHeaders([
-            'Content-Type' => [
+        $headers->addHeaders(array(
+            'Content-Type' => array(
                 'application/force-download',
                 'application/octet-stream',
                 'application/download',
-            ],
-            'Content-Length'      => filesize($path . '/' . $saveFilename),
-            'Content-Disposition' => 'attachment;filename=' . $this->getFilename() . '.xlsx',
-            'Cache-Control'       => 'must-revalidate',
-            'Pragma'              => 'no-cache',
-            'Expires'             => 'Thu, 1 Jan 1970 00:00:00 GMT',
-        ]);
+            ),
+            'Content-Length' => filesize($path.'/'.$saveFilename),
+            'Content-Disposition' => 'attachment;filename='.$this->getFilename().'.xlsx',
+            'Cache-Control' => 'must-revalidate',
+            'Pragma' => 'no-cache',
+            'Expires' => 'Thu, 1 Jan 1970 00:00:00 GMT',
+        ));
 
         $response->setHeaders($headers);
 
@@ -261,7 +261,7 @@ class Renderer extends AbstractExport
         /*
          * Printing setup
          */
-        $papersize   = $optionsRenderer['papersize'];
+        $papersize = $optionsRenderer['papersize'];
         $orientation = $optionsRenderer['orientation'];
         foreach ($phpExcel->getAllSheets() as $sheet) {
             /* @var $sheet \PHPExcel_Worksheet */
@@ -306,9 +306,9 @@ class Renderer extends AbstractExport
     {
         $translator = $this->getTranslator();
 
-        $textRight = $translator->translate('Page') . ' &P / &N';
+        $textRight = $translator->translate('Page').' &P / &N';
 
-        $sheet->getHeaderFooter()->setOddHeader('&L&16&G ' . $translator->translate($this->getTitle()));
-        $sheet->getHeaderFooter()->setOddFooter('&R' . $textRight);
+        $sheet->getHeaderFooter()->setOddHeader('&L&16&G '.$translator->translate($this->getTitle()));
+        $sheet->getHeaderFooter()->setOddFooter('&R'.$textRight);
     }
 }

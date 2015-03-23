@@ -19,18 +19,18 @@ class AbstractDataSourceTest extends PHPUnit_Framework_TestCase
         // if (defined('HPHP_VERSION') === true) {
         // $this->fail('HHVM Fatals');
         // }
-        $this->dsMock = $this->getMockForAbstractClass('ZfcDatagrid\DataSource\AbstractDataSource', [
-            [],
-        ], '', false);
+        $this->dsMock = $this->getMockForAbstractClass('ZfcDatagrid\DataSource\AbstractDataSource', array(
+            array(),
+        ), '', false);
     }
 
     public function testDefaults()
     {
         $ds = clone $this->dsMock;
 
-        $this->assertEquals([], $ds->getColumns());
-        $this->assertEquals([], $ds->getSortConditions());
-        $this->assertEquals([], $ds->getFilters());
+        $this->assertEquals(array(), $ds->getColumns());
+        $this->assertEquals(array(), $ds->getSortConditions());
+        $this->assertEquals(array(), $ds->getFilters());
         $this->assertNull($ds->getPaginatorAdapter());
     }
 
@@ -42,10 +42,10 @@ class AbstractDataSourceTest extends PHPUnit_Framework_TestCase
         $col1->setUniqueId('test');
         $col2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $col2->setUniqueId('test2');
-        $columns = [
+        $columns = array(
             $col1->getUniqueId() => $col1,
             $col2->getUniqueId() => $col2,
-        ];
+        );
         $ds->setColumns($columns);
 
         $this->assertArrayHasKey($col1->getUniqueId(), $ds->getColumns());
@@ -62,25 +62,25 @@ class AbstractDataSourceTest extends PHPUnit_Framework_TestCase
 
         $ds->addSortCondition($col1, 'ASC');
 
-        $this->assertEquals([
-            [
-                'column'        => $col1,
+        $this->assertEquals(array(
+            array(
+                'column' => $col1,
                 'sortDirection' => 'ASC',
-            ],
-        ], $ds->getSortConditions());
+            ),
+        ), $ds->getSortConditions());
 
         $ds->addSortCondition($col2, 'DESC');
 
-        $this->assertEquals([
-            [
-                'column'        => $col1,
+        $this->assertEquals(array(
+            array(
+                'column' => $col1,
                 'sortDirection' => 'ASC',
-            ],
-            [
-                'column'        => $col2,
+            ),
+            array(
+                'column' => $col2,
                 'sortDirection' => 'DESC',
-            ],
-        ], $ds->getSortConditions());
+            ),
+        ), $ds->getSortConditions());
     }
 
     public function testFilter()
@@ -90,9 +90,9 @@ class AbstractDataSourceTest extends PHPUnit_Framework_TestCase
         $filter = $this->getMock('ZfcDatagrid\Filter');
         $ds->addFilter($filter);
 
-        $this->assertEquals([
+        $this->assertEquals(array(
             $filter,
-        ], $ds->getFilters());
+        ), $ds->getFilters());
     }
 
     public function testPaginatorAdapter()

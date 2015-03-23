@@ -1,8 +1,8 @@
 <?php
 namespace ZfcDatagridTest\Column\Formatter;
 
-use PHPUnit_Framework_TestCase;
 use ZfcDatagrid\Column\Formatter;
+use PHPUnit_Framework_TestCase;
 
 /**
  * @group Column
@@ -14,25 +14,25 @@ class AbstractFormatterTest extends PHPUnit_Framework_TestCase
     {
         $formatter = $this->getMockForAbstractClass('ZfcDatagrid\Column\Formatter\AbstractFormatter');
 
-        $this->assertEquals([], $formatter->getValidRendererNames());
+        $this->assertEquals(array(), $formatter->getValidRendererNames());
 
-        $formatter->setValidRendererNames([
+        $formatter->setValidRendererNames(array(
             'jqGrid',
-        ]);
-        $this->assertEquals([
+        ));
+        $this->assertEquals(array(
             'jqGrid',
-        ], $formatter->getValidRendererNames());
+        ), $formatter->getValidRendererNames());
     }
 
     public function testRowData()
     {
         $formatter = $this->getMockForAbstractClass('ZfcDatagrid\Column\Formatter\AbstractFormatter');
-        $this->assertEquals([], $formatter->getRowData());
+        $this->assertEquals(array(), $formatter->getRowData());
 
-        $data = [
-            'myCol'  => 123,
+        $data = array(
+            'myCol' => 123,
             'myCol2' => 'text',
-        ];
+        );
 
         $formatter->setRowData($data);
         $this->assertEquals($data, $formatter->getRowData());
@@ -51,9 +51,9 @@ class AbstractFormatterTest extends PHPUnit_Framework_TestCase
     public function testIsApply()
     {
         $formatter = $this->getMockForAbstractClass('ZfcDatagrid\Column\Formatter\AbstractFormatter');
-        $formatter->setValidRendererNames([
+        $formatter->setValidRendererNames(array(
             'jqGrid',
-        ]);
+        ));
 
         $formatter->setRendererName('jqGrid');
         $this->assertTrue($formatter->isApply());
@@ -65,13 +65,13 @@ class AbstractFormatterTest extends PHPUnit_Framework_TestCase
     public function testFormat()
     {
         $formatter = $this->getMockForAbstractClass('ZfcDatagrid\Column\Formatter\AbstractFormatter');
-        $formatter->setValidRendererNames([
+        $formatter->setValidRendererNames(array(
             'jqGrid',
-        ]);
-        $data = [
-            'myCol'  => 123,
+        ));
+        $data = array(
+            'myCol' => 123,
             'myCol2' => 'text',
-        ];
+        );
         $formatter->setRowData($data);
 
         $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');

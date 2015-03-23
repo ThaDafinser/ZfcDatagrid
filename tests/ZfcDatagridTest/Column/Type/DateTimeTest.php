@@ -1,10 +1,10 @@
 <?php
 namespace ZfcDatagridTest\Column\Type;
 
+use ZfcDatagrid\Column\Type;
+use PHPUnit_Framework_TestCase;
 use IntlDateFormatter;
 use Locale;
-use PHPUnit_Framework_TestCase;
-use ZfcDatagrid\Column\Type;
 use ZfcDatagrid\Filter;
 
 /**

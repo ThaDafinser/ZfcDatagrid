@@ -1,8 +1,8 @@
 <?php
 namespace ZfcDatagridTest\DataSource\Doctrine2;
 
-use Doctrine\ORM\QueryBuilder;
 use ZfcDatagrid\DataSource\Doctrine2\Filter as FilterDoctrine2;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @group DataSource
@@ -20,7 +20,7 @@ class FilterTest extends AbstractDoctrine2Test
     {
         parent::setUp();
 
-        $qb                    = $this->em->createQueryBuilder();
+        $qb = $this->em->createQueryBuilder();
         $this->filterDoctrine2 = new FilterDoctrine2($qb);
     }
 
@@ -322,9 +322,9 @@ class FilterTest extends AbstractDoctrine2Test
             ->will($this->returnValue($this->colVolumne));
         $filter->expects($this->any())
             ->method('getValues')
-            ->will($this->returnValue([
+            ->will($this->returnValue(array(
             1,
-        ]));
+        )));
         $filter->expects($this->any())
             ->method('getOperator')
             ->will($this->returnValue(' () '));

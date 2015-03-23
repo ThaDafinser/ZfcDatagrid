@@ -1,8 +1,8 @@
 <?php
 namespace ZfcDatagridTest\Column\Type;
 
-use PHPUnit_Framework_TestCase;
 use ZfcDatagrid\Column\Type;
+use PHPUnit_Framework_TestCase;
 
 /**
  * @group Column

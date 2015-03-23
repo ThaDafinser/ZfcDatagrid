@@ -9,13 +9,13 @@ class PrepareData
      *
      * @var array
      */
-    private $columns = [];
+    private $columns = array();
 
     /**
      *
      * @var array
      */
-    private $data = [];
+    private $data = array();
 
     /**
      *
@@ -141,7 +141,7 @@ class PrepareData
         $data = $this->data;
 
         foreach ($data as $key => &$row) {
-            $ids = [];
+            $ids = array();
 
             foreach ($this->getColumns() as $col) {
                 /* @var $col \ZfcDatagrid\Column\AbstractColumn */

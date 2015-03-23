@@ -56,11 +56,11 @@ class ColorTest extends PHPUnit_Framework_TestCase
         $style->setBlue(55);
         $this->assertEquals(55, $style->getBlue());
 
-        $this->assertEquals([
-            'red'   => 33,
+        $this->assertEquals(array(
+            'red' => 33,
             'green' => 44,
-            'blue'  => 55,
-        ], $style->getRgbArray());
+            'blue' => 55,
+        ), $style->getRgbArray());
     }
 
     public function testRgbHexString()

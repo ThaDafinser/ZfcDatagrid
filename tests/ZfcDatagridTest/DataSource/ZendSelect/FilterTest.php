@@ -2,12 +2,12 @@
 namespace ZfcDatagridTest\DataSource\ZendSelect;
 
 use PHPUnit_Framework_TestCase;
+use ZfcDatagrid\DataSource\ZendSelect\Filter as FilterSelect;
 use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Predicate\Like;
 use Zend\Db\Sql\Predicate\Operator;
-use Zend\Db\Sql\Select;
-use Zend\Db\Sql\Sql;
-use ZfcDatagrid\DataSource\ZendSelect\Filter as FilterSelect;
 
 /**
  * @group DataSource
@@ -43,7 +43,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->column2->setUniqueId('myCol2');
         $this->column2->setSelect('myCol2');
 
-        $this->mockDriver     = $this->getMock('Zend\Db\Adapter\Driver\DriverInterface');
+        $this->mockDriver = $this->getMock('Zend\Db\Adapter\Driver\DriverInterface');
         $this->mockConnection = $this->getMock('Zend\Db\Adapter\Driver\ConnectionInterface');
         $this->mockDriver->expects($this->any())
             ->method('checkEnvironment')
@@ -51,7 +51,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->mockDriver->expects($this->any())
             ->method('getConnection')
             ->will($this->returnValue($this->mockConnection));
-        $this->mockPlatform  = $this->getMock('Zend\Db\Adapter\Platform\PlatformInterface');
+        $this->mockPlatform = $this->getMock('Zend\Db\Adapter\Platform\PlatformInterface');
         $this->mockStatement = $this->getMock('Zend\Db\Adapter\Driver\StatementInterface');
         $this->mockDriver->expects($this->any())
             ->method('createStatement')
@@ -62,10 +62,10 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $sql = new Sql($this->adapter, 'foo');
 
         $select = new Select('myTable');
-        $select->columns([
+        $select->columns(array(
             'myCol',
             'myCol2',
-        ]);
+        ));
 
         $this->filterSelect = new FilterSelect($sql, $select);
     }
@@ -106,8 +106,8 @@ class FilterTest extends PHPUnit_Framework_TestCase
         /* @var $predicateSet \Zend\Db\Sql\Predicate\PredicateSet */
         $predicateSet = $predicates[0][1];
 
-        $pred      = $predicateSet->getPredicates();
-        $where     = $pred[$part][1];
+        $pred = $predicateSet->getPredicates();
+        $where = $pred[$part][1];
         $wherePred = $where->getPredicates();
 
         return $wherePred[0][1];
@@ -193,7 +193,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $predicates = $where->getPredicates();
 
-        $notLike    = $this->getWherePart($predicates, 0);
+        $notLike = $this->getWherePart($predicates, 0);
         $parameters = $notLike->getParameters();
 
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Expression', $notLike);
@@ -215,7 +215,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $predicates = $where->getPredicates();
 
-        $notLike    = $this->getWherePart($predicates, 0);
+        $notLike = $this->getWherePart($predicates, 0);
         $parameters = $notLike->getParameters();
 
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Expression', $notLike);
@@ -237,7 +237,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $predicates = $where->getPredicates();
 
-        $notLike    = $this->getWherePart($predicates, 0);
+        $notLike = $this->getWherePart($predicates, 0);
         $parameters = $notLike->getParameters();
 
         $this->assertInstanceOf('Zend\Db\Sql\Predicate\Expression', $notLike);
@@ -407,9 +407,9 @@ class FilterTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->column));
         $filter->expects($this->any())
             ->method('getValues')
-            ->will($this->returnValue([
+            ->will($this->returnValue(array(
             1,
-        ]));
+        )));
         $filter->expects($this->any())
             ->method('getOperator')
             ->will($this->returnValue(' () '));

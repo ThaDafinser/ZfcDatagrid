@@ -19,7 +19,7 @@ class GravatarTest extends PHPUnit_Framework_TestCase
 
         // valid email
         $gravatar->setParameterFromColumn('email', 'martin.keckeis1@gmail.com');
-        $this->assertEquals('http://www.gravatar.com/avatar/' . md5('martin.keckeis1@gmail.com'), $gravatar->toString());
+        $this->assertEquals('http://www.gravatar.com/avatar/'.md5('martin.keckeis1@gmail.com'), $gravatar->toString());
     }
 
     public function testException()

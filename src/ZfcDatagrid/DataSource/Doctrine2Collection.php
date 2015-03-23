@@ -1,10 +1,10 @@
 <?php
 namespace ZfcDatagrid\DataSource;
 
-use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\EntityManager;
 use ZfcDatagrid\DataSource\PhpArray as SourceArray;
+use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Collections\Collection;
+use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 
 class Doctrine2Collection extends AbstractDataSource
 {
@@ -32,9 +32,9 @@ class Doctrine2Collection extends AbstractDataSource
         } else {
             $return = $data;
             if (is_object($data)) {
-                $return = 'instanceof ' . get_class($return);
+                $return = 'instanceof '.get_class($return);
             }
-            throw new \InvalidArgumentException('Unknown data input: "' . $return . '"');
+            throw new \InvalidArgumentException('Unknown data input: "'.$return.'"');
         }
     }
 
@@ -65,11 +65,11 @@ class Doctrine2Collection extends AbstractDataSource
     {
         $hydrator = new DoctrineHydrator($this->getEntityManager());
 
-        $dataPrepared = [];
+        $dataPrepared = array();
         foreach ($this->getData() as $row) {
             $dataExtracted = $hydrator->extract($row);
 
-            $rowExtracted = [];
+            $rowExtracted = array();
             foreach ($this->getColumns() as $column) {
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */
                 $part1 = $column->getSelectPart1();

@@ -1,11 +1,11 @@
 <?php
 namespace ZfcDatagrid\Renderer\BootstrapTable\View\Helper;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Helper\AbstractHelper;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Action\AbstractAction;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * View Helper
@@ -63,25 +63,25 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
             return '</tr>';
         } else {
             if (isset($row['idConcated'])) {
-                return '<tr id="' . $row['idConcated'] . '">';
+                return '<tr id="'.$row['idConcated'].'">';
             } else {
                 return '<tr>';
             }
         }
     }
 
-    private function getTd($dataValue, $attributes = [])
+    private function getTd($dataValue, $attributes = array())
     {
-        $attr = [];
+        $attr = array();
         foreach ($attributes as $name => $value) {
             if ($value != '') {
-                $attr[] = $name . '="' . $value . '"';
+                $attr[] = $name.'="'.$value.'"';
             }
         }
 
         $attr = implode(' ', $attr);
 
-        return '<td ' . $attr . '>' . $dataValue . '</td>';
+        return '<td '.$attr.'>'.$dataValue.'</td>';
     }
 
     /**
@@ -93,12 +93,12 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
      * @throws \Exception
      * @return string
      */
-    public function __invoke($row, array $cols, AbstractAction $rowClickAction = null, array $rowStyles = [], $hasMassActions = false)
+    public function __invoke($row, array $cols, AbstractAction $rowClickAction = null, array $rowStyles = array(), $hasMassActions = false)
     {
         $return = $this->getTr($row);
 
         if (true === $hasMassActions) {
-            $return .= '<td><input type="checkbox" name="massActionSelected[]" value="' . $row['idConcated'] . '" /></td>';
+            $return .= '<td><input type="checkbox" name="massActionSelected[]" value="'.$row['idConcated'].'" /></td>';
         }
 
         foreach ($cols as $col) {
@@ -106,8 +106,8 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
 
             $value = $row[$col->getUniqueId()];
 
-            $cssStyles = [];
-            $classes   = [];
+            $cssStyles = array();
+            $classes = array();
 
             if ($col->isHidden() === true) {
                 $classes[] = 'hidden';
@@ -120,7 +120,7 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
                     break;
 
                 case 'ZfcDatagrid\Column\Type\PhpArray':
-                    $value = '<pre>' . print_r($value, true) . '</pre>';
+                    $value = '<pre>'.print_r($value, true).'</pre>';
                     break;
             }
 
@@ -139,14 +139,14 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
                             break;
 
                         case 'ZfcDatagrid\Column\Style\Color':
-                            $cssStyles[] = 'color: #' . $style->getRgbHexString();
+                            $cssStyles[] = 'color: #'.$style->getRgbHexString();
                             break;
 
                         case 'ZfcDatagrid\Column\Style\BackgroundColor':
-                            $cssStyles[] = 'background-color: #' . $style->getRgbHexString();
+                            $cssStyles[] = 'background-color: #'.$style->getRgbHexString();
                             break;
                         default:
-                            throw new \InvalidArgumentException('Not defined style: "' . get_class($style) . '"');
+                            throw new \InvalidArgumentException('Not defined style: "'.get_class($style).'"');
                             break;
                     }
                 }
@@ -154,7 +154,7 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
 
             if ($col instanceof Column\Action) {
                 /* @var $col \ZfcDatagrid\Column\Action */
-                $actions = [];
+                $actions = array();
                 foreach ($col->getActions() as $action) {
                     /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
                     if ($action->isDisplayed($row) === true) {
@@ -169,14 +169,14 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
             // "rowClick" action
             if ($col instanceof Column\Select && $rowClickAction instanceof AbstractAction
                     && $col->isRowClickEnabled()) {
-                $value = '<a href="' . $rowClickAction->getLinkReplaced($row) . '">' . $value . '</a>';
+                $value = '<a href="'.$rowClickAction->getLinkReplaced($row).'">'.$value.'</a>';
             }
 
-            $attributes = [
-                'class'               => implode(',', $classes),
-                'style'               => implode(';', $cssStyles),
+            $attributes = array(
+                'class' => implode(',', $classes),
+                'style' => implode(';', $cssStyles),
                 'data-columnUniqueId' => $col->getUniqueId(),
-            ];
+            );
 
             $return .= $this->getTd($value, $attributes);
         }

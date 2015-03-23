@@ -1,9 +1,9 @@
 <?php
 namespace ZfcDatagridTest\Column\Style;
 
+use ZfcDatagrid\Filter;
 use PHPUnit_Framework_TestCase;
 use Zend\Stdlib\ErrorHandler;
-use ZfcDatagrid\Filter;
 
 /**
  * @group Column
@@ -28,15 +28,15 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
         /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
         $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
 
-        $this->assertEquals([], $style->getByValues());
+        $this->assertEquals(array(), $style->getByValues());
 
         $this->assertFalse($style->hasByValues());
 
-        $row = [
-            [
+        $row = array(
+            array(
                 'colName' => 'value2',
-            ],
-        ];
+            ),
+        );
         $this->assertTrue($style->isApply($row));
     }
 
@@ -57,26 +57,26 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
         /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
         $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
 
-        $this->assertEquals([], $style->getByValues());
+        $this->assertEquals(array(), $style->getByValues());
         $style->addByValue($this->column, 'myApplyValue', Filter::EQUAL);
-        $this->assertEquals([
-            [
-                'column'   => $this->column,
-                'value'    => 'myApplyValue',
+        $this->assertEquals(array(
+            array(
+                'column' => $this->column,
+                'value' => 'myApplyValue',
                 'operator' => Filter::EQUAL,
-            ],
-        ], $style->getByValues());
+            ),
+        ), $style->getByValues());
 
         $this->assertTrue($style->hasByValues());
 
-        $row = [
+        $row = array(
             $this->column->getUniqueId() => 'value2',
-        ];
+        );
         $this->assertFalse($style->isApply($row));
 
-        $row = [
+        $row = array(
             $this->column->getUniqueId() => 'myApplyValue',
-        ];
+        );
         $this->assertTrue($style->isApply($row));
     }
 
@@ -85,24 +85,24 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
         /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
         $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
 
-        $this->assertEquals([], $style->getByValues());
+        $this->assertEquals(array(), $style->getByValues());
         $style->addByValue($this->column, 'myApplyValue', Filter::NOT_EQUAL);
-        $this->assertEquals([
-            [
-                'column'   => $this->column,
-                'value'    => 'myApplyValue',
+        $this->assertEquals(array(
+            array(
+                'column' => $this->column,
+                'value' => 'myApplyValue',
                 'operator' => Filter::NOT_EQUAL,
-            ],
-        ], $style->getByValues());
+            ),
+        ), $style->getByValues());
 
-        $row = [
+        $row = array(
             $this->column->getUniqueId() => 'notEqualValue',
-        ];
+        );
         $this->assertTrue($style->isApply($row));
 
-        $row = [
+        $row = array(
             $this->column->getUniqueId() => 'myApplyValue',
-        ];
+        );
         $this->assertFalse($style->isApply($row));
     }
 
@@ -111,35 +111,35 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
         /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
         $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
 
-        $this->assertEquals([], $style->getByValues());
+        $this->assertEquals(array(), $style->getByValues());
         $style->addByValue($this->column, 'myApplyValue', Filter::EQUAL);
         $style->addByValue($this->column, '2nd value', Filter::EQUAL);
-        $this->assertEquals([
-            [
-                'column'   => $this->column,
-                'value'    => 'myApplyValue',
+        $this->assertEquals(array(
+            array(
+                'column' => $this->column,
+                'value' => 'myApplyValue',
                 'operator' => Filter::EQUAL,
-            ],
-            [
-                'column'   => $this->column,
-                'value'    => '2nd value',
+            ),
+            array(
+                'column' => $this->column,
+                'value' => '2nd value',
                 'operator' => Filter::EQUAL,
-            ],
-        ], $style->getByValues());
+            ),
+        ), $style->getByValues());
 
-        $row = [
+        $row = array(
             $this->column->getUniqueId() => '2nd value',
-        ];
+        );
         $this->assertTrue($style->isApply($row));
 
-        $row = [
+        $row = array(
             $this->column->getUniqueId() => 'myApplyValue',
-        ];
+        );
         $this->assertTrue($style->isApply($row));
 
-        $row = [
+        $row = array(
             $this->column->getUniqueId() => 'another value',
-        ];
+        );
         $this->assertFalse($style->isApply($row));
     }
 
@@ -152,9 +152,9 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
         $style->addByValue($this->column, '23', Filter::EQUAL);
         $style->addByValue($this->column, '2nd value', Filter::NOT_EQUAL);
 
-        $this->assertTrue($style->isApply([
+        $this->assertTrue($style->isApply(array(
             $this->column->getUniqueId() => '23',
-        ]));
+        )));
     }
 
     public function testIsApplyAndOperatorNoDisplay()
@@ -166,9 +166,9 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
         $style->addByValue($this->column, '23', Filter::EQUAL);
         $style->addByValue($this->column, '23', Filter::NOT_EQUAL);
 
-        $this->assertFalse($style->isApply([
+        $this->assertFalse($style->isApply(array(
             $this->column->getUniqueId() => '23',
-        ]));
+        )));
     }
 
     public function testSetByValueOperatorException()

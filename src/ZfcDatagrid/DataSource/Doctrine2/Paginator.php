@@ -6,9 +6,9 @@
  */
 namespace ZfcDatagrid\DataSource\Doctrine2;
 
+use Zend\Paginator\Adapter\AdapterInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator as Doctrine2Paginator;
-use Zend\Paginator\Adapter\AdapterInterface;
 use ZfcDatagrid\DataSource\Doctrine2\PaginatorFast as ZfcDatagridPaginator;
 
 class Paginator implements AdapterInterface
@@ -57,7 +57,7 @@ class Paginator implements AdapterInterface
      */
     private function useCustomPaginator()
     {
-        $qb    = $this->getQueryBuilder();
+        $qb = $this->getQueryBuilder();
         $parts = $qb->getDQLParts();
 
         if ($parts['having'] !== null || true === $parts['distinct']) {

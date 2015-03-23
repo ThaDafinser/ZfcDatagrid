@@ -1,8 +1,8 @@
 <?php
 namespace ZfcDatagrid\Column;
 
-use ZfcDatagrid\Column\Formatter\AbstractFormatter;
 use ZfcDatagrid\Filter;
+use ZfcDatagrid\Column\Formatter\AbstractFormatter;
 
 abstract class AbstractColumn
 {
@@ -20,7 +20,7 @@ abstract class AbstractColumn
      */
     protected $type = null;
 
-    protected $styles = [];
+    protected $styles = array();
 
     protected $width = 5;
 
@@ -30,7 +30,7 @@ abstract class AbstractColumn
 
     protected $userSortEnabled = true;
 
-    protected $sortDefault = [];
+    protected $sortDefault = array();
 
     protected $sortActive = null;
 
@@ -52,13 +52,13 @@ abstract class AbstractColumn
 
     protected $translationEnabled = false;
 
-    protected $replaceValues = [];
+    protected $replaceValues = array();
 
     protected $notReplacedGetEmpty = true;
 
     protected $rowClickEnabled = true;
 
-    protected $rendererParameter = [];
+    protected $rendererParameter = array();
 
     protected $formatter;
 
@@ -218,7 +218,7 @@ abstract class AbstractColumn
      */
     public function setStyles(array $styles)
     {
-        $this->styles = [];
+        $this->styles = array();
 
         foreach ($styles as $style) {
             $this->addStyle($style);
@@ -285,10 +285,10 @@ abstract class AbstractColumn
      */
     public function setSortDefault($priority = 1, $direction = 'ASC')
     {
-        $this->sortDefault = [
-            'priority'      => $priority,
+        $this->sortDefault = array(
+            'priority' => $priority,
             'sortDirection' => $direction,
-        ];
+        );
     }
 
     /**
@@ -428,7 +428,7 @@ abstract class AbstractColumn
         // array(0 => 'zero', 1 => 'once', 2 => 'double', 3 => 'triple'....)
 
         if (true === $noSelect) {
-            $options = ['' => '-'] + $options;
+            $options = array('' => '-') + $options;
             $this->setFilterDefaultValue('');
         }
 
@@ -471,7 +471,7 @@ abstract class AbstractColumn
      */
     public function setFilterActive($value = '')
     {
-        $this->filterActive      = (bool) true;
+        $this->filterActive = (bool) true;
         $this->filterActiveValue = $value;
     }
 
@@ -530,7 +530,7 @@ abstract class AbstractColumn
      */
     public function setReplaceValues(array $values, $notReplacedGetEmpty = true)
     {
-        $this->replaceValues       = $values;
+        $this->replaceValues = $values;
         $this->notReplacedGetEmpty = (bool) $notReplacedGetEmpty;
 
         $this->setFilterDefaultOperation(Filter::EQUAL);
@@ -578,10 +578,10 @@ abstract class AbstractColumn
     public function setRendererParameter($name, $value, $rendererType = 'jqGrid')
     {
         if (! isset($this->rendererParameter[$rendererType])) {
-            $this->rendererParameter[$rendererType] = [];
+            $this->rendererParameter[$rendererType] = array();
         }
 
-        $parameters        = $this->rendererParameter[$rendererType];
+        $parameters = $this->rendererParameter[$rendererType];
         $parameters[$name] = $value;
 
         $this->rendererParameter[$rendererType] = $parameters;
@@ -595,7 +595,7 @@ abstract class AbstractColumn
     public function getRendererParameters($rendererName = 'jqGrid')
     {
         if (! isset($this->rendererParameter[$rendererName])) {
-            $this->rendererParameter[$rendererName] = [];
+            $this->rendererParameter[$rendererName] = array();
         }
 
         return $this->rendererParameter[$rendererName];

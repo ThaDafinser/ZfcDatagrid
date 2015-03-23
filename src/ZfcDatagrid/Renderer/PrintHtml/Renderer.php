@@ -1,8 +1,8 @@
 <?php
 namespace ZfcDatagrid\Renderer\PrintHtml;
 
-use Zend\View\Model\ViewModel;
 use ZfcDatagrid\Renderer\AbstractRenderer;
+use Zend\View\Model\ViewModel;
 
 class Renderer extends AbstractRenderer
 {

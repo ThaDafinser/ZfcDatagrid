@@ -4,21 +4,21 @@
  */
 namespace ZfcDatagrid\Renderer\TCPDF;
 
-use TCPDF;
-use Zend\Http\Headers;
-use Zend\Http\Response\Stream as ResponseStream;
-use ZfcDatagrid\Library\ImageResize;
 use ZfcDatagrid\Renderer\AbstractExport;
+use Zend\Http\Response\Stream as ResponseStream;
+use Zend\Http\Headers;
+use TCPDF;
+use ZfcDatagrid\Library\ImageResize;
 
 class Renderer extends AbstractExport
 {
-    protected $allowedColumnTypes = [
+    protected $allowedColumnTypes = array(
         'ZfcDatagrid\Column\Type\DateTime',
         'ZfcDatagrid\Column\Type\Image',
         'ZfcDatagrid\Column\Type\Number',
         'ZfcDatagrid\Column\Type\PhpArray',
         'ZfcDatagrid\Column\Type\String',
-    ];
+    );
 
     /**
      *
@@ -82,7 +82,7 @@ class Renderer extends AbstractExport
 
         foreach ($this->getData() as $row) {
             $rowHeight = $this->getRowHeight($row);
-            $y         = $pdf->GetY();
+            $y = $pdf->GetY();
 
             $usedHeight = $y + $rowHeight;
 
@@ -105,29 +105,29 @@ class Renderer extends AbstractExport
     {
         $pdf = $this->getPdf();
 
-        $options       = $this->getOptions();
+        $options = $this->getOptions();
         $optionsExport = $options['settings']['export'];
 
-        $path         = $optionsExport['path'];
-        $saveFilename = $this->getCacheId() . '.pdf';
-        $pdf->Output($path . '/' . $saveFilename, 'F');
+        $path = $optionsExport['path'];
+        $saveFilename = $this->getCacheId().'.pdf';
+        $pdf->Output($path.'/'.$saveFilename, 'F');
 
         $response = new ResponseStream();
-        $response->setStream(fopen($path . '/' . $saveFilename, 'r'));
+        $response->setStream(fopen($path.'/'.$saveFilename, 'r'));
 
         $headers = new Headers();
-        $headers->addHeaders([
-            'Content-Type' => [
+        $headers->addHeaders(array(
+            'Content-Type' => array(
                 'application/force-download',
                 'application/octet-stream',
                 'application/download',
-            ],
-            'Content-Length'      => filesize($path . '/' . $saveFilename),
-            'Content-Disposition' => 'attachment;filename=' . $this->getFilename() . '.pdf',
-            'Cache-Control'       => 'must-revalidate',
-            'Pragma'              => 'no-cache',
-            'Expires'             => 'Thu, 1 Jan 1970 00:00:00 GMT',
-        ]);
+            ),
+            'Content-Length' => filesize($path.'/'.$saveFilename),
+            'Content-Disposition' => 'attachment;filename='.$this->getFilename().'.pdf',
+            'Cache-Control' => 'must-revalidate',
+            'Pragma' => 'no-cache',
+            'Expires' => 'Thu, 1 Jan 1970 00:00:00 GMT',
+        ));
 
         $response->setHeaders($headers);
 
@@ -138,7 +138,7 @@ class Renderer extends AbstractExport
     {
         $optionsRenderer = $this->getOptionsRenderer();
 
-        $papersize   = $optionsRenderer['papersize'];
+        $papersize = $optionsRenderer['papersize'];
         $orientation = $optionsRenderer['orientation'];
         if ('landscape' == $orientation) {
             $orientation = 'L';
@@ -155,11 +155,11 @@ class Renderer extends AbstractExport
         $pdf->setFooterMargin($margins['footer']);
 
         $header = $optionsRenderer['header'];
-        $pdf->setHeaderFont([
+        $pdf->setHeaderFont(array(
             'Helvetica',
             '',
             13,
-        ]);
+        ));
 
         $pdf->setHeaderData($header['logo'], $header['logoWidth'], $this->getTitle());
 
@@ -189,7 +189,7 @@ class Renderer extends AbstractExport
         // First make sure the columns width is 100 "percent"
         $this->calculateColumnWidthPercent($cols);
 
-        $pdf     = $this->getPdf();
+        $pdf = $this->getPdf();
         $margins = $pdf->getMargins();
 
         $paperWidth = $this->getPaperWidth();
@@ -210,7 +210,7 @@ class Renderer extends AbstractExport
     protected function getRowHeight(array $row)
     {
         $optionsRenderer = $this->getOptionsRenderer();
-        $sizePoint       = $optionsRenderer['style']['data']['size'];
+        $sizePoint = $optionsRenderer['style']['data']['size'];
         // Points to MM
         $size = $sizePoint / 2.83464566929134;
 
@@ -253,9 +253,9 @@ class Renderer extends AbstractExport
     {
         $this->setFontHeader();
 
-        $pdf         = $this->getPdf();
+        $pdf = $this->getPdf();
         $currentPage = $pdf->getPage();
-        $y           = $pdf->GetY();
+        $y = $pdf->GetY();
         foreach ($this->getColumnsToExport() as $col) {
             /* @var $col \ZfcDatagrid\Column\AbstractColumn */
             $x = $pdf->GetX();
@@ -275,7 +275,7 @@ class Renderer extends AbstractExport
         $pdf = $this->getPdf();
 
         $currentPage = $pdf->getPage();
-        $y           = $pdf->GetY();
+        $y = $pdf->GetY();
         foreach ($this->getColumnsToExport() as $col) {
             /* @var $col \ZfcDatagrid\Column\AbstractColumn */
 
@@ -313,7 +313,7 @@ class Renderer extends AbstractExport
                             break;
 
                         default:
-                            throw new \Exception('Not defined yet: "' . get_class($style) . '"');
+                            throw new \Exception('Not defined yet: "'.get_class($style).'"');
 
                             break;
                     }
@@ -335,7 +335,7 @@ class Renderer extends AbstractExport
                     }
 
                     try {
-                        $resizeType   = $col->getType()->getResizeType();
+                        $resizeType = $col->getType()->getResizeType();
                         $resizeHeight = $col->getType()->getResizeHeight();
                         if ('dynamic' === $resizeType) {
                             // resizing properly to width + height (and keeping the ratio)
@@ -343,7 +343,7 @@ class Renderer extends AbstractExport
                             if ($file !== false) {
                                 list($width, $height) = $this->calcImageSize($file, $col->getWidth() - 2, $rowHeight - 2);
 
-                                $pdf->Image('@' . $file, $x + 1, $y + 1, $width, $height, '', '', 'L', false);
+                                $pdf->Image('@'.$file, $x + 1, $y + 1, $width, $height, '', '', 'L', false);
                             }
                         } else {
                             $pdf->Image($link, $x + 1, $y + 1, 0, $resizeHeight, '', '', 'L', false);
@@ -380,25 +380,25 @@ class Renderer extends AbstractExport
         $pdf = $this->getPdf();
 
         list($width, $height) = getimagesizefromstring($imageData);
-        $width                = $pdf->pixelsToUnits($width);
-        $height               = $pdf->pixelsToUnits($height);
+        $width = $pdf->pixelsToUnits($width);
+        $height = $pdf->pixelsToUnits($height);
 
         list($newWidth, $newHeight) = ImageResize::getCalculatedSize($width, $height, $maxWidth, $maxHeight);
 
-        return [
+        return array(
             $newWidth,
             $newHeight,
-        ];
+        );
     }
 
     protected function setFontHeader()
     {
         $optionsRenderer = $this->getOptionsRenderer();
-        $style           = $optionsRenderer['style']['header'];
+        $style = $optionsRenderer['style']['header'];
 
-        $font       = $style['font'];
-        $size       = $style['size'];
-        $color      = $style['color'];
+        $font = $style['font'];
+        $size = $style['size'];
+        $color = $style['color'];
         $background = $style['background-color'];
 
         $pdf = $this->getPdf();
@@ -412,11 +412,11 @@ class Renderer extends AbstractExport
     protected function setFontData()
     {
         $optionsRenderer = $this->getOptionsRenderer();
-        $style           = $optionsRenderer['style']['data'];
+        $style = $optionsRenderer['style']['data'];
 
-        $font       = $style['font'];
-        $size       = $style['size'];
-        $color      = $style['color'];
+        $font = $style['font'];
+        $size = $style['size'];
+        $color = $style['color'];
         $background = $style['background-color'];
 
         $pdf = $this->getPdf();
@@ -435,12 +435,12 @@ class Renderer extends AbstractExport
     protected function setItalic()
     {
         $optionsRenderer = $this->getOptionsRenderer();
-        $style           = $optionsRenderer['style']['data'];
-        $font            = $style['font'];
-        $size            = $style['size'];
+        $style = $optionsRenderer['style']['data'];
+        $font = $style['font'];
+        $size = $style['size'];
 
         $pdf = $this->getPdf();
-        $pdf->setFont($font . 'I', '', $size);
+        $pdf->setFont($font.'I', '', $size);
     }
 
     /**

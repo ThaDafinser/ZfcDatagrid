@@ -1,8 +1,8 @@
 <?php
 namespace ZfcDatagridTest\Column\Formatter;
 
-use PHPUnit_Framework_TestCase;
 use ZfcDatagrid\Column\Formatter;
+use PHPUnit_Framework_TestCase;
 
 /**
  * @group Column
@@ -14,10 +14,10 @@ class LinkTest extends PHPUnit_Framework_TestCase
     {
         $formatter = new Formatter\Link();
 
-        $this->assertEquals([
+        $this->assertEquals(array(
             'jqGrid',
             'bootstrapTable',
-        ], $formatter->getValidRendererNames());
+        ), $formatter->getValidRendererNames());
     }
 
     public function testGetFormattedValue()
@@ -26,9 +26,9 @@ class LinkTest extends PHPUnit_Framework_TestCase
         $col->setUniqueId('myCol');
 
         $formatter = new Formatter\Link();
-        $formatter->setRowData([
+        $formatter->setRowData(array(
             'myCol' => 'http://example.com',
-        ]);
+        ));
 
         $this->assertEquals('<a href="http://example.com">http://example.com</a>', $formatter->getFormattedValue($col));
     }

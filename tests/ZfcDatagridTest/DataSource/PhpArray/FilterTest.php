@@ -42,19 +42,19 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $filterArray = new FilterArray($filter);
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '123',
-        ]));
-        $this->assertTrue($filterArray->applyFilter([
+        )));
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '1234',
-        ]));
-        $this->assertTrue($filterArray->applyFilter([
+        )));
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '51237',
-        ]));
+        )));
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '321',
-        ]));
+        )));
     }
 
     public function testLikeLeft()
@@ -64,27 +64,27 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $filterArray = new FilterArray($filter);
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '123',
-        ]));
-        $this->assertTrue($filterArray->applyFilter([
+        )));
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => 'asdfsdf123',
-        ]));
-        $this->assertTrue($filterArray->applyFilter([
+        )));
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => 'something.... myValue',
-        ]));
+        )));
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '1234',
-        ]));
+        )));
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '51237',
-        ]));
+        )));
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '321',
-        ]));
+        )));
     }
 
     public function testLikeRight()
@@ -94,30 +94,30 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $filterArray = new FilterArray($filter);
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '123',
-        ]));
-        $this->assertTrue($filterArray->applyFilter([
+        )));
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '123asdf',
-        ]));
-        $this->assertTrue($filterArray->applyFilter([
+        )));
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => 'myValue....something',
-        ]));
+        )));
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => 'something.... myValue',
-        ]));
-        $this->assertFalse($filterArray->applyFilter([
+        )));
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '4123',
-        ]));
+        )));
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '51237',
-        ]));
+        )));
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '321',
-        ]));
+        )));
     }
 
     /**
@@ -130,19 +130,19 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $filterArray = new FilterArray($filter);
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '123',
-        ]));
-        $this->assertFalse($filterArray->applyFilter([
+        )));
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '1234',
-        ]));
-        $this->assertFalse($filterArray->applyFilter([
+        )));
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '51237',
-        ]));
+        )));
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '321',
-        ]));
+        )));
     }
 
     public function testNotLikeLeft()
@@ -152,27 +152,27 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $filterArray = new FilterArray($filter);
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '123',
-        ]));
-        $this->assertFalse($filterArray->applyFilter([
+        )));
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => 'asdfsdf123',
-        ]));
-        $this->assertFalse($filterArray->applyFilter([
+        )));
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => 'something.... myValue',
-        ]));
+        )));
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '1234',
-        ]));
+        )));
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '51237',
-        ]));
+        )));
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '321',
-        ]));
+        )));
     }
 
     public function testNotLikeRight()
@@ -182,30 +182,30 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $filterArray = new FilterArray($filter);
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '123',
-        ]));
-        $this->assertFalse($filterArray->applyFilter([
+        )));
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '123asdf',
-        ]));
-        $this->assertFalse($filterArray->applyFilter([
+        )));
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => 'myValue....something',
-        ]));
+        )));
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => 'something.... myValue',
-        ]));
-        $this->assertTrue($filterArray->applyFilter([
+        )));
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '4123',
-        ]));
+        )));
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '51237',
-        ]));
+        )));
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '321',
-        ]));
+        )));
     }
 
     public function testEqual()
@@ -215,19 +215,19 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $filterArray = new FilterArray($filter);
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => 'myValue',
-        ]));
-        $this->assertTrue($filterArray->applyFilter([
+        )));
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '123',
-        ]));
+        )));
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => 'myvalue',
-        ]));
-        $this->assertFalse($filterArray->applyFilter([
+        )));
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '1234',
-        ]));
+        )));
     }
 
     public function testNotEqual()
@@ -237,19 +237,19 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $filterArray = new FilterArray($filter);
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => 'myValue',
-        ]));
-        $this->assertFalse($filterArray->applyFilter([
+        )));
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '123',
-        ]));
+        )));
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => 'myvalue',
-        ]));
-        $this->assertTrue($filterArray->applyFilter([
+        )));
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '1234',
-        ]));
+        )));
     }
 
     public function testGreaterEqual()
@@ -259,21 +259,21 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $filterArray = new FilterArray($filter);
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '123',
-        ]));
+        )));
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '322',
-        ]));
+        )));
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '11',
-        ]));
+        )));
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '00',
-        ]));
+        )));
     }
 
     public function testGreater()
@@ -283,21 +283,21 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $filterArray = new FilterArray($filter);
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '322',
-        ]));
+        )));
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '123',
-        ]));
+        )));
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '11',
-        ]));
+        )));
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '00',
-        ]));
+        )));
     }
 
     public function testLessEqual()
@@ -307,25 +307,25 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $filterArray = new FilterArray($filter);
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '123',
-        ]));
+        )));
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '11',
-        ]));
+        )));
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '00',
-        ]));
+        )));
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '322',
-        ]));
+        )));
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => 'ZZZ',
-        ]));
+        )));
     }
 
     public function testLess()
@@ -335,21 +335,21 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $filterArray = new FilterArray($filter);
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '322',
-        ]));
+        )));
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '123',
-        ]));
+        )));
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '11',
-        ]));
+        )));
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '00',
-        ]));
+        )));
     }
 
     public function testIN()
@@ -359,16 +359,16 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $filterArray = new FilterArray($filter);
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => 'myValue',
-        ]));
-        $this->assertTrue($filterArray->applyFilter([
+        )));
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '123',
-        ]));
+        )));
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '321',
-        ]));
+        )));
     }
 
     public function testNotIN()
@@ -378,16 +378,16 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $filterArray = new FilterArray($filter);
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => 'myValue',
-        ]));
-        $this->assertFalse($filterArray->applyFilter([
+        )));
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '123',
-        ]));
+        )));
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '321',
-        ]));
+        )));
     }
 
     public function testBetween()
@@ -398,22 +398,22 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $filterArray = new FilterArray($filter);
 
-        $this->assertTrue($filterArray->applyFilter([
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '15',
-        ]));
-        $this->assertTrue($filterArray->applyFilter([
+        )));
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '20',
-        ]));
-        $this->assertTrue($filterArray->applyFilter([
+        )));
+        $this->assertTrue($filterArray->applyFilter(array(
             'myCol' => '30',
-        ]));
+        )));
 
-        $this->assertFalse($filterArray->applyFilter([
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '14',
-        ]));
-        $this->assertFalse($filterArray->applyFilter([
+        )));
+        $this->assertFalse($filterArray->applyFilter(array(
             'myCol' => '31',
-        ]));
+        )));
     }
 
     public function testException()
@@ -424,9 +424,9 @@ class FilterTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->column));
         $filter->expects($this->any())
             ->method('getValues')
-            ->will($this->returnValue([
+            ->will($this->returnValue(array(
             1,
-        ]));
+        )));
         $filter->expects($this->any())
             ->method('getOperator')
             ->will($this->returnValue(' () '));
@@ -434,8 +434,8 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('InvalidArgumentException');
 
         $filterArray = new FilterArray($filter);
-        $filterArray->applyFilter([
+        $filterArray->applyFilter(array(
             'myCol' => '15',
-        ]);
+        ));
     }
 }

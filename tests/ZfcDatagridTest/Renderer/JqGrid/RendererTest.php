@@ -10,18 +10,18 @@ use ZfcDatagrid\Renderer\JqGrid;
  */
 class RendererTest extends PHPUnit_Framework_TestCase
 {
-    private $options = [
-        'renderer' => [
-            'jqGrid' => [
-                'parameterNames' => [
-                    'sortColumns'    => 'cols',
+    private $options = array(
+        'renderer' => array(
+            'jqGrid' => array(
+                'parameterNames' => array(
+                    'sortColumns' => 'cols',
                     'sortDirections' => 'dirs',
-                    'currentPage'    => 'page',
-                    'itemsPerPage'   => 'items',
-                ],
-            ],
-        ],
-    ];
+                    'currentPage' => 'page',
+                    'itemsPerPage' => 'items',
+                ),
+            ),
+        ),
+    );
 
     public function testGetName()
     {
@@ -46,9 +46,9 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
     public function testGetRequestException()
     {
-        $request = $this->getMock('Zend\Console\Request', [], [], '', false);
+        $request = $this->getMock('Zend\Console\Request', array(), array(), '', false);
 
-        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', [], [], '', false);
+        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', array(), array(), '', false);
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));
@@ -62,9 +62,9 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
     public function testGetRequest()
     {
-        $request = $this->getMock('Zend\Http\PhpEnvironment\Request', [], [], '', false);
+        $request = $this->getMock('Zend\Http\PhpEnvironment\Request', array(), array(), '', false);
 
-        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', [], [], '', false);
+        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', array(), array(), '', false);
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));

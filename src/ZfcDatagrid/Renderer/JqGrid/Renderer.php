@@ -1,10 +1,10 @@
 <?php
 namespace ZfcDatagrid\Renderer\JqGrid;
 
+use ZfcDatagrid\Renderer\AbstractRenderer;
+use ZfcDatagrid\Column;
 use Zend\Http\PhpEnvironment\Request as HttpRequest;
 use Zend\View\Model\JsonModel;
-use ZfcDatagrid\Column;
-use ZfcDatagrid\Renderer\AbstractRenderer;
 
 class Renderer extends AbstractRenderer
 {
@@ -52,14 +52,14 @@ class Renderer extends AbstractRenderer
         $request = $this->getRequest();
 
         $optionsRenderer = $this->getOptionsRenderer();
-        $parameterNames  = $optionsRenderer['parameterNames'];
+        $parameterNames = $optionsRenderer['parameterNames'];
 
-        $sortConditions = [];
+        $sortConditions = array();
 
-        $sortColumns    = $request->getPost($parameterNames['sortColumns']);
+        $sortColumns = $request->getPost($parameterNames['sortColumns']);
         $sortDirections = $request->getPost($parameterNames['sortDirections']);
         if ($sortColumns != '') {
-            $sortColumns    = explode(',', $sortColumns);
+            $sortColumns = explode(',', $sortColumns);
             $sortDirections = explode(',', $sortDirections);
 
             if (count($sortColumns) != count($sortDirections)) {
@@ -76,10 +76,10 @@ class Renderer extends AbstractRenderer
                 foreach ($this->getColumns() as $column) {
                     /* @var $column \ZfcDatagrid\Column\AbstractColumn */
                     if ($column->getUniqueId() == $sortColumn) {
-                        $sortConditions[] = [
+                        $sortConditions[] = array(
                             'sortDirection' => $sortDirection,
-                            'column'        => $column,
-                        ];
+                            'column' => $column,
+                        );
 
                         $column->setSortActive($sortDirection);
                     }
@@ -104,12 +104,12 @@ class Renderer extends AbstractRenderer
             return $this->filters;
         }
 
-        $filters = [];
+        $filters = array();
 
         $optionsRenderer = $this->getOptionsRenderer();
-        $parameterNames  = $optionsRenderer['parameterNames'];
+        $parameterNames = $optionsRenderer['parameterNames'];
 
-        $request  = $this->getRequest();
+        $request = $this->getRequest();
         $isSearch = $request->getPost($parameterNames['isSearch']);
         if ('true' == $isSearch) {
             // User filtering
@@ -141,7 +141,7 @@ class Renderer extends AbstractRenderer
     public function getCurrentPageNumber()
     {
         $optionsRenderer = $this->getOptionsRenderer();
-        $parameterNames  = $optionsRenderer['parameterNames'];
+        $parameterNames = $optionsRenderer['parameterNames'];
 
         $request = $this->getRequest();
         if ($request instanceof HttpRequest) {
@@ -166,8 +166,8 @@ class Renderer extends AbstractRenderer
             $viewModel->setTemplate($this->getTemplate());
             $viewModel->setVariable('data', $this->getDataJqGrid());
 
-            $columnsRowClickDisabled = [];
-            $columns                 = $viewModel->getVariable('columns');
+            $columnsRowClickDisabled = array();
+            $columns = $viewModel->getVariable('columns');
             foreach ($columns as $column) {
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */
 
@@ -193,7 +193,7 @@ class Renderer extends AbstractRenderer
                 } elseif ($column instanceof Column\Action) {
                     /* @var $column \ZfcDatagrid\Column\Action */
 
-                    $actions = [];
+                    $actions = array();
                     foreach ($column->getActions() as $action) {
                         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
                         if ($action->isDisplayed($row) === true) {
@@ -214,11 +214,11 @@ class Renderer extends AbstractRenderer
 
     private function getDataJqGrid()
     {
-        return [
-            'rows'    => $this->getData(),
-            'page'    => $this->getPaginator()->getCurrentPageNumber(),
-            'total'   => $this->getPaginator()->count(),
+        return array(
+            'rows' => $this->getData(),
+            'page' => $this->getPaginator()->getCurrentPageNumber(),
+            'total' => $this->getPaginator()->count(),
             'records' => $this->getPaginator()->getTotalItemCount(),
-        ];
+        );
     }
 }
