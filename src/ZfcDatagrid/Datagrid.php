@@ -1,22 +1,22 @@
 <?php
 namespace ZfcDatagrid;
 
-use Doctrine\ORM\QueryBuilder;
 use ArrayIterator;
-use Zend\Mvc\MvcEvent;
-use Zend\Http\PhpEnvironment\Request as HttpRequest;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\QueryBuilder;
+use Zend\Cache;
 use Zend\Console\Request as ConsoleRequest;
-use Zend\View\Model\ViewModel;
-use Zend\Paginator\Paginator;
+use Zend\Db\Sql\Select as ZendSelect;
+use Zend\Http\PhpEnvironment\Request as HttpRequest;
 use Zend\I18n\Translator\Translator;
+use Zend\Mvc\MvcEvent;
+use Zend\Paginator\Paginator;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Cache;
 use Zend\Session\Container as SessionContainer;
-use Zend\Db\Sql\Select as ZendSelect;
-use Zend\View\Model\JsonModel;
 use Zend\Stdlib\ResponseInterface;
-use Doctrine\Common\Collections\Collection;
+use Zend\View\Model\JsonModel;
+use Zend\View\Model\ViewModel;
 use ZfcDatagrid\Column\Style;
 
 class Datagrid implements ServiceLocatorAwareInterface
@@ -25,7 +25,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
      *
@@ -61,7 +61,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @var array
      */
-    protected $parameters = array();
+    protected $parameters = [];
 
     /**
      *
@@ -123,13 +123,13 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @var array
      */
-    protected $columns = array();
+    protected $columns = [];
 
     /**
      *
      * @var Style\AbstractStyle[]
      */
-    protected $rowStyles = array();
+    protected $rowStyles = [];
 
     /**
      *
@@ -141,14 +141,14 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @var Action\Mass
      */
-    protected $massActions = array();
+    protected $massActions = [];
 
     /**
      * The prepared data
      *
      * @var array
      */
-    protected $preparedData = array();
+    protected $preparedData = [];
 
     /**
      *
@@ -174,7 +174,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @var array
      */
-    protected $toolbarTemplateVariables = array();
+    protected $toolbarTemplateVariables = [];
 
     /**
      *
@@ -206,13 +206,13 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     protected $forceRenderer;
 
-    private $specialMethods = array(
+    private $specialMethods = [
         'filterSelectOptions',
         'rendererParameter',
         'replaceValues',
         'select',
         'sortDefault',
-    );
+    ];
 
     /**
      * Init method is called automatically with the service creation
@@ -347,7 +347,7 @@ class Datagrid implements ServiceLocatorAwareInterface
         if (null === $this->cacheId) {
             $this->cacheId = md5($this->getSession()
                 ->getManager()
-                ->getId().'_'.$this->getId());
+                ->getId() . '_' . $this->getId());
         }
 
         return $this->cacheId;
@@ -376,7 +376,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function setMvcEvent(MvcEvent $mvcEvent)
     {
         $this->mvcEvent = $mvcEvent;
-        $this->request = $mvcEvent->getRequest();
+        $this->request  = $mvcEvent->getRequest();
     }
 
     /**
@@ -592,7 +592,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      *
      * @param array $renderers
      */
-    public function setExportRenderers(array $renderers = array())
+    public function setExportRenderers(array $renderers = [])
     {
         $this->exportRenderers = $renderers;
     }
@@ -605,7 +605,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function getExportRenderers()
     {
         if (null === $this->exportRenderers) {
-            $options = $this->getOptions();
+            $options               = $this->getOptions();
             $this->exportRenderers = $options['settings']['export']['formats'];
         }
 
@@ -632,10 +632,10 @@ class Datagrid implements ServiceLocatorAwareInterface
         $colType = isset($config['colType']) ? $config['colType'] : 'Select';
         if (class_exists($colType, true)) {
             $class = $colType;
-        } elseif (class_exists('ZfcDatagrid\\Column\\'.$colType, true)) {
-            $class = 'ZfcDatagrid\\Column\\'.$colType;
+        } elseif (class_exists('ZfcDatagrid\\Column\\' . $colType, true)) {
+            $class = 'ZfcDatagrid\\Column\\' . $colType;
         } else {
-            throw new \InvalidArgumentException('Column type: "'.$colType.'" not found!');
+            throw new \InvalidArgumentException('Column type: "' . $colType . '" not found!');
         }
 
         if ('ZfcDatagrid\\Column\\Select' == $class) {
@@ -650,23 +650,23 @@ class Datagrid implements ServiceLocatorAwareInterface
         }
 
         foreach ($config as $key => $value) {
-            $method = 'set'.ucfirst($key);
+            $method = 'set' . ucfirst($key);
             if (method_exists($instance, $method)) {
                 if (in_array($key, $this->specialMethods)) {
                     if (! is_array($value)) {
-                        $value = array(
+                        $value = [
                             $value,
-                        );
+                        ];
                     }
-                    call_user_func_array(array(
+                    call_user_func_array([
                         $instance,
                         $method,
-                    ), $value);
+                    ], $value);
                 } else {
-                    call_user_func(array(
+                    call_user_func([
                         $instance,
                         $method,
-                    ), $value);
+                    ], $value);
                 }
             }
         }
@@ -681,10 +681,10 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function setColumns(array $columns)
     {
-        $useColumns = array();
+        $useColumns = [];
 
         foreach ($columns as $col) {
-            $col = $this->createColumn($col);
+            $col                             = $this->createColumn($col);
             $useColumns[$col->getUniqueId()] = $col;
         }
 
@@ -698,7 +698,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function addColumn($col)
     {
-        $col = $this->createColumn($col);
+        $col                                = $this->createColumn($col);
         $this->columns[$col->getUniqueId()] = $col;
     }
 
@@ -869,7 +869,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      */
     public function getRendererName()
     {
-        $options = $this->getOptions();
+        $options       = $this->getOptions();
         $parameterName = $options['generalParameterNames']['rendererType'];
 
         if ($this->forceRenderer !== null) {
@@ -900,7 +900,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function getRenderer()
     {
         if (null === $this->renderer) {
-            $rendererName = 'zfcDatagrid.renderer.'.$this->getRendererName();
+            $rendererName = 'zfcDatagrid.renderer.' . $this->getRendererName();
 
             if ($this->getServiceLocator()->has($rendererName) === true) {
                 /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
@@ -924,7 +924,7 @@ class Datagrid implements ServiceLocatorAwareInterface
 
                 $this->renderer = $renderer;
             } else {
-                throw new \Exception('Renderer service was not found, please register it: "'.$rendererName.'"');
+                throw new \Exception('Renderer service was not found, please register it: "' . $rendererName . '"');
             }
         }
 
@@ -1011,7 +1011,7 @@ class Datagrid implements ServiceLocatorAwareInterface
                     } else {
                         $add = '[no object]';
                     }
-                    throw new \Exception('The paginator returned an unknow result: '.$add.' (allowed: \ArrayIterator or a plain php array)');
+                    throw new \Exception('The paginator returned an unknow result: ' . $add . ' (allowed: \ArrayIterator or a plain php array)');
                 }
             }
         }
@@ -1021,15 +1021,15 @@ class Datagrid implements ServiceLocatorAwareInterface
          */
 
         if ($renderer->isExport() === false) {
-            $cacheData = array(
+            $cacheData = [
                 'sortConditions' => $renderer->getSortConditions(),
-                'filters' => $renderer->getFilters(),
-                'currentPage' => $this->getPaginator()->getCurrentPageNumber(),
-            );
+                'filters'        => $renderer->getFilters(),
+                'currentPage'    => $this->getPaginator()->getCurrentPageNumber(),
+            ];
             $success = $this->getCache()->setItem($this->getCacheId(), $cacheData);
             if ($success !== true) {
                 $options = $this->getCache()->getOptions();
-                throw new \Exception('Could not save the datagrid cache. Does the directory "'.$options->getCacheDir().'" exists and is writeable? CacheId: '.$this->getCacheId());
+                throw new \Exception('Could not save the datagrid cache. Does the directory "' . $options->getCacheDir() . '" exists and is writeable? CacheId: ' . $this->getCacheId());
             }
         }
 

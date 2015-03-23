@@ -1,10 +1,10 @@
 <?php
 namespace ZfcDatagrid\DataSource;
 
-use ZfcDatagrid\Column;
-use Zend\Paginator\Adapter\DbSelect as PaginatorAdapter;
 use Zend\Db\Sql;
 use Zend\Db\Sql\Expression;
+use Zend\Paginator\Adapter\DbSelect as PaginatorAdapter;
+use ZfcDatagrid\Column;
 
 class ZendSelect extends AbstractDataSource
 {
@@ -78,12 +78,12 @@ class ZendSelect extends AbstractDataSource
         /*
          * Step 1) Apply needed columns
          */
-        $selectColumns = array();
+        $selectColumns = [];
         foreach ($this->getColumns() as $column) {
             if ($column instanceof Column\Select) {
                 $colString = $column->getSelectPart1();
                 if ($column->getSelectPart2() != '') {
-                    $colString = new Expression($platform->quoteIdentifier($colString).$platform->getIdentifierSeparator().$platform->quoteIdentifier($column->getSelectPart2()));
+                    $colString = new Expression($platform->quoteIdentifier($colString) . $platform->getIdentifierSeparator() . $platform->quoteIdentifier($column->getSelectPart2()));
                 }
 
                 $selectColumns[$column->getUniqueId()] = $colString;
@@ -94,7 +94,7 @@ class ZendSelect extends AbstractDataSource
         $joins = $select->getRawState('joins');
         $select->reset('joins');
         foreach ($joins as $join) {
-            $select->join($join['name'], $join['on'], array(), $join['type']);
+            $select->join($join['name'], $join['on'], [], $join['type']);
         }
 
         /*
@@ -106,7 +106,7 @@ class ZendSelect extends AbstractDataSource
 
             foreach ($this->getSortConditions() as $sortCondition) {
                 $column = $sortCondition['column'];
-                $select->order($column->getUniqueId().' '.$sortCondition['sortDirection']);
+                $select->order($column->getUniqueId() . ' ' . $sortCondition['sortDirection']);
             }
         }
 

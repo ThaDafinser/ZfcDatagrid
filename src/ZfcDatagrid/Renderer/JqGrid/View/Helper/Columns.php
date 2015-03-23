@@ -1,12 +1,12 @@
 <?php
 namespace ZfcDatagrid\Renderer\JqGrid\View\Helper;
 
-use ZfcDatagrid\Filter;
-use ZfcDatagrid\Column;
-use ZfcDatagrid\Column\Type;
-use Zend\View\Helper\AbstractHelper;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\Helper\AbstractHelper;
+use ZfcDatagrid\Column;
+use ZfcDatagrid\Column\Type;
+use ZfcDatagrid\Filter;
 
 /**
  * View Helper
@@ -18,7 +18,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
     const STYLE_BOLD = 'cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';';
 
     const STYLE_ITALIC = 'cellvalue = \'<span style="font-style: italic;">\' + cellvalue + \'</span>\';';
-    
+
     const STYLE_STRIKETHROUGH = 'cellvalue = \'<span style="text-decoration: line-through;">\' + cellvalue + \'</span>\';';
 
     /**
@@ -79,21 +79,21 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
      */
     public function __invoke(array $columns)
     {
-        $return = array();
+        $return = [];
 
         foreach ($columns as $column) {
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
 
-            $options = array(
-                'name' => (string) $column->getUniqueId(),
+            $options = [
+                'name'  => (string) $column->getUniqueId(),
                 'index' => (string) $column->getUniqueId(),
                 'label' => $this->translate((string) $column->getLabel()),
 
-                'width' => $column->getWidth(),
-                'hidden' => (bool) $column->isHidden(),
+                'width'    => $column->getWidth(),
+                'hidden'   => (bool) $column->isHidden(),
                 'sortable' => (bool) $column->isUserSortEnabled(),
-                'search' => (bool) $column->isUserFilterEnabled(),
-            );
+                'search'   => (bool) $column->isUserFilterEnabled(),
+            ];
 
             /**
              * Formatting
@@ -118,10 +118,10 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
             /**
              * Filtering
              */
-            $searchoptions = array();
+            $searchoptions                = [];
             $searchoptions['clearSearch'] = false;
             if ($column->hasFilterSelectOptions() === true) {
-                $options['stype'] = 'select';
+                $options['stype']       = 'select';
                 $searchoptions['value'] = $column->getFilterSelectOptions();
             }
 
@@ -139,7 +139,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
             /**
              * Because with json_encode we get problems, it's custom made!
              */
-            $colModel = array();
+            $colModel = [];
             foreach ($options as $key => $value) {
                 if (is_array($value)) {
                     $value = json_encode($value);
@@ -151,21 +151,21 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                     }
                 } elseif ('formatter' == $key) {
                     if (stripos($value, 'formatter') === false && stripos($value, 'function') === false) {
-                        $value = '"'.$value.'"';
+                        $value = '"' . $value . '"';
                     }
                 } elseif ('cellattr' == $key) {
                     // SKIP THIS
                 } else {
-                    $value = '"'.$value.'"';
+                    $value = '"' . $value . '"';
                 }
 
-                $colModel[] = (string) $key.': '.$value;
+                $colModel[] = (string) $key . ': ' . $value;
             }
 
-            $return[] = '{'.implode(',', $colModel).'}';
+            $return[] = '{' . implode(',', $colModel) . '}';
         }
 
-        return '['.implode(',', $return).']';
+        return '[' . implode(',', $return) . ']';
     }
 
     /**
@@ -205,7 +205,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
             $prefix = 'function (cellvalue, options, rowObject) {';
             $suffix = ' return cellvalue; }';
 
-            $formatter = $prefix.$formatter.$suffix;
+            $formatter = $prefix . $formatter . $suffix;
         }
 
         return $formatter;
@@ -219,19 +219,19 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
      */
     private function getStyles(Column\AbstractColumn $col)
     {
-        $styleFormatter = array();
+        $styleFormatter = [];
 
         /*
          * First all based on value (only one works) @todo
          */
         foreach ($col->getStyles() as $style) {
             $prepend = '';
-            $append = '';
+            $append  = '';
 
             /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
             foreach ($style->getByValues() as $rule) {
                 $colString = $rule['column']->getUniqueId();
-                $operator = '';
+                $operator  = '';
                 switch ($rule['operator']) {
 
                     case Filter::EQUAL:
@@ -243,11 +243,11 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                         break;
 
                     default:
-                        throw new \Exception('Currently not supported filter operation: "'.$rule['operator'].'"');
+                        throw new \Exception('Currently not supported filter operation: "' . $rule['operator'] . '"');
                         break;
                 }
 
-                $prepend = 'if (rowObject.'.$colString.' '.$operator.' \''.$rule['value'].'\') {';
+                $prepend = 'if (rowObject.' . $colString . ' ' . $operator . ' \'' . $rule['value'] . '\') {';
                 $append .= '}';
             }
 
@@ -261,13 +261,13 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                 case 'ZfcDatagrid\Column\Style\Italic':
                     $styleString = self::STYLE_ITALIC;
                     break;
-                    
+
                 case 'ZfcDatagrid\Column\Style\Strikethrough':
                     $styleString = self::STYLE_STRIKETHROUGH;
                     break;
 
                 case 'ZfcDatagrid\Column\Style\Color':
-                    $styleString = 'cellvalue = \'<span style="color: #'.$style->getRgbHexString().';">\' + cellvalue + \'</span>\';';
+                    $styleString = 'cellvalue = \'<span style="color: #' . $style->getRgbHexString() . ';">\' + cellvalue + \'</span>\';';
                     break;
 
                 case 'ZfcDatagrid\Column\Style\BackgroundColor':
@@ -276,11 +276,11 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                     break;
 
                 default:
-                    throw new \Exception('Not defined style: "'.get_class($style).'"');
+                    throw new \Exception('Not defined style: "' . get_class($style) . '"');
                     break;
             }
 
-            $styleFormatter[] = $prepend.$styleString.$append;
+            $styleFormatter[] = $prepend . $styleString . $append;
         }
 
         return $styleFormatter;

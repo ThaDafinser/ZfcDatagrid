@@ -1,9 +1,9 @@
 <?php
 namespace ZfcDatagrid\Service;
 
+use Zend\Db\Adapter\Adapter;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Db\Adapter\Adapter;
 
 class ZendDbAdapterFactory implements FactoryInterface
 {

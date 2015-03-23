@@ -10,7 +10,7 @@ namespace ZfcDatagrid\Column;
  */
 class Action extends AbstractColumn
 {
-    private $actions = array();
+    private $actions = [];
 
     /**
      *
@@ -89,7 +89,7 @@ class Action extends AbstractColumn
      */
     public function clearActions()
     {
-        $this->actions = array();
+        $this->actions = [];
 
         return $this;
     }

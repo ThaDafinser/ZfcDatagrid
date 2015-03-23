@@ -9,12 +9,12 @@ use ZfcDatagrid\Column;
 
 abstract class AbstractExport extends AbstractRenderer
 {
-    protected $allowedColumnTypes = array(
+    protected $allowedColumnTypes = [
         'ZfcDatagrid\Column\Type\DateTime',
         'ZfcDatagrid\Column\Type\Number',
         'ZfcDatagrid\Column\Type\PhpArray',
         'ZfcDatagrid\Column\Type\String',
-    );
+    ];
 
     protected $columnsToExport;
 
@@ -29,7 +29,7 @@ abstract class AbstractExport extends AbstractRenderer
             return $this->columnsToExport;
         }
 
-        $columnsToExport = array();
+        $columnsToExport = [];
         foreach ($this->getColumns() as $column) {
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
 
@@ -55,7 +55,7 @@ abstract class AbstractExport extends AbstractRenderer
     {
         $optionsRenderer = $this->getOptionsRenderer();
 
-        $papersize = $optionsRenderer['papersize'];
+        $papersize   = $optionsRenderer['papersize'];
         $orientation = $optionsRenderer['orientation'];
 
         if (substr($papersize, 0, 1) != 'A') {
@@ -91,7 +91,7 @@ abstract class AbstractExport extends AbstractRenderer
      */
     protected function getFilename()
     {
-        $filenameParts = array();
+        $filenameParts   = [];
         $filenameParts[] = date('Y-m-d_H-i-s');
 
         if ($this->getTitle() != '') {

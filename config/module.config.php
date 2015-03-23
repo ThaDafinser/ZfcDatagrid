@@ -1,251 +1,251 @@
 <?php
-return array(
-    
-    'ZfcDatagrid' => array(
-        
-        'settings' => array(
-            
-            'default' => array(
+return [
+
+    'ZfcDatagrid' => [
+
+        'settings' => [
+
+            'default' => [
                 // If no specific rendere given, use this renderes for HTTP / console
-                'renderer' => array(
-                    'http' => 'bootstrapTable',
-                    'console' => 'zendTable'
-                )
-            ),
-            
-            'export' => array(
+                'renderer' => [
+                    'http'    => 'bootstrapTable',
+                    'console' => 'zendTable',
+                ],
+            ],
+
+            'export' => [
                 // Export is enabled?
                 'enabled' => true,
-                
-                'formats' => array(),
+
+                'formats' => [],
                 // type => Displayname (Toolbar - you can use here HTML too...)
                 // 'printHtml' => 'Print',
                 // 'tcpdf' => 'PDF',
                 // 'csv' => 'CSV',
                 // 'PHPExcel' => 'Excel',
-                
+
                 // The output+save directory
                 'path' => 'data/ZfcDatagrid',
-                
+
                 // mode can be:
                 // direct = PHP handles header + file reading
                 // @TODO iframe = PHP generates the file and a hidden <iframe> sends the document (ATTENTION: your webserver must enable "force-download" for excel/pdf/...)
-                'mode' => 'direct'
-            )
-        ),
-        
+                'mode' => 'direct',
+            ],
+        ],
+
         // The cache is used to save the filter + sort and other things for exporting
-        'cache' => array(
-            
-            'adapter' => array(
-                'name' => 'Filesystem',
-                'options' => array(
-                    'ttl' => 720000, // cache with 200 hours,
-                    'cache_dir' => 'data/ZfcDatagrid'
-                )
-            ),
-            'plugins' => array(
-                'exception_handler' => array(
-                    'throw_exceptions' => false
-                ),
-                
-                'Serializer'
-            )
-        ),
-        
-        'renderer' => array(
-            
-            'bootstrapTable' => array(
-                'parameterNames' => array(
+        'cache' => [
+
+            'adapter' => [
+                'name'    => 'Filesystem',
+                'options' => [
+                    'ttl'       => 720000, // cache with 200 hours,
+                    'cache_dir' => 'data/ZfcDatagrid',
+                ],
+            ],
+            'plugins' => [
+                'exception_handler' => [
+                    'throw_exceptions' => false,
+                ],
+
+                'Serializer',
+            ],
+        ],
+
+        'renderer' => [
+
+            'bootstrapTable' => [
+                'parameterNames' => [
                     // Internal => bootstrapTable
-                    'currentPage' => 'currentPage',
-                    'sortColumns' => 'sortByColumns',
+                    'currentPage'    => 'currentPage',
+                    'sortColumns'    => 'sortByColumns',
                     'sortDirections' => 'sortDirections',
-                    
-                    'massIds' => 'ids'
-                ),
-                
-                'daterange' => array(
-                    'enabled' => false
-                )
-            ),
-            
-            'jqGrid' => array(
-                'parameterNames' => array(
+
+                    'massIds' => 'ids',
+                ],
+
+                'daterange' => [
+                    'enabled' => false,
+                ],
+            ],
+
+            'jqGrid' => [
+                'parameterNames' => [
                     // Internal => jqGrid
-                    'currentPage' => 'currentPage',
-                    'itemsPerPage' => 'itemsPerPage',
-                    'sortColumns' => 'sortByColumns',
+                    'currentPage'    => 'currentPage',
+                    'itemsPerPage'   => 'itemsPerPage',
+                    'sortColumns'    => 'sortByColumns',
                     'sortDirections' => 'sortDirections',
-                    'isSearch' => 'isSearch',
-                    
-                    'columnsHidden' => 'columnsHidden',
+                    'isSearch'       => 'isSearch',
+
+                    'columnsHidden'       => 'columnsHidden',
                     'columnsGroupByLocal' => 'columnsGroupBy',
-                    
-                    'massIds' => 'ids'
-                )
-            ),
-            
-            'zendTable' => array(
-                'parameterNames' => array(
+
+                    'massIds' => 'ids',
+                ],
+            ],
+
+            'zendTable' => [
+                'parameterNames' => [
                     // Internal => ZendTable (console)
-                    'currentPage' => 'page',
-                    'itemsPerPage' => 'items',
-                    'sortColumns' => 'sortBys',
+                    'currentPage'    => 'page',
+                    'itemsPerPage'   => 'items',
+                    'sortColumns'    => 'sortBys',
                     'sortDirections' => 'sortDirs',
-                    
+
                     'filterColumns' => 'filterBys',
-                    'filterValues' => 'filterValues'
-                )
-            ),
-            
-            'PHPExcel' => array(
-                
+                    'filterValues'  => 'filterValues',
+                ],
+            ],
+
+            'PHPExcel' => [
+
                 'papersize' => 'A4',
-                
+
                 // landscape / portrait (we preferr landscape, because datagrids are often wide)
                 'orientation' => 'landscape',
-                
+
                 // The worksheet name (will be translated if possible)
                 'sheetName' => 'Data',
-                
+
                 // If you only want to export data, set this to false
                 'displayTitle' => false,
-                
-                'rowTitle' => 1,
-                'startRowData' => 1
-            ),
-            
-            'TCPDF' => array(
-                
+
+                'rowTitle'     => 1,
+                'startRowData' => 1,
+            ],
+
+            'TCPDF' => [
+
                 'papersize' => 'A4',
-                
+
                 // landscape / portrait (we preferr landscape, because datagrids are often wide)
                 'orientation' => 'landscape',
-                
-                'margins' => array(
+
+                'margins' => [
                     'header' => 5,
                     'footer' => 10,
-                    
-                    'top' => 20,
+
+                    'top'    => 20,
                     'bottom' => 11,
-                    'left' => 10,
-                    'right' => 10
-                ),
-                
-                'icon' => array(
+                    'left'   => 10,
+                    'right'  => 10,
+                ],
+
+                'icon' => [
                     // milimeter...
-                    'size' => 16
-                ),
-                
-                'header' => array(
+                    'size' => 16,
+                ],
+
+                'header' => [
                     // define your logo here, please be aware of the relative path...
-                    'logo' => '',
-                    'logoWidth' => 35
-                ),
-                
-                'style' => array(
-                    
-                    'header' => array(
+                    'logo'      => '',
+                    'logoWidth' => 35,
+                ],
+
+                'style' => [
+
+                    'header' => [
                         'font' => 'helvetica',
                         'size' => 11,
-                        
-                        'color' => array(
+
+                        'color' => [
                             0,
                             0,
-                            0
-                        ),
-                        'background-color' => array(
+                            0,
+                        ],
+                        'background-color' => [
                             255,
                             255,
-                            200
-                        )
-                    ),
-                    
-                    'data' => array(
+                            200,
+                        ],
+                    ],
+
+                    'data' => [
                         'font' => 'helvetica',
                         'size' => 11,
-                        
-                        'color' => array(
+
+                        'color' => [
                             0,
                             0,
-                            0
-                        ),
-                        'background-color' => array(
+                            0,
+                        ],
+                        'background-color' => [
                             255,
                             255,
-                            255
-                        )
-                    )
-                )
-            ),
-            
-            'csv' => array(
+                            255,
+                        ],
+                    ],
+                ],
+            ],
+
+            'csv' => [
                 // draw a header with all column labels?
-                'header' => true,
+                'header'    => true,
                 'delimiter' => ',',
-                'enclosure' => '"'
-            )
-        )
+                'enclosure' => '"',
+            ],
+        ]
         ,
-        
+
         // General parameters
-        'generalParameterNames' => array(
-            'rendererType' => 'rendererType'
-        )
-    ),
-    
-    'service_manager' => array(
-        
-        'invokables' => array(
-            
+        'generalParameterNames' => [
+            'rendererType' => 'rendererType',
+        ],
+    ],
+
+    'service_manager' => [
+
+        'invokables' => [
+
             // HTML renderer
             'zfcDatagrid.renderer.bootstrapTable' => 'ZfcDatagrid\Renderer\BootstrapTable\Renderer',
-            'zfcDatagrid.renderer.jqgrid' => 'ZfcDatagrid\Renderer\JqGrid\Renderer',
-            
+            'zfcDatagrid.renderer.jqgrid'         => 'ZfcDatagrid\Renderer\JqGrid\Renderer',
+
             // CLI renderer
             'zfcDatagrid.renderer.zendTable' => 'ZfcDatagrid\Renderer\ZendTable\Renderer',
-            
+
             // Export renderer
             'zfcDatagrid.renderer.printHtml' => 'ZfcDatagrid\Renderer\PrintHtml\Renderer',
-            'zfcDatagrid.renderer.PHPExcel' => 'ZfcDatagrid\Renderer\PHPExcel\Renderer',
-            'zfcDatagrid.renderer.TCPDF' => 'ZfcDatagrid\Renderer\TCPDF\Renderer',
-            'zfcDatagrid.renderer.csv' => 'ZfcDatagrid\Renderer\Csv\Renderer'
-        ),
-        
-        'factories' => array(
+            'zfcDatagrid.renderer.PHPExcel'  => 'ZfcDatagrid\Renderer\PHPExcel\Renderer',
+            'zfcDatagrid.renderer.TCPDF'     => 'ZfcDatagrid\Renderer\TCPDF\Renderer',
+            'zfcDatagrid.renderer.csv'       => 'ZfcDatagrid\Renderer\Csv\Renderer',
+        ],
+
+        'factories' => [
             'ZfcDatagrid\Datagrid' => 'ZfcDatagrid\Service\DatagridFactory',
-            
-            'zfcDatagrid_dbAdapter' => 'ZfcDatagrid\Service\ZendDbAdapterFactory'
-        ),
-        
-        'aliases' => array(
-            'zfcDatagrid' => 'ZfcDatagrid\Datagrid'
-        )
-    ),
-    
-    'view_helpers' => array(
-        'invokables' => array(
+
+            'zfcDatagrid_dbAdapter' => 'ZfcDatagrid\Service\ZendDbAdapterFactory',
+        ],
+
+        'aliases' => [
+            'zfcDatagrid' => 'ZfcDatagrid\Datagrid',
+        ],
+    ],
+
+    'view_helpers' => [
+        'invokables' => [
             'bootstrapTableRow' => 'ZfcDatagrid\Renderer\BootstrapTable\View\Helper\TableRow',
-            'jqgridColumns' => 'ZfcDatagrid\Renderer\JqGrid\View\Helper\Columns'
-        )
-    ),
-    
-    'view_manager' => array(
-        
-        'strategies' => array(
-            'ViewJsonStrategy'
-        ),
-        
-        'template_map' => array(
+            'jqgridColumns'     => 'ZfcDatagrid\Renderer\JqGrid\View\Helper\Columns',
+        ],
+    ],
+
+    'view_manager' => [
+
+        'strategies' => [
+            'ViewJsonStrategy',
+        ],
+
+        'template_map' => [
             'zfc-datagrid/renderer/bootstrapTable/layout' => __DIR__ . '/../view/zfc-datagrid/renderer/bootstrapTable/layout.phtml',
-            'zfc-datagrid/renderer/printHtml/layout' => __DIR__ . '/../view/zfc-datagrid/renderer/printHtml/layout.phtml',
-            'zfc-datagrid/renderer/printHtml/table' => __DIR__ . '/../view/zfc-datagrid/renderer/printHtml/table.phtml',
-            'zfc-datagrid/renderer/jqGrid/layout' => __DIR__ . '/../view/zfc-datagrid/renderer/jqGrid/layout.phtml'
-        ),
-        
-        'template_path_stack' => array(
-            'ZfcDatagrid' => __DIR__ . '/../view'
-        )
-    )    
-);
+            'zfc-datagrid/renderer/printHtml/layout'      => __DIR__ . '/../view/zfc-datagrid/renderer/printHtml/layout.phtml',
+            'zfc-datagrid/renderer/printHtml/table'       => __DIR__ . '/../view/zfc-datagrid/renderer/printHtml/table.phtml',
+            'zfc-datagrid/renderer/jqGrid/layout'         => __DIR__ . '/../view/zfc-datagrid/renderer/jqGrid/layout.phtml',
+        ],
+
+        'template_path_stack' => [
+            'ZfcDatagrid' => __DIR__ . '/../view',
+        ],
+    ]
+];

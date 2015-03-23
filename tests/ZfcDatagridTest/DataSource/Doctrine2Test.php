@@ -1,9 +1,9 @@
 <?php
 namespace ZfcDatagridTest\DataSource;
 
-use ZfcDatagrid\Filter;
-use ZfcDatagrid\DataSource\Doctrine2;
 use ZfcDatagridTest\DataSource\Doctrine2\AbstractDoctrine2Test;
+use ZfcDatagrid\DataSource\Doctrine2;
+use ZfcDatagrid\Filter;
 
 /**
  * @group DataSource
@@ -26,11 +26,11 @@ class Doctrine2Test extends AbstractDoctrine2Test
         $this->qb = $this->em->createQueryBuilder();
 
         $this->source = new Doctrine2($this->qb);
-        $this->source->setColumns(array(
+        $this->source->setColumns([
             $this->colVolumne,
             $this->colEdition,
             $this->colUserDisplayName,
-        ));
+        ]);
     }
 
     public function testConstruct()

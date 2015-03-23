@@ -24,7 +24,7 @@
     },
 
     "require": {
-        "php": ">=5.3.23",
+        "php": "~5.4|~7.0",
         
         "zendframework/zend-mvc": "~2.3",
         "zendframework/zend-modulemanager": "~2.3",

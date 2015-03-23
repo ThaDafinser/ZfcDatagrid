@@ -57,7 +57,7 @@ class PhpArray extends AbstractType
     {
         if (! is_array($value)) {
             if ('' == $value) {
-                $value = array();
+                $value = [];
             } else {
                 $value = explode($this->getSeparator(), $value);
             }

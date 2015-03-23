@@ -1,8 +1,8 @@
 <?php
 namespace ZfcDatagridTest\Column\Formatter;
 
-use ZfcDatagrid\Column\Formatter;
 use PHPUnit_Framework_TestCase;
+use ZfcDatagrid\Column\Formatter;
 
 /**
  * @group Column
@@ -14,10 +14,10 @@ class EmailTest extends PHPUnit_Framework_TestCase
     {
         $formatter = new Formatter\Email();
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             'jqGrid',
             'bootstrapTable',
-        ), $formatter->getValidRendererNames());
+        ], $formatter->getValidRendererNames());
     }
 
     public function testGetFormattedValue()
@@ -26,9 +26,9 @@ class EmailTest extends PHPUnit_Framework_TestCase
         $col->setUniqueId('myCol');
 
         $formatter = new Formatter\Email();
-        $formatter->setRowData(array(
+        $formatter->setRowData([
             'myCol' => 'name@example.com',
-        ));
+        ]);
 
         $this->assertEquals('<a href="mailto:name@example.com">name@example.com</a>', $formatter->getFormattedValue($col));
     }

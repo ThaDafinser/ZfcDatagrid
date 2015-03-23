@@ -27,7 +27,7 @@ class StaticValue implements DataPopulationInterface
 
     public function getObjectParametersColumn()
     {
-        return array();
+        return [];
     }
 
     public function toString()

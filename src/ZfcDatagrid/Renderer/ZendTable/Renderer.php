@@ -1,14 +1,14 @@
 <?php
 namespace ZfcDatagrid\Renderer\ZendTable;
 
-use ZfcDatagrid\Renderer\AbstractRenderer;
+use Zend\Console\Adapter\AdapterInterface as ConsoleAdapter;
+use Zend\Console\Console;
+use Zend\Console\Request as ConsoleRequest;
+use Zend\Text\Table;
+use Zend\Text\Table\Table as TextTable;
 use ZfcDataGrid\Column\Type;
 use ZfcDatagrid\Column;
-use Zend\Text\Table\Table as TextTable;
-use Zend\Text\Table;
-use Zend\Console\Request as ConsoleRequest;
-use Zend\Console\Console;
-use Zend\Console\Adapter\AdapterInterface as ConsoleAdapter;
+use ZfcDatagrid\Renderer\AbstractRenderer;
 
 /**
  * For CLI
@@ -93,14 +93,14 @@ class Renderer extends AbstractRenderer
         $request = $this->getRequest();
 
         $optionsRenderer = $this->getOptionsRenderer();
-        $parameterNames = $optionsRenderer['parameterNames'];
+        $parameterNames  = $optionsRenderer['parameterNames'];
 
-        $sortConditions = array();
+        $sortConditions = [];
 
-        $sortColumns = $request->getParam($parameterNames['sortColumns']);
+        $sortColumns    = $request->getParam($parameterNames['sortColumns']);
         $sortDirections = $request->getParam($parameterNames['sortDirections']);
         if ($sortColumns != '') {
-            $sortColumns = explode(',', $sortColumns);
+            $sortColumns    = explode(',', $sortColumns);
             $sortDirections = explode(',', $sortDirections);
 
             foreach ($sortColumns as $key => $sortColumn) {
@@ -117,10 +117,10 @@ class Renderer extends AbstractRenderer
                 foreach ($this->getColumns() as $column) {
                     /* @var $column \ZfcDatagrid\Column\AbstractColumn */
                     if ($column->getUniqueId() == $sortColumn) {
-                        $sortConditions[] = array(
+                        $sortConditions[] = [
                             'sortDirection' => $sortDirection,
-                            'column' => $column,
-                        );
+                            'column'        => $column,
+                        ];
 
                         $column->setSortActive($sortDirection);
                     }
@@ -146,7 +146,7 @@ class Renderer extends AbstractRenderer
      */
     public function getFilters()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -159,7 +159,7 @@ class Renderer extends AbstractRenderer
         $request = $this->getRequest();
 
         $optionsRenderer = $this->getOptionsRenderer();
-        $parameterNames = $optionsRenderer['parameterNames'];
+        $parameterNames  = $optionsRenderer['parameterNames'];
         if ($request->getParam($parameterNames['currentPage']) != '') {
             return (int) $request->getParam($parameterNames['currentPage']);
         }
@@ -172,7 +172,7 @@ class Renderer extends AbstractRenderer
         $request = $this->getRequest();
 
         $optionsRenderer = $this->getOptionsRenderer();
-        $parameterNames = $optionsRenderer['parameterNames'];
+        $parameterNames  = $optionsRenderer['parameterNames'];
         if ($request->getParam($parameterNames['itemsPerPage']) != '') {
             return (int) $request->getParam($parameterNames['itemsPerPage']);
         }
@@ -196,12 +196,12 @@ class Renderer extends AbstractRenderer
      */
     private function getTable()
     {
-        $paginator = $this->getPaginator();
+        $paginator  = $this->getPaginator();
         $translator = $this->getTranslator();
 
-        $options = array(
+        $options = [
             'columnWidths' => $this->getColumnWidths(),
-        );
+        ];
 
         $table = new TextTable($options);
         $table->setDecorator('ascii');
@@ -255,7 +255,7 @@ class Renderer extends AbstractRenderer
                 if (isset($row[$column->getUniqueId()])) {
                     $value = $row[$column->getUniqueId()];
                 }
-                if(is_array($value)){
+                if (is_array($value)) {
                     $value = implode(', ', $value);
                 }
 
@@ -276,12 +276,12 @@ class Renderer extends AbstractRenderer
          */
         $tableRow = new Table\Row();
 
-        $footer = $translator->translate('Page').' ';
-        $footer .= $paginator->getCurrentPageNumber().' '.$translator->translate('of').' '.$paginator->count();
+        $footer = $translator->translate('Page') . ' ';
+        $footer .= $paginator->getCurrentPageNumber() . ' ' . $translator->translate('of') . ' ' . $paginator->count();
 
         $footer .= ' / ';
 
-        $footer .= $translator->translate('Showing').' '.$paginator->getCurrentItemCount().' '.$translator->translate('of').' '.$paginator->getTotalItemCount().' '.$translator->translate('items');
+        $footer .= $translator->translate('Showing') . ' ' . $paginator->getCurrentItemCount() . ' ' . $translator->translate('of') . ' ' . $paginator->getTotalItemCount() . ' ' . $translator->translate('items');
 
         $tableColumn = new Table\Column($footer);
         $tableColumn->setColSpan(count($options['columnWidths']));
@@ -304,7 +304,7 @@ class Renderer extends AbstractRenderer
             return $this->columnsToDisplay;
         }
 
-        $columnsToDisplay = array();
+        $columnsToDisplay = [];
         foreach ($this->getColumns() as $column) {
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
 
@@ -334,9 +334,9 @@ class Renderer extends AbstractRenderer
         $border = count($cols) + 1;
 
         $widthAvailable = $this->getConsoleAdapter()->getWidth() - $border;
-        $onePercent = $widthAvailable / 100;
+        $onePercent     = $widthAvailable / 100;
 
-        $colWidths = array();
+        $colWidths = [];
         foreach ($cols as $col) {
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
             $width = $col->getWidth() * $onePercent;
