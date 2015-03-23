@@ -47,7 +47,7 @@
     "suggest" : {
         "ext-intl": "*",
         "doctrine/doctrine-orm-module": ">=0.8",
-        "codeplex/phpexcel": "~1.7",
+        "phpoffice/phpexcel": "~1.7",
         "tecnick.com/tcpdf": "~6.0"
     },
     
