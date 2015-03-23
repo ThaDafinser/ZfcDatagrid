@@ -11,31 +11,31 @@ class AbstractColor extends AbstractStyle
      *
      * @var array
      */
-    public static $RED = array(
+    public static $RED = [
         255,
         0,
         0,
-    );
+    ];
 
     /**
      *
      * @var array
      */
-    public static $GREEN = array(
+    public static $GREEN = [
         0,
         255,
         0,
-    );
+    ];
 
     /**
      *
      * @var array
      */
-    public static $BLUE = array(
+    public static $BLUE = [
         0,
         0,
         255,
-    );
+    ];
 
     protected $red;
 
@@ -61,9 +61,9 @@ class AbstractColor extends AbstractStyle
             $red = $redOrStaticOrArray;
         }
 
-        $this->red = (int) $red;
+        $this->red   = (int) $red;
         $this->green = (int) $green;
-        $this->blue = (int) $blue;
+        $this->blue  = (int) $blue;
     }
 
     /**
@@ -79,9 +79,9 @@ class AbstractColor extends AbstractStyle
      */
     public function setRgb($red, $green, $blue)
     {
-        $this->red = (int) $red;
+        $this->red   = (int) $red;
         $this->green = (int) $green;
-        $this->blue = (int) $blue;
+        $this->blue  = (int) $blue;
 
         return $this;
     }
@@ -155,11 +155,11 @@ class AbstractColor extends AbstractStyle
      */
     public function getRgbArray()
     {
-        return array(
-            'red' => $this->getRed(),
+        return [
+            'red'   => $this->getRed(),
             'green' => $this->getGreen(),
-            'blue' => $this->getBlue(),
-        );
+            'blue'  => $this->getBlue(),
+        ];
     }
 
     /**
@@ -171,17 +171,17 @@ class AbstractColor extends AbstractStyle
     {
         $red = dechex($this->getRed());
         if (strlen($red) === 1) {
-            $red = '0'.$red;
+            $red = '0' . $red;
         }
         $green = dechex($this->getGreen());
         if (strlen($green) === 1) {
-            $green = '0'.$green;
+            $green = '0' . $green;
         }
         $blue = dechex($this->getBlue());
         if (strlen($blue) === 1) {
-            $blue = '0'.$blue;
+            $blue = '0' . $blue;
         }
 
-        return $red.$green.$blue;
+        return $red . $green . $blue;
     }
 }

@@ -1,11 +1,11 @@
 <?php
 namespace ZfcDatagridTest\Column;
 
-use ZfcDatagrid\Filter;
-use ZfcDatagrid\Column\Type;
-use ZfcDatagrid\Column\Style;
-use ZfcDatagrid\Column\Formatter;
 use PHPUnit_Framework_TestCase;
+use ZfcDatagrid\Column\Formatter;
+use ZfcDatagrid\Column\Style;
+use ZfcDatagrid\Column\Type;
+use ZfcDatagrid\Filter;
 
 /**
  * @group Column
@@ -57,7 +57,7 @@ class AbstractColumnTest extends PHPUnit_Framework_TestCase
         /* @var $col \ZfcDatagrid\Column\AbstractColumn */
         $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
 
-        $this->assertEquals(array(), $col->getStyles());
+        $this->assertEquals([], $col->getStyles());
         $this->assertEquals(false, $col->hasStyles());
 
         $col->addStyle(new Style\Bold());
@@ -94,7 +94,7 @@ class AbstractColumnTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(true, $col->isUserSortEnabled());
         $this->assertEquals(false, $col->hasSortDefault());
-        $this->assertEquals(array(), $col->getSortDefault());
+        $this->assertEquals([], $col->getSortDefault());
 
         $this->assertEquals(false, $col->isSortActive());
 
@@ -104,10 +104,10 @@ class AbstractColumnTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, $col->isUserSortEnabled());
 
         $col->setSortDefault(1, 'DESC');
-        $this->assertEquals(array(
-            'priority' => 1,
+        $this->assertEquals([
+            'priority'      => 1,
             'sortDirection' => 'DESC',
-        ), $col->getSortDefault());
+        ], $col->getSortDefault());
         $this->assertEquals(true, $col->hasSortDefault());
 
         $col->setSortActive('ASC');
@@ -149,17 +149,17 @@ class AbstractColumnTest extends PHPUnit_Framework_TestCase
         $col->setFilterDefaultOperation(Filter::GREATER_EQUAL);
         $this->assertEquals(Filter::GREATER_EQUAL, $col->getFilterDefaultOperation());
 
-        $col->setFilterSelectOptions(array(
+        $col->setFilterSelectOptions([
             1 => 'one',
             2 => 'two',
-        ));
+        ]);
         $this->assertEquals(3, count($col->getFilterSelectOptions()));
         $this->assertEquals(true, $col->hasFilterSelectOptions());
 
-        $col->setFilterSelectOptions(array(
+        $col->setFilterSelectOptions([
             1 => 'one',
             2 => 'two',
-        ), false);
+        ], false);
         $this->assertEquals(2, count($col->getFilterSelectOptions()));
         $this->assertEquals(true, $col->hasFilterSelectOptions());
 
@@ -183,38 +183,38 @@ class AbstractColumnTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(false, $col->isTranslationEnabled());
 
         $this->assertEquals(false, $col->hasReplaceValues());
-        $this->assertEquals(array(), $col->getReplaceValues());
-        $col->setReplaceValues(array(
+        $this->assertEquals([], $col->getReplaceValues());
+        $col->setReplaceValues([
             1,
             2,
             3,
-        ));
+        ]);
         $this->assertEquals(true, $col->hasReplaceValues());
-        $this->assertEquals(array(
+        $this->assertEquals([
             1,
             2,
             3,
-        ), $col->getReplaceValues());
+        ], $col->getReplaceValues());
         $this->assertEquals(true, $col->notReplacedGetEmpty());
-        $col->setReplaceValues(array(
+        $col->setReplaceValues([
             1,
             2,
             3,
-        ), false);
+        ], false);
         $this->assertEquals(true, $col->hasReplaceValues());
-        $this->assertEquals(array(
+        $this->assertEquals([
             1,
             2,
             3,
-        ), $col->getReplaceValues());
+        ], $col->getReplaceValues());
         $this->assertEquals(false, $col->notReplacedGetEmpty());
 
-        $this->assertEquals(array(), $col->getRendererParameters('jqGrid'));
+        $this->assertEquals([], $col->getRendererParameters('jqGrid'));
 
         $col->setRendererParameter('key', 'value', 'someRenderer');
-        $this->assertEquals(array(
+        $this->assertEquals([
             'key' => 'value',
-        ), $col->getRendererParameters('someRenderer'));
+        ], $col->getRendererParameters('someRenderer'));
     }
 
     public function testFormatter()

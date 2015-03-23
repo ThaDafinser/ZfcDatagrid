@@ -26,16 +26,16 @@ class AbstractExportTest extends PHPUnit_Framework_TestCase
         $exportMock = clone $this->exportMock;
 
         $reflection = new ReflectionClass(get_class($exportMock));
-        $method = $reflection->getMethod('getFilename');
+        $method     = $reflection->getMethod('getFilename');
         $method->setAccessible(true);
 
-        $filename = $method->invokeArgs($exportMock, array());
+        $filename = $method->invokeArgs($exportMock, []);
         $this->assertEquals(date('Y-m-d_H-i-s'), $filename);
 
         $exportMock->setTitle('My title');
 
-        $filename = $method->invokeArgs($exportMock, array());
-        $this->assertEquals(date('Y-m-d_H-i-s').'_My_title', $filename);
+        $filename = $method->invokeArgs($exportMock, []);
+        $this->assertEquals(date('Y-m-d_H-i-s') . '_My_title', $filename);
     }
 
     public function testPaperWidth()
@@ -46,20 +46,20 @@ class AbstractExportTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue('abstract'));
 
         $reflection = new ReflectionClass(get_class($exportMock));
-        $method = $reflection->getMethod('getPaperWidth');
+        $method     = $reflection->getMethod('getPaperWidth');
         $method->setAccessible(true);
 
         /*
          * A4 landscape
          */
-        $options = array(
-            'renderer' => array(
-                'abstract' => array(
-                    'papersize' => 'A4',
+        $options = [
+            'renderer' => [
+                'abstract' => [
+                    'papersize'   => 'A4',
                     'orientation' => 'landscape',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $exportMock->setOptions($options);
 
         $width = $method->invoke($exportMock);
@@ -68,14 +68,14 @@ class AbstractExportTest extends PHPUnit_Framework_TestCase
         /*
          * A4 portrait
          */
-        $options = array(
-            'renderer' => array(
-                'abstract' => array(
-                    'papersize' => 'A4',
+        $options = [
+            'renderer' => [
+                'abstract' => [
+                    'papersize'   => 'A4',
                     'orientation' => 'portrait',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $exportMock->setOptions($options);
 
         $width = $method->invoke($exportMock);
@@ -84,14 +84,14 @@ class AbstractExportTest extends PHPUnit_Framework_TestCase
         /*
          * A0 portrait
          */
-        $options = array(
-            'renderer' => array(
-                'abstract' => array(
-                    'papersize' => 'A0',
+        $options = [
+            'renderer' => [
+                'abstract' => [
+                    'papersize'   => 'A0',
                     'orientation' => 'portrait',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $exportMock->setOptions($options);
 
         $width = $method->invoke($exportMock);
@@ -100,14 +100,14 @@ class AbstractExportTest extends PHPUnit_Framework_TestCase
         /*
          * A0 portrait
          */
-        $options = array(
-            'renderer' => array(
-                'abstract' => array(
-                    'papersize' => 'something',
+        $options = [
+            'renderer' => [
+                'abstract' => [
+                    'papersize'   => 'something',
                     'orientation' => 'portrait',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $exportMock->setOptions($options);
 
         $this->setExpectedException('Exception', 'Currently only "A" paper formats are supported!');

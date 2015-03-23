@@ -1,11 +1,11 @@
 <?php
 namespace ZfcDatagridTest\Renderer;
 
-use ZfcDatagrid\Filter;
-use ZfcDatagrid\Column\Style;
 use PHPUnit_Framework_TestCase;
-use Zend\Paginator;
 use ReflectionClass;
+use Zend\Paginator;
+use ZfcDatagrid\Column\Style;
+use ZfcDatagrid\Filter;
 
 /**
  * @group Renderer
@@ -27,13 +27,13 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
     public function testOptions()
     {
         $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
-        $renderer->setOptions(array(
+        $renderer->setOptions([
             'test',
-        ));
+        ]);
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             'test',
-        ), $renderer->getOptions());
+        ], $renderer->getOptions());
     }
 
     public function testRendererOptions()
@@ -43,19 +43,19 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue('abstract'));
 
-        $this->assertEquals(array(), $renderer->getOptionsRenderer());
+        $this->assertEquals([], $renderer->getOptionsRenderer());
 
-        $renderer->setOptions(array(
-            'renderer' => array(
-                'abstract' => array(
+        $renderer->setOptions([
+            'renderer' => [
+                'abstract' => [
                     'test',
-                ),
-            ),
-        ));
+                ],
+            ],
+        ]);
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             'test',
-        ), $renderer->getOptionsRenderer());
+        ], $renderer->getOptionsRenderer());
     }
 
     public function testViewModel()
@@ -93,16 +93,16 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue('abstract'));
 
-        $renderer->setOptions(array(
-            'renderer' => array(
-                'abstract' => array(
-                    'templates' => array(
-                        'layout' => 'config/my/template',
+        $renderer->setOptions([
+            'renderer' => [
+                'abstract' => [
+                    'templates' => [
+                        'layout'  => 'config/my/template',
                         'toolbar' => 'config/my/toolbar',
-                    ),
-                ),
-            ),
-        ));
+                    ],
+                ],
+            ],
+        ]);
 
         $this->assertEquals('config/my/template', $renderer->getTemplate());
         $this->assertEquals('config/my/toolbar', $renderer->getToolbarTemplate());
@@ -115,7 +115,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         $this->assertNull($renderer->getPaginator());
 
         $testCollection = range(1, 101);
-        $pagintorMock = new \Zend\Paginator\Paginator(new \Zend\Paginator\Adapter\ArrayAdapter($testCollection));
+        $pagintorMock   = new \Zend\Paginator\Paginator(new \Zend\Paginator\Adapter\ArrayAdapter($testCollection));
         $renderer->setPaginator($pagintorMock);
 
         $this->assertSame($pagintorMock, $renderer->getPaginator());
@@ -125,16 +125,16 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
     {
         $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
 
-        $this->assertEquals(array(), $renderer->getColumns());
+        $this->assertEquals([], $renderer->getColumns());
 
         $col = clone $this->colMock;
-        $renderer->setColumns(array(
+        $renderer->setColumns([
             $col,
-        ));
+        ]);
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             $col,
-        ), $renderer->getColumns());
+        ], $renderer->getColumns());
     }
 
     public function testRowStyles()
@@ -142,15 +142,15 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
         $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
 
-        $this->assertEquals(array(), $renderer->getRowStyles());
+        $this->assertEquals([], $renderer->getRowStyles());
 
         $bold = new Style\Bold();
-        $renderer->setRowStyles(array(
+        $renderer->setRowStyles([
             $bold,
-        ));
-        $this->assertEquals(array(
+        ]);
+        $this->assertEquals([
             $bold,
-        ), $renderer->getRowStyles());
+        ], $renderer->getRowStyles());
     }
 
     public function testCalculateColumnWidthPercent()
@@ -159,21 +159,21 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
 
         $reflection = new ReflectionClass(get_class($renderer));
-        $method = $reflection->getMethod('calculateColumnWidthPercent');
+        $method     = $reflection->getMethod('calculateColumnWidthPercent');
         $method->setAccessible(true);
 
         $col1 = clone $this->colMock;
-        $cols = array(
+        $cols = [
             $col1,
-        );
+        ];
 
         /*
          * Width lower than 100%
          */
         $this->assertEquals(5, $col1->getWidth());
-        $method->invokeArgs($renderer, array(
+        $method->invokeArgs($renderer, [
             $cols,
-        ));
+        ]);
         $this->assertEquals(100, $col1->getWidth());
 
         /*
@@ -184,14 +184,14 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
 
         $col2 = clone $this->colMock;
         $col2->setWidth(60);
-        $cols = array(
+        $cols = [
             $col1,
             $col2,
-        );
+        ];
 
-        $method->invokeArgs($renderer, array(
+        $method->invokeArgs($renderer, [
             $cols,
-        ));
+        ]);
         $this->assertEquals(60, $col1->getWidth());
         $this->assertEquals(40, $col2->getWidth());
     }
@@ -201,13 +201,13 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
         $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
 
-        $this->assertEquals(array(), $renderer->getData());
+        $this->assertEquals([], $renderer->getData());
 
-        $data = array(
-            array(
+        $data = [
+            [
                 'myCol' => 123,
-            ),
-        );
+            ],
+        ];
         $renderer->setData($data);
         $this->assertEquals($data, $renderer->getData());
     }
@@ -241,9 +241,9 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
         $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
 
-        $request = $this->getMock('Zend\Http\Request', array(), array(), '', false);
+        $request = $this->getMock('Zend\Http\Request', [], [], '', false);
 
-        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', array(), array(), '', false);
+        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', [], [], '', false);
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));
@@ -261,7 +261,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
         $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
 
-        $translator = $this->getMock('Zend\I18n\Translator\Translator', array(), array(), '', false);
+        $translator = $this->getMock('Zend\I18n\Translator\Translator', [], [], '', false);
 
         $this->assertNull($renderer->getTranslator());
         $renderer->setTranslator($translator);
@@ -297,11 +297,11 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
 
         // no sorting
         $sortConditions = $renderer->getSortConditions();
-        $this->assertEquals(array(), $sortConditions);
+        $this->assertEquals([], $sortConditions);
 
         // 2nd call -> from array
         $sortConditions = $renderer->getSortConditions();
-        $this->assertEquals(array(), $sortConditions);
+        $this->assertEquals([], $sortConditions);
     }
 
     public function testGetSortConditionsSortDefault()
@@ -312,27 +312,27 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         $col1 = clone $this->colMock;
         $col1->setUniqueId('myCol');
         $col1->setSortDefault(1);
-        $renderer->setColumns(array(
+        $renderer->setColumns([
             $col1,
-        ));
+        ]);
 
         $sortConditions = $renderer->getSortConditions();
-        $this->assertEquals(array(
-            1 => array(
-                'column' => $col1,
+        $this->assertEquals([
+            1 => [
+                'column'        => $col1,
                 'sortDirection' => 'ASC',
-            ),
-        ), $sortConditions);
+            ],
+        ], $sortConditions);
     }
 
     public function testGetFiltersDefault()
     {
-        $request = $this->getMock('Zend\Http\PhpEnvironment\Request', array(), array(), '', false);
+        $request = $this->getMock('Zend\Http\PhpEnvironment\Request', [], [], '', false);
         $request->expects($this->any())
             ->method('isPost')
             ->will($this->returnValue(false));
 
-        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', array(), array(), '', false);
+        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', [], [], '', false);
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));
@@ -344,9 +344,9 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         $col1 = clone $this->colMock;
         $col1->setUniqueId('myCol');
         $col1->setFilterDefaultValue('filterValue');
-        $renderer->setColumns(array(
+        $renderer->setColumns([
             $col1,
-        ));
+        ]);
 
         $filters = $renderer->getFiltersDefault();
         $this->assertCount(1, $filters);
@@ -367,9 +367,9 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         $col1 = clone $this->colMock;
         $col1->setUniqueId('myCol');
         $col1->setFilterDefaultValue('filterValue');
-        $renderer->setColumns(array(
+        $renderer->setColumns([
             $col1,
-        ));
+        ]);
     }
 
     public function testCurrentPageNumber()

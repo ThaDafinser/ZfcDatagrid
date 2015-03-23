@@ -5,10 +5,10 @@
  */
 namespace ZfcDatagrid\Renderer\Csv;
 
-use ZfcDatagrid\Renderer\AbstractExport;
-use Zend\Http\Response\Stream as ResponseStream;
 use Zend\Http\Headers;
+use Zend\Http\Response\Stream as ResponseStream;
 use ZfcDatagrid\Column\Type;
+use ZfcDatagrid\Renderer\AbstractExport;
 
 class Renderer extends AbstractExport
 {
@@ -44,20 +44,20 @@ class Renderer extends AbstractExport
             $enclosure = $optionsRenderer['enclosure'];
         }
 
-        $options = $this->getOptions();
+        $options       = $this->getOptions();
         $optionsExport = $options['settings']['export'];
 
-        $path = $optionsExport['path'];
-        $saveFilename = $this->getCacheId().'.csv';
+        $path         = $optionsExport['path'];
+        $saveFilename = $this->getCacheId() . '.csv';
 
-        $fp = fopen($path.'/'.$saveFilename, 'w');
+        $fp = fopen($path . '/' . $saveFilename, 'w');
 
         /*
          * Save the file
          */
         // header
         if (isset($optionsRenderer['header']) && true === $optionsRenderer['header']) {
-            $header = array();
+            $header = [];
             foreach ($this->getColumnsToExport() as $col) {
                 $header[] = $this->getTranslator()->translate($col->getLabel());
             }
@@ -66,7 +66,7 @@ class Renderer extends AbstractExport
 
         // data
         foreach ($this->getData() as $row) {
-            $csvRow = array();
+            $csvRow = [];
             foreach ($this->getColumnsToExport() as $col) {
                 $value = $row[$col->getUniqueId()];
 
@@ -84,22 +84,22 @@ class Renderer extends AbstractExport
          * Return the file
          */
         $response = new ResponseStream();
-        $response->setStream(fopen($path.'/'.$saveFilename, 'r'));
+        $response->setStream(fopen($path . '/' . $saveFilename, 'r'));
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Type' => array(
+        $headers->addHeaders([
+            'Content-Type' => [
                 'application/force-download',
                 'application/octet-stream',
                 'application/download',
                 'text/csv; charset=utf-8',
-            ),
-            'Content-Length' => filesize($path.'/'.$saveFilename),
-            'Content-Disposition' => 'attachment;filename='.$this->getFilename().'.csv',
-            'Cache-Control' => 'must-revalidate',
-            'Pragma' => 'no-cache',
-            'Expires' => 'Thu, 1 Jan 1970 00:00:00 GMT',
-        ));
+            ],
+            'Content-Length'      => filesize($path . '/' . $saveFilename),
+            'Content-Disposition' => 'attachment;filename=' . $this->getFilename() . '.csv',
+            'Cache-Control'       => 'must-revalidate',
+            'Pragma'              => 'no-cache',
+            'Expires'             => 'Thu, 1 Jan 1970 00:00:00 GMT',
+        ]);
 
         $response->setHeaders($headers);
 

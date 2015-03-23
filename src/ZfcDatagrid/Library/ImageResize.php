@@ -14,22 +14,22 @@ class ImageResize
      */
     public static function getCalculatedSize($width, $height, $maxWidth, $maxHeight)
     {
-        $widthDiffRatio = $maxWidth / $width;
+        $widthDiffRatio  = $maxWidth / $width;
         $heightDiffRatio = $maxHeight / $height;
 
         if ($widthDiffRatio <= $heightDiffRatio) {
             // resize based on width
-            $newWidth = $maxWidth;
+            $newWidth  = $maxWidth;
             $newHeight = $height * $widthDiffRatio;
         } else {
             // resize based on height
-            $newWidth = $width * $heightDiffRatio;
+            $newWidth  = $width * $heightDiffRatio;
             $newHeight = $maxHeight;
         }
 
-        return array(
+        return [
             $newWidth,
             $newHeight,
-        );
+        ];
     }
 }

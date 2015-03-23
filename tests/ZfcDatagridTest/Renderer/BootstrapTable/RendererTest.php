@@ -33,9 +33,9 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
     public function testGetRequestException()
     {
-        $request = $this->getMock('Zend\Console\Request', array(), array(), '', false);
+        $request = $this->getMock('Zend\Console\Request', [], [], '', false);
 
-        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', array(), array(), '', false);
+        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', [], [], '', false);
         $mvcEvent->expects($this->any())
         ->method('getRequest')
         ->will($this->returnValue($request));
@@ -49,9 +49,9 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
     public function testGetRequest()
     {
-        $request = $this->getMock('Zend\Http\PhpEnvironment\Request', array(), array(), '', false);
+        $request = $this->getMock('Zend\Http\PhpEnvironment\Request', [], [], '', false);
 
-        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', array(), array(), '', false);
+        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', [], [], '', false);
         $mvcEvent->expects($this->any())
         ->method('getRequest')
         ->will($this->returnValue($request));

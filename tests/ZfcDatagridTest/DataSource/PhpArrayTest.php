@@ -22,10 +22,10 @@ class PhpArrayTest extends DataSourceTestCase
         parent::setUp();
 
         $source = new PhpArray($this->data);
-        $source->setColumns(array(
+        $source->setColumns([
             $this->colVolumne,
             $this->colEdition,
-        ));
+        ]);
 
         $this->source = $source;
     }

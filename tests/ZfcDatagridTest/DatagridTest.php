@@ -2,10 +2,10 @@
 namespace ZfcDatagridTest;
 
 use PHPUnit_Framework_TestCase;
-use ZfcDatagrid\Datagrid;
 use Zend\Session\Container;
 use Zend\Stdlib\ErrorHandler;
 use ZfcDatagrid\Column;
+use ZfcDatagrid\Datagrid;
 
 /**
  * @group Datagrid
@@ -30,8 +30,8 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $config = include './config/module.config.php';
         $config = $config['ZfcDatagrid'];
 
-        $cacheOptions = new \Zend\Cache\Storage\Adapter\MemoryOptions();
-        $config['cache']['adapter']['name'] = 'Memory';
+        $cacheOptions                          = new \Zend\Cache\Storage\Adapter\MemoryOptions();
+        $config['cache']['adapter']['name']    = 'Memory';
         $config['cache']['adapter']['options'] = $cacheOptions->toArray();
 
         $this->config = $config;
@@ -84,12 +84,12 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
     public function testCacheId()
     {
-        $grid = new Datagrid();
+        $grid      = new Datagrid();
         $sessionId = $grid->getSession()
             ->getManager()
             ->getId();
 
-        $this->assertEquals(md5($sessionId.'_defaultGrid'), $this->grid->getCacheId());
+        $this->assertEquals(md5($sessionId . '_defaultGrid'), $this->grid->getCacheId());
 
         $this->grid->setCacheId('myCacheId');
         $this->assertEquals('myCacheId', $this->grid->getCacheId());
@@ -135,13 +135,13 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $grid = new Datagrid();
         $this->assertFalse($grid->hasDataSource());
 
-        $grid->setDataSource(array());
+        $grid->setDataSource([]);
         $this->assertTrue($grid->hasDataSource());
         $this->assertInstanceOf('ZfcDatagrid\DataSource\PhpArray', $grid->getDataSource());
 
-        $source = $this->getMock('ZfcDatagrid\DataSource\PhpArray', array(), array(
-            array(),
-        ));
+        $source = $this->getMock('ZfcDatagrid\DataSource\PhpArray', [], [
+            [],
+        ]);
         $grid->setDataSource($source);
         $this->assertTrue($grid->hasDataSource());
 
@@ -172,14 +172,14 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($grid->hasDataSource());
 
-        $select = $this->getMock('Zend\Db\Sql\Select', array(), array(), '', false);
+        $select = $this->getMock('Zend\Db\Sql\Select', [], [], '', false);
 
         $platform = $this->getMock('Zend\Db\Adapter\Platform\Sqlite');
         $platform->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('myPlatform'));
 
-        $adapter = $this->getMock('Zend\Db\Adapter\Adapter', array(), array(), '', false);
+        $adapter = $this->getMock('Zend\Db\Adapter\Adapter', [], [], '', false);
         $adapter->expects($this->any())
             ->method('getPlatform')
             ->will($this->returnValue($platform));
@@ -198,7 +198,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($grid->hasDataSource());
 
-        $qb = $this->getMock('Doctrine\ORM\QueryBuilder', array(), array(), '', false);
+        $qb = $this->getMock('Doctrine\ORM\QueryBuilder', [], [], '', false);
 
         $grid->setDataSource($qb);
         $this->assertTrue($grid->hasDataSource());
@@ -211,8 +211,8 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($grid->hasDataSource());
 
-        $coll = $this->getMock('Doctrine\Common\Collections\ArrayCollection', array(), array(), '', false);
-        $em = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
+        $coll = $this->getMock('Doctrine\Common\Collections\ArrayCollection', [], [], '', false);
+        $em   = $this->getMock('Doctrine\ORM\EntityManager', [], [], '', false);
 
         $grid->setDataSource($coll, $em);
         $this->assertTrue($grid->hasDataSource());
@@ -241,20 +241,20 @@ class DatagridTest extends PHPUnit_Framework_TestCase
     public function testParameters()
     {
         $this->assertFalse($this->grid->hasParameters());
-        $this->assertEquals(array(), $this->grid->getParameters());
+        $this->assertEquals([], $this->grid->getParameters());
 
         $this->grid->addParameter('myPara', 'test');
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             'myPara' => 'test',
-        ), $this->grid->getParameters());
+        ], $this->grid->getParameters());
 
-        $this->grid->setParameters(array(
+        $this->grid->setParameters([
             'other' => 'blubb',
-        ));
-        $this->assertEquals(array(
+        ]);
+        $this->assertEquals([
             'other' => 'blubb',
-        ), $this->grid->getParameters());
+        ], $this->grid->getParameters());
         $this->assertTrue($this->grid->hasParameters());
     }
 
@@ -271,20 +271,20 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         /*
          * NEVER define default export renderer -> because the user cant remove them after!
          */
-        $this->assertEquals(array(), $this->grid->getExportRenderers());
+        $this->assertEquals([], $this->grid->getExportRenderers());
 
-        $this->grid->setExportRenderers(array(
+        $this->grid->setExportRenderers([
             'tcpdf' => 'PDF',
-        ));
+        ]);
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             'tcpdf' => 'PDF',
-        ), $this->grid->getExportRenderers());
+        ], $this->grid->getExportRenderers());
     }
 
     public function testAddColumn()
     {
-        $this->assertEquals(array(), $this->grid->getColumns());
+        $this->assertEquals([], $this->grid->getColumns());
 
         $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $col->expects($this->any())
@@ -309,16 +309,16 @@ class DatagridTest extends PHPUnit_Framework_TestCase
     public function testAddColumnArrayFQN()
     {
         $grid = new Datagrid();
-        $this->assertEquals(array(), $grid->getColumns());
+        $this->assertEquals([], $grid->getColumns());
 
-        $column = array(
+        $column = [
             'colType' => 'ZfcDatagrid\Column\Select',
-            'label' => 'My label',
-            'select' => array(
+            'label'   => 'My label',
+            'select'  => [
                 'column' => 'myCol',
-                'table' => 'myTable',
-            ),
-        );
+                'table'  => 'myTable',
+            ],
+        ];
         $grid->addColumn($column);
 
         $this->assertCount(1, $grid->getColumns());
@@ -331,12 +331,12 @@ class DatagridTest extends PHPUnit_Framework_TestCase
     public function testAddColumnArrayInvalidColType()
     {
         $grid = new Datagrid();
-        $this->assertEquals(array(), $grid->getColumns());
+        $this->assertEquals([], $grid->getColumns());
 
-        $column = array(
+        $column = [
             'colType' => 'ZfcDatagrid\Column\Unknown',
-            'label' => 'My label',
-        );
+            'label'   => 'My label',
+        ];
 
         $this->setExpectedException('InvalidArgumentException', 'Column type: "ZfcDatagrid\Column\Unknown" not found!');
         $grid->addColumn($column);
@@ -345,15 +345,15 @@ class DatagridTest extends PHPUnit_Framework_TestCase
     public function testAddColumnArraySelect()
     {
         $grid = new Datagrid();
-        $this->assertEquals(array(), $grid->getColumns());
+        $this->assertEquals([], $grid->getColumns());
 
-        $column = array(
-            'label' => 'My label',
-            'select' => array(
+        $column = [
+            'label'  => 'My label',
+            'select' => [
                 'column' => 'myCol',
-                'table' => 'myTable',
-            ),
-        );
+                'table'  => 'myTable',
+            ],
+        ];
         $grid->addColumn($column);
 
         $this->assertCount(1, $grid->getColumns());
@@ -366,11 +366,11 @@ class DatagridTest extends PHPUnit_Framework_TestCase
     public function testAddColumnArraySelectInvalidArgumentException()
     {
         $grid = new Datagrid();
-        $this->assertEquals(array(), $grid->getColumns());
+        $this->assertEquals([], $grid->getColumns());
 
-        $column = array(
+        $column = [
             'label' => 'My label',
-        );
+        ];
         $this->setExpectedException('InvalidArgumentException', 'For "ZfcDatagrid\Column\Select" the option select[column] must be defined!');
         $grid->addColumn($column);
     }
@@ -379,10 +379,10 @@ class DatagridTest extends PHPUnit_Framework_TestCase
     {
         $grid = new Datagrid();
 
-        $column = array(
+        $column = [
             'colType' => 'action',
-            'label' => 'My action',
-        );
+            'label'   => 'My action',
+        ];
         $grid->addColumn($column);
 
         $this->assertCount(1, $grid->getColumns());
@@ -398,15 +398,15 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
         $bold = new Column\Style\Bold();
 
-        $column = array(
-            'select' => array(
+        $column = [
+            'select' => [
                 'column' => 'myCol',
-                'table' => 'myTable',
-            ),
-            'styles' => array(
+                'table'  => 'myTable',
+            ],
+            'styles' => [
                 $bold,
-            ),
-        );
+            ],
+        ];
         $grid->addColumn($column);
 
         $this->assertCount(1, $grid->getColumns());
@@ -414,22 +414,22 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $col = $grid->getColumnByUniqueId('myTable_myCol');
         $this->assertInstanceOf('ZfcDatagrid\Column\Select', $col);
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             $bold,
-        ), $col->getStyles());
+        ], $col->getStyles());
     }
 
     public function testAddColumnArraySortDefaultMinimal()
     {
         $grid = new Datagrid();
 
-        $column = array(
-            'select' => array(
+        $column = [
+            'select' => [
                 'column' => 'myCol',
-                'table' => 'myTable',
-            ),
+                'table'  => 'myTable',
+            ],
             'sortDefault' => 1,
-        );
+        ];
         $grid->addColumn($column);
 
         $this->assertCount(1, $grid->getColumns());
@@ -437,26 +437,26 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $col = $grid->getColumnByUniqueId('myTable_myCol');
         $this->assertInstanceOf('ZfcDatagrid\Column\Select', $col);
 
-        $this->assertEquals(array(
-            'priority' => 1,
+        $this->assertEquals([
+            'priority'      => 1,
             'sortDirection' => 'ASC',
-        ), $col->getSortDefault());
+        ], $col->getSortDefault());
     }
 
     public function testAddColumnArraySortDefault()
     {
         $grid = new Datagrid();
 
-        $column = array(
-            'select' => array(
+        $column = [
+            'select' => [
                 'column' => 'myCol',
-                'table' => 'myTable',
-            ),
-            'sortDefault' => array(
+                'table'  => 'myTable',
+            ],
+            'sortDefault' => [
                 1,
                 'ASC',
-            ),
-        );
+            ],
+        ];
         $grid->addColumn($column);
 
         $this->assertCount(1, $grid->getColumns());
@@ -464,17 +464,17 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $col = $grid->getColumnByUniqueId('myTable_myCol');
         $this->assertInstanceOf('ZfcDatagrid\Column\Select', $col);
 
-        $this->assertEquals(array(
-            'priority' => 1,
+        $this->assertEquals([
+            'priority'      => 1,
             'sortDirection' => 'ASC',
-        ), $col->getSortDefault());
+        ], $col->getSortDefault());
     }
 
     public function testSetColumn()
     {
         $grid = new Datagrid();
 
-        $this->assertEquals(array(), $grid->getColumns());
+        $this->assertEquals([], $grid->getColumns());
 
         $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $col->setUniqueId('myUniqueId');
@@ -482,10 +482,10 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $col2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $col2->setUniqueId('myUniqueId2');
 
-        $grid->setColumns(array(
+        $grid->setColumns([
             $col,
             $col2,
-        ));
+        ]);
 
         $this->assertCount(2, $grid->getColumns());
         $this->assertEquals($col, $grid->getColumnByUniqueId('myUniqueId'));
@@ -541,14 +541,14 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('bootstrapTable', $this->grid->getRendererName());
 
         // Default on CLI
-        $_SERVER['argv'] = array(
+        $_SERVER['argv'] = [
             'foo.php',
             'foo' => 'baz',
             'bar',
-        );
+        ];
         $_ENV["FOO_VAR"] = "bar";
 
-        $request = new \Zend\Console\Request();
+        $request  = new \Zend\Console\Request();
         $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent');
         $mvcEvent->expects($this->any())
             ->method('getRequest')
@@ -562,8 +562,8 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
         // by HTTP request
         $_GET['rendererType'] = 'jqGrid';
-        $request = new \Zend\Http\PhpEnvironment\Request();
-        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent');
+        $request              = new \Zend\Http\PhpEnvironment\Request();
+        $mvcEvent             = $this->getMock('Zend\Mvc\MvcEvent');
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));

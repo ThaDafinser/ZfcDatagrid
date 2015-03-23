@@ -1,9 +1,9 @@
 <?php
 namespace ZfcDatagrid\Renderer\BootstrapTable;
 
+use Zend\Http\PhpEnvironment\Request as HttpRequest;
 use ZfcDatagrid\Datagrid;
 use ZfcDatagrid\Renderer\AbstractRenderer;
-use Zend\Http\PhpEnvironment\Request as HttpRequest;
 
 class Renderer extends AbstractRenderer
 {
@@ -52,13 +52,13 @@ class Renderer extends AbstractRenderer
         $request = $this->getRequest();
 
         $optionsRenderer = $this->getOptionsRenderer();
-        $parameterNames = $optionsRenderer['parameterNames'];
+        $parameterNames  = $optionsRenderer['parameterNames'];
 
-        $sortConditions = array();
-        $sortColumns = $request->getPost($parameterNames['sortColumns'], $request->getQuery($parameterNames['sortColumns']));
+        $sortConditions = [];
+        $sortColumns    = $request->getPost($parameterNames['sortColumns'], $request->getQuery($parameterNames['sortColumns']));
         $sortDirections = $request->getPost($parameterNames['sortDirections'], $request->getQuery($parameterNames['sortDirections']));
         if ($sortColumns != '') {
-            $sortColumns = explode(',', $sortColumns);
+            $sortColumns    = explode(',', $sortColumns);
             $sortDirections = explode(',', $sortDirections);
 
             if (count($sortColumns) != count($sortDirections)) {
@@ -75,10 +75,10 @@ class Renderer extends AbstractRenderer
                 foreach ($this->getColumns() as $column) {
                     /* @var $column \ZfcDatagrid\Column\AbstractColumn */
                     if ($column->getUniqueId() == $sortColumn) {
-                        $sortConditions[] = array(
+                        $sortConditions[] = [
                             'sortDirection' => $sortDirection,
-                            'column' => $column,
-                        );
+                            'column'        => $column,
+                        ];
 
                         $column->setSortActive($sortDirection);
                     }
@@ -110,7 +110,7 @@ class Renderer extends AbstractRenderer
 
         $request = $this->getRequest();
 
-        $filters = array();
+        $filters = [];
         if ($request->isPost() === true && $request->getPost('toolbarFilters') !== null) {
             foreach ($request->getPost('toolbarFilters') as $uniqueId => $value) {
                 if ($value != '') {
@@ -142,7 +142,7 @@ class Renderer extends AbstractRenderer
     public function getCurrentPageNumber()
     {
         $optionsRenderer = $this->getOptionsRenderer();
-        $parameterNames = $optionsRenderer['parameterNames'];
+        $parameterNames  = $optionsRenderer['parameterNames'];
 
         if ($this->getRequest() instanceof HttpRequest) {
             $this->currentPageNumber = (int) $this->getRequest()->getPost($parameterNames['currentPage'], $this->getRequest()

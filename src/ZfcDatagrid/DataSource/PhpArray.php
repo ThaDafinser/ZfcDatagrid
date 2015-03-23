@@ -5,7 +5,7 @@ use Zend\Paginator\Adapter\ArrayAdapter as PaginatorAdapter;
 
 class PhpArray extends AbstractDataSource
 {
-    private $data = array();
+    private $data = [];
 
     /**
      * Set the data source
@@ -55,10 +55,10 @@ class PhpArray extends AbstractDataSource
         foreach ($this->getFilters() as $filter) {
             /* @var $filter \ZfcDatagrid\Filter */
             if ($filter->isColumnFilter() === true) {
-                $data = array_filter($data, array(
+                $data = array_filter($data, [
                     new PhpArray\Filter($filter),
                     'applyFilter',
-                ));
+                ]);
             }
         }
 
@@ -67,7 +67,7 @@ class PhpArray extends AbstractDataSource
          *
          * @todo ? Better performance or let it be?
          */
-        $selectedColumns = array();
+        $selectedColumns = [];
         foreach ($this->getColumns() as $column) {
             $selectedColumns[] = $column->getUniqueId();
         }
@@ -93,27 +93,27 @@ class PhpArray extends AbstractDataSource
      */
     private function getSortArrayParameter($sortCondition)
     {
-        $sortArray = array(
+        $sortArray = [
             $sortCondition['column']->getUniqueId(),
-        );
+        ];
 
         if ('DESC' === $sortCondition['sortDirection']) {
-            $desc = SORT_DESC;
+            $desc        = SORT_DESC;
             $sortArray[] = $desc;
         } else {
-            $asc = SORT_ASC;
+            $asc         = SORT_ASC;
             $sortArray[] = $asc;
         }
 
         switch (get_class($sortCondition['column']->getType())) {
 
             case 'ZfcDatagrid\Column\Type\Number':
-                $numeric = SORT_NUMERIC;
+                $numeric     = SORT_NUMERIC;
                 $sortArray[] = $numeric;
                 break;
 
             default:
-                $regular = SORT_REGULAR;
+                $regular     = SORT_REGULAR;
                 $sortArray[] = $regular;
                 break;
         }
@@ -129,14 +129,14 @@ class PhpArray extends AbstractDataSource
      */
     private function sortArrayMultiple(array $data, $sortConditions)
     {
-        $sortArguments = array();
+        $sortArguments = [];
         foreach ($sortConditions as $sortCondition) {
             $sortParameters = $this->getSortArrayParameter($sortCondition);
 
             // fetch column data
             $column = $sortParameters[0];
 
-            $dataCol = array();
+            $dataCol = [];
             foreach ($data as $key => $row) {
                 if (! isset($row[$column])) {
                     $value = '';
@@ -146,11 +146,11 @@ class PhpArray extends AbstractDataSource
                 $dataCol[$key] = $value;
             }
 
-            $sortArguments[] = array(
+            $sortArguments[] = [
                 $dataCol,
                 $sortParameters[1],
                 $sortParameters[2],
-            );
+            ];
         }
 
         return $this->applyMultiSort($data, $sortArguments);
@@ -167,11 +167,11 @@ class PhpArray extends AbstractDataSource
      */
     private function applyMultiSort(array $data, array $sortArguments)
     {
-        $args = array();
+        $args = [];
         foreach ($sortArguments as $values) {
             $remain = count($values) % 3;
             if ($remain != 0) {
-                throw new \InvalidArgumentException('The parameter count for each sortArgument has to be three. Given count of: '.count($values));
+                throw new \InvalidArgumentException('The parameter count for each sortArgument has to be three. Given count of: ' . count($values));
             }
             $args[] = $values[0]; // column value
             $args[] = $values[1]; // sort direction
@@ -181,7 +181,7 @@ class PhpArray extends AbstractDataSource
         $args[] = $data;
 
         //possible 5.3.3 fix?
-        $sortArgs = array();
+        $sortArgs = [];
         foreach ($args as $key => &$value) {
             $sortArgs[$key] = &$value;
         }

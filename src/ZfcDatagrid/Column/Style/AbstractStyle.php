@@ -12,7 +12,7 @@ abstract class AbstractStyle
      *
      * @var array
      */
-    private $byValues = array();
+    private $byValues = [];
 
     /**
      * Display the values with AND or OR (if multiple showOnValues are defined)
@@ -22,7 +22,7 @@ abstract class AbstractStyle
     public function setByValueOperator($operator = 'OR')
     {
         if ($operator != 'AND' && $operator != 'OR') {
-            throw new \InvalidArgumentException('not allowed operator: "'.$operator.'" (AND / OR is allowed)');
+            throw new \InvalidArgumentException('not allowed operator: "' . $operator . '" (AND / OR is allowed)');
         }
 
         $this->byValueOperator = (string) $operator;
@@ -48,11 +48,11 @@ abstract class AbstractStyle
      */
     public function addByValue(AbstractColumn $column, $value, $operator = Filter::EQUAL)
     {
-        $this->byValues[] = array(
-            'column' => $column,
-            'value' => $value,
+        $this->byValues[] = [
+            'column'   => $column,
+            'value'    => $value,
             'operator' => $operator,
-        );
+        ];
     }
 
     /**
@@ -64,7 +64,7 @@ abstract class AbstractStyle
      */
     public function setByValue(AbstractColumn $column, $value, $operator = Filter::EQUAL)
     {
-        trigger_error(__CLASS__.'::setByValue() is deprecated, please use "addByValue" instead', E_USER_DEPRECATED);
+        trigger_error(__CLASS__ . '::setByValue() is deprecated, please use "addByValue" instead', E_USER_DEPRECATED);
 
         $this->addByValue($column, $value, $operator);
     }

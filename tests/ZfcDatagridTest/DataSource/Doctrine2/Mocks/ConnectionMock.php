@@ -30,13 +30,13 @@ class ConnectionMock extends \Doctrine\DBAL\Connection
      *
      * @var array
      */
-    private $_inserts = array();
+    private $_inserts = [];
 
     /**
      *
      * @var array
      */
-    private $_executeUpdates = array();
+    private $_executeUpdates = [];
 
     /**
      *
@@ -66,7 +66,7 @@ class ConnectionMock extends \Doctrine\DBAL\Connection
     /**
      * @ERROR!!!
      */
-    public function insert($tableName, array $data, array $types = array())
+    public function insert($tableName, array $data, array $types = [])
     {
         $this->_inserts[$tableName][] = $data;
     }
@@ -74,13 +74,13 @@ class ConnectionMock extends \Doctrine\DBAL\Connection
     /**
      * @ERROR!!!
      */
-    public function executeUpdate($query, array $params = array(), array $types = array())
+    public function executeUpdate($query, array $params = [], array $types = [])
     {
-        $this->_executeUpdates[] = array(
-            'query' => $query,
+        $this->_executeUpdates[] = [
+            'query'  => $query,
             'params' => $params,
-            'types' => $types,
-        );
+            'types'  => $types,
+        ];
     }
 
     /**
@@ -94,7 +94,7 @@ class ConnectionMock extends \Doctrine\DBAL\Connection
     /**
      * @ERROR!!!
      */
-    public function fetchColumn($statement, array $params = array(), $colnum = 0, array $types = array())
+    public function fetchColumn($statement, array $params = [], $colnum = 0, array $types = [])
     {
         return $this->_fetchOneResult;
     }
@@ -105,7 +105,7 @@ class ConnectionMock extends \Doctrine\DBAL\Connection
     public function quote($input, $type = null)
     {
         if (is_string($input)) {
-            return "'".$input."'";
+            return "'" . $input . "'";
         }
 
         return $input;
@@ -170,7 +170,7 @@ class ConnectionMock extends \Doctrine\DBAL\Connection
      */
     public function reset()
     {
-        $this->_inserts = array();
+        $this->_inserts      = [];
         $this->_lastInsertId = 0;
     }
 }

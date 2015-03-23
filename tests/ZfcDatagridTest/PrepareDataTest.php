@@ -2,9 +2,9 @@
 namespace ZfcDatagridTest;
 
 use PHPUnit_Framework_TestCase;
-use ZfcDatagrid\PrepareData;
-use ZfcDatagrid\Column\Type;
 use ZfcDatagrid\Column\DataPopulation\Object;
+use ZfcDatagrid\Column\Type;
+use ZfcDatagrid\PrepareData;
 
 /**
  * @covers ZfcDatagrid\PrepareData
@@ -57,72 +57,72 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
         $this->col3->setUniqueId('col3');
         $this->col3->setType(new Type\PhpArray());
 
-        $data = array();
-        $data[] = array(
-            'id' => '1',
+        $data   = [];
+        $data[] = [
+            'id'   => '1',
             'col1' => 'test',
             'col2' => 'n',
-            'col3' => array(
+            'col3' => [
                 'tag1',
                 'tag2',
-            ),
-        );
-        $data[] = array(
-            'id' => '2',
+            ],
+        ];
+        $data[] = [
+            'id'   => '2',
             'col1' => 'test',
-            'col3' => array(
+            'col3' => [
                 'tag3',
                 'tag1',
-            ),
-        );
-        $data[] = array(
-            'id' => '3',
+            ],
+        ];
+        $data[] = [
+            'id'   => '3',
             'col1' => 'test',
             'col2' => 'y',
-            'col3' => array(
+            'col3' => [
                 'tag2',
                 'tag5',
-            ),
-        );
+            ],
+        ];
 
         $this->data = $data;
     }
 
     public function testConstruct()
     {
-        $prepare = new PrepareData(array(), array(
+        $prepare = new PrepareData([], [
             $this->col1,
             $this->col2,
-        ));
+        ]);
 
-        $this->assertEquals(array(), $prepare->getData(true));
-        $this->assertEquals(array(
+        $this->assertEquals([], $prepare->getData(true));
+        $this->assertEquals([
             $this->col1,
             $this->col2,
-        ), $prepare->getColumns());
+        ], $prepare->getColumns());
     }
 
     public function testColumns()
     {
-        $prepare = new PrepareData(array(), array(
+        $prepare = new PrepareData([], [
             $this->col1,
-        ));
+        ]);
 
-        $prepare->setColumns(array(
+        $prepare->setColumns([
             $this->col1,
             $this->col2,
-        ));
-        $this->assertEquals(array(
+        ]);
+        $this->assertEquals([
             $this->col1,
             $this->col2,
-        ), $prepare->getColumns());
+        ], $prepare->getColumns());
     }
 
     public function testRendererName()
     {
-        $prepare = new PrepareData(array(), array(
+        $prepare = new PrepareData([], [
             $this->col1,
-        ));
+        ]);
 
         $this->assertNull($prepare->getRendererName());
 
@@ -132,9 +132,9 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
 
     public function testTranslator()
     {
-        $prepare = new PrepareData(array(), array(
+        $prepare = new PrepareData([], [
             $this->col1,
-        ));
+        ]);
 
         $translator = $this->getMock('Zend\I18n\Translator\Translator');
 
@@ -144,33 +144,33 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
 
     public function testPrepareExecuteOnce()
     {
-        $prepare = new PrepareData(array(), array(
+        $prepare = new PrepareData([], [
             $this->col1,
-        ));
+        ]);
 
         $this->assertTrue($prepare->prepare());
-        $this->assertEquals(array(), $prepare->getData());
+        $this->assertEquals([], $prepare->getData());
         $this->assertFalse($prepare->prepare());
     }
 
     public function testPrepareEmptyData()
     {
-        $prepare = new PrepareData(array(), array(
+        $prepare = new PrepareData([], [
             $this->col1,
-        ));
+        ]);
 
-        $this->assertEquals(array(), $prepare->getData());
+        $this->assertEquals([], $prepare->getData());
     }
 
     public function testPrepareDefault()
     {
         $data = $this->data;
 
-        $prepare = new PrepareData($data, array(
+        $prepare = new PrepareData($data, [
             $this->colId,
             $this->col1,
             $this->col2,
-        ));
+        ]);
 
         $data[0]['idConcated'] = '1';
         $data[1]['idConcated'] = '2';
@@ -186,15 +186,15 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
         $data = $this->data;
 
         $col2 = clone $this->col2;
-        $col2->setReplaceValues(array(
+        $col2->setReplaceValues([
             'y' => 'yes',
             'n' => 'no',
-        ), false);
-        $prepare = new PrepareData($data, array(
+        ], false);
+        $prepare = new PrepareData($data, [
             $this->colId,
             $this->col1,
             $col2,
-        ));
+        ]);
 
         $data[0]['idConcated'] = '1';
         $data[1]['idConcated'] = '2';
@@ -212,14 +212,14 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
         $data = $this->data;
 
         $col2 = clone $this->col2;
-        $col2->setReplaceValues(array(
+        $col2->setReplaceValues([
             'y' => 'yes',
-        ), true);
-        $prepare = new PrepareData($data, array(
+        ], true);
+        $prepare = new PrepareData($data, [
             $this->colId,
             $this->col1,
             $col2,
-        ));
+        ]);
 
         $data[0]['idConcated'] = '1';
         $data[1]['idConcated'] = '2';
@@ -237,15 +237,15 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
         $data = $this->data;
 
         $col3 = clone $this->col3;
-        $col3->setReplaceValues(array(
+        $col3->setReplaceValues([
             'tag1' => 'Tag 1',
-        ), true);
-        $prepare = new PrepareData($data, array(
+        ], true);
+        $prepare = new PrepareData($data, [
             $this->colId,
             $this->col1,
             $this->col2,
             $col3,
-        ));
+        ]);
 
         $data[0]['idConcated'] = '1';
         $data[1]['idConcated'] = '2';
@@ -253,20 +253,20 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
 
         $data[1]['col2'] = '';
 
-        $data[0]['col3'] = array(
+        $data[0]['col3'] = [
             'Tag 1',
             '',
-        );
+        ];
 
-        $data[1]['col3'] = array(
+        $data[1]['col3'] = [
             '',
             'Tag 1',
-        );
+        ];
 
-        $data[2]['col3'] = array(
+        $data[2]['col3'] = [
             '',
             '',
-        );
+        ];
 
         $this->assertEquals($data, $prepare->getData());
     }
@@ -277,16 +277,16 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
 
         $col2 = clone $this->col2;
         $col2->setTranslationEnabled(true);
-        $col2->setReplaceValues(array(
+        $col2->setReplaceValues([
             'y' => 'yes',
             'n' => 'no',
-        ));
-        $prepare = new PrepareData($data, array(
+        ]);
+        $prepare = new PrepareData($data, [
             $this->colId,
             $this->col1,
             $col2,
             $this->col3,
-        ));
+        ]);
 
         $translator = $this->getMock('Zend\I18n\Translator\Translator');
         $translator->expects($this->any())
@@ -329,15 +329,15 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
 
         $col3 = clone $this->col3;
         $col3->setTranslationEnabled(true);
-        $col3->setReplaceValues(array(
+        $col3->setReplaceValues([
             'tag1' => 'Tag 1',
-        ), false);
-        $prepare = new PrepareData($data, array(
+        ], false);
+        $prepare = new PrepareData($data, [
             $this->colId,
             $this->col1,
             $this->col2,
             $col3,
-        ));
+        ]);
 
         $translator = $this->getMock('Zend\I18n\Translator\Translator');
         $translator->expects($this->any())
@@ -361,20 +361,20 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
 
         $data[1]['col2'] = '';
 
-        $data[0]['col3'] = array(
+        $data[0]['col3'] = [
             'Tag 1', // replaced
             'Tag 2', // translated
-                );
+                ];
 
-        $data[1]['col3'] = array(
+        $data[1]['col3'] = [
             'tag3',
             'Tag 1', // translated
-                );
+                ];
 
-        $data[2]['col3'] = array(
+        $data[2]['col3'] = [
             'Tag 2', // replaced
             'tag5',
-        );
+        ];
 
         $this->assertEquals($data, $prepare->getData());
     }
@@ -403,12 +403,12 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
             ->method('getType')
             ->will($this->returnValue(new Type\String()));
 
-        $prepare = new PrepareData($data, array(
+        $prepare = new PrepareData($data, [
             $this->colId,
             $this->col1,
             $this->col2,
             $col,
-        ));
+        ]);
 
         $data[0]['idConcated'] = '1';
         $data[1]['idConcated'] = '2';
@@ -429,11 +429,11 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
 
         $col1 = clone $this->col1;
         $col1->setFormatter(new \ZfcDatagrid\Column\Formatter\Link());
-        $prepare = new PrepareData($data, array(
+        $prepare = new PrepareData($data, [
             $this->colId,
             $col1,
             $this->col2,
-        ));
+        ]);
         $prepare->setRendererName('jqGrid');
 
         $data[0]['idConcated'] = '1';

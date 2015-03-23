@@ -1,11 +1,11 @@
 <?php
 namespace ZfcDatagrid\Column\Type;
 
-use ZfcDatagrid\Filter;
-use Locale;
-use IntlDateFormatter;
 use DateTime as PhpDateTime;
 use DateTimeZone;
+use IntlDateFormatter;
+use Locale;
+use ZfcDatagrid\Filter;
 
 class DateTime extends AbstractType
 {

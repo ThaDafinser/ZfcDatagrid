@@ -1,9 +1,9 @@
 <?php
 namespace ZfcDatagridTest\Column\Type;
 
-use ZfcDatagrid\Filter;
-// use ZfcDatagrid\Column\Type;
 use PHPUnit_Framework_TestCase;
+// use ZfcDatagrid\Column\Type;
+use ZfcDatagrid\Filter;
 
 /**
  * @group Column
