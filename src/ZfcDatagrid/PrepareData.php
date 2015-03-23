@@ -225,7 +225,7 @@ class PrepareData
                 if ($col->hasFormatter($this->getRendererName()) === true) {
                     /* @var $formatter \ZfcDatagrid\Column\Formatter\AbstractFormatter */
                     $formatter = $col->getFormatter($this->getRendererName());
-                    $formatter->setRowData($row);
+                    $formatter->setRowData((array)$row);
                     $formatter->setRendererName($this->getRendererName());
 
                     $row[$col->getUniqueId()] = $formatter->format($col);
