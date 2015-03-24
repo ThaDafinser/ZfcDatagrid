@@ -22,8 +22,6 @@ cache:
     
 before_script:
  - composer self-update
- 
-install:
  - composer update --prefer-dist
 
 script:
