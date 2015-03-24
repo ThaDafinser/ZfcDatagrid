@@ -518,7 +518,11 @@ class Datagrid implements ServiceLocatorAwareInterface
     {
         $this->title = (string) $title;
     }
-
+    
+    /**
+     *
+     * @return string
+     */
     public function getTitle()
     {
         return $this->title;
@@ -727,7 +731,7 @@ class Datagrid implements ServiceLocatorAwareInterface
 
     /**
      *
-     * @param unknown $style
+     * @param Style\AbstractStyle $style
      */
     public function addRowStyle(Style\AbstractStyle $style)
     {
@@ -931,6 +935,10 @@ class Datagrid implements ServiceLocatorAwareInterface
         return $this->renderer;
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function isDataLoaded()
     {
         return (bool) $this->isDataLoaded;
@@ -1118,7 +1126,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     /**
      * Set the toolbar view template
      *
-     * @param unknown $name
+     * @param string $name
      */
     public function setToolbarTemplate($name)
     {
@@ -1139,7 +1147,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     /**
      * Set the toolbar view template variables
      *
-     * @param unknown $name
+     * @param array $variables
      */
     public function setToolbarTemplateVariables(array $variables)
     {
