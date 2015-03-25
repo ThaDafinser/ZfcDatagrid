@@ -1,5 +1,5 @@
 {
-    "name":        "thadafinser/zfc-datagrid",
+    "name":        "FraGoTe/zfc-datagrid",
     "description": "Zend Framework 2 Module that provides a datagrid for different datasources and output formats",
     "type":        "library",
     "license":     "WTFPL",
