@@ -5,11 +5,11 @@ use ZfcDatagrid\Column\AbstractColumn;
 
 abstract class AbstractFormatter
 {
-    private $data = array();
+    private $data = [];
 
     private $rendererName;
 
-    protected $validRenderers = array();
+    protected $validRenderers = [];
 
     public function setRowData(array $data)
     {

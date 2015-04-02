@@ -24,7 +24,7 @@
     },
 
     "require": {
-        "php": ">=5.3.23",
+        "php": "~5.4|~7.0",
         
         "zendframework/zend-mvc": "~2.3",
         "zendframework/zend-modulemanager": "~2.3",
@@ -47,7 +47,7 @@
     "suggest" : {
         "ext-intl": "*",
         "doctrine/doctrine-orm-module": ">=0.8",
-        "codeplex/phpexcel": "~1.7",
+        "phpoffice/phpexcel": "~1.7",
         "tecnick.com/tcpdf": "~6.0"
     },
     

@@ -1,9 +1,9 @@
 <?php
 namespace ZfcDatagrid\DataSource;
 
+use Zend\Paginator\Adapter\AdapterInterface as PaginatorAdapterInterface;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Filter;
-use Zend\Paginator\Adapter\AdapterInterface as PaginatorAdapterInterface;
 
 abstract class AbstractDataSource implements DataSourceInterface
 {
@@ -11,19 +11,19 @@ abstract class AbstractDataSource implements DataSourceInterface
      *
      * @var array
      */
-    protected $columns = array();
+    protected $columns = [];
 
     /**
      *
      * @var array
      */
-    protected $sortConditions = array();
+    protected $sortConditions = [];
 
     /**
      *
      * @var array
      */
-    protected $filters = array();
+    protected $filters = [];
 
     /**
      * The data result
@@ -59,10 +59,10 @@ abstract class AbstractDataSource implements DataSourceInterface
      */
     public function addSortCondition(Column\AbstractColumn $column, $sortDirection = 'ASC')
     {
-        $this->sortConditions[] = array(
-            'column' => $column,
+        $this->sortConditions[] = [
+            'column'        => $column,
             'sortDirection' => $sortDirection,
-        );
+        ];
     }
 
     public function setSortConditions(array $sortConditions)

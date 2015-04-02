@@ -10,12 +10,12 @@ use ZfcDatagrid\Service\ZendDbAdapterFactory;
  */
 class ZendDbAdapterFactoryTest extends PHPUnit_Framework_TestCase
 {
-    private $config = array(
-        'zfcDatagrid_dbAdapter' => array(
-            'driver' => 'Pdo_Sqlite',
+    private $config = [
+        'zfcDatagrid_dbAdapter' => [
+            'driver'   => 'Pdo_Sqlite',
             'database' => 'somewhere/testDb.sqlite',
-        ),
-    );
+        ],
+    ];
 
     public function testCanCreateService()
     {
@@ -23,7 +23,7 @@ class ZendDbAdapterFactoryTest extends PHPUnit_Framework_TestCase
         $sm->setService('config', $this->config);
 
         $factory = new ZendDbAdapterFactory();
-        $grid = $factory->createService($sm);
+        $grid    = $factory->createService($sm);
 
         $this->assertInstanceOf('Zend\Db\Adapter\Adapter', $grid);
     }

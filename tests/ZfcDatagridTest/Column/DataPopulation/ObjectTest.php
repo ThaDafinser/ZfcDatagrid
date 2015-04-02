@@ -28,7 +28,7 @@ class ObjectTest extends PHPUnit_Framework_TestCase
     public function testParameters()
     {
         $column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
-        $mock = $this->getMock('ZfcDatagrid\Column\DataPopulation\Object\Gravatar');
+        $mock   = $this->getMock('ZfcDatagrid\Column\DataPopulation\Object\Gravatar');
         $mock->expects($this->any())
         ->method('toString')
         ->will($this->returnValue('myReturn'));
@@ -43,10 +43,10 @@ class ObjectTest extends PHPUnit_Framework_TestCase
         $parameters = $object->getObjectParametersColumn();
 
         $this->assertCount(1, $parameters);
-        $this->assertEquals(array(
+        $this->assertEquals([
             'objectParameterName' => 'idPara',
-            'column' => $column,
-        ), $parameters[0]);
+            'column'              => $column,
+        ], $parameters[0]);
 
         $object->setObjectParameter('otherPara', '123');
     }

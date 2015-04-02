@@ -6,12 +6,12 @@ namespace ZfcDatagridTest\DataSource;
  *
  * Copied from: https://github.com/doctrine/doctrine2/blob/master/tests/Doctrine/Tests/OrmTestCase.php
  */
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Sql;
+use ZfcDatagrid\Column;
 use ZfcDatagrid\DataSource\ZendSelect;
 use ZfcDatagrid\Filter;
-use ZfcDatagrid\Column;
-use Zend\Db\Adapter\Adapter;
-use Zend\Db\Sql\Sql;
-use Zend\Db\Sql\Select;
 
 /**
  * @group DataSource
@@ -46,7 +46,7 @@ class ZendSelectTest extends DataSourceTestCase
     {
         parent::setUp();
 
-        $this->mockDriver = $this->getMock('Zend\Db\Adapter\Driver\DriverInterface');
+        $this->mockDriver     = $this->getMock('Zend\Db\Adapter\Driver\DriverInterface');
         $this->mockConnection = $this->getMock('Zend\Db\Adapter\Driver\ConnectionInterface');
         $this->mockDriver->expects($this->any())
             ->method('checkEnvironment')
@@ -72,10 +72,10 @@ class ZendSelectTest extends DataSourceTestCase
 
         $this->source = new ZendSelect($select);
         $this->source->setAdapter($this->sql);
-        $this->source->setColumns(array(
+        $this->source->setColumns([
             $this->colVolumne,
             $this->colEdition,
-        ));
+        ]);
     }
 
     public function testConstruct()
@@ -89,7 +89,7 @@ class ZendSelectTest extends DataSourceTestCase
 
         $this->setExpectedException('InvalidArgumentException', 'A instance of Zend\Db\SqlSelect is needed to use this dataSource!');
 
-        $source = new ZendSelect(array());
+        $source = new ZendSelect([]);
     }
 
     public function testExecuteException()
@@ -136,19 +136,19 @@ class ZendSelectTest extends DataSourceTestCase
         $col2 = new Column\Select('name', 'u');
 
         $select = new Select();
-        $select->from(array(
+        $select->from([
             'o' => 'orders',
-        ));
-        $select->join(array(
+        ]);
+        $select->join([
             'u' => 'user',
-        ), 'u.order = o.id');
+        ], 'u.order = o.id');
 
         $source = new ZendSelect($select);
         $source->setAdapter($this->sql);
-        $source->setColumns(array(
+        $source->setColumns([
             $col1,
             $col2,
-        ));
+        ]);
         $source->execute();
 
 //         var_dump($source->getData()->getSqlString());

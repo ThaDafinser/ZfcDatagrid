@@ -2,10 +2,10 @@
 namespace ZfcDatagridTest\Renderer\JqGrid\View\Helper;
 
 use PHPUnit_Framework_TestCase;
-use ZfcDatagrid\Renderer\JqGrid\View\Helper;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Style;
 use ZfcDatagrid\Filter;
+use ZfcDatagrid\Renderer\JqGrid\View\Helper;
 
 /**
  * @group Renderer
@@ -25,7 +25,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
     {
         $sm2 = $this->getMock('Zend\ServiceManager\ServiceManager');
 
-        $sm = $this->getMock('Zend\View\HelperPluginManager', array(), array(), '', false);
+        $sm = $this->getMock('Zend\View\HelperPluginManager', [], [], '', false);
         $sm->expects($this->any())
             ->method('getServiceLocator')
             ->will($this->returnValue($sm2));
@@ -50,9 +50,9 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $helper = new Helper\Columns();
         $helper->setServiceLocator($this->sm);
 
-        $cols = array(
+        $cols = [
             clone $this->myCol,
-        );
+        ];
 
         $result = $helper($cols);
 
@@ -67,9 +67,9 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
 
         $col1 = clone $this->myCol;
         $col1->addStyle(new Style\Bold());
-        $cols = array(
+        $cols = [
             $col1,
-        );
+        ];
 
         $result = $helper($cols);
 
@@ -84,9 +84,9 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
 
         $col1 = clone $this->myCol;
         $col1->addStyle(new Style\Italic());
-        $cols = array(
+        $cols = [
             $col1,
-        );
+        ];
 
         $result = $helper($cols);
 
@@ -101,9 +101,9 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
 
         $col1 = clone $this->myCol;
         $col1->addStyle(new Style\Color(Style\Color::$RED));
-        $cols = array(
+        $cols = [
             $col1,
-        );
+        ];
 
         $result = $helper($cols);
 
@@ -118,9 +118,9 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
 
         $col1 = clone $this->myCol;
         $col1->addStyle(new Style\BackgroundColor(Style\BackgroundColor::$RED));
-        $cols = array(
+        $cols = [
             $col1,
-        );
+        ];
 
         $result = $helper($cols);
 
@@ -131,16 +131,16 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
     public function testStyleException()
     {
         $styleMock = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
-        $helper = new Helper\Columns();
+        $helper    = new Helper\Columns();
         $helper->setServiceLocator($this->sm);
 
         $col1 = clone $this->myCol;
         $col1->addStyle($styleMock);
-        $cols = array(
+        $cols = [
             $col1,
-        );
+        ];
 
-        $this->setExpectedException('Exception', 'Not defined style: "'.get_class($styleMock).'"');
+        $this->setExpectedException('Exception', 'Not defined style: "' . get_class($styleMock) . '"');
         $result = $helper($cols);
 
         $this->assertStringStartsWith('[{name:', $result);
@@ -158,9 +158,9 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $style->addByValue($col1, 123);
 
         $col1->addStyle($style);
-        $cols = array(
+        $cols = [
             $col1,
-        );
+        ];
 
         $result = $helper($cols);
 
@@ -179,9 +179,9 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $style->addByValue($col1, 123, Filter::NOT_EQUAL);
 
         $col1->addStyle($style);
-        $cols = array(
+        $cols = [
             $col1,
-        );
+        ];
 
         $result = $helper($cols);
 
@@ -200,11 +200,11 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $style->addByValue($col1, 123, Filter::IN);
 
         $col1->addStyle($style);
-        $cols = array(
+        $cols = [
             $col1,
-        );
+        ];
 
-        $this->setExpectedException('Exception', 'Currently not supported filter operation: "'.Filter::IN.'"');
+        $this->setExpectedException('Exception', 'Currently not supported filter operation: "' . Filter::IN . '"');
         $result = $helper($cols);
     }
 }

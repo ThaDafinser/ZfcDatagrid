@@ -1,8 +1,8 @@
 <?php
 namespace ZfcDatagridTest\Column\Type;
 
-use ZfcDatagrid\Column\Type;
 use PHPUnit_Framework_TestCase;
+use ZfcDatagrid\Column\Type;
 
 /**
  * @group Column
@@ -22,24 +22,24 @@ class PhpArrayTest extends PHPUnit_Framework_TestCase
         $type = new Type\PhpArray();
 
         $value = '1,2,3';
-        $this->assertEquals(array(
+        $this->assertEquals([
             1,
             2,
             3,
-        ), $type->getUserValue($value));
+        ], $type->getUserValue($value));
 
         $value = '';
-        $this->assertEquals(array(), $type->getUserValue($value));
+        $this->assertEquals([], $type->getUserValue($value));
 
-        $value = array(
+        $value = [
             1,
             2,
             3,
-        );
-        $this->assertEquals(array(
+        ];
+        $this->assertEquals([
             1,
             2,
             3,
-        ), $type->getUserValue($value));
+        ], $type->getUserValue($value));
     }
 }

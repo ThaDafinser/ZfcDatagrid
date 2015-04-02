@@ -1,11 +1,11 @@
 <?php
 namespace ZfcDatagrid\DataSource;
 
-use ZfcDatagrid\DataSource\Doctrine2\Paginator as PaginatorAdapter;
-use ZfcDatagrid\Column;
-use ZfcDatagrid\Column\Type;
 use Doctrine\ORM;
 use Doctrine\ORM\Query\Expr;
+use ZfcDatagrid\Column;
+use ZfcDatagrid\Column\Type;
+use ZfcDatagrid\DataSource\Doctrine2\Paginator as PaginatorAdapter;
 
 class Doctrine2 extends AbstractDataSource
 {
@@ -29,7 +29,7 @@ class Doctrine2 extends AbstractDataSource
             if (is_object($data)) {
                 $return = get_class($return);
             }
-            throw new \InvalidArgumentException("Unknown data input...".$return);
+            throw new \InvalidArgumentException("Unknown data input..." . $return);
         }
     }
 
@@ -49,14 +49,14 @@ class Doctrine2 extends AbstractDataSource
         /*
          * Step 1) Apply needed columns
          */
-        $selectColumns = array();
+        $selectColumns = [];
         foreach ($this->getColumns() as $column) {
             if ($column instanceof Column\Select) {
                 $colString = $column->getSelectPart1();
                 if ($column->getSelectPart2() != '') {
-                    $colString .= '.'.$column->getSelectPart2();
+                    $colString .= '.' . $column->getSelectPart2();
                 }
-                $colString .= ' '.$column->getUniqueId();
+                $colString .= ' ' . $column->getUniqueId();
 
                 $selectColumns[] = $colString;
             }
@@ -77,12 +77,12 @@ class Doctrine2 extends AbstractDataSource
 
                 $colString = $column->getSelectPart1();
                 if ($column->getSelectPart2() != '') {
-                    $colString .= '.'.$column->getSelectPart2();
+                    $colString .= '.' . $column->getSelectPart2();
                 }
 
                 if ($column->getType() instanceof Type\Number) {
-                    $qb->addSelect('ABS('.$colString.') sortColumn'.$key);
-                    $qb->add('orderBy', new Expr\OrderBy('sortColumn'.$key, $sortCondition['sortDirection']), true);
+                    $qb->addSelect('ABS(' . $colString . ') sortColumn' . $key);
+                    $qb->add('orderBy', new Expr\OrderBy('sortColumn' . $key, $sortCondition['sortDirection']), true);
                 } else {
                     $qb->add('orderBy', new Expr\OrderBy($column->getUniqueId(), $sortCondition['sortDirection']), true);
                 }
