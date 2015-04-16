@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity;
 
 use Doctrine\ORM\Mapping as ORM;

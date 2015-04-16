@@ -530,7 +530,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     {
         $this->title = (string) $title;
     }
-    
+
     /**
      *
      * @return string
@@ -734,7 +734,7 @@ class Datagrid implements ServiceLocatorAwareInterface
             return $this->columns[$id];
         }
 
-        return null;
+        return;
     }
 
     /**

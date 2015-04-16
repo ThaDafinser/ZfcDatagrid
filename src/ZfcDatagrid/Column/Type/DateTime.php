@@ -66,17 +66,17 @@ class DateTime extends AbstractType
     }
 
     /**
-    * Set Daterange Filter enabled true/false
-    * @param bool $val
-    */
+     * Set Daterange Filter enabled true/false
+     * @param bool $val
+     */
     public function setDaterangePickerEnabled($val = true)
     {
         $this->daterangePickerEnabled = $val;
     }
 
     /**
-    * Check if the Daterange Filter is enabled
-    */
+     * Check if the Daterange Filter is enabled
+     */
     public function isDaterangePickerEnabled()
     {
         return $this->daterangePickerEnabled;

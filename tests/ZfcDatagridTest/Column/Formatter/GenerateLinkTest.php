@@ -1,8 +1,5 @@
 <?php
-
-
 namespace ZfcDatagridTest\Column\Formatter;
-
 
 use Zend\ServiceManager\ServiceManager;
 use ZfcDatagrid\Column\Formatter\GenerateLink;
@@ -46,5 +43,4 @@ class GenerateLinkTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('<a href="">bar</a>', $generateLink->getFormattedValue($col));
     }
-
 }

@@ -1,9 +1,9 @@
 <?php
 namespace ZfcDatagrid\DataSource;
 
-use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
+use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use ZfcDatagrid\DataSource\PhpArray as SourceArray;
 
 class Doctrine2Collection extends AbstractDataSource

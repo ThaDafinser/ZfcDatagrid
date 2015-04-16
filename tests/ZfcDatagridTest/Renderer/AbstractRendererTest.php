@@ -3,9 +3,7 @@ namespace ZfcDatagridTest\Renderer;
 
 use PHPUnit_Framework_TestCase;
 use ReflectionClass;
-use Zend\Paginator;
 use ZfcDatagrid\Column\Style;
-use ZfcDatagrid\Filter;
 
 /**
  * @group Renderer

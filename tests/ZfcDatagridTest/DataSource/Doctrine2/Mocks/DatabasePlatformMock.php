@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagridTest\DataSource\Doctrine2\Mocks;
 
 /**

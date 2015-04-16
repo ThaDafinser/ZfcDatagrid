@@ -6,8 +6,8 @@ use Zend\Console\Console;
 use Zend\Console\Request as ConsoleRequest;
 use Zend\Text\Table;
 use Zend\Text\Table\Table as TextTable;
-use ZfcDataGrid\Column\Type;
 use ZfcDatagrid\Column;
+use ZfcDataGrid\Column\Type;
 use ZfcDatagrid\Renderer\AbstractRenderer;
 
 /**
