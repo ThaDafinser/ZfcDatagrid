@@ -141,4 +141,17 @@ abstract class AbstractDataSource implements DataSourceInterface
     {
         return $this->paginatorAdapter;
     }
+
+    /**
+     * Get the data back from construct
+     * @return mixed
+     */
+    abstract public function getData();
+
+    /**
+     * Execute the query and set the paginator
+     * - with sort statements
+     * - with filters statements
+     */
+    abstract public function execute();
 }
