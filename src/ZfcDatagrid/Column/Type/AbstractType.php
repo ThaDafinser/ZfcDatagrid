@@ -42,5 +42,5 @@ abstract class AbstractType implements TypeInterface
      *
      * @return string
      */
-    abstract function getTypeName();
+    abstract public function getTypeName();
 }
