@@ -65,6 +65,9 @@ abstract class AbstractDataSource implements DataSourceInterface
         ];
     }
 
+    /**
+     * @param array $sortConditions
+     */
     public function setSortConditions(array $sortConditions)
     {
         $this->sortConditions = $sortConditions;
@@ -89,6 +92,10 @@ abstract class AbstractDataSource implements DataSourceInterface
         $this->filters[] = $filter;
     }
 
+    /**
+     *
+     * @param array $filters
+     */
     public function setFilters(array $filters)
     {
         $this->filters = $filters;
@@ -103,6 +110,9 @@ abstract class AbstractDataSource implements DataSourceInterface
         return $this->filters;
     }
 
+    /**
+     * @param PaginatorAdapterInterface $paginator
+     */
     public function setPaginatorAdapter(PaginatorAdapterInterface $paginator)
     {
         $this->paginatorAdapter = $paginator;

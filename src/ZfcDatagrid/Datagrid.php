@@ -78,7 +78,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     /**
      * View or Response
      *
-     * @var \Zend\Http\Response\Stream \Zend\View\Model\ViewModel
+     * @var \Zend\Http\Response\Stream|\Zend\View\Model\ViewModel
      */
     protected $response;
 
@@ -647,7 +647,7 @@ class Datagrid implements ServiceLocatorAwareInterface
         } elseif (class_exists('ZfcDatagrid\\Column\\' . $colType, true)) {
             $class = 'ZfcDatagrid\\Column\\' . $colType;
         } else {
-            throw new \InvalidArgumentException('Column type: "' . $colType . '" not found!');
+            throw new \InvalidArgumentException(sprintf('Column type: "%s" not found!', $colType));
         }
 
         if ('ZfcDatagrid\\Column\\Select' == $class) {
@@ -930,7 +930,7 @@ class Datagrid implements ServiceLocatorAwareInterface
 
                 $this->renderer = $renderer;
             } else {
-                throw new \Exception('Renderer service was not found, please register it: "' . $rendererName . '"');
+                throw new \Exception(sprintf('Renderer service was not found, please register it: "%s"', $rendererName));
             }
         }
 
@@ -1015,13 +1015,14 @@ class Datagrid implements ServiceLocatorAwareInterface
                 } elseif ($data instanceof ArrayIterator) {
                     $data = $data->getArrayCopy();
                 } else {
-                    $add = '';
                     if (is_object($data)) {
                         $add = get_class($data);
                     } else {
                         $add = '[no object]';
                     }
-                    throw new \Exception('The paginator returned an unknow result: ' . $add . ' (allowed: \ArrayIterator or a plain php array)');
+                    throw new \Exception(
+                        sprintf('The paginator returned an unknown result: %s (allowed: \ArrayIterator or a plain php array)', $add)
+                    );
                 }
             }
         }
@@ -1038,8 +1039,15 @@ class Datagrid implements ServiceLocatorAwareInterface
             ];
             $success = $this->getCache()->setItem($this->getCacheId(), $cacheData);
             if ($success !== true) {
+                /** @var \Zend\Cache\Storage\Adapter\FilesystemOptions $options */
                 $options = $this->getCache()->getOptions();
-                throw new \Exception('Could not save the datagrid cache. Does the directory "' . $options->getCacheDir() . '" exists and is writeable? CacheId: ' . $this->getCacheId());
+                throw new \Exception(
+                    sprintf(
+                        'Could not save the datagrid cache. Does the directory "%s" exists and is writeable? CacheId: %s',
+                        $options->getCacheDir(),
+                        $this->getCacheId()
+                    )
+                );
             }
         }
 
@@ -1141,7 +1149,7 @@ class Datagrid implements ServiceLocatorAwareInterface
      * Get the toolbar template name
      * Return null if nothing custom set
      *
-     * @return string null
+     * @return string|null
      */
     public function getToolbarTemplate()
     {
@@ -1197,7 +1205,7 @@ class Datagrid implements ServiceLocatorAwareInterface
 
     /**
      *
-     * @return Ambigous <\Zend\Stdlib\ResponseInterface, \Zend\Http\Response\Stream, \Zend\View\Model\ViewModel>
+     * @return \Zend\Stdlib\ResponseInterface|\Zend\Http\Response\Stream|\Zend\View\Model\ViewModel
      */
     public function getResponse()
     {

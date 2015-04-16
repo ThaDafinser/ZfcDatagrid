@@ -1,6 +1,9 @@
 <?php
 namespace ZfcDatagrid\DataSource;
 
+use ZfcDatagrid\Column;
+use ZfcDatagrid\Filter;
+
 interface DataSourceInterface
 {
     /**
@@ -27,4 +30,31 @@ interface DataSourceInterface
      * - with filters statements
      */
     public function execute();
+
+    /**
+     * Set the columns
+     *
+     * @param array $columns
+     */
+    public function setColumns(array $columns);
+
+    /**
+     * Set sort conditions
+     *
+     * @param Column\AbstractColumn $column
+     * @param string                $sortDirection
+     */
+    public function addSortCondition(Column\AbstractColumn $column, $sortDirection = 'ASC');
+
+    /**
+     *
+     * @param array $filters
+     */
+    public function addFilter(Filter $filter);
+
+    /**
+     *
+     * @return \Zend\Paginator\Adapter\AdapterInterface
+     */
+    public function getPaginatorAdapter();
 }
