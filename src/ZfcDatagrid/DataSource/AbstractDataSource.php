@@ -41,7 +41,11 @@ abstract class AbstractDataSource implements DataSourceInterface
      *
      * @param mixed $data
      */
-    abstract function __construct($data);
+    public function __construct($data)
+    {
+        // we need this exception, because a abstract __construct, create a exception in php-unit for mocking
+        throw new \Exception(sprintf('Missing __construct in %s', get_class($this)));
+    }
 
     /**
      * Set the columns
