@@ -33,6 +33,17 @@ abstract class AbstractDataSource implements DataSourceInterface
     protected $paginatorAdapter;
 
     /**
+     * Set the data source
+     * - array
+     * - ZF2: Zend\Db\Sql\Select
+     * - Doctrine2: Doctrine\ORM\QueryBuilder
+     * - ...
+     *
+     * @param mixed $data
+     */
+    abstract function __construct($data);
+
+    /**
      * Set the columns
      *
      * @param array $columns
