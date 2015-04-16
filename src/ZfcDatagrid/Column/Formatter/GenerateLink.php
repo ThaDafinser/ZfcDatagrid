@@ -38,7 +38,7 @@ class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInter
     }
 
     /**
-     * @param AbstractColumn $columnUniqueId
+     * @param AbstractColumn $column
      * @return string
      */
     public function getFormattedValue(AbstractColumn $column)

@@ -44,8 +44,8 @@ class DateTime extends AbstractType
      *
      * @param string  $sourceDateTimeFormat
      *                                      PHP DateTime format
-     * @param unknown $outputDateType
-     * @param unknown $outputTimeType
+     * @param int     $outputDateType
+     * @param int     $outputTimeType
      * @param string  $locale
      * @param string  $sourceTimezone
      * @param string  $outputTimezone
@@ -60,6 +60,9 @@ class DateTime extends AbstractType
         $this->setOutputTimezone($outputTimezone);
     }
 
+    /**
+     * @return string
+     */
     public function getTypeName()
     {
         return 'dateTime';
