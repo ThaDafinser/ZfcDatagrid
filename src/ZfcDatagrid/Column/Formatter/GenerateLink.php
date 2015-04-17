@@ -1,8 +1,5 @@
 <?php
-
-
 namespace ZfcDatagrid\Column\Formatter;
-
 
 use Zend\ServiceManager\ServiceManager;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
@@ -32,7 +29,7 @@ class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInter
      * @param null           $key
      * @param array          $params
      */
-    public function __construct( ServiceManager $sm, $route, $key = null, $params = array() )
+    public function __construct(ServiceManager $sm, $route, $key = null, $params = [])
     {
         $this->setServiceManager($sm);
         $this->setRoute($route);
@@ -41,20 +38,20 @@ class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInter
     }
 
     /**
-     * @param AbstractColumn $columnUniqueId
+     * @param AbstractColumn $column
      * @return string
      */
-    public function getFormattedValue( AbstractColumn $column )
+    public function getFormattedValue(AbstractColumn $column)
     {
         $row   = $this->getRowData();
         $value = $row[$column->getUniqueId()];
 
-        $routeKey = !is_null($this->getRouteKey())?
+        $routeKey = !is_null($this->getRouteKey()) ?
             $this->getRouteKey()
             :
             $column->getUniqueId();
 
-        $params = $this->getRouteParams();
+        $params            = $this->getRouteParams();
         $params[$routeKey] = $value;
 
         $url = (string) $this->getViewRenderer()->url($this->getRoute(), $params);
@@ -66,7 +63,7 @@ class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInter
      * Set service manager
      * @param ServiceManager $serviceManager
      */
-    public function setServiceManager( ServiceManager $serviceManager )
+    public function setServiceManager(ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
 
@@ -105,7 +102,7 @@ class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInter
      * @param string $route
      * @return GenerateLink
      */
-    public function setRoute( $route )
+    public function setRoute($route)
     {
         $this->route = $route;
 
@@ -124,7 +121,7 @@ class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInter
      * @param array $routeParams
      * @return GenerateLink
      */
-    public function setRouteParams( $routeParams )
+    public function setRouteParams($routeParams)
     {
         $this->routeParams = $routeParams;
 
@@ -143,12 +140,10 @@ class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInter
      * @param null|string $routeKey
      * @return GenerateLink
      */
-    public function setRouteKey( $routeKey )
+    public function setRouteKey($routeKey)
     {
         $this->routeKey = $routeKey;
 
         return $this;
     }
-
-
 }

@@ -21,8 +21,6 @@
 
 namespace ZfcDatagridTest\DataSource\Doctrine2\Mocks;
 
-use Doctrine\ORM\Proxy\ProxyFactory;
-
 /**
  * Special EntityManager mock used for testing purposes.
  */

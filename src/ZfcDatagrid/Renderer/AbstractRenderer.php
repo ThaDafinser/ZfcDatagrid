@@ -14,8 +14,16 @@ use ZfcDatagrid\Filter;
 
 abstract class AbstractRenderer implements RendererInterface
 {
+    /**
+     *
+     * @var array
+     */
     protected $options = [];
 
+    /**
+     *
+     * @var string
+     */
     protected $title;
 
     /**
@@ -700,4 +708,30 @@ abstract class AbstractRenderer implements RendererInterface
 
         $viewModel->setVariable('exportRenderers', $grid->getExportRenderers());
     }
+
+    /**
+     * Return the name of the renderer
+     * @return string
+     */
+    abstract public function getName();
+
+    /**
+     * Determine if the renderer is for export
+     * @return boolean
+     */
+    abstract public function isExport();
+
+    /**
+     * Determin if the renderer is HTML
+     * It can be export + html -> f.x.
+     * printing for HTML
+     * @return boolean
+     */
+    abstract public function isHtml();
+
+    /**
+     * Execute all...
+     * @return ViewModel Response\Stream
+     */
+    abstract public function execute();
 }

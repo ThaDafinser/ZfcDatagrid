@@ -36,4 +36,11 @@ abstract class AbstractType implements TypeInterface
     {
         return $val;
     }
+
+    /**
+     * Get the type name
+     *
+     * @return string
+     */
+    abstract public function getTypeName();
 }

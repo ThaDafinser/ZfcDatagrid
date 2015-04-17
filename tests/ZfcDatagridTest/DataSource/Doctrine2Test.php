@@ -1,9 +1,9 @@
 <?php
 namespace ZfcDatagridTest\DataSource;
 
-use ZfcDatagridTest\DataSource\Doctrine2\AbstractDoctrine2Test;
 use ZfcDatagrid\DataSource\Doctrine2;
 use ZfcDatagrid\Filter;
+use ZfcDatagridTest\DataSource\Doctrine2\AbstractDoctrine2Test;
 
 /**
  * @group DataSource

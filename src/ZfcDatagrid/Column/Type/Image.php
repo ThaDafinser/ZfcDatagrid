@@ -2,6 +2,7 @@
 /**
  * Image type
  */
+
 namespace ZfcDatagrid\Column\Type;
 
 use InvalidArgumentException;
@@ -20,6 +21,9 @@ class Image extends AbstractType
      */
     protected $resizeHeight = 20.5;
 
+    /**
+     * @return string
+     */
     public function getTypeName()
     {
         return 'image';

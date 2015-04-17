@@ -2,7 +2,6 @@
 namespace ZfcDatagridTest\Renderer\JqGrid\View\Helper;
 
 use PHPUnit_Framework_TestCase;
-use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Style;
 use ZfcDatagrid\Filter;
 use ZfcDatagrid\Renderer\JqGrid\View\Helper;

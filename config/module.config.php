@@ -247,5 +247,5 @@ return [
         'template_path_stack' => [
             'ZfcDatagrid' => __DIR__ . '/../view',
         ],
-    ]
+    ],
 ];

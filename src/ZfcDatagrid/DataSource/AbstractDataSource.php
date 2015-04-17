@@ -33,6 +33,21 @@ abstract class AbstractDataSource implements DataSourceInterface
     protected $paginatorAdapter;
 
     /**
+     * Set the data source
+     * - array
+     * - ZF2: Zend\Db\Sql\Select
+     * - Doctrine2: Doctrine\ORM\QueryBuilder
+     * - ...
+     *
+     * @param mixed $data
+     */
+    public function __construct($data)
+    {
+        // we need this exception, because a abstract __construct, create a exception in php-unit for mocking
+        throw new \Exception(sprintf('Missing __construct in %s', get_class($this)));
+    }
+
+    /**
      * Set the columns
      *
      * @param array $columns
@@ -65,6 +80,9 @@ abstract class AbstractDataSource implements DataSourceInterface
         ];
     }
 
+    /**
+     * @param array $sortConditions
+     */
     public function setSortConditions(array $sortConditions)
     {
         $this->sortConditions = $sortConditions;
@@ -89,6 +107,10 @@ abstract class AbstractDataSource implements DataSourceInterface
         $this->filters[] = $filter;
     }
 
+    /**
+     *
+     * @param array $filters
+     */
     public function setFilters(array $filters)
     {
         $this->filters = $filters;
@@ -103,6 +125,9 @@ abstract class AbstractDataSource implements DataSourceInterface
         return $this->filters;
     }
 
+    /**
+     * @param PaginatorAdapterInterface $paginator
+     */
     public function setPaginatorAdapter(PaginatorAdapterInterface $paginator)
     {
         $this->paginatorAdapter = $paginator;
@@ -116,4 +141,17 @@ abstract class AbstractDataSource implements DataSourceInterface
     {
         return $this->paginatorAdapter;
     }
+
+    /**
+     * Get the data back from construct
+     * @return mixed
+     */
+    abstract public function getData();
+
+    /**
+     * Execute the query and set the paginator
+     * - with sort statements
+     * - with filters statements
+     */
+    abstract public function execute();
 }

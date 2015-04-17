@@ -44,8 +44,8 @@ class DateTime extends AbstractType
      *
      * @param string  $sourceDateTimeFormat
      *                                      PHP DateTime format
-     * @param unknown $outputDateType
-     * @param unknown $outputTimeType
+     * @param int     $outputDateType
+     * @param int     $outputTimeType
      * @param string  $locale
      * @param string  $sourceTimezone
      * @param string  $outputTimezone
@@ -60,23 +60,26 @@ class DateTime extends AbstractType
         $this->setOutputTimezone($outputTimezone);
     }
 
+    /**
+     * @return string
+     */
     public function getTypeName()
     {
         return 'dateTime';
     }
 
     /**
-    * Set Daterange Filter enabled true/false
-    * @param bool $val
-    */
+     * Set Daterange Filter enabled true/false
+     * @param bool $val
+     */
     public function setDaterangePickerEnabled($val = true)
     {
         $this->daterangePickerEnabled = $val;
     }
 
     /**
-    * Check if the Daterange Filter is enabled
-    */
+     * Check if the Daterange Filter is enabled
+     */
     public function isDaterangePickerEnabled()
     {
         return $this->daterangePickerEnabled;

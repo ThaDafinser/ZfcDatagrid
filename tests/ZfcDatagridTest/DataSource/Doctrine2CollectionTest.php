@@ -2,9 +2,9 @@
 namespace ZfcDatagridTest\DataSource;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity\Category;
 use ZfcDatagrid\DataSource\Doctrine2Collection;
 use ZfcDatagrid\Filter;
+use ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity\Category;
 
 /**
  * @group DataSource

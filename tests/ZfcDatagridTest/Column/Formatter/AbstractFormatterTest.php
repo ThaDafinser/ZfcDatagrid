@@ -2,7 +2,6 @@
 namespace ZfcDatagridTest\Column\Formatter;
 
 use PHPUnit_Framework_TestCase;
-use ZfcDatagrid\Column\Formatter;
 
 /**
  * @group Column

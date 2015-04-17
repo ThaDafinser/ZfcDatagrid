@@ -1,8 +1,8 @@
 <?php
 namespace ZfcDatagrid\DataSource\Doctrine2;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Filter as DatagridFilter;
 
