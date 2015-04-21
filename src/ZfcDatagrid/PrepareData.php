@@ -222,18 +222,20 @@ class PrepareData
                 /*
                  * Custom formatter
                  */
-                if ($col->hasFormatter($this->getRendererName()) === true) {
-                    /* @var $formatter \ZfcDatagrid\Column\Formatter\AbstractFormatter */
-                    $formatter = $col->getFormatter($this->getRendererName());
-                    $formatter->setRowData((array) $row);
-                    $formatter->setRendererName($this->getRendererName());
+                if ($col->hasFormatter()) {
+                    $formatterList = $col->getFormatter();
 
-                    $row[$col->getUniqueId()] = $formatter->format($col);
+                    foreach($formatterList as $formatter) {
+                        $formatter->setRowData((array) $row);
+                        $formatter->setRendererName($this->getRendererName());
+                        $row[$col->getUniqueId()] = $formatter->format($col);
+                    }
+
                 }
             }
 
             // Concat all identity columns
-            if (count($ids) > 0) {
+            if ($ids) {
                 $data[$key]['idConcated'] = implode('~', $ids);
             }
         }
