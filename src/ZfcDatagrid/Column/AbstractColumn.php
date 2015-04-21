@@ -611,7 +611,7 @@ abstract class AbstractColumn
      */
     public function hasReplaceValues()
     {
-        return $this->replaceValues?true:false;
+        return $this->replaceValues ? true : false;
     }
 
     /**
