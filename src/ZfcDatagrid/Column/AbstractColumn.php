@@ -205,7 +205,7 @@ abstract class AbstractColumn
     public function getType()
     {
         if (null === $this->type) {
-            $this->type = new Type\String();
+            $this->type = new Type\PhpString();
         }
 
         return $this->type;

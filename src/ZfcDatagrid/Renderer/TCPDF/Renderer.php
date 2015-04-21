@@ -18,7 +18,7 @@ class Renderer extends AbstractExport
         'ZfcDatagrid\Column\Type\Image',
         'ZfcDatagrid\Column\Type\Number',
         'ZfcDatagrid\Column\Type\PhpArray',
-        'ZfcDatagrid\Column\Type\String',
+        'ZfcDatagrid\Column\Type\PhpString',
     ];
 
     /**

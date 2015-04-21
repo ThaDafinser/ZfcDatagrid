@@ -1,7 +1,7 @@
 <?php
 namespace ZfcDatagrid\Column\Type;
 
-class String extends AbstractType
+class PhpString extends AbstractType
 {
     public function getTypeName()
     {

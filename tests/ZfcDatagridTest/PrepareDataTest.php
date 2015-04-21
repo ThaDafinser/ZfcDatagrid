@@ -401,7 +401,7 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue($object));
         $col->expects($this->any())
             ->method('getType')
-            ->will($this->returnValue(new Type\String()));
+            ->will($this->returnValue(new Type\PhpString()));
 
         $prepare = new PrepareData($data, [
             $this->colId,
