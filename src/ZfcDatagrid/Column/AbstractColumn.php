@@ -60,11 +60,21 @@ abstract class AbstractColumn
 
     protected $rendererParameter = [];
 
+    /**
+     * @var AbstractFormatter[]
+     */
     protected $formatter;
 
+    /**
+     *
+     * @param $name
+     * @return $this
+     */
     public function setLabel($name)
     {
         $this->label = (string) $name;
+
+        return $this;
     }
 
     /**
@@ -77,11 +87,22 @@ abstract class AbstractColumn
         return $this->label;
     }
 
+    /**
+     *
+     * @param $id
+     * @return $this
+     */
     public function setUniqueId($id)
     {
         $this->uniqueId = $id;
+
+        return $this;
     }
 
+    /**
+     *
+     * @return mixed
+     */
     public function getUniqueId()
     {
         return $this->uniqueId;
@@ -124,10 +145,13 @@ abstract class AbstractColumn
      * If it's a different output mode like Excel it's dependend on the papersize/orientation
      *
      * @param number $percent
+     * @return $this
      */
     public function setWidth($percent)
     {
         $this->width = (float) $percent;
+
+        return $this;
     }
 
     /**
@@ -144,10 +168,13 @@ abstract class AbstractColumn
      * Hide or show the column
      *
      * @param boolean $mode
+     * @return $this
      */
     public function setHidden($mode = true)
     {
         $this->isHidden = (bool) $mode;
+
+        return $this;
     }
 
     /**
@@ -164,6 +191,7 @@ abstract class AbstractColumn
      * Set this column as primaryKey column
      *
      * @param boolean $mode
+     * @return $this
      */
     public function setIdentity($mode = true)
     {
@@ -171,6 +199,8 @@ abstract class AbstractColumn
 
         // Because IDs are normally hidden
         $this->setHidden($mode);
+
+        return $this;
     }
 
     /**
@@ -187,15 +217,18 @@ abstract class AbstractColumn
      * Set the column type
      *
      * @param Type\AbstractType $type
+     * @return $this
      */
     public function setType(Type\AbstractType $type)
     {
         if ($type instanceof Type\Image && $this->hasFormatter() === false) {
-            $this->setFormatter(new Formatter\Image());
+            $this->addFormatter(new Formatter\Image());
             $this->setRowClickDisabled(true);
         }
 
         $this->type = $type;
+
+        return $this;
     }
 
     /**
@@ -215,6 +248,7 @@ abstract class AbstractColumn
      * Set styles
      *
      * @param array $styles
+     * @return $this
      */
     public function setStyles(array $styles)
     {
@@ -223,15 +257,20 @@ abstract class AbstractColumn
         foreach ($styles as $style) {
             $this->addStyle($style);
         }
+
+        return $this;
     }
 
     /**
      *
      * @param Style\AbstractStyle $style
+     * @return $this
      */
     public function addStyle(Style\AbstractStyle $style)
     {
         $this->styles[] = $style;
+
+        return $this;
     }
 
     /**
@@ -260,10 +299,13 @@ abstract class AbstractColumn
      * Is the user allowed to do sort on this column?
      *
      * @param boolean $mode
+     * @return $this
      */
     public function setUserSortDisabled($mode = true)
     {
         $this->userSortEnabled = (bool) ! $mode;
+
+        return $this;
     }
 
     /**
@@ -319,10 +361,13 @@ abstract class AbstractColumn
      * Set that the data is getting sorted by this columns
      *
      * @param string $direction
+     * @return $this
      */
     public function setSortActive($direction = 'ASC')
     {
         $this->sortActive = $direction;
+
+        return $this;
     }
 
     /**
@@ -350,10 +395,13 @@ abstract class AbstractColumn
     /**
      *
      * @param boolean $mode
+     * @return $this
      */
     public function setUserFilterDisabled($mode = true)
     {
         $this->userFilterEnabled = (bool) ! $mode;
+
+        return $this;
     }
 
     /**
@@ -365,12 +413,15 @@ abstract class AbstractColumn
      * OPERATORS are ALLOWED (like for the user)
      *
      * @param string $value
+     * @return $this
      */
     public function setFilterDefaultValue($value = null)
     {
         if ($value != '') {
             $this->filterDefaultValue = (string) $value;
         }
+
+        return $this;
     }
 
     /**
@@ -398,10 +449,13 @@ abstract class AbstractColumn
     /**
      *
      * @param string $operation
+     * @return $this
      */
     public function setFilterDefaultOperation($operation = Filter::LIKE)
     {
         $this->filterDefaultOperation = $operation;
+
+        return $this;
     }
 
     /**
@@ -421,6 +475,7 @@ abstract class AbstractColumn
      *
      * @param array   $options
      * @param boolean $noSelect
+     * @return $this
      */
     public function setFilterSelectOptions(array $options = null, $noSelect = true)
     {
@@ -433,6 +488,8 @@ abstract class AbstractColumn
         }
 
         $this->filterSelectOptions = $options;
+
+        return $this;
     }
 
     /**
@@ -441,6 +498,8 @@ abstract class AbstractColumn
     public function unsetFilterSelectOptions()
     {
         $this->filterSelectOptions = null;
+
+        return $this;
     }
 
     /**
@@ -468,11 +527,14 @@ abstract class AbstractColumn
     /**
      *
      * @param boolean $mode
+     * @return $this
      */
     public function setFilterActive($value = '')
     {
         $this->filterActive      = (bool) true;
         $this->filterActiveValue = $value;
+
+        return $this;
     }
 
     /**
@@ -506,10 +568,13 @@ abstract class AbstractColumn
      * Enable data translation
      *
      * @param boolean $mode
+     * @return $this
      */
     public function setTranslationEnabled($mode = true)
     {
         $this->translationEnabled = (bool) $mode;
+
+        return $this;
     }
 
     /**
@@ -527,6 +592,7 @@ abstract class AbstractColumn
      *
      * @param array   $values
      * @param boolean $notReplacedGetEmpty
+     * @return $this
      */
     public function setReplaceValues(array $values, $notReplacedGetEmpty = true)
     {
@@ -535,6 +601,8 @@ abstract class AbstractColumn
 
         $this->setFilterDefaultOperation(Filter::EQUAL);
         $this->setFilterSelectOptions($values);
+
+        return $this;
     }
 
     /**
@@ -543,11 +611,7 @@ abstract class AbstractColumn
      */
     public function hasReplaceValues()
     {
-        if (count($this->replaceValues) > 0) {
-            return true;
-        }
-
-        return false;
+        return $this->replaceValues?true:false;
     }
 
     /**
@@ -574,6 +638,7 @@ abstract class AbstractColumn
      * @param string $name
      * @param mixed  $value
      * @param string $rendererType
+     * @return $this
      */
     public function setRendererParameter($name, $value, $rendererType = 'jqGrid')
     {
@@ -585,6 +650,8 @@ abstract class AbstractColumn
         $parameters[$name] = $value;
 
         $this->rendererParameter[$rendererType] = $parameters;
+
+        return $this;
     }
 
     /**
@@ -602,19 +669,43 @@ abstract class AbstractColumn
     }
 
     /**
-     * Set a a template formatter
+     * Set a template formatter and overwrite other formatter
      *
-     * @param AbstractFormatter $formatter
+     * @param AbstractFormatter|AbstractFormatter[] $formatter
+     * @return $this
      */
-    public function setFormatter(AbstractFormatter $formatter)
+    public function setFormatter($formatterList)
     {
-        $this->formatter = $formatter;
+        $this->formatter = [];
+
+        if (!is_array($formatterList)) {
+            $formatterList = func_get_args();
+        }
+
+        foreach ($formatterList as $formatter) {
+            $this->addFormatter($formatter);
+        }
+
+        return $this;
     }
 
     /**
+     * add a template formatter in the list
      *
-     * @param  string $rendererName
-     * @return NULL   AbstractFormatter
+     * @param AbstractFormatter $formatter
+     * @return $this
+     */
+    public function addFormatter(AbstractFormatter $formatter)
+    {
+        $this->formatter[] = $formatter;
+
+        return $this;
+    }
+
+    /**
+     * return a list of different formatter
+     *
+     * @return AbstractFormatter[]
      */
     public function getFormatter()
     {
@@ -623,7 +714,6 @@ abstract class AbstractColumn
 
     /**
      *
-     * @param  string  $rendererType
      * @return boolean
      */
     public function hasFormatter()
@@ -638,10 +728,13 @@ abstract class AbstractColumn
     /**
      *
      * @param boolean $mode
+     * @return $this
      */
     public function setRowClickDisabled($mode = true)
     {
         $this->rowClickEnabled = (bool) ! $mode;
+
+        return $this;
     }
 
     /**
