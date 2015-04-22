@@ -38,7 +38,7 @@ class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInter
     }
 
     /**
-     * @param AbstractColumn $column
+     * @param  AbstractColumn $column
      * @return string
      */
     public function getFormattedValue(AbstractColumn $column)
@@ -99,7 +99,7 @@ class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInter
     }
 
     /**
-     * @param string $route
+     * @param  string       $route
      * @return GenerateLink
      */
     public function setRoute($route)
@@ -118,7 +118,7 @@ class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInter
     }
 
     /**
-     * @param array $routeParams
+     * @param  array        $routeParams
      * @return GenerateLink
      */
     public function setRouteParams($routeParams)
@@ -137,7 +137,7 @@ class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInter
     }
 
     /**
-     * @param null|string $routeKey
+     * @param  null|string  $routeKey
      * @return GenerateLink
      */
     public function setRouteKey($routeKey)

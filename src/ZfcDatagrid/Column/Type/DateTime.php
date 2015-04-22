@@ -42,13 +42,13 @@ class DateTime extends AbstractType
 
     /**
      *
-     * @param string  $sourceDateTimeFormat
-     *                                      PHP DateTime format
-     * @param int     $outputDateType
-     * @param int     $outputTimeType
-     * @param string  $locale
-     * @param string  $sourceTimezone
-     * @param string  $outputTimezone
+     * @param string $sourceDateTimeFormat
+     *                                     PHP DateTime format
+     * @param int    $outputDateType
+     * @param int    $outputTimeType
+     * @param string $locale
+     * @param string $sourceTimezone
+     * @param string $outputTimezone
      */
     public function __construct($sourceDateTimeFormat = 'Y-m-d H:i:s', $outputDateType = IntlDateFormatter::MEDIUM, $outputTimeType = IntlDateFormatter::NONE, $locale = null, $sourceTimezone = 'UTC', $outputTimezone = null)
     {

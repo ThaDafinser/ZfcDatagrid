@@ -214,6 +214,7 @@ return [
         ],
 
         'factories' => [
+            'ZfcDatagridManager'   => 'ZfcDatagrid\Service\DatagridManagerFactory',
             'ZfcDatagrid\Datagrid' => 'ZfcDatagrid\Service\DatagridFactory',
 
             'zfcDatagrid_dbAdapter' => 'ZfcDatagrid\Service\ZendDbAdapterFactory',
