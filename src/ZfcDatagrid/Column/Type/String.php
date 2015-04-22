@@ -6,5 +6,4 @@ namespace ZfcDatagrid\Column\Type;
  */
 class String extends PhpString
 {
-
 }
