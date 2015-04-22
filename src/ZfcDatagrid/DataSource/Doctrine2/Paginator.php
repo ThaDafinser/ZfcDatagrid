@@ -4,6 +4,7 @@
  * or if we use the "safe" variant by Doctrine2
  *
  */
+
 namespace ZfcDatagrid\DataSource\Doctrine2;
 
 use Doctrine\ORM\QueryBuilder;
