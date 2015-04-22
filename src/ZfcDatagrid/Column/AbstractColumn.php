@@ -63,7 +63,7 @@ abstract class AbstractColumn
     /**
      * @var AbstractFormatter[]
      */
-    protected $formatter;
+    protected $formatters;
 
     /**
      *
@@ -671,12 +671,12 @@ abstract class AbstractColumn
     /**
      * Set a template formatter and overwrite other formatter
      *
-     * @param AbstractFormatter|AbstractFormatter[] $formatter
+     * @param AbstractFormatter|AbstractFormatter[] $formatters
      * @return $this
      */
-    public function setFormatter($formatterList)
+    public function setFormatters($formatterList)
     {
-        $this->formatter = [];
+        $this->formatters = [];
 
         if (!is_array($formatterList)) {
             $formatterList = func_get_args();
@@ -690,6 +690,18 @@ abstract class AbstractColumn
     }
 
     /**
+     * Set a template formatter and overwrite other formatter
+     *
+     * @param AbstractFormatter|AbstractFormatter[] $formatters
+     * @return $this
+     * @deprecated please use setFormatters
+     */
+    public function setFormatter($formatterList)
+    {
+        return $this->setFormatters($formatterList);
+    }
+
+    /**
      * add a template formatter in the list
      *
      * @param AbstractFormatter $formatter
@@ -697,7 +709,7 @@ abstract class AbstractColumn
      */
     public function addFormatter(AbstractFormatter $formatter)
     {
-        $this->formatter[] = $formatter;
+        $this->formatters[] = $formatter;
 
         return $this;
     }
@@ -707,9 +719,20 @@ abstract class AbstractColumn
      *
      * @return AbstractFormatter[]
      */
+    public function getFormatters()
+    {
+        return $this->formatters;
+    }
+
+    /**
+     * return a list of different formatter
+     *
+     * @return AbstractFormatter[]
+     * @deprecated please use getFormatters
+     */
     public function getFormatter()
     {
-        return $this->formatter;
+        return $this->getFormatters();
     }
 
     /**
@@ -718,7 +741,7 @@ abstract class AbstractColumn
      */
     public function hasFormatter()
     {
-        if ($this->formatter !== null) {
+        if ($this->formatters !== null) {
             return true;
         }
 
