@@ -223,9 +223,7 @@ class PrepareData
                  * Custom formatter
                  */
                 if ($col->hasFormatter()) {
-                    $formatterList = $col->getFormatter();
-
-                    foreach ($formatterList as $formatter) {
+                    foreach ($col->getFormatters() as $formatter) {
                         $formatter->setRowData((array) $row);
                         $formatter->setRendererName($this->getRendererName());
                         $row[$col->getUniqueId()] = $formatter->format($col);
