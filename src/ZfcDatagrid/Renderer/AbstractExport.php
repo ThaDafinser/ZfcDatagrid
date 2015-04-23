@@ -3,6 +3,7 @@
  * Methods which can be used in (all) export renderer
  *
  */
+
 namespace ZfcDatagrid\Renderer;
 
 use ZfcDatagrid\Column;
