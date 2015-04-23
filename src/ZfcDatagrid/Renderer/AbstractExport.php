@@ -13,7 +13,7 @@ abstract class AbstractExport extends AbstractRenderer
         'ZfcDatagrid\Column\Type\DateTime',
         'ZfcDatagrid\Column\Type\Number',
         'ZfcDatagrid\Column\Type\PhpArray',
-        'ZfcDatagrid\Column\Type\String',
+        'ZfcDatagrid\Column\Type\PhpString',
     ];
 
     protected $columnsToExport;

@@ -1,10 +1,9 @@
 <?php
 namespace ZfcDatagrid\Column\Type;
 
-class String extends AbstractType
+/**
+ * @deprecated please use PhpString
+ */
+class String extends PhpString
 {
-    public function getTypeName()
-    {
-        return 'string';
-    }
 }

@@ -22,7 +22,7 @@ class AbstractColumnTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(false, $col->isHidden());
         $this->assertEquals(false, $col->isIdentity());
         $this->assertInstanceOf('ZfcDatagrid\Column\Type\AbstractType', $col->getType());
-        $this->assertInstanceOf('ZfcDatagrid\Column\Type\String', $col->getType());
+        $this->assertInstanceOf('ZfcDatagrid\Column\Type\PhpString', $col->getType());
 
         $this->assertEquals(false, $col->isTranslationEnabled());
 
@@ -76,7 +76,7 @@ class AbstractColumnTest extends PHPUnit_Framework_TestCase
         $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
 
         // DEFAULT
-        $this->assertInstanceOf('ZfcDatagrid\Column\Type\String', $col->getType());
+        $this->assertInstanceOf('ZfcDatagrid\Column\Type\PhpString', $col->getType());
 
         $col->setType(new Type\PhpArray());
         $this->assertInstanceOf('ZfcDatagrid\Column\Type\AbstractType', $col->getType());

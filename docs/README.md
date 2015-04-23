@@ -26,7 +26,7 @@ If you are looking for some information that is not listed in the documentation,
     * ExternalData
     * Columns Options
   3. [Column Data Types](/docs/03. Columns.md#column-data-types)
-    * String
+    * PhpString
     * DateTime
     * Image
     * Number
