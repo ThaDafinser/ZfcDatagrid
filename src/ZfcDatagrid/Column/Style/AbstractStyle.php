@@ -109,7 +109,13 @@ abstract class AbstractStyle
                 $value = $row[$rule['column']->getUniqueId()];
             }
 
-            $isApplyMatch = Filter::isApply($value, $rule['value'], $rule['operator']);
+            if ($rule['value'] instanceof AbstractColumn && isset($row[$rule['value']->getUniqueId()])) {
+                $ruleValue = $row[$rule['value']->getUniqueId()];
+            } else {
+                $ruleValue = $rule['value'];
+            }
+
+            $isApplyMatch = Filter::isApply($value, $ruleValue, $rule['operator']);
             if ($this->getByValueOperator() == 'OR' && true === $isApplyMatch) {
                 // For OR one match is enough
                 return true;
