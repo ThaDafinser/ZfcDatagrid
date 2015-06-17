@@ -179,4 +179,44 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('InvalidArgumentException');
         $style->setByValueOperator('XOR');
     }
+
+    public function testStyleByColumn()
+    {
+        /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
+        $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
+
+        $columnCompare = clone $this->column;
+        $columnCompare->setUniqueId('columnCompare');
+
+        $style->addByValue($this->column, $columnCompare, Filter::GREATER_EQUAL);
+        $this->assertEquals([
+            [
+                'column'   => $this->column,
+                'value'    => $columnCompare,
+                'operator' => Filter::GREATER_EQUAL,
+            ],
+        ], $style->getByValues());
+
+        $this->assertTrue($style->hasByValues());
+
+        // Test lower value
+        $row = [
+            $this->column->getUniqueId() => 5,
+            $columnCompare->getUniqueId() => 15,
+        ];
+        $this->assertFalse($style->isApply($row));
+
+        // Test greater value
+        $row = [
+            $this->column->getUniqueId() => 15,
+            $columnCompare->getUniqueId() => 10,
+        ];
+        $this->assertTrue($style->isApply($row));
+
+        // Test row without compared column
+        $row = [
+            $this->column->getUniqueId() => 15,
+        ];
+        $this->assertTrue($style->isApply($row));
+    }
 }
