@@ -109,8 +109,12 @@ abstract class AbstractStyle
                 $value = $row[$rule['column']->getUniqueId()];
             }
 
-            if ($rule['value'] instanceof AbstractColumn && isset($row[$rule['value']->getUniqueId()])) {
-                $ruleValue = $row[$rule['value']->getUniqueId()];
+            if ($rule['value'] instanceof AbstractColumn) {
+                 if (isset($row[$rule['value']->getUniqueId()])) {
+                    $ruleValue = $row[$rule['value']->getUniqueId()];
+                } else {
+                    $ruleValue = '';
+                }
             } else {
                 $ruleValue = $rule['value'];
             }
