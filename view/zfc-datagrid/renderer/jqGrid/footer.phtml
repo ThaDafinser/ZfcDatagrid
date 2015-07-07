@@ -6,7 +6,7 @@ $paginator = $this->paginator;
 <div class="row-fluid row" id="<?php echo $this->gridId; ?>_pager">
 
     <!-- mass actions -->
-    <div class="span3 col-md-3" id="<?php echo $this->gridId; ?>_pager_left">
+    <div class="span3 col-md-3 col-sm-3" id="<?php echo $this->gridId; ?>_pager_left">
         <?php 
         foreach($this->massActions as $action){
             /* @var $action \ZfcDatagrid\Action\Mass */
@@ -19,10 +19,10 @@ $paginator = $this->paginator;
         ?>
     </div>
     <!-- Pagination -->
-    <div class="span6 col-md-6 text-center" id="<?php echo $this->gridId; ?>_pager_center">
+    <div class="span6 col-md-6 col-sm-6 text-center" id="<?php echo $this->gridId; ?>_pager_center">
     </div>
     <!-- Info -->
-    <div class="span3 col-md-3 text-right" id="<?php echo $this->gridId; ?>_pager_right">
+    <div class="span3 col-md-3 col-sm-3 text-right" id="<?php echo $this->gridId; ?>_pager_right">
         <?php echo $this->translate('Showing').' <span id="'.$this->gridId.'_currentItems"></span> '.$this->translate('of').' <span id="'.$this->gridId.'_totalItems"></span> '.$this->translate('items'); ?><br />
         <?php echo $this->translate('Page') . ' <span id="'.$this->gridId.'_currentPage"></span> ' . $this->translate('of') . ' <span id="'.$this->gridId.'_totalPages"></span>'; ?>
     </div>
