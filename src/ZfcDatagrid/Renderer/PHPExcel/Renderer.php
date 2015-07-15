@@ -122,6 +122,10 @@ class Renderer extends AbstractExport
                                     ],
                                 ]);
                                 break;
+                                
+                            case 'ZfcDatagrid\Column\Style\Strikethrough':
+                                $columnStyle->getFont()->setStrikethrough(true);
+                                break;
 
                             default:
                                 throw new \Exception('Not defined yet: "' . get_class($style) . '"');
