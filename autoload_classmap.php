@@ -26,6 +26,8 @@ return array(
   'ZfcDatagrid\Column\Style\BackgroundColor'                         => __DIR__ . '/src/ZfcDatagrid/Column/Style/BackgroundColor.php',
   'ZfcDatagrid\Column\Style\Bold'                                    => __DIR__ . '/src/ZfcDatagrid/Column/Style/Bold.php',
   'ZfcDatagrid\Column\Style\Color'                                   => __DIR__ . '/src/ZfcDatagrid/Column/Style/Color.php',
+  'ZfcDatagrid\Column\Style\Align'                                   => __DIR__ . '/src/ZfcDatagrid/Column/Style/Align.php',
+  'ZfcDatagrid\Column\Style\Strikethrough'                           => __DIR__ . '/src/ZfcDatagrid/Column/Style/Strikethrough.php',
   'ZfcDatagrid\Column\Style\Italic'                                  => __DIR__ . '/src/ZfcDatagrid/Column/Style/Italic.php',
   'ZfcDatagrid\Column\Type\AbstractType'                             => __DIR__ . '/src/ZfcDatagrid/Column/Type/AbstractType.php',
   'ZfcDatagrid\Column\Type\DateTime'                                 => __DIR__ . '/src/ZfcDatagrid/Column/Type/DateTime.php',

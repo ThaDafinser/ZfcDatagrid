@@ -98,6 +98,10 @@ foreach($this->rowStyles as $style){
         case 'ZfcDatagrid\Column\Style\BackgroundColor':
             $css = '\'background-color\', \'#' . $style->getRgbHexString().'\'';
             break;
+        
+        case 'ZfcDatagrid\Column\Style\Align':
+            $css = '\'text-align\'' . $style->getAlignment();
+            break;
 
         default:
             throw new \Exception('Not defined yet: "' . get_class($style) . '"');
