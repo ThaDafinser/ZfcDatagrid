@@ -289,64 +289,6 @@ class Renderer extends AbstractExport
             $pdf->setPage($currentPage);
             $x = $this->columnsPositionX[$col->getUniqueId()];
 
-            $this->setFontData();
-
-            /*
-             * Styles
-             */
-            $backgroundColor = false;
-
-            $styles = array_merge($this->getRowStyles(), $col->getStyles());
-            foreach ($styles as $style) {
-                /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
-                if ($style->isApply($row) === true) {
-                    switch (get_class($style)) {
-
-                        case 'ZfcDatagrid\Column\Style\Bold':
-                            $this->setBold();
-                            break;
-
-                        case 'ZfcDatagrid\Column\Style\Italic':
-                            $this->setItalic();
-                            break;
-
-                        case 'ZfcDatagrid\Column\Style\Color':
-                            $this->setColor($style->getRgbArray());
-                            break;
-
-                        case 'ZfcDatagrid\Column\Style\BackgroundColor':
-                            $this->setBackgroundColor($style->getRgbArray());
-                            $backgroundColor = true;
-                            break;
-                        
-                        case 'ZfcDatagrid\Column\Style\Align':
-                            switch ($style->getAlignment()) {
-                                case \ZfcDatagrid\Column\Style\Align::$RIGHT:
-                                    $this->setTextAlignment('R');
-                                    break;
-                                case \ZfcDatagrid\Column\Style\Align::$LEFT:
-                                     $this->setTextAlignment('L');
-                                    break;
-                                case \ZfcDatagrid\Column\Style\Align::$CENTER:
-                                    $this->setTextAlignment('C');
-                                    break;
-                                case \ZfcDatagrid\Column\Style\Align::$JUSTIFY:
-                                    $this->setTextAlignment('J');
-                                    break;
-                                default:
-                                    //throw new \Exception('Not defined yet: "'.get_class($style->getAlignment()).'"');
-                                    break;
-                            }
-                            break;
-
-                        default:
-                            throw new \Exception('Not defined yet: "' . get_class($style) . '"');
-
-                            break;
-                    }
-                }
-            }
-
             $text = '';
             switch (get_class($col->getType())) {
 
@@ -389,9 +331,72 @@ class Renderer extends AbstractExport
             if (is_array($text)) {
                 $text = implode(PHP_EOL, $text);
             }
+            
+            /*
+             * Styles
+             */
+            $this->setFontData();
 
+            $isHtml = false;
+            $backgroundColor = false;
+            
+            $styles = array_merge($this->getRowStyles(), $col->getStyles());
+            foreach ($styles as $style) {
+                /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
+                if ($style->isApply($row) === true) {
+                    switch (get_class($style)) {
+            
+                        case 'ZfcDatagrid\Column\Style\Bold':
+                            $this->setBold();
+                            break;
+            
+                        case 'ZfcDatagrid\Column\Style\Italic':
+                            $this->setItalic();
+                            break;
+            
+                        case 'ZfcDatagrid\Column\Style\Color':
+                            $this->setColor($style->getRgbArray());
+                            break;
+            
+                        case 'ZfcDatagrid\Column\Style\BackgroundColor':
+                            $this->setBackgroundColor($style->getRgbArray());
+                            $backgroundColor = true;
+                            break;
+            
+                        case 'ZfcDatagrid\Column\Style\Strikethrough':
+                            $text = '<del>' . $text . '</del>';
+                            $isHtml = true;
+                            break;
+                            
+                        case 'ZfcDatagrid\Column\Style\Align':
+                            switch ($style->getAlignment()) {
+                                case \ZfcDatagrid\Column\Style\Align::$RIGHT:
+                                    $this->setTextAlignment('R');
+                                    break;
+                                case \ZfcDatagrid\Column\Style\Align::$LEFT:
+                                    $this->setTextAlignment('L');
+                                    break;
+                                case \ZfcDatagrid\Column\Style\Align::$CENTER:
+                                    $this->setTextAlignment('C');
+                                    break;
+                                case \ZfcDatagrid\Column\Style\Align::$JUSTIFY:
+                                    $this->setTextAlignment('J');
+                                    break;
+                                default:
+                                    //throw new \Exception('Not defined yet: "'.get_class($style->getAlignment()).'"');
+                                    break;
+                            }
+                            break;
+            
+                        default:
+                            throw new \Exception('Not defined yet: "' . get_class($style) . '"');
+                            break;
+                    }
+                }
+            }
+            
             // MultiCell($w, $h, $txt, $border=0, $align='J', $fill=false, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0, $valign='T', $fitcell=false)
-            $pdf->MultiCell($col->getWidth(), $rowHeight, $text, 1, $this->getTextAlignment(), $backgroundColor, 1, $x, $y, true, 0);
+            $pdf->MultiCell($col->getWidth(), $rowHeight, $text, 1, $this->getTextAlignment(), $backgroundColor, 1, $x, $y, true, 0, $isHtml);
         }
     }
 
