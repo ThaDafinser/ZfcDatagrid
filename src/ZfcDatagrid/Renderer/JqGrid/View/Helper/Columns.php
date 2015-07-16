@@ -95,7 +95,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                 'search'   => (bool) $column->isUserFilterEnabled(),
             ];
 
-            /**
+            /*
              * Formatting
              */
             $formatter = $this->getFormatter($column);
@@ -107,7 +107,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                 $options['align'] = (string) 'right';
             }
 
-            /**
+            /*
              * Cellattr
              */
             $rendererParameters = $column->getRendererParameters('jqGrid');
@@ -115,7 +115,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                 $options['cellattr'] = (string) $rendererParameters['cellattr'];
             }
 
-            /**
+            /*
              * Filtering
              */
             $searchoptions                = [];
@@ -123,9 +123,13 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
             if ($column->hasFilterSelectOptions() === true) {
                 $options['stype']       = 'select';
                 $searchoptions['value'] = $column->getFilterSelectOptions();
-            }
 
-            if ($column->hasFilterDefaultValue() === true) {
+                if ($column->hasFilterDefaultValue() === true) {
+                    $searchoptions['defaultValue'] = $column->getFilterDefaultValue();
+                } else {
+                    $searchoptions['defaultValue'] = '';
+                }
+            } elseif ($column->hasFilterDefaultValue() === true) {
                 $filter = new \ZfcDatagrid\Filter();
                 $filter->setFromColumn($column, $column->getFilterDefaultValue());
 
@@ -274,9 +278,9 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                     // do NOTHING! this is done by loadComplete event...
                     // At this stage jqgrid haven't created the columns...
                     break;
-                
+
                 case 'ZfcDatagrid\Column\Style\Align':
-                    $styleString = 'cellvalue = \'<span style="text-align: '.$style->getAlignment().';">\' + cellvalue + \'</span>\';';
+                    $styleString = 'cellvalue = \'<span style="text-align: ' . $style->getAlignment() . ';">\' + cellvalue + \'</span>\';';
                     break;
 
                 default:

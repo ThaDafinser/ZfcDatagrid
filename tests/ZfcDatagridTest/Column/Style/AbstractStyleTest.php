@@ -201,14 +201,14 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
 
         // Test lower value
         $row = [
-            $this->column->getUniqueId() => 5,
+            $this->column->getUniqueId()  => 5,
             $columnCompare->getUniqueId() => 15,
         ];
         $this->assertFalse($style->isApply($row));
 
         // Test greater value
         $row = [
-            $this->column->getUniqueId() => 15,
+            $this->column->getUniqueId()  => 15,
             $columnCompare->getUniqueId() => 10,
         ];
         $this->assertTrue($style->isApply($row));

@@ -149,7 +149,7 @@ class HtmlTag extends AbstractFormatter
     }
 
     /**
-     * @param AbstractColumn $col
+     * @param  AbstractColumn $col
      * @return string
      */
     public function getFormattedValue(AbstractColumn $col)
