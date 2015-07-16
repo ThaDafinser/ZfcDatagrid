@@ -8,36 +8,36 @@ class Align extends AbstractStyle
      * @var string
      */
     public static $LEFT = 'left';
-    
+
     /**
      *
      * @var string
      */
     public static $RIGHT = 'right';
-    
+
     /**
      *
      * @var string
      */
     public static $CENTER = 'center';
-    
+
     /**
      *
      * @var string
      */
-    public static $JUSTIFY= 'justify';
-    
+    public static $JUSTIFY = 'justify';
+
     /**
      *
      * @var string
      */
     protected $alignment;
-    
+
     public function __construct($alignment = self::LEFT)
     {
         $this->setAlignment($alignment);
     }
-    
+
     /**
      *
      * @param  string $alignment

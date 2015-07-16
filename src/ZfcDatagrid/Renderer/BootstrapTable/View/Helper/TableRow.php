@@ -146,10 +146,10 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
                             $cssStyles[] = 'background-color: #' . $style->getRgbHexString();
                             break;
                         case 'ZfcDatagrid\Column\Style\Align':
-                            $cssStyles[] = 'text-align: '.$style->getAlignment();
+                            $cssStyles[] = 'text-align: ' . $style->getAlignment();
                             break;
                         case 'ZfcDatagrid\Column\Style\Strikethrough':
-                            $value = '<s>'.$value.'</s>';
+                            $value = '<s>' . $value . '</s>';
                             break;
                         default:
                             throw new \InvalidArgumentException('Not defined style: "' . get_class($style) . '"');

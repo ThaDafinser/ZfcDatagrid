@@ -2,17 +2,16 @@
 /**
  * Output as an excel file
  */
-
 namespace ZfcDatagrid\Renderer\PHPExcel;
 
 use PHPExcel;
 use PHPExcel_Cell;
 use PHPExcel_Cell_DataType;
+use PHPExcel_Style_Alignment;
 use PHPExcel_Style_Border;
 use PHPExcel_Style_Color;
 use PHPExcel_Style_Fill;
 use PHPExcel_Worksheet_PageSetup;
-use PHPExcel_Style_Alignment;
 use Zend\Http\Headers;
 use Zend\Http\Response\Stream as ResponseStream;
 use ZfcDatagrid\Renderer\AbstractExport;
@@ -123,7 +122,7 @@ class Renderer extends AbstractExport
                                     ],
                                 ]);
                                 break;
-                            
+
                             case 'ZfcDatagrid\Column\Style\Align':
                                 switch ($style->getAlignment()) {
                                     case \ZfcDatagrid\Column\Style\Align::$RIGHT:
@@ -142,9 +141,9 @@ class Renderer extends AbstractExport
                                         //throw new \Exception('Not defined yet: "'.get_class($style->getAlignment()).'"');
                                         break;
                                 }
-                                
+
                                 break;
-                                
+
                             case 'ZfcDatagrid\Column\Style\Strikethrough':
                                 $columnStyle->getFont()->setStrikethrough(true);
                                 break;
