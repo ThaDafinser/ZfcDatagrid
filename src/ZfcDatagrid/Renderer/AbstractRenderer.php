@@ -662,13 +662,6 @@ abstract class AbstractRenderer implements RendererInterface
         $viewModel->setVariable('generalParameterNames', $generalParameterNames);
 
         $viewModel->setVariable('columns', $this->getColumns());
-        $columnsHidden = [];
-        foreach ($this->getColumns() as $column) {
-            if ($column->isHidden()) {
-                $columnsHidden[] = $column->getUniqueId();
-            }
-        }
-        $viewModel->setVariable('columnsHidden', $columnsHidden);
 
         $viewModel->setVariable('rowStyles', $grid->getRowStyles());
 
