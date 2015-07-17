@@ -79,9 +79,6 @@ return [
                     'sortDirections' => 'sortDirections',
                     'isSearch'       => 'isSearch',
 
-                    'columnsHidden'       => 'columnsHidden',
-                    'columnsGroupByLocal' => 'columnsGroupBy',
-
                     'massIds' => 'ids',
                 ],
             ],
