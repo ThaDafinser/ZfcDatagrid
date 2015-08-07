@@ -844,17 +844,6 @@ class Datagrid implements ServiceLocatorAwareInterface
     }
 
     /**
-     *
-     * @deprecated use setRendererName()
-     */
-    public function setRenderer($name = null)
-    {
-        trigger_error('setRenderer() is deprecated, please use setRendererName() instead', E_USER_DEPRECATED);
-
-        $this->forceRenderer = $name;
-    }
-
-    /**
      * Overwrite the render
      * F.x.
      * if you want to directly render a PDF
@@ -1063,19 +1052,6 @@ class Datagrid implements ServiceLocatorAwareInterface
         $this->preparedData = $prepareData->getData();
 
         $this->isDataLoaded = true;
-    }
-
-    /**
-     *
-     * @deprecated use render() instead!
-     */
-    public function execute()
-    {
-        trigger_error('execute() is deprecated, please use render() instead', E_USER_DEPRECATED);
-
-        if ($this->isRendered() === false) {
-            $this->render();
-        }
     }
 
     /**

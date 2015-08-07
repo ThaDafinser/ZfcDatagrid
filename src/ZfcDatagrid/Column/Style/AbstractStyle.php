@@ -56,20 +56,6 @@ abstract class AbstractStyle
     }
 
     /**
-     * Set the style value based and not general
-     *
-     * @param AbstractColumn $column
-     * @param mixed          $value
-     * @param string         $operator
-     */
-    public function setByValue(AbstractColumn $column, $value, $operator = Filter::EQUAL)
-    {
-        trigger_error(__CLASS__ . '::setByValue() is deprecated, please use "addByValue" instead', E_USER_DEPRECATED);
-
-        $this->addByValue($column, $value, $operator);
-    }
-
-    /**
      *
      * @return array
      */
