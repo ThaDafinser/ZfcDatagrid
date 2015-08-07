@@ -25,13 +25,10 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
      * Set the service locator.
      *
      * @param  ServiceLocatorInterface $serviceLocator
-     * @return CustomHelper
      */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
-
-        return $this;
     }
 
     /**
