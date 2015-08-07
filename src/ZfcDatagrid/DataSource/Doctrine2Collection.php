@@ -4,6 +4,7 @@ namespace ZfcDatagrid\DataSource;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
+use ZfcDatagrid\Column;
 use ZfcDatagrid\DataSource\PhpArray as SourceArray;
 
 class Doctrine2Collection extends AbstractDataSource
@@ -70,21 +71,25 @@ class Doctrine2Collection extends AbstractDataSource
             $dataExtracted = $hydrator->extract($row);
 
             $rowExtracted = [];
-            foreach ($this->getColumns() as $column) {
-                /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-                $part1 = $column->getSelectPart1();
-                $part2 = $column->getSelectPart2();
+            foreach ($this->getColumns() as $col) {
+                /* @var $col \ZfcDatagrid\Column\AbstractColumn */
+                if (!$col instanceof Column\Select) {
+                    continue;
+                }
+
+                $part1 = $col->getSelectPart1();
+                $part2 = $col->getSelectPart2();
 
                 if (null === $part2) {
                     if (isset($dataExtracted[$part1])) {
-                        $rowExtracted[$column->getUniqueId()] = $dataExtracted[$part1];
+                        $rowExtracted[$col->getUniqueId()] = $dataExtracted[$part1];
                     }
                 } else {
                     // NESTED
                     if (isset($dataExtracted[$part1])) {
                         $dataExtractedNested = $hydrator->extract($dataExtracted[$part1]);
                         if (isset($dataExtractedNested[$part2])) {
-                            $rowExtracted[$column->getUniqueId()] = $dataExtractedNested[$part2];
+                            $rowExtracted[$col->getUniqueId()] = $dataExtractedNested[$part2];
                         }
                     }
                 }

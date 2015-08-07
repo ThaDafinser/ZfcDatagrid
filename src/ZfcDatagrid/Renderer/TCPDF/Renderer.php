@@ -32,6 +32,8 @@ class Renderer extends AbstractExport
      */
     protected $alignment = 'L';
 
+    private $columnsPositionX = [];
+
     public function getName()
     {
         return 'TCPDF';
@@ -220,7 +222,6 @@ class Renderer extends AbstractExport
         foreach ($this->getColumnsToExport() as $col) {
             /* @var $col \ZfcDatagrid\Column\AbstractColumn */
 
-            $height = 1;
             switch (get_class($col->getType())) {
 
                 case 'ZfcDatagrid\Column\Type\Image':
@@ -282,7 +283,6 @@ class Renderer extends AbstractExport
             $pdf->setPage($currentPage);
             $x = $this->columnsPositionX[$col->getUniqueId()];
 
-            $text = '';
             switch (get_class($col->getType())) {
 
                 case 'ZfcDatagrid\Column\Type\Image':

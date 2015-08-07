@@ -79,15 +79,17 @@ class ZendSelect extends AbstractDataSource
          * Step 1) Apply needed columns
          */
         $selectColumns = [];
-        foreach ($this->getColumns() as $column) {
-            if ($column instanceof Column\Select) {
-                $colString = $column->getSelectPart1();
-                if ($column->getSelectPart2() != '') {
-                    $colString = new Expression($platform->quoteIdentifier($colString) . $platform->getIdentifierSeparator() . $platform->quoteIdentifier($column->getSelectPart2()));
-                }
-
-                $selectColumns[$column->getUniqueId()] = $colString;
+        foreach ($this->getColumns() as $col) {
+            if (!$col instanceof Column\Select) {
+                continue;
             }
+
+            $colString = $col->getSelectPart1();
+            if ($col->getSelectPart2() != '') {
+                $colString = new Expression($platform->quoteIdentifier($colString) . $platform->getIdentifierSeparator() . $platform->quoteIdentifier($col->getSelectPart2()));
+            }
+
+            $selectColumns[$col->getUniqueId()] = $colString;
         }
         $select->columns($selectColumns, false);
 
@@ -105,8 +107,8 @@ class ZendSelect extends AbstractDataSource
             $select->reset(Sql\Select::ORDER);
 
             foreach ($this->getSortConditions() as $sortCondition) {
-                $column = $sortCondition['column'];
-                $select->order($column->getUniqueId() . ' ' . $sortCondition['sortDirection']);
+                $col = $sortCondition['column'];
+                $select->order($col->getUniqueId() . ' ' . $sortCondition['sortDirection']);
             }
         }
 
