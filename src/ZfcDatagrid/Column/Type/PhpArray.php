@@ -19,17 +19,14 @@ class PhpArray extends AbstractType
         $this->setSeparator($separator);
     }
 
-    /*
+    /**
      * Set separator of the string to be used to explode the array
      *
      * @param  string   $separator
-     * @return PhpArray
      */
     public function setSeparator($separator)
     {
         $this->separator = $separator;
-
-        return $this;
     }
 
     /*

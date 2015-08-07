@@ -41,13 +41,10 @@ class Align extends AbstractStyle
     /**
      *
      * @param  string $alignment
-     * @return self
      */
     public function setAlignment($alignment)
     {
         $this->alignment = $alignment;
-
-        return $this;
     }
 
     /**
