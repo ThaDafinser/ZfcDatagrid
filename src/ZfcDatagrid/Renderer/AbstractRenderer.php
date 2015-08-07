@@ -332,13 +332,13 @@ abstract class AbstractRenderer implements RendererInterface
     /**
      *
      * @throws \Exception
-     * @return array
+     * @return array|false
      */
     private function getCacheSortConditions()
     {
         $cacheData = $this->getCacheData();
         if (! isset($cacheData['sortConditions'])) {
-            throw new \Exception('Sort conditions from cache are missing!');
+            return false;
         }
 
         return $cacheData['sortConditions'];
@@ -347,13 +347,13 @@ abstract class AbstractRenderer implements RendererInterface
     /**
      *
      * @throws \Exception
-     * @return array
+     * @return array|false
      */
     private function getCacheFilters()
     {
         $cacheData = $this->getCacheData();
         if (! isset($cacheData['filters'])) {
-            throw new \Exception('Filters from cache are missing!');
+            return false;
         }
 
         return $cacheData['filters'];
@@ -493,7 +493,7 @@ abstract class AbstractRenderer implements RendererInterface
             return $this->sortConditions;
         }
 
-        if ($this->isExport() === true) {
+        if ($this->isExport() === true && $this->getCacheSortConditions() !== false) {
             // Export renderer should always retrieve the sort conditions from cache!
             $this->sortConditions = $this->getCacheSortConditions();
 
@@ -558,7 +558,8 @@ abstract class AbstractRenderer implements RendererInterface
         if (is_array($this->filters)) {
             return $this->filters;
         }
-        if ($this->isExport() === true) {
+
+        if ($this->isExport() === true && $this->getCacheFilters() !== false) {
             // Export renderer should always retrieve the filters from cache!
             $this->filters = $this->getCacheFilters();
 
