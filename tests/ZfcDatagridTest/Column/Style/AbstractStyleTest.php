@@ -2,7 +2,6 @@
 namespace ZfcDatagridTest\Column\Style;
 
 use PHPUnit_Framework_TestCase;
-use Zend\Stdlib\ErrorHandler;
 use ZfcDatagrid\Filter;
 
 /**
@@ -38,18 +37,6 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
             ],
         ];
         $this->assertTrue($style->isApply($row));
-    }
-
-    public function testSetByValueException()
-    {
-        /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
-        $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
-
-        ErrorHandler::start(E_USER_DEPRECATED);
-        $style->setByValue($this->column, 'test');
-        $err = ErrorHandler::stop();
-
-        $this->assertInstanceOf('ErrorException', $err);
     }
 
     public function testStyleByValue()

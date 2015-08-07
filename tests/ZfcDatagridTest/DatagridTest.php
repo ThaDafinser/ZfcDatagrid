@@ -3,7 +3,6 @@ namespace ZfcDatagridTest;
 
 use PHPUnit_Framework_TestCase;
 use Zend\Session\Container;
-use Zend\Stdlib\ErrorHandler;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Datagrid;
 
@@ -522,17 +521,6 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->grid->setRowClickAction($action);
         $this->assertEquals($action, $this->grid->getRowClickAction());
         $this->assertTrue($this->grid->hasRowClickAction());
-    }
-
-    public function testSetRendererDeprecated()
-    {
-        $grid = new Datagrid();
-
-        ErrorHandler::start(E_USER_DEPRECATED);
-        $grid->setRenderer('myRenderer');
-        $err = ErrorHandler::stop();
-
-        $this->assertInstanceOf('ErrorException', $err);
     }
 
     public function testRendererName()
