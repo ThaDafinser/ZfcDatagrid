@@ -7,13 +7,11 @@ namespace ZfcDatagrid\Column\Style;
 class CSSClass extends AbstractStyle
 {
     private $class;
-    private $forRow;
 
     /**
      * @param string|array $class
-     * @param bool   $forRow
      */
-    public function __construct($class, $forRow = false)
+    public function __construct($class)
     {
         $this->class  = $class;
         $this->forRow = $forRow;
@@ -27,6 +25,7 @@ class CSSClass extends AbstractStyle
         if (is_array($this->class)) {
             return implode(' ', $this->class);
         }
+
         return $this->class;
     }
 

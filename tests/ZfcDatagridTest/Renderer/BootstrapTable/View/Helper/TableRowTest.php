@@ -150,21 +150,20 @@ class TableRowTest extends PHPUnit_Framework_TestCase
         $myCol = clone $this->myCol;
         $myCol->addStyle(new Style\CSSClass('test-class'));
 
-        $cols = array(
-            $myCol
-        );
+        $cols = [
+            $myCol,
+        ];
         $html = $helper($this->rowWithId, $cols);
         $this->assertContains('<td class="test-class"', $html);
         $this->assertNotContains('<tr class="test-class"', $html);
-
 
         // css class for row
         $myCol = clone $this->myCol;
         $myCol->addStyle(new Style\CSSClass('test-class', true));
 
-        $cols = array(
-            $myCol
-        );
+        $cols = [
+            $myCol,
+        ];
         $html = $helper($this->rowWithId, $cols);
         $this->assertContains('<tr class="test-class"', $html);
         $this->assertNotContains('<td class="test-class"', $html);

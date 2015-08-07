@@ -174,9 +174,9 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
 
         $col1 = clone $this->myCol;
         $col1->addStyle(new Style\CSSClass('test-class'));
-        $cols = array(
-            $col1
-        );
+        $cols = [
+            $col1,
+        ];
 
         $result = $helper($cols);
 
@@ -191,9 +191,9 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
 
         $col1 = clone $this->myCol;
         $col1->addStyle(new Style\CSSClass('test-class', true));
-        $cols = array(
-            $col1
-        );
+        $cols = [
+            $col1,
+        ];
 
         $this->setExpectedException('Exception', 'Currently not supporting css classes in a row!');
         $result = $helper($cols);

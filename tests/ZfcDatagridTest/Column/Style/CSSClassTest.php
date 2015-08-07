@@ -10,18 +10,16 @@ use ZfcDatagrid\Column\Style\CSSClass;
  */
 class CSSClassTest extends PHPUnit_Framework_TestCase
 {
-
     public function testConstruct()
     {
         $testClass = 'test-class';
-        $style = new CSSClass($testClass);
+        $style     = new CSSClass($testClass);
         $this->assertEquals($testClass, $style->getClass());
         $this->assertEquals(false, $style->getForRow());
 
         $style = new CSSClass($testClass, true);
         $this->assertEquals($testClass, $style->getClass());
         $this->assertEquals(true, $style->getForRow());
-
     }
 
     public function testSetClass()
@@ -34,9 +32,8 @@ class CSSClassTest extends PHPUnit_Framework_TestCase
         $style->setClass('another');
         $this->assertEquals('another', $style->getClass());
 
-        $cssStyles = array('first', 'second');
+        $cssStyles = ['first', 'second'];
         $style->setClass($cssStyles);
         $this->assertEquals(implode(' ', $cssStyles), $style->getClass());
     }
-
 }
