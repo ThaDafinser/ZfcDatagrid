@@ -274,6 +274,10 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                     $styleString = 'cellvalue = \'<span style="color: #' . $style->getRgbHexString() . ';">\' + cellvalue + \'</span>\';';
                     break;
 
+                case 'ZfcDatagrid\Column\Style\CSSClass':
+                    $styleString = 'cellvalue = \'<span class="' . $style->getClass() . '">\' + cellvalue + \'</span>\';';
+                    break;
+
                 case 'ZfcDatagrid\Column\Style\BackgroundColor':
                     // do NOTHING! this is done by loadComplete event...
                     // At this stage jqgrid haven't created the columns...

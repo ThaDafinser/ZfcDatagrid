@@ -7,8 +7,8 @@ use ZfcDatagridTest\DataSource\DataSourceTestCase;
  *
  * @copyright goes to: https://github.com/doctrine/doctrine2/blob/master/tests/Doctrine/Tests/OrmTestCase.php
  *
- *            @group DataSource
- *            @covers ZfcDatagrid\DataSource\Doctrine2
+ *  @group DataSource
+ *  @covers ZfcDatagrid\DataSource\Doctrine2
  */
 abstract class AbstractDoctrine2Test extends DataSourceTestCase
 {

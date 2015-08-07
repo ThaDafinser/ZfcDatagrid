@@ -146,6 +146,16 @@ class TableRowTest extends PHPUnit_Framework_TestCase
         $html = $helper($this->rowWithId, $cols);
         $this->assertContains('<td style="background-color: #00ff00"', $html);
 
+        // css class for cell
+        $myCol = clone $this->myCol;
+        $myCol->addStyle(new Style\CSSClass('test-class'));
+
+        $cols = [
+            $myCol,
+        ];
+        $html = $helper($this->rowWithId, $cols);
+        $this->assertContains('<td class="test-class"', $html);
+
         // exception
         $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
 
