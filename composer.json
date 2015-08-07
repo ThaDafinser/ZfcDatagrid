@@ -40,7 +40,8 @@
         
         "doctrine/doctrine-orm-module": "~0.9",
         "zendframework/zend-db": "~2.5",
-        "zendframework/zend-servicemanager": "~2.5"
+        "zendframework/zend-servicemanager": "~2.5",
+        "zendframework/zend-i18n": "~2.5"
     },
     
     "suggest" : {
