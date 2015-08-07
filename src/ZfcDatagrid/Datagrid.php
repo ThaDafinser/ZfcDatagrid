@@ -12,7 +12,7 @@ use Zend\I18n\Translator\Translator;
 use Zend\Mvc\MvcEvent;
 use Zend\Paginator\Paginator;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\Session\Container as SessionContainer;
 use Zend\Stdlib\ResponseInterface;
 use Zend\View\Model\JsonModel;
@@ -21,17 +21,13 @@ use ZfcDatagrid\Column\Style;
 
 class Datagrid implements ServiceLocatorAwareInterface
 {
+    use ServiceLocatorAwareTrait;
+
     /**
      *
      * @var array
      */
     protected $options = [];
-
-    /**
-     *
-     * @var ServiceLocatorInterface
-     */
-    private $serviceLocator;
 
     /**
      *
@@ -360,26 +356,6 @@ class Datagrid implements ServiceLocatorAwareInterface
         }
 
         return $this->cacheId;
-    }
-
-    /**
-     * Set service locator
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-    }
-
-    /**
-     * Get service locator
-     *
-     * @return ServiceLocatorInterface
-     */
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
     }
 
     /**
