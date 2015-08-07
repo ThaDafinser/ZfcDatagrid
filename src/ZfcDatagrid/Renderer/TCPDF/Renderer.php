@@ -50,12 +50,6 @@ class Renderer extends AbstractExport
     public function execute()
     {
         $pdf = $this->getPdf();
-
-        // Check for PDF image header
-        $headerData = $pdf->getHeaderData();
-        if ('' == $headerData['logo']) {
-            $pdf->setHeaderData('./tcpdf_logo.jpg');
-        }
         $pdf->AddPage();
 
         $cols = $this->getColumnsToExport();
