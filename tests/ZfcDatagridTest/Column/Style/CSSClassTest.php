@@ -15,11 +15,6 @@ class CSSClassTest extends PHPUnit_Framework_TestCase
         $testClass = 'test-class';
         $style     = new CSSClass($testClass);
         $this->assertEquals($testClass, $style->getClass());
-        $this->assertEquals(false, $style->getForRow());
-
-        $style = new CSSClass($testClass, true);
-        $this->assertEquals($testClass, $style->getClass());
-        $this->assertEquals(true, $style->getForRow());
     }
 
     public function testSetClass()

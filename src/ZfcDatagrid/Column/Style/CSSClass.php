@@ -14,7 +14,6 @@ class CSSClass extends AbstractStyle
     public function __construct($class)
     {
         $this->class  = $class;
-        $this->forRow = $forRow;
     }
 
     /**

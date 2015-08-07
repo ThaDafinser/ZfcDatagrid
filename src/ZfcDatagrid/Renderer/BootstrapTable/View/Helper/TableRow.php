@@ -154,7 +154,7 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
                             $value = '<s>' . $value . '</s>';
                             break;
 
-                        case 'ZfcDatagrid\Column\Style\CssClass':
+                        case 'ZfcDatagrid\Column\Style\CSSClass':
                             $classes[] = $style->getClass();
                             break;
 

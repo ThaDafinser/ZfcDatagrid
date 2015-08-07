@@ -181,22 +181,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $result = $helper($cols);
 
         $this->assertStringStartsWith('[{name:', $result);
-        $this->assertStringEndsWith('<span class="test-class">\' + cellvalue + \'</span>\'; return cellvalue; }}]', $result);
-    }
-
-    public function testCSSClassRow()
-    {
-        $helper = new Helper\Columns();
-        $helper->setServiceLocator($this->sm);
-
-        $col1 = clone $this->myCol;
-        $col1->addStyle(new Style\CSSClass('test-class', true));
-        $cols = [
-            $col1,
-        ];
-
-        $this->setExpectedException('Exception', 'Currently not supporting css classes in a row!');
-        $result = $helper($cols);
+        $this->assertContains('<span class="test-class">\' + cellvalue + \'</span>\';', $result);
     }
 
     public function testStyleByValueNotEqual()
