@@ -27,6 +27,15 @@ class SelectTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('title', $col->getSelectPart1());
     }
 
+    public function testSelectPart12()
+    {
+        $col = new Column\Select('id', 'user');
+
+        $col->setSelect('id', 'user');
+        $this->assertEquals('id', $col->getSelectPart1());
+        $this->assertEquals('user', $col->getSelectPart2());
+    }
+
     public function testObject()
     {
         $expr = new \Zend\Db\Sql\Expression('Something...');

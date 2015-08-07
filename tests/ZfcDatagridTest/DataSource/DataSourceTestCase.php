@@ -71,7 +71,9 @@ class DataSourceTestCase extends PHPUnit_Framework_TestCase
         // $col1->setType(new Type\Number());
         $this->colVolumne = $col1;
 
-        $col2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col2 = $this->getMockBuilder('ZfcDatagrid\Column\Select')->disableOriginalConstructor()->getMock();
+        $col2->method('getType')
+        ->willReturn(new \ZfcDatagrid\Column\Type\PhpString());
         $col2->setUniqueId('edition');
         $col2->setSelect('edition');
         $this->colEdition = $col2;
