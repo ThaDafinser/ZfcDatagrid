@@ -97,7 +97,7 @@ class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInter
     }
 
     /**
-     * @param  string       $route
+     * @param string $route
      */
     public function setRoute($route)
     {
@@ -113,7 +113,7 @@ class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInter
     }
 
     /**
-     * @param  array        $routeParams
+     * @param array $routeParams
      */
     public function setRouteParams($routeParams)
     {
@@ -129,7 +129,7 @@ class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInter
     }
 
     /**
-     * @param  null|string  $routeKey
+     * @param null|string $routeKey
      */
     public function setRouteKey($routeKey)
     {

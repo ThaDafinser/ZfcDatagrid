@@ -22,7 +22,7 @@ class PhpArray extends AbstractType
     /**
      * Set separator of the string to be used to explode the array
      *
-     * @param  string   $separator
+     * @param string $separator
      */
     public function setSeparator($separator)
     {

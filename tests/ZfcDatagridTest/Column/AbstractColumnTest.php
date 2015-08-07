@@ -253,7 +253,6 @@ class AbstractColumnTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($col->getFormatters()));
     }
 
-
     public function testRowClick()
     {
         /* @var $col \ZfcDatagrid\Column\AbstractColumn */

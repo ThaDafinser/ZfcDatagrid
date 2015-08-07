@@ -40,7 +40,7 @@ class Align extends AbstractStyle
 
     /**
      *
-     * @param  string $alignment
+     * @param string $alignment
      */
     public function setAlignment($alignment)
     {

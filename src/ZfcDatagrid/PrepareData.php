@@ -222,11 +222,11 @@ class PrepareData
                 /*
                  * Custom formatter
                  */
-                if($col->hasFormatters() === true){
+                if ($col->hasFormatters() === true) {
                     foreach ($col->getFormatters() as $formatter) {
                         $formatter->setRowData((array) $row);
                         $formatter->setRendererName($this->getRendererName());
-                        
+
                         $row[$col->getUniqueId()] = $formatter->format($col);
                     }
                 }

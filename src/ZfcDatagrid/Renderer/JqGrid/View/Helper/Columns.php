@@ -24,7 +24,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
     /**
      * Set the service locator.
      *
-     * @param  ServiceLocatorInterface $serviceLocator
+     * @param ServiceLocatorInterface $serviceLocator
      */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
