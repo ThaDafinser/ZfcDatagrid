@@ -428,7 +428,7 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
         $data = $this->data;
 
         $col1 = clone $this->col1;
-        $col1->setFormatters(new \ZfcDatagrid\Column\Formatter\Link());
+        $col1->addFormatter(new \ZfcDatagrid\Column\Formatter\Link());
         $prepare = new PrepareData($data, [
             $this->colId,
             $col1,

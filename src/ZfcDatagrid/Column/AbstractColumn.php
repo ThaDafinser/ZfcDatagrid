@@ -63,7 +63,7 @@ abstract class AbstractColumn
     /**
      * @var AbstractFormatter[]
      */
-    protected $formatters;
+    protected $formatters = [];
 
     /**
      *
@@ -205,7 +205,7 @@ abstract class AbstractColumn
      */
     public function setType(Type\AbstractType $type)
     {
-        if ($type instanceof Type\Image && $this->hasFormatter() === false) {
+        if ($type instanceof Type\Image && $this->hasFormatters() === false) {
             $this->addFormatter(new Formatter\Image());
             $this->setRowClickDisabled(true);
         }
@@ -615,30 +615,24 @@ abstract class AbstractColumn
     /**
      * Set a template formatter and overwrite other formatter
      *
-     * @param AbstractFormatter|AbstractFormatter[] $formatters
+     * @param AbstractFormatter[] $formatters
      */
-    public function setFormatters($formatterList)
+    public function setFormatters(array $formatters)
     {
-        $this->formatters = [];
-
-        if (!is_array($formatterList)) {
-            $formatterList = func_get_args();
-        }
-
-        foreach ($formatterList as $formatter) {
-            $this->addFormatter($formatter);
-        }
+        $this->formatters = $formatters;
     }
 
     /**
      * Set a template formatter and overwrite other formatter
      *
-     * @param AbstractFormatter|AbstractFormatter[] $formatters
+     * @param AbstractFormatter $formatter
      * @deprecated please use setFormatters
      */
-    public function setFormatter($formatterList)
+    public function setFormatter(AbstractFormatter $formatter)
     {
-        return $this->setFormatters($formatterList);
+        trigger_error('Please use setFormatters()', E_DEPRECATED);
+        
+        return $this->setFormatters([$formatter]);
     }
 
     /**
@@ -669,6 +663,8 @@ abstract class AbstractColumn
      */
     public function getFormatter()
     {
+        trigger_error('Please use getFormatters()', E_DEPRECATED);
+        
         return $this->getFormatters();
     }
 
@@ -676,13 +672,20 @@ abstract class AbstractColumn
      *
      * @return boolean
      */
-    public function hasFormatter()
+    public function hasFormatters()
     {
-        if ($this->formatters !== null) {
+        if (count($this->formatters) > 0) {
             return true;
         }
 
         return false;
+    }
+    
+    public function hasFormatter()
+    {
+        trigger_error('Please use hasFormatters()', E_DEPRECATED);
+        
+        return $this->hasFormatter();
     }
 
     /**
