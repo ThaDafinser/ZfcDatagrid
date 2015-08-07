@@ -39,13 +39,16 @@
         "fabpot/php-cs-fixer": "1.10.*",
         
         "doctrine/doctrine-orm-module": "~0.9",
+        
+        "zendframework/zend-console": "~2.5",
         "zendframework/zend-db": "~2.5",
-        "zendframework/zend-servicemanager": "~2.5",
-        "zendframework/zend-i18n": "~2.5"
+        "zendframework/zend-i18n": "~2.5",
+        "zendframework/zend-servicemanager": "~2.5"
     },
     
     "suggest" : {
         "ext-intl": "*",
+        
         "doctrine/doctrine-orm-module": "~0.9",
         "phpoffice/phpexcel": "~1.7",
         "tecnick.com/tcpdf": "~6.0"
