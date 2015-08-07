@@ -275,9 +275,6 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                     break;
 
                 case 'ZfcDatagrid\Column\Style\CSSClass':
-                    if ($style->getForRow()) {
-                        throw new \Exception("Currently not supporting css classes in a row!");
-                    }
                     $styleString = 'cellvalue = \'<span class="' . $style->getClass() . '">\' + cellvalue + \'</span>\';';
                     break;
 

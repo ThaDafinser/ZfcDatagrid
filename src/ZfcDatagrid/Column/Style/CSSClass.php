@@ -37,20 +37,4 @@ class CSSClass extends AbstractStyle
     {
         $this->class = $class;
     }
-
-    /**
-     * @return boolean
-     */
-    public function getForRow()
-    {
-        return $this->forRow;
-    }
-
-    /**
-     * @param boolean $forRow
-     */
-    public function setForRow($forRow)
-    {
-        $this->forRow = (bool) $forRow;
-    }
 }

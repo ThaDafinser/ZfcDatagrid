@@ -39,14 +39,4 @@ class CSSClassTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(implode(' ', $cssStyles), $style->getClass());
     }
 
-
-    public function testForRow()
-    {
-        $style = new CSSClass('something');
-
-        $this->assertFalse($style->getForRow());
-
-        $style->setForRow(true);
-        $this->assertTrue($style->getForRow());
-    }
 }
