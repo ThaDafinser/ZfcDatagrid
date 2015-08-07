@@ -77,6 +77,9 @@ foreach($this->columns as $col){
 foreach($this->rowStyles as $style){
     /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
 
+    $css = '';
+    $cssClass = '';
+    
     switch (get_class($style)) {
 
         case 'ZfcDatagrid\Column\Style\Bold':
@@ -102,13 +105,23 @@ foreach($this->rowStyles as $style){
         case 'ZfcDatagrid\Column\Style\Align':
             $css = '\'text-align\'' . $style->getAlignment();
             break;
+            
+        case 'ZfcDatagrid\Column\Style\CSSClass':
+            $cssClass = $style->getClass();
+            break;
 
         default:
             throw new \Exception('Not defined yet: "' . get_class($style) . '"');
             break;
     }
-    $css = '$(\'#\' + row.idConcated).find(\'td\').css('.$css.');';
-
+    
+    if($css != ''){
+        $css = '$(\'#\' + row.idConcated).find(\'td\').css('.$css.');';
+    }
+    
+    if($cssClass != ''){
+        $cssClass = '$(\'#\' + row.idConcated).find(\'td\').addClass('.$cssClass.');';
+    }
 
     if ($style->hasByValues() === true) {
         foreach ($style->getByValues() as $rule) {
@@ -130,11 +143,21 @@ foreach($this->rowStyles as $style){
             }
 
             $styleString .= 'if(row.'.$colString.' ' . $operator . ' \''. $rule['value'] . '\'){';
-            $styleString .= $css;
+            if($css != ''){
+                $styleString .= $css;
+            }
+            if($cssClass != ''){
+                $styleString .= $cssClass;
+            }
             $styleString .= '}';
         }
     }  else{
-        $styleString  .= $css;
+        if($css != ''){
+            $styleString .= $css;
+        }
+        if($cssClass != ''){
+            $styleString .= $cssClass;
+        }
     }
 }
 
