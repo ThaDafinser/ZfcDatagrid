@@ -82,9 +82,9 @@ class AbstractColumnTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('ZfcDatagrid\Column\Type\AbstractType', $col->getType());
         $this->assertInstanceOf('ZfcDatagrid\Column\Type\PhpArray', $col->getType());
 
-        $this->assertNull($col->getFormatter());
+        $this->assertNull($col->getFormatters());
         $col->setType(new Type\Image());
-        $this->assertInstanceOf('ZfcDatagrid\Column\Formatter\Image', $col->getFormatter());
+        $this->assertInstanceOf('ZfcDatagrid\Column\Formatter\Image', $col->getFormatters()[0]);
     }
 
     public function testSort()
@@ -217,6 +217,42 @@ class AbstractColumnTest extends PHPUnit_Framework_TestCase
         ], $col->getRendererParameters('someRenderer'));
     }
 
+    public function testFormatters()
+    {
+        /* @var $col \ZfcDatagrid\Column\AbstractColumn */
+        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+
+        // DEFAULT
+        $this->assertNull($col->getFormatters());
+        $this->assertFalse($col->hasFormatter());
+
+        $col->setFormatters(new Formatter\Link());
+
+        $this->assertTrue($col->hasFormatter());
+        $this->assertTrue(is_array($col->getFormatters()));
+        $this->assertEquals(1, count($col->getFormatters()));
+        $this->assertInstanceOf('ZfcDatagrid\Column\Formatter\AbstractFormatter', $col->getFormatters()[0]);
+        $this->assertInstanceOf('ZfcDatagrid\Column\Formatter\Link', $col->getFormatters()[0]);
+
+        $col->addFormatter(new Formatter\Link());
+        $this->assertEquals(2, count($col->getFormatters()));
+
+        $col->setFormatters([new Formatter\Link(), new Formatter\Link(), new Formatter\Link()]);
+        $this->assertEquals(3, count($col->getFormatters()));
+    }
+
+    public function testFormattersAdd()
+    {
+        /* @var $col \ZfcDatagrid\Column\AbstractColumn */
+        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+
+        $col->addFormatter(new Formatter\Link());
+
+        $this->assertTrue($col->hasFormatter());
+        $this->assertTrue(is_array($col->getFormatters()));
+        $this->assertEquals(1, count($col->getFormatters()));
+    }
+
     public function testFormatter()
     {
         /* @var $col \ZfcDatagrid\Column\AbstractColumn */
@@ -224,12 +260,19 @@ class AbstractColumnTest extends PHPUnit_Framework_TestCase
 
         // DEFAULT
         $this->assertNull($col->getFormatter());
-        $this->assertFalse($col->hasFormatter());
 
         $col->setFormatter(new Formatter\Link());
-        $this->assertTrue($col->hasFormatter());
-        $this->assertInstanceOf('ZfcDatagrid\Column\Formatter\AbstractFormatter', $col->getFormatter());
-        $this->assertInstanceOf('ZfcDatagrid\Column\Formatter\Link', $col->getFormatter());
+
+        $this->assertTrue(is_array($col->getFormatter()));
+        $this->assertEquals(1, count($col->getFormatter()));
+        $this->assertInstanceOf('ZfcDatagrid\Column\Formatter\AbstractFormatter', $col->getFormatter()[0]);
+        $this->assertInstanceOf('ZfcDatagrid\Column\Formatter\Link', $col->getFormatter()[0]);
+
+        $col->addFormatter(new Formatter\Link());
+        $this->assertEquals(2, count($col->getFormatter()));
+
+        $col->setFormatter([new Formatter\Link(), new Formatter\Link(), new Formatter\Link()]);
+        $this->assertEquals(3, count($col->getFormatter()));
     }
 
     public function testRowClick()
