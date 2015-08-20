@@ -17,6 +17,12 @@ abstract class AbstractAction
 
     /**
      *
+     * @var \ZfcDatagrid\Column\AbstractColumn
+     */
+    protected $useValueOfColAsLabel = false;
+
+    /**
+     *
      * @var array
      */
     protected $htmlAttributes = [];
@@ -51,6 +57,42 @@ abstract class AbstractAction
     public function getLink()
     {
         return $this->getAttribute('href');
+    }
+
+
+    /**
+     * Use the row-value of the column supplied for this action
+     *
+     * @param AbstractColumn $col
+     * @return AbstractAction|AbstractColumn|FALSE
+     */
+    public function useValueOfColAsLabel($col = false) {
+        
+        /*
+         * if column is supplied, set it
+         */
+        if ($col instanceof AbstractColumn) {
+            $this->useValueOfColAsLabel = $col;
+            return $this; //let's be fluid
+        }
+
+        /*
+         * if useValueOfColAsLabel hasn't been set,
+         * then it shouldn't be replace so return false
+         */
+        if ($this->useValueOfColAsLabel === false) {
+            return false;
+        }
+
+        /*
+         * if column has been set return it and $col is not supplied
+         */
+        if ($this->useValueOfColAsLabel instanceof AbstractColumn && $col === false) {
+            return $this->useValueOfColAsLabel;
+        } 
+        
+        throw new \InvalidArgumentException('$col has to be an instance of ZfcDatagrid\Column\AbstractColumn or left blank');
+
     }
 
     /**
