@@ -318,7 +318,7 @@ abstract class AbstractAction
             } else {
                 $isDisplayed = $isDisplayedMatch;
             }
-            }
+        }
 
         return $isDisplayed;
     }
