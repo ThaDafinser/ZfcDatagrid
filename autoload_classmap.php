@@ -23,6 +23,7 @@ return array(
   'ZfcDatagrid\Column\Select'                                        => __DIR__ . '/src/ZfcDatagrid/Column/Select.php',
   'ZfcDatagrid\Column\Style\AbstractColor'                           => __DIR__ . '/src/ZfcDatagrid/Column/Style/AbstractColor.php',
   'ZfcDatagrid\Column\Style\AbstractStyle'                           => __DIR__ . '/src/ZfcDatagrid/Column/Style/AbstractStyle.php',
+  'ZfcDatagrid\Column\Style\CSSClass'                                => __DIR__ . '/src/ZfcDatagrid/Column/Style/CSSClass.php',
   'ZfcDatagrid\Column\Style\BackgroundColor'                         => __DIR__ . '/src/ZfcDatagrid/Column/Style/BackgroundColor.php',
   'ZfcDatagrid\Column\Style\Bold'                                    => __DIR__ . '/src/ZfcDatagrid/Column/Style/Bold.php',
   'ZfcDatagrid\Column\Style\Color'                                   => __DIR__ . '/src/ZfcDatagrid/Column/Style/Color.php',
