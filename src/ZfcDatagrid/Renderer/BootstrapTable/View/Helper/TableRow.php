@@ -168,6 +168,16 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
                 foreach ($col->getActions() as $action) {
                     /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
                     if ($action->isDisplayed($row) === true) {
+			
+			if (($colToUse = $action->useValueOfColAsLabel()) !== false) {
+
+                            $newLabel = $row[$colToUse->getUniqueId()];
+                            //no label => no action
+                            if ($newLabel == '') {
+                                continue;
+                            }
+                            $action->setLabel($newLabel);
+                        }
                         $action->setTitle($this->translate($action->getTitle()));
                         $actions[] = $action->toHtml($row);
                     }
