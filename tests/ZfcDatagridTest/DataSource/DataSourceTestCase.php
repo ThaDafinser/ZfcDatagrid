@@ -3,7 +3,6 @@ namespace ZfcDatagridTest\DataSource;
 
 use PHPUnit_Framework_TestCase;
 use ZfcDatagrid\Column;
-use ZfcDatagrid\Column\Type;
 
 class DataSourceTestCase extends PHPUnit_Framework_TestCase
 {
@@ -66,17 +65,11 @@ class DataSourceTestCase extends PHPUnit_Framework_TestCase
 
         $this->data = $data;
 
-        $col1 = new Column\Select('volume');
-        // intl dependency...
-        // $col1->setType(new Type\Number());
+        $col1             = new Column\Select('volume');
         $this->colVolumne = $col1;
 
-        $col2 = $this->getMockBuilder('ZfcDatagrid\Column\Select')->disableOriginalConstructor()->getMock();
-        $col2->method('getType')
-        ->willReturn(new \ZfcDatagrid\Column\Type\PhpString());
-        $col2->setUniqueId('edition');
-        $col2->setSelect('edition');
-        $this->colEdition = $col2;
+        $col1             = new Column\Select('edition');
+        $this->colEdition = $col1;
 
         $col3                     = new Column\Select('displayName', 'user');
         $this->colUserDisplayName = $col3;
