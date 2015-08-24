@@ -21,14 +21,11 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
     /**
      * Set service locator
      *
-     * @param  ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @param ServiceLocatorInterface $serviceLocator
      */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
-
-        return $this;
     }
 
     /**

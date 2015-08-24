@@ -66,8 +66,6 @@ class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInter
     public function setServiceManager(ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
-
-        return $this;
     }
 
     /**
@@ -99,14 +97,11 @@ class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInter
     }
 
     /**
-     * @param  string       $route
-     * @return GenerateLink
+     * @param string $route
      */
     public function setRoute($route)
     {
         $this->route = $route;
-
-        return $this;
     }
 
     /**
@@ -118,14 +113,11 @@ class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInter
     }
 
     /**
-     * @param  array        $routeParams
-     * @return GenerateLink
+     * @param array $routeParams
      */
     public function setRouteParams($routeParams)
     {
         $this->routeParams = $routeParams;
-
-        return $this;
     }
 
     /**
@@ -137,13 +129,10 @@ class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInter
     }
 
     /**
-     * @param  null|string  $routeKey
-     * @return GenerateLink
+     * @param null|string $routeKey
      */
     public function setRouteKey($routeKey)
     {
         $this->routeKey = $routeKey;
-
-        return $this;
     }
 }
