@@ -226,4 +226,44 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
             $this->column->getUniqueId() => '32',
         ]);
     }
+    
+    public function testIsDisplayedByColumn()
+    {
+        /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
+        $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
+
+        $columnCompare = clone $this->column;
+        $columnCompare->setUniqueId('columnCompare');
+
+        $action->addShowOnValue($this->column, $columnCompare, Filter::GREATER_EQUAL);
+        $this->assertEquals([
+            [
+                'column'   => $this->column,
+                'value'    => $columnCompare,
+                'comparison' => Filter::GREATER_EQUAL,
+            ],
+        ], $action->getShowOnValues());
+
+        $this->assertTrue($action->hasShowOnValues());
+
+        // Test lower value
+        $row = [
+            $this->column->getUniqueId()  => 5,
+            $columnCompare->getUniqueId() => 15,
+        ];
+        $this->assertFalse($action->isDisplayed($row));
+
+        // Test greater value
+        $row = [
+            $this->column->getUniqueId()  => 15,
+            $columnCompare->getUniqueId() => 10,
+        ];
+        $this->assertTrue($action->isDisplayed($row));
+
+        // Test row without compared column
+        $row = [
+            $this->column->getUniqueId() => 15,
+        ];
+        $this->assertTrue($action->isDisplayed($row));
+    }
 }

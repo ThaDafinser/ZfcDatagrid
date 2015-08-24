@@ -298,8 +298,18 @@ abstract class AbstractAction
             if (isset($row[$rule['column']->getUniqueId()])) {
                 $value = $row[$rule['column']->getUniqueId()];
             }
+            
+            if ($rule['value'] instanceof AbstractColumn) {
+                if (isset($row[$rule['value']->getUniqueId()])) {
+                    $ruleValue = $row[$rule['value']->getUniqueId()];
+                } else {
+                    $ruleValue = '';
+                }
+            } else {
+                $ruleValue = $rule['value'];
+            }
 
-            $isDisplayedMatch = Filter::isApply($value, $rule['value'], $rule['comparison']);
+            $isDisplayedMatch = Filter::isApply($value, $ruleValue, $rule['comparison']);
             if ($this->getShowOnValueOperator() == 'OR' && true === $isDisplayedMatch) {
                 // For OR one match is enough
                 return true;
