@@ -35,11 +35,21 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $this->column = $this->getMockBuilder('ZfcDatagrid\Column\Select')->disableOriginalConstructor()->getMock();
+        $this->column->method('getSelectPart1')
+        ->willReturn('myCol');
+        $this->column->method('getType')
+        ->willReturn(new \ZfcDatagrid\Column\Type\PhpString());
+
         $this->column->setUniqueId('myCol');
         $this->column->setSelect('myCol');
 
-        $this->column2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $this->column2 = $this->getMockBuilder('ZfcDatagrid\Column\Select')->disableOriginalConstructor()->getMock();
+        $this->column2->method('getSelectPart1')
+        ->willReturn('myCol2');
+        $this->column2->method('getType')
+        ->willReturn(new \ZfcDatagrid\Column\Type\PhpString());
+
         $this->column2->setUniqueId('myCol2');
         $this->column2->setSelect('myCol2');
 

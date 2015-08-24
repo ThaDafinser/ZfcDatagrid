@@ -340,7 +340,7 @@ class Renderer extends AbstractRenderer
         foreach ($cols as $col) {
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
             $width = $col->getWidth() * $onePercent;
-            $width = (int) floor($col->getWidth() * $onePercent);
+            $width = (int) floor($width);
 
             $colWidths[] = $width;
         }

@@ -3,6 +3,10 @@ namespace ZfcDatagrid\Column;
 
 class Select extends AbstractColumn
 {
+    protected $selectPart1;
+
+    protected $selectPart2 = null;
+
     /**
      * Specific column function filter e.g.
      * WHERE MONTH(%s)
@@ -44,6 +48,37 @@ class Select extends AbstractColumn
         } else {
             throw new \Exception('Column was not initiated correctly, please read the __construct docblock!');
         }
+    }
+
+    /**
+     *
+     * @todo Move this to Column\Select
+     * @deprecated remove this
+     */
+    public function setSelect($part1, $part2 = null)
+    {
+        $this->selectPart1 = $part1;
+        $this->selectPart2 = $part2;
+    }
+
+    /**
+     *
+     * @todo Move this to Column\Select
+     * @deprecated remove this
+     */
+    public function getSelectPart1()
+    {
+        return $this->selectPart1;
+    }
+
+    /**
+     *
+     * @todo Move this to Column\Select
+     * @deprecated remove this
+     */
+    public function getSelectPart2()
+    {
+        return $this->selectPart2;
     }
 
     /**

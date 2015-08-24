@@ -2,7 +2,7 @@
 namespace ZfcDatagrid\Renderer\JqGrid\View\Helper;
 
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\View\Helper\AbstractHelper;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Type;
@@ -21,25 +21,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
 
     const STYLE_STRIKETHROUGH = 'cellvalue = \'<span style="text-decoration: line-through;">\' + cellvalue + \'</span>\';';
 
-    /**
-     * Set the service locator.
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-    }
-
-    /**
-     * Get the service locator.
-     *
-     * @return \Zend\View\HelperPluginManager
-     */
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
-    }
+    use ServiceLocatorAwareTrait;
 
     /**
      *

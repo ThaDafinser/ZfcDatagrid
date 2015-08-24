@@ -37,19 +37,23 @@ class Filter
         $qb   = $this->getQueryBuilder();
         $expr = new Expr();
 
-        $column    = $filter->getColumn();
-        $colString = $column->getSelectPart1();
-        if ($column->getSelectPart2() != '') {
-            $colString .= '.' . $column->getSelectPart2();
+        $col    = $filter->getColumn();
+        if (!$col instanceof Column\Select) {
+            throw new \Exception('This column cannot be filtered: ' . $col->getUniqueId());
         }
-        if ($column instanceof Column\Select && $column->hasFilterSelectExpression()) {
-            $colString = sprintf($column->getFilterSelectExpression(), $colString);
+
+        $colString = $col->getSelectPart1();
+        if ($col->getSelectPart2() != '') {
+            $colString .= '.' . $col->getSelectPart2();
+        }
+        if ($col instanceof Column\Select && $col->hasFilterSelectExpression()) {
+            $colString = sprintf($col->getFilterSelectExpression(), $colString);
         }
         $values = $filter->getValues();
 
         $wheres = [];
         foreach ($values as $key => $value) {
-            $valueParameterName = ':' . str_replace('.', '', $column->getUniqueId() . $key);
+            $valueParameterName = ':' . str_replace('.', '', $col->getUniqueId() . $key);
 
             switch ($filter->getOperator()) {
 

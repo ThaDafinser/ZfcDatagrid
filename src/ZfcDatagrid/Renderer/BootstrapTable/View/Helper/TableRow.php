@@ -2,7 +2,7 @@
 namespace ZfcDatagrid\Renderer\BootstrapTable\View\Helper;
 
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\View\Helper\AbstractHelper;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Action\AbstractAction;
@@ -12,31 +12,7 @@ use ZfcDatagrid\Column\Action\AbstractAction;
  */
 class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
 {
-    /**
-     *
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator = null;
-
-    /**
-     * Set service locator
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-    }
-
-    /**
-     * Get service locator
-     *
-     * @return ServiceLocatorInterface
-     */
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
-    }
+    use ServiceLocatorAwareTrait;
 
     /**
      *

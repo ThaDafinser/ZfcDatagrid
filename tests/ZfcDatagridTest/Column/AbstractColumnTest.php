@@ -32,10 +32,6 @@ class AbstractColumnTest extends PHPUnit_Framework_TestCase
         $col->setUniqueId('unique_id');
         $this->assertEquals('unique_id', $col->getUniqueId());
 
-        $col->setSelect('id', 'user');
-        $this->assertEquals('id', $col->getSelectPart1());
-        $this->assertEquals('user', $col->getSelectPart2());
-
         $col->setWidth(30);
         $this->assertEquals(30, $col->getWidth());
         $col->setWidth(50.53);

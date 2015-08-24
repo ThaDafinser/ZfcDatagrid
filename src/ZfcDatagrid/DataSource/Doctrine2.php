@@ -50,16 +50,18 @@ class Doctrine2 extends AbstractDataSource
          * Step 1) Apply needed columns
          */
         $selectColumns = [];
-        foreach ($this->getColumns() as $column) {
-            if ($column instanceof Column\Select) {
-                $colString = $column->getSelectPart1();
-                if ($column->getSelectPart2() != '') {
-                    $colString .= '.' . $column->getSelectPart2();
-                }
-                $colString .= ' ' . $column->getUniqueId();
-
-                $selectColumns[] = $colString;
+        foreach ($this->getColumns() as $col) {
+            if (!$col instanceof Column\Select) {
+                continue;
             }
+
+            $colString = $col->getSelectPart1();
+            if ($col->getSelectPart2() != '') {
+                $colString .= '.' . $col->getSelectPart2();
+            }
+            $colString .= ' ' . $col->getUniqueId();
+
+            $selectColumns[] = $colString;
         }
         $qb->resetDQLPart('select');
         $qb->select($selectColumns);
@@ -72,19 +74,23 @@ class Doctrine2 extends AbstractDataSource
             $qb->resetDQLPart('orderBy');
 
             foreach ($this->getSortConditions() as $key => $sortCondition) {
-                /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-                $column = $sortCondition['column'];
+                /* @var $col \ZfcDatagrid\Column\AbstractColumn */
+                $col = $sortCondition['column'];
 
-                $colString = $column->getSelectPart1();
-                if ($column->getSelectPart2() != '') {
-                    $colString .= '.' . $column->getSelectPart2();
+                if (!$col instanceof Column\Select) {
+                    throw new \Exception('This column cannot be sorted: ' . $col->getUniqueId());
                 }
 
-                if ($column->getType() instanceof Type\Number) {
+                $colString = $col->getSelectPart1();
+                if ($col->getSelectPart2() != '') {
+                    $colString .= '.' . $col->getSelectPart2();
+                }
+
+                if ($col->getType() instanceof Type\Number) {
                     $qb->addSelect('ABS(' . $colString . ') sortColumn' . $key);
                     $qb->add('orderBy', new Expr\OrderBy('sortColumn' . $key, $sortCondition['sortDirection']), true);
                 } else {
-                    $qb->add('orderBy', new Expr\OrderBy($column->getUniqueId(), $sortCondition['sortDirection']), true);
+                    $qb->add('orderBy', new Expr\OrderBy($col->getUniqueId(), $sortCondition['sortDirection']), true);
                 }
             }
         }

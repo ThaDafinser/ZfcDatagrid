@@ -10,10 +10,6 @@ abstract class AbstractColumn
 
     protected $uniqueId;
 
-    protected $selectPart1;
-
-    protected $selectPart2 = null;
-
     /**
      *
      * @var Type\AbstractType
@@ -100,37 +96,6 @@ abstract class AbstractColumn
     public function getUniqueId()
     {
         return $this->uniqueId;
-    }
-
-    /**
-     *
-     * @todo Move this to Column\Select
-     * @deprecated remove this
-     */
-    public function setSelect($part1, $part2 = null)
-    {
-        $this->selectPart1 = $part1;
-        $this->selectPart2 = $part2;
-    }
-
-    /**
-     *
-     * @todo Move this to Column\Select
-     * @deprecated remove this
-     */
-    public function getSelectPart1()
-    {
-        return $this->selectPart1;
-    }
-
-    /**
-     *
-     * @todo Move this to Column\Select
-     * @deprecated remove this
-     */
-    public function getSelectPart2()
-    {
-        return $this->selectPart2;
     }
 
     /**
@@ -482,7 +447,7 @@ abstract class AbstractColumn
 
     /**
      *
-     * @param boolean $mode
+     * @param mixed $value
      */
     public function setFilterActive($value = '')
     {
@@ -600,7 +565,7 @@ abstract class AbstractColumn
 
     /**
      *
-     * @param  string $rendererType
+     * @param  string $rendererName
      * @return array
      */
     public function getRendererParameters($rendererName = 'jqGrid')
