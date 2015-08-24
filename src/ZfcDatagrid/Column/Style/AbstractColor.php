@@ -69,33 +69,27 @@ class AbstractColor extends AbstractStyle
     /**
      * Set the RGB
      *
-     * @param  int     $red
-     *                        integer 0-255
-     * @param  integer $green
-     *                        0-255
-     * @param  integer $blue
-     *                        0-255
-     * @return self
+     * @param int     $red
+     *                       integer 0-255
+     * @param integer $green
+     *                       0-255
+     * @param integer $blue
+     *                       0-255
      */
     public function setRgb($red, $green, $blue)
     {
         $this->red   = (int) $red;
         $this->green = (int) $green;
         $this->blue  = (int) $blue;
-
-        return $this;
     }
 
     /**
      *
-     * @param  integer $red
-     * @return self
+     * @param integer $red
      */
     public function setRed($red)
     {
         $this->red = (int) $red;
-
-        return $this;
     }
 
     /**
@@ -109,14 +103,11 @@ class AbstractColor extends AbstractStyle
 
     /**
      *
-     * @param  integer $green
-     * @return self
+     * @param integer $green
      */
     public function setGreen($green)
     {
         $this->green = (int) $green;
-
-        return $this;
     }
 
     /**
@@ -130,14 +121,11 @@ class AbstractColor extends AbstractStyle
 
     /**
      *
-     * @param  integer $blue
-     * @return self
+     * @param integer $blue
      */
     public function setBlue($blue)
     {
         $this->blue = (int) $blue;
-
-        return $this;
     }
 
     /**

@@ -294,8 +294,6 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function setSession(SessionContainer $session)
     {
         $this->session = $session;
-
-        return $this;
     }
 
     /**

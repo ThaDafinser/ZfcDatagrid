@@ -56,8 +56,15 @@ abstract class AbstractColumn
 
     protected $rendererParameter = [];
 
-    protected $formatter;
+    /**
+     * @var AbstractFormatter[]
+     */
+    protected $formatters = [];
 
+    /**
+     *
+     * @param $name
+     */
     public function setLabel($name)
     {
         $this->label = (string) $name;
@@ -73,11 +80,19 @@ abstract class AbstractColumn
         return $this->label;
     }
 
+    /**
+     *
+     * @param $id
+     */
     public function setUniqueId($id)
     {
         $this->uniqueId = $id;
     }
 
+    /**
+     *
+     * @return mixed
+     */
     public function getUniqueId()
     {
         return $this->uniqueId;
@@ -155,8 +170,8 @@ abstract class AbstractColumn
      */
     public function setType(Type\AbstractType $type)
     {
-        if ($type instanceof Type\Image && $this->hasFormatter() === false) {
-            $this->setFormatter(new Formatter\Image());
+        if ($type instanceof Type\Image && $this->hasFormatters() === false) {
+            $this->addFormatter(new Formatter\Image());
             $this->setRowClickDisabled(true);
         }
 
@@ -508,11 +523,7 @@ abstract class AbstractColumn
      */
     public function hasReplaceValues()
     {
-        if (count($this->replaceValues) > 0) {
-            return true;
-        }
-
-        return false;
+        return $this->replaceValues ? true : false;
     }
 
     /**
@@ -567,37 +578,79 @@ abstract class AbstractColumn
     }
 
     /**
-     * Set a a template formatter
+     * Set a template formatter and overwrite other formatter
+     *
+     * @param AbstractFormatter[] $formatters
+     */
+    public function setFormatters(array $formatters)
+    {
+        $this->formatters = $formatters;
+    }
+
+    /**
+     * Set a template formatter and overwrite other formatter
      *
      * @param AbstractFormatter $formatter
+     * @deprecated please use setFormatters
      */
     public function setFormatter(AbstractFormatter $formatter)
     {
-        $this->formatter = $formatter;
+        trigger_error('Please use setFormatters()', E_USER_DEPRECATED);
+
+        return $this->setFormatters([$formatter]);
     }
 
     /**
+     * add a template formatter in the list
      *
-     * @param  string $rendererName
-     * @return NULL   AbstractFormatter
+     * @param AbstractFormatter $formatter
+     */
+    public function addFormatter(AbstractFormatter $formatter)
+    {
+        $this->formatters[] = $formatter;
+    }
+
+    /**
+     * return a list of different formatter
+     *
+     * @return AbstractFormatter[]
+     */
+    public function getFormatters()
+    {
+        return $this->formatters;
+    }
+
+    /**
+     * return a list of different formatter
+     *
+     * @return AbstractFormatter[]
+     * @deprecated please use getFormatters
      */
     public function getFormatter()
     {
-        return $this->formatter;
+        trigger_error('Please use getFormatters()', E_USER_DEPRECATED);
+
+        return $this->getFormatters();
     }
 
     /**
      *
-     * @param  string  $rendererType
      * @return boolean
      */
-    public function hasFormatter()
+    public function hasFormatters()
     {
-        if ($this->formatter !== null) {
+        if (count($this->formatters) > 0) {
             return true;
         }
 
         return false;
+    }
+
+    public function hasFormatter()
+    {
+        trigger_error('Please use hasFormatters()', E_USER_DEPRECATED);
+
+        return $this->hasFormatters();
     }
 
     /**
