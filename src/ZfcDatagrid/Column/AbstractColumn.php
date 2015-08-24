@@ -630,7 +630,7 @@ abstract class AbstractColumn
      */
     public function setFormatter(AbstractFormatter $formatter)
     {
-        trigger_error('Please use setFormatters()', E_DEPRECATED);
+        trigger_error('Please use setFormatters()', E_USER_DEPRECATED);
 
         return $this->setFormatters([$formatter]);
     }
@@ -663,7 +663,7 @@ abstract class AbstractColumn
      */
     public function getFormatter()
     {
-        trigger_error('Please use getFormatters()', E_DEPRECATED);
+        trigger_error('Please use getFormatters()', E_USER_DEPRECATED);
 
         return $this->getFormatters();
     }
@@ -683,9 +683,9 @@ abstract class AbstractColumn
 
     public function hasFormatter()
     {
-        trigger_error('Please use hasFormatters()', E_DEPRECATED);
+        trigger_error('Please use hasFormatters()', E_USER_DEPRECATED);
 
-        return $this->hasFormatter();
+        return $this->hasFormatters();
     }
 
     /**
