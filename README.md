@@ -38,22 +38,20 @@ If you want to help out on this project:
 
 ## Installation
 
-### (optional) Create a new ZF2 project
-To get started with a ZF2 application, please see the [Skeleton application](http://framework.zend.com/manual/2.1/en/user-guide/skeleton-application.html)
-
-### Get ZfcDatagrid
-Install it with ``composer`` is easy
+Install it with ``composer``
 ```sh
-php composer.phar require thadafinser/zfc-datagrid:dev-master
+php composer.phar require thadafinser/zfc-datagrid:1.*
 ```
-(If you don't have composer:
-Download it as a zip from github and put in into ``vendor/ZfcDatagrid`` and make sure that autoloading works)
+
+> NOTE: with 1.x we dropped support for other installation technics. Especially the ZF2 autoloading was dropped. You just need to switch to composer installation, which will make your life easier, since it comes with all needed features
 
 Add `ZfcDatagrid` to your `config/application.config.php`
 
 Finally create the folder: `data/ZfcDatagrid`
 
 ### Test if it works
+
+> NOTE: This needs the additional module `ZfcDatagridExamples` https://github.com/ThaDafinser/ZfcDatagridExamples
 ####Browser####
 
 > Attention! Only PhpArray works out of the box!
