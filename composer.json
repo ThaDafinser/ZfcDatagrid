@@ -4,12 +4,18 @@
     "type":        "library",
     "license":     "MIT",
     "keywords": [
+        "zfc-datagrid",
         "ZfcDatagrid",
         "Datagrid",
         "Datatable",
         "module",
         "zf2",
-        "Zend Framework"
+        "Zend Framework",
+        "pdf",
+        "excel",
+        "jqgrid",
+        "bootstrap",
+        "Doctrine"
     ],
     
     "authors": [{
