@@ -16,10 +16,6 @@
         "name": "Martin Keckeis",
         "email": "martin.keckeis1@gmail.com"
     }],
-    
-    "config": {
-    	"process-timeout": 5000
-    },
 
     "require": {
         "php": "~5.5|~7.0",
