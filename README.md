@@ -6,6 +6,7 @@
 [![Latest Stable Version](https://poser.pugx.org/thadafinser/zfc-datagrid/v/stable.png)](https://packagist.org/packages/thadafinser/zfc-datagrid)
 [![Latest Unstable Version](https://poser.pugx.org/thadafinser/zfc-datagrid/v/unstable.png)](https://packagist.org/packages/thadafinser/zfc-datagrid)
 [![License](https://poser.pugx.org/thadafinser/zfc-datagrid/license.png)](https://packagist.org/packages/thadafinser/zfc-datagrid)
+[![Monthly Downloads](https://poser.pugx.org/thadafinser/zfc-datagrid/d/monthly)](https://packagist.org/packages/thadafinser/zfc-datagrid)
 
 A datagrid for ZF2 where the data input and output can be whatever you want...:-)
 
