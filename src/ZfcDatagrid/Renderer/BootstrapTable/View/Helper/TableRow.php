@@ -109,7 +109,7 @@ class TableRow extends AbstractHelper
                 $actions = array();
                 foreach ($col->getActions() as $action) {
                     /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
-                    
+                    $row = (array)$row;
                     if ($action->isDisplayed($row) === true) {
                         $actions[] = $action->toHtml($row);
                     }
