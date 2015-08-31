@@ -1,6 +1,8 @@
 <?php
 namespace ZfcDatagrid\Column\Action;
 
+use ZfcDatagrid\Column\AbstractColumn;
+
 class Button extends AbstractAction
 {
     protected $label = '';
@@ -15,16 +17,16 @@ class Button extends AbstractAction
 
     /**
      *
-     * @param string $name
+     * @param string|AbstractColumn $name
      */
     public function setLabel($name)
     {
-        $this->label = (string) $name;
+        $this->label = $name;
     }
 
     /**
      *
-     * @return string
+     * @return string|AbstractColumn
      */
     public function getLabel()
     {
@@ -37,10 +39,25 @@ class Button extends AbstractAction
      */
     protected function getHtmlType()
     {
+        throw new \Exception('not needed...since we have toHtml() here directly!');
+    }
+
+    /**
+     *
+     * @param  array  $row
+     * @return string
+     */
+    public function toHtml(array $row)
+    {
         if ($this->getLabel() == '') {
             throw new \InvalidArgumentException('A label is required for this action type, please call $action->setLabel()!');
         }
 
-        return $this->getLabel();
+        $label = $this->getLabel();
+        if ($label instanceof AbstractColumn) {
+            $label = $row[$label->getUniqueId()];
+        }
+
+        return '<a ' . $this->getAttributesString($row) . '>' . $label . '</a>';
     }
 }

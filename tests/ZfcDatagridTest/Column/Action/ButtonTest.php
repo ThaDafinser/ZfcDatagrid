@@ -16,19 +16,33 @@ class ButtonTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals([
             'href'  => '#',
-            'class' => 'btn',
+            'class' => 'btn btn-default',
         ], $button->getAttributes());
     }
 
-    public function testLabel()
+    public function testLabelAndToHtml()
     {
         $button = new Button();
 
         $button->setLabel('My label');
         $this->assertEquals('My label', $button->getLabel());
 
-        $html = '<a href="#" class="btn">My label</a>';
+        $html = '<a href="#" class="btn btn-default">My label</a>';
         $this->assertEquals($html, $button->toHtml([]));
+    }
+
+    public function testColumnLabelAndToHtml()
+    {
+        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col->setUniqueId('myCol');
+
+        $button = new Button();
+
+        $button->setLabel($col);
+        $this->assertInstanceOf('ZfcDatagrid\Column\AbstractColumn', $button->getLabel());
+
+        $html = '<a href="#" class="btn btn-default">Blubb</a>';
+        $this->assertEquals($html, $button->toHtml(['myCol' => 'Blubb']));
     }
 
     public function testHtmlException()
