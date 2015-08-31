@@ -32,7 +32,7 @@ return array(
                 ),
                 
                 // The output+save directory
-                'path' => 'public/download',
+                'path' => getcwd() . 'public/download',
                 
                 'mode' => 'direct'
             )
