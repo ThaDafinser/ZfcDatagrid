@@ -39,7 +39,7 @@ class ButtonTest extends PHPUnit_Framework_TestCase
         $button = new Button();
 
         $button->setLabel($col);
-        $this->assertEquals('My label', $button->getLabel());
+        $this->assertInstanceOf('ZfcDatagrid\Column\AbstractColumn', $button->getLabel());
 
         $html = '<a href="#" class="btn">Blubb</a>';
         $this->assertEquals($html, $button->toHtml(['myCol' => 'Blubb']));

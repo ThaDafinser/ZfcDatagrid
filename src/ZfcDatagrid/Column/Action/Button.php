@@ -20,7 +20,7 @@ class Button extends AbstractAction
      */
     public function setLabel($name)
     {
-        $this->label = (string) $name;
+        $this->label = $name;
     }
 
     /**
