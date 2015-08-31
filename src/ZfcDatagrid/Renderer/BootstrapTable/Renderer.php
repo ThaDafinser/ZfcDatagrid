@@ -111,8 +111,8 @@ class Renderer extends AbstractRenderer
         $request = $this->getRequest();
 
         $filters = [];
-        if ($request->isPost() === true && $request->getPost('toolbarFilters') !== null) {
-            foreach ($request->getPost('toolbarFilters') as $uniqueId => $value) {
+        if (($request->isPost() === true || $request->isGet() === true) && $request->getPost('toolbarFilters', $request->getQuery('toolbarFilters')) !== null) {
+            foreach ($request->getPost('toolbarFilters', $request->getQuery('toolbarFilters')) as $uniqueId => $value) {
                 if ($value != '') {
                     foreach ($this->getColumns() as $column) {
                         /* @var $column \ZfcDatagrid\Column\AbstractColumn */
@@ -144,9 +144,9 @@ class Renderer extends AbstractRenderer
         $optionsRenderer = $this->getOptionsRenderer();
         $parameterNames  = $optionsRenderer['parameterNames'];
 
-        if ($this->getRequest() instanceof HttpRequest) {
-            $this->currentPageNumber = (int) $this->getRequest()->getPost($parameterNames['currentPage'], $this->getRequest()
-                ->getQuery($parameterNames['currentPage'], 1));
+        $request = $this->getRequest();
+        if ($request instanceof HttpRequest) {
+            $this->currentPageNumber = (int) $request->getPost($parameterNames['currentPage'], $request->getQuery($parameterNames['currentPage'], 1));
         }
 
         return (int) $this->currentPageNumber;

@@ -12,7 +12,7 @@ foreach($this->parameters as $name => $value){
 foreach($this->exportRenderers as $type => $name){
     $urlExport = $url . '?' . $this->generalParameterNames['rendererType'] . '=' . $type . $parametersAdd;
 ?>
-    <a class="btn" href="<?php echo $urlExport; ?>">
+    <a class="btn btn-default" href="<?php echo $urlExport; ?>">
         <?php echo $name; ?>
     </a>
 <?php 

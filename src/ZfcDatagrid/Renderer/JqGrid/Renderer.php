@@ -56,8 +56,8 @@ class Renderer extends AbstractRenderer
 
         $sortConditions = [];
 
-        $sortColumns    = $request->getPost($parameterNames['sortColumns']);
-        $sortDirections = $request->getPost($parameterNames['sortDirections']);
+        $sortColumns    = $request->getPost($parameterNames['sortColumns'], $request->getQuery($parameterNames['sortColumns']));
+        $sortDirections = $request->getPost($parameterNames['sortDirections'], $request->getQuery($parameterNames['sortDirections']));
         if ($sortColumns != '') {
             $sortColumns    = explode(',', $sortColumns);
             $sortDirections = explode(',', $sortDirections);
@@ -110,13 +110,13 @@ class Renderer extends AbstractRenderer
         $parameterNames  = $optionsRenderer['parameterNames'];
 
         $request  = $this->getRequest();
-        $isSearch = $request->getPost($parameterNames['isSearch']);
+        $isSearch = $request->getPost($parameterNames['isSearch'], $request->getQuery($parameterNames['isSearch']));
         if ('true' == $isSearch) {
             // User filtering
             foreach ($this->getColumns() as $column) {
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-                if ($request->getPost($column->getUniqueId()) != '') {
-                    $value = $request->getPost($column->getUniqueId());
+                if ($request->getPost($column->getUniqueId(), $request->getQuery($column->getUniqueId())) != '') {
+                    $value = $request->getPost($column->getUniqueId(), $request->getQuery($column->getUniqueId()));
 
                     $filter = new \ZfcDatagrid\Filter();
                     $filter->setFromColumn($column, $value);
@@ -145,7 +145,7 @@ class Renderer extends AbstractRenderer
 
         $request = $this->getRequest();
         if ($request instanceof HttpRequest) {
-            $currentPage = $request->getPost($parameterNames['currentPage']);
+            $currentPage = $request->getPost($parameterNames['currentPage'], $request->getQuery($parameterNames['currentPage']));
             if ($currentPage != '') {
                 $this->currentPageNumber = (int) $currentPage;
             }
@@ -157,7 +157,7 @@ class Renderer extends AbstractRenderer
     public function execute()
     {
         $request = $this->getRequest();
-        if ($request->isXmlHttpRequest() === true && $request->isPost() === true && $request->getPost('nd') != '') {
+        if ($request->isXmlHttpRequest() === true && $request->getPost('nd', $request->getQuery('nd')) != '') {
             // AJAX Request...load only data...
             $viewModel = new JsonModel();
             $viewModel->setVariable('data', $this->getDataJqGrid());
