@@ -16,7 +16,7 @@ class ButtonTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals([
             'href'  => '#',
-            'class' => 'btn',
+            'class' => 'btn btn-default',
         ], $button->getAttributes());
     }
 
@@ -27,7 +27,7 @@ class ButtonTest extends PHPUnit_Framework_TestCase
         $button->setLabel('My label');
         $this->assertEquals('My label', $button->getLabel());
 
-        $html = '<a href="#" class="btn">My label</a>';
+        $html = '<a href="#" class="btn btn-default">My label</a>';
         $this->assertEquals($html, $button->toHtml([]));
     }
 
@@ -41,7 +41,7 @@ class ButtonTest extends PHPUnit_Framework_TestCase
         $button->setLabel($col);
         $this->assertInstanceOf('ZfcDatagrid\Column\AbstractColumn', $button->getLabel());
 
-        $html = '<a href="#" class="btn">Blubb</a>';
+        $html = '<a href="#" class="btn btn-default">Blubb</a>';
         $this->assertEquals($html, $button->toHtml(['myCol' => 'Blubb']));
     }
 
