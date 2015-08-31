@@ -141,6 +141,8 @@ class PrepareData
         $data = $this->data;
 
         foreach ($data as $key => &$row) {
+            $row = (array) $row;
+
             $ids = [];
 
             foreach ($this->getColumns() as $col) {
@@ -224,7 +226,7 @@ class PrepareData
                  */
                 if ($col->hasFormatters() === true) {
                     foreach ($col->getFormatters() as $formatter) {
-                        $formatter->setRowData((array) $row);
+                        $formatter->setRowData($row);
                         $formatter->setRendererName($this->getRendererName());
 
                         $row[$col->getUniqueId()] = $formatter->format($col);
