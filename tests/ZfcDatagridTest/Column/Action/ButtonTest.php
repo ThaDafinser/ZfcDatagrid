@@ -20,7 +20,7 @@ class ButtonTest extends PHPUnit_Framework_TestCase
         ], $button->getAttributes());
     }
 
-    public function testLabel()
+    public function testLabelAndToHtml()
     {
         $button = new Button();
 
@@ -29,6 +29,20 @@ class ButtonTest extends PHPUnit_Framework_TestCase
 
         $html = '<a href="#" class="btn">My label</a>';
         $this->assertEquals($html, $button->toHtml([]));
+    }
+
+    public function testColumnLabelAndToHtml()
+    {
+        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col->setUniqueId('myCol');
+
+        $button = new Button();
+
+        $button->setLabel($col);
+        $this->assertEquals('My label', $button->getLabel());
+
+        $html = '<a href="#" class="btn">Blubb</a>';
+        $this->assertEquals($html, $button->toHtml(['myCol' => 'Blubb']));
     }
 
     public function testHtmlException()

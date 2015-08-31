@@ -298,7 +298,7 @@ abstract class AbstractAction
             if (isset($row[$rule['column']->getUniqueId()])) {
                 $value = $row[$rule['column']->getUniqueId()];
             }
-            
+
             if ($rule['value'] instanceof AbstractColumn) {
                 if (isset($row[$rule['value']->getUniqueId()])) {
                     $ruleValue = $row[$rule['value']->getUniqueId()];
