@@ -3,8 +3,6 @@ namespace ZfcDatagrid\Renderer;
 
 use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 use Zend\Cache;
-use Zend\Console\Request as ConsoleRequest;
-use Zend\Http\PhpEnvironment\Request as HttpRequest;
 use Zend\I18n\Translator\Translator;
 use Zend\Mvc\MvcEvent;
 use Zend\Paginator\Paginator;
@@ -580,18 +578,14 @@ abstract class AbstractRenderer implements RendererInterface
     {
         $filters = [];
 
-        // @todo skip this, if $grid->isUserFilterEnabled() ?
+        foreach ($this->getColumns() as $column) {
+            /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+            if ($column->hasFilterDefaultValue() === true) {
+                $filter = new Filter();
+                $filter->setFromColumn($column, $column->getFilterDefaultValue());
+                $filters[] = $filter;
 
-        if ($this->getRequest() instanceof ConsoleRequest || ($this->getRequest() instanceof HttpRequest && ! $this->getRequest()->isPost())) {
-            foreach ($this->getColumns() as $column) {
-                /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-                if ($column->hasFilterDefaultValue() === true) {
-                    $filter = new Filter();
-                    $filter->setFromColumn($column, $column->getFilterDefaultValue());
-                    $filters[] = $filter;
-
-                    $column->setFilterActive($filter->getDisplayColumnValue());
-                }
+                $column->setFilterActive($filter->getDisplayColumnValue());
             }
         }
 

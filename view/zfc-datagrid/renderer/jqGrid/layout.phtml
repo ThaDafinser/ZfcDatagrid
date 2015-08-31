@@ -208,7 +208,7 @@ var grid_<?php echo $this->gridId; ?> = $('#<?php echo $this->gridId; ?>').jqGri
     
     rowNum: <?php echo $itemCountPerPage; ?>,
 
-	mtype : 'POST',
+	mtype : '<?= $parameterNames['method']; ?>',
     postData: {
         <?php
         echo implode(',', $parametersHtml);

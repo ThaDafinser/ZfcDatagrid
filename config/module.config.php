@@ -63,6 +63,8 @@ return [
                     'sortDirections' => 'sortDirections',
 
                     'massIds' => 'ids',
+
+                    'method' => 'POST',
                 ],
 
                 'daterange' => [
@@ -80,6 +82,8 @@ return [
                     'isSearch'       => 'isSearch',
 
                     'massIds' => 'ids',
+
+                    'method' => 'POST',
                 ],
             ],
 
