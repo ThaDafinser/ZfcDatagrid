@@ -94,6 +94,8 @@ class Filter
         $inputFilterValue = (string) $inputFilterValue;
         $inputFilterValue = trim($inputFilterValue);
 
+        $this->displayColumnValue = $inputFilterValue;
+
         $operator = $defaultOperator;
         $value    = $inputFilterValue;
 
@@ -203,20 +205,12 @@ class Filter
         }
 
         if (self::BETWEEN == $operator) {
-            // Check if column is a DateTime type and if Daterange picker is enabled
-            if ($this->getColumn()->getType() instanceof Column\Type\DateTime && $this->getColumn()
-                ->getType()
-                ->isDaterangePickerEnabled() === true) {
-                $this->displayColumnValue = implode(' - ', $value);
-            } else {
+            if (!$this->getColumn()->getType() instanceof Column\Type\DateTime) {
                 $value = [
                     min($value),
                     max($value),
                 ];
-                $this->displayColumnValue = sprintf($operator, $value[0], $value[1]);
             }
-        } else {
-            $this->displayColumnValue = sprintf($operator, implode(',', $value));
         }
 
         /*
