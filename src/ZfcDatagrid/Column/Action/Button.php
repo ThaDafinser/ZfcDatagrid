@@ -10,6 +10,7 @@ class Button extends AbstractAction
         parent::__construct();
 
         $this->addClass('btn');
+        $this->addClass('btn-default');
     }
 
     /**
