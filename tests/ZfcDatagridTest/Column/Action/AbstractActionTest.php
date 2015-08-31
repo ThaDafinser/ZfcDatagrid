@@ -226,7 +226,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
             $this->column->getUniqueId() => '32',
         ]);
     }
-    
+
     public function testIsDisplayedByColumn()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
@@ -238,8 +238,8 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         $action->addShowOnValue($this->column, $columnCompare, Filter::GREATER_EQUAL);
         $this->assertEquals([
             [
-                'column'   => $this->column,
-                'value'    => $columnCompare,
+                'column'     => $this->column,
+                'value'      => $columnCompare,
                 'comparison' => Filter::GREATER_EQUAL,
             ],
         ], $action->getShowOnValues());
