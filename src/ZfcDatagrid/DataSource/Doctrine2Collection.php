@@ -48,6 +48,10 @@ class Doctrine2Collection extends AbstractDataSource
         return $this->data;
     }
 
+    /**
+     *
+     * @param EntityManager $em
+     */
     public function setEntityManager(EntityManager $em)
     {
         $this->em = $em;
@@ -62,6 +66,9 @@ class Doctrine2Collection extends AbstractDataSource
         return $this->em;
     }
 
+    /**
+     *
+     */
     public function execute()
     {
         $hydrator = new DoctrineHydrator($this->getEntityManager());
@@ -72,7 +79,7 @@ class Doctrine2Collection extends AbstractDataSource
 
             $rowExtracted = [];
             foreach ($this->getColumns() as $col) {
-                /* @var $col \ZfcDatagrid\Column\AbstractColumn */
+                /* @var $col \ZfcDatagrid\Column\Select */
                 if (!$col instanceof Column\Select) {
                     continue;
                 }

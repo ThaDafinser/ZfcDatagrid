@@ -9,6 +9,10 @@ use ZfcDatagrid\Column;
 
 abstract class AbstractExport extends AbstractRenderer
 {
+    /**
+     *
+     * @var array
+     */
     protected $allowedColumnTypes = [
         'ZfcDatagrid\Column\Type\DateTime',
         'ZfcDatagrid\Column\Type\Number',
@@ -16,12 +20,17 @@ abstract class AbstractExport extends AbstractRenderer
         'ZfcDatagrid\Column\Type\PhpString',
     ];
 
+    /**
+     *
+     * @var Column\AbstractColumn[]
+     */
     protected $columnsToExport;
 
     /**
      * Decide which columns we want to display
      *
      * @return Column\AbstractColumn[]
+     * @throws \Exception
      */
     protected function getColumnsToExport()
     {
@@ -37,7 +46,7 @@ abstract class AbstractExport extends AbstractRenderer
                 $columnsToExport[] = $column;
             }
         }
-        if (count($columnsToExport) === 0) {
+        if (empty($columnsToExport)) {
             throw new \Exception('No columns to export available');
         }
 
@@ -50,6 +59,7 @@ abstract class AbstractExport extends AbstractRenderer
      * Get the paper width in MM (milimeter)
      *
      * @return float
+     * @throws \Exception
      */
     protected function getPaperWidth()
     {

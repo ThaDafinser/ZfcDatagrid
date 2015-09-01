@@ -8,16 +8,25 @@ use ZfcDatagrid\Renderer\AbstractRenderer;
 
 class Renderer extends AbstractRenderer
 {
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'jqGrid';
     }
 
+    /**
+     * @return bool
+     */
     public function isHtml()
     {
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function isExport()
     {
         return false;
@@ -26,6 +35,7 @@ class Renderer extends AbstractRenderer
     /**
      *
      * @return HttpRequest
+     * @throws \Exception
      */
     public function getRequest()
     {
@@ -42,6 +52,7 @@ class Renderer extends AbstractRenderer
      * @see \ZfcDatagrid\Renderer\AbstractRenderer::getSortConditions()
      *
      * @return array
+     * @throws \Exception
      */
     public function getSortConditions()
     {
@@ -87,7 +98,7 @@ class Renderer extends AbstractRenderer
             }
         }
 
-        if (count($sortConditions) > 0) {
+        if (!empty($sortConditions)) {
             $this->sortConditions = $sortConditions;
         } else {
             // No user sorting -> get default sorting
@@ -97,6 +108,10 @@ class Renderer extends AbstractRenderer
         return $this->sortConditions;
     }
 
+    /**
+     * @return array
+     * @throws \Exception
+     */
     public function getFilters()
     {
         if (is_array($this->filters)) {
@@ -128,7 +143,7 @@ class Renderer extends AbstractRenderer
             }
         }
 
-        if (count($filters) === 0) {
+        if (empty($filters)) {
             // No user sorting -> get default sorting
             $filters = $this->getFiltersDefault();
         }

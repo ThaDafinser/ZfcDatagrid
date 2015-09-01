@@ -23,7 +23,8 @@ class ZendSelect extends AbstractDataSource
     /**
      * Data source
      *
-     * @param mixed $data
+     * @param  Sql\Select                $data
+     * @throws \InvalidArgumentException
      */
     public function __construct($data)
     {
@@ -43,6 +44,10 @@ class ZendSelect extends AbstractDataSource
         return $this->select;
     }
 
+    /**
+     * @param $adapterOrSqlObject
+     * @throws \InvalidArgumentException
+     */
     public function setAdapter($adapterOrSqlObject)
     {
         if ($adapterOrSqlObject instanceof \Zend\Db\Sql\Sql) {
@@ -63,6 +68,10 @@ class ZendSelect extends AbstractDataSource
         return $this->sqlObject;
     }
 
+    /**
+     *
+     * @throws \Exception
+     */
     public function execute()
     {
         if ($this->getAdapter() === null || ! $this->getAdapter() instanceof \Zend\Db\Sql\Sql) {
@@ -102,11 +111,12 @@ class ZendSelect extends AbstractDataSource
         /*
          * Step 2) Apply sorting
          */
-        if (count($this->getSortConditions()) > 0) {
+        if (!empty($this->getSortConditions())) {
             // Minimum one sort condition given -> so reset the default orderBy
             $select->reset(Sql\Select::ORDER);
 
             foreach ($this->getSortConditions() as $sortCondition) {
+                /** @var \ZfcDataGrid\Column\AbstractColumn $col */
                 $col = $sortCondition['column'];
                 $select->order($col->getUniqueId() . ' ' . $sortCondition['sortDirection']);
             }

@@ -21,6 +21,10 @@ abstract class AbstractAction
      */
     protected $htmlAttributes = [];
 
+    /**
+     *
+     * @var string
+     */
     protected $showOnValueOperator = 'OR';
 
     /**

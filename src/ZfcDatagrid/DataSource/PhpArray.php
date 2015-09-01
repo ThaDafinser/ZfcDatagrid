@@ -98,7 +98,7 @@ class PhpArray extends AbstractDataSource
 
     /**
      *
-     * @param  unknown $sortCondition
+     * @param  array $sortCondition
      * @return array
      */
     private function getSortArrayParameter($sortCondition)

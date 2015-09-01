@@ -27,16 +27,28 @@ class Renderer extends AbstractRenderer
      */
     private $columnsToDisplay;
 
+    /**
+     *
+     * @return string
+     */
     public function getName()
     {
         return 'zendTable';
     }
 
+    /**
+     *
+     * @return bool
+     */
     public function isExport()
     {
         return false;
     }
 
+    /**
+     *
+     * @return bool
+     */
     public function isHtml()
     {
         return false;
@@ -45,6 +57,7 @@ class Renderer extends AbstractRenderer
     /**
      *
      * @return ConsoleRequest
+     * @throws \Exception
      */
     public function getRequest()
     {
@@ -128,7 +141,7 @@ class Renderer extends AbstractRenderer
             }
         }
 
-        if (count($sortConditions) > 0) {
+        if (!empty($sortConditions)) {
             $this->sortConditions = $sortConditions;
         } else {
             // No user sorting -> get default sorting
@@ -167,6 +180,12 @@ class Renderer extends AbstractRenderer
         return (int) 1;
     }
 
+    /**
+     *
+     * @param  int        $defaultItems
+     * @return int
+     * @throws \Exception
+     */
     public function getItemsPerPage($defaultItems = 25)
     {
         $request = $this->getRequest();
@@ -180,6 +199,10 @@ class Renderer extends AbstractRenderer
         return (int) $defaultItems;
     }
 
+    /**
+     *
+     * @return \Zend\Stdlib\ResponseInterface
+     */
     public function execute()
     {
         $textTable = clone $this->getTable();
@@ -297,6 +320,7 @@ class Renderer extends AbstractRenderer
      * Decide which columns we want to display
      *
      * @return Column\AbstractColumn[]
+     * @throws \Exception
      */
     private function getColumnsToDisplay()
     {
@@ -312,7 +336,7 @@ class Renderer extends AbstractRenderer
                 $columnsToDisplay[] = $column;
             }
         }
-        if (count($columnsToDisplay) === 0) {
+        if (empty($columnsToDisplay)) {
             throw new \Exception('No columns to display available');
         }
 

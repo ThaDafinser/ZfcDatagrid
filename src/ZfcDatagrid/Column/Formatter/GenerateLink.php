@@ -7,6 +7,7 @@ use ZfcDatagrid\Column\AbstractColumn;
 
 class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInterface
 {
+    /** @var array */
     protected $validRenderers = [
         'jqGrid',
         'bootstrapTable',

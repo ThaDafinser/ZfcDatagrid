@@ -70,7 +70,7 @@ class Filter
      * Apply a filter based on a column
      *
      * @param Column\AbstractColumn $column
-     * @param unknown               $inputFilterValue
+     * @param string                $inputFilterValue
      */
     public function setFromColumn(Column\AbstractColumn $column, $inputFilterValue)
     {
@@ -193,9 +193,8 @@ class Filter
         /*
          * Handle multiple values
          */
-        if ($this->getColumn()->getType() instanceof Column\Type\DateTime && $this->getColumn()
-            ->getType()
-            ->isDaterangePickerEnabled() === true) {
+        $columnType = $this->getColumn()->getType();
+        if ($columnType instanceof Column\Type\DateTime && $columnType->isDaterangePickerEnabled() === true) {
             $value = explode(' - ', $value);
         } elseif (! is_array($value)) {
             $value = explode(',', $value);
@@ -243,7 +242,7 @@ class Filter
     /**
      * Only needed for column filter
      *
-     * @return \ZfcDatagrid\Column\AbstractColumn
+     * @return Column\AbstractColumn
      */
     public function getColumn()
     {
@@ -387,10 +386,10 @@ class Filter
 
     /**
      *
-     * @param  unknown $currentValue
-     * @param  unknown $expectedValue
-     * @param  string  $operator
-     * @return array
+     * @param  string   $currentValue
+     * @param  string   $expectedValue
+     * @param  string   $operator
+     * @return string[]
      */
     private static function convertValues($currentValue, $expectedValue, $operator = Filter::EQUAL)
     {

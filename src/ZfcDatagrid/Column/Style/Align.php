@@ -33,8 +33,15 @@ class Align extends AbstractStyle
      */
     protected $alignment;
 
-    public function __construct($alignment = self::LEFT)
+    /**
+     * @param string|null $alignment
+     */
+    public function __construct($alignment = null)
     {
+        if (is_null($alignment)) {
+            $alignment = self::$LEFT;
+        }
+
         $this->setAlignment($alignment);
     }
 

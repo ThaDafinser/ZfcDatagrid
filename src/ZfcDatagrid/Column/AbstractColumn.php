@@ -597,7 +597,7 @@ abstract class AbstractColumn
     {
         trigger_error('Please use setFormatters()', E_USER_DEPRECATED);
 
-        return $this->setFormatters([$formatter]);
+        $this->setFormatters([$formatter]);
     }
 
     /**

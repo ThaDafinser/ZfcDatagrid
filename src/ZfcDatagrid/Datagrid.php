@@ -601,7 +601,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     /**
      * Create a column from array instanceof
      *
-     * @param mixed $col
+     * @param array $config
      *
      * @return Column\AbstractColumn
      */
@@ -862,6 +862,7 @@ class Datagrid implements ServiceLocatorAwareInterface
     /**
      * Return the current renderer
      *
+     * @throws \Exception
      * @return \ZfcDatagrid\Renderer\AbstractRenderer
      */
     public function getRenderer()
@@ -1129,7 +1130,8 @@ class Datagrid implements ServiceLocatorAwareInterface
     /**
      * Set a custom ViewModel...generally NOT necessary!
      *
-     * @param ViewModel $viewModel
+     * @param  ViewModel  $viewModel
+     * @throws \Exception
      */
     public function setViewModel(ViewModel $viewModel)
     {

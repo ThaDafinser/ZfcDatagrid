@@ -32,7 +32,8 @@
         "zendframework/zend-view": "~2.5",
         "zendframework/zend-http": "~2.5",
         "zendframework/zend-paginator": "~2.5",
-        "zendframework/zend-cache": "~2.5"
+        "zendframework/zend-cache": "~2.5",
+        "zendframework/zend-text": "~2.5"
     },
     
     "require-dev": {

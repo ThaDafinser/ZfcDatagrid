@@ -42,8 +42,8 @@ class Object implements DataPopulationInterface
     /**
      * Apply a dynamic parameter based on row/column value
      *
-     * @param string         $objectParameterName
-     * @param AbstractColumn $column
+     * @param string                $objectParameterName
+     * @param Column\AbstractColumn $column
      */
     public function addObjectParameterColumn($objectParameterName, Column\AbstractColumn $column)
     {
