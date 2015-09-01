@@ -5,15 +5,15 @@ use ZfcDatagrid\Column\AbstractColumn;
 
 class FileSize extends AbstractFormatter
 {
-        /**
-         * We implement isApply here ourself, because it's always valid!
-         *
-         * @var array
-         */
-        protected $validRenderers = [];
+    /**
+     * We implement isApply here ourself, because it's always valid!
+     *
+     * @var array
+     */
+    protected $validRenderers = [];
 
-        /** @var array */
-        protected static $prefixes = [
+    /** @var array */
+    protected static $prefixes = [
         '',
         'K',
         'M',
@@ -25,13 +25,13 @@ class FileSize extends AbstractFormatter
         'Y',
     ];
 
-        /**
-         * @return bool
-         */
-        public function isApply()
-        {
-            return true;
-        }
+    /**
+     * @return bool
+     */
+    public function isApply()
+    {
+        return true;
+    }
 
     /**
      * The value should be in bytes
