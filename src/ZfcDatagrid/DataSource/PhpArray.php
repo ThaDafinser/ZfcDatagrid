@@ -2,6 +2,7 @@
 namespace ZfcDatagrid\DataSource;
 
 use Zend\Paginator\Adapter\ArrayAdapter as PaginatorAdapter;
+use ZfcDatagrid\Column;
 
 class PhpArray extends AbstractDataSource
 {
@@ -68,8 +69,17 @@ class PhpArray extends AbstractDataSource
          * @todo ? Better performance or let it be?
          */
         $selectedColumns = [];
-        foreach ($this->getColumns() as $column) {
-            $selectedColumns[] = $column->getUniqueId();
+        foreach ($this->getColumns() as $col) {
+            if (!$col instanceof Column\Select) {
+                continue;
+            }
+
+            $colString = $col->getSelectPart1();
+            if ($col->getSelectPart2() != '') {
+                $colString = $col->getSelectPart1() . '_' . $col->getSelectPart2();
+            }
+
+            $selectedColumns[] = $colString;
         }
 
         foreach ($data as &$row) {
