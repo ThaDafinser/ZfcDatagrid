@@ -991,10 +991,10 @@ class Datagrid implements ServiceLocatorAwareInterface
         }
 
         /*
+         * check if the export is enabled
          * Save cache
          */
-
-        if ($renderer->isExport() === false) {
+        if ($this->getOptions()['settings']['export']['enabled'] && $renderer->isExport() === false) {
             $cacheData = [
                 'sortConditions' => $renderer->getSortConditions(),
                 'filters'        => $renderer->getFilters(),
