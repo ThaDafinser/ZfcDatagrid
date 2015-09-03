@@ -8,6 +8,11 @@ use ZfcDatagrid\Datagrid;
 
 class DatagridFactory implements FactoryInterface
 {
+    /**
+     *
+     * @param  ServiceLocatorInterface $sm
+     * @return Datagrid
+     */
     public function createService(ServiceLocatorInterface $sm)
     {
         $config = $sm->get('config');

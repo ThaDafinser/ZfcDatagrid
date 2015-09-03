@@ -10,6 +10,7 @@ namespace ZfcDatagrid\Column;
  */
 class Action extends AbstractColumn
 {
+    /** @var Action\AbstractAction[] */
     private $actions = [];
 
     /**
@@ -37,7 +38,7 @@ class Action extends AbstractColumn
 
     /**
      *
-     * @return array
+     * @return Action\AbstractAction[]
      */
     public function getActions()
     {
@@ -55,13 +56,15 @@ class Action extends AbstractColumn
     /**
      * @param int $key
      *
-     * @return mixed
+     * @return Action\AbstractAction|null
      */
     public function getAction($key)
     {
         if (isset($this->actions[$key])) {
             return $this->actions[$key];
         }
+
+        return;
     }
 
     /**

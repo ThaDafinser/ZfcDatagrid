@@ -45,7 +45,8 @@
         "zendframework/zend-console": "~2.5",
         "zendframework/zend-db": "~2.5",
         "zendframework/zend-i18n": "~2.5",
-        "zendframework/zend-servicemanager": "~2.5"
+        "zendframework/zend-servicemanager": "~2.5",
+        "zendframework/zend-text": "~2.5"
     },
     
     "suggest" : {
@@ -53,7 +54,9 @@
         
         "doctrine/doctrine-orm-module": "~0.9",
         "phpoffice/phpexcel": "~1.7",
-        "tecnick.com/tcpdf": "~6.0"
+        "tecnick.com/tcpdf": "~6.0",
+
+        "zendframework/zend-text": "~2.5"
     },
     
     "autoload": {

@@ -19,7 +19,8 @@ class ExternalData extends AbstractColumn
 
     /**
      *
-     * @param DataPopulation\DataPopulationInterface $dataPopulation
+     * @param  DataPopulation\DataPopulationInterface $dataPopulation
+     * @throws \Exception
      */
     public function setDataPopulation(DataPopulation\DataPopulationInterface $dataPopulation)
     {
@@ -33,6 +34,7 @@ class ExternalData extends AbstractColumn
     /**
      *
      * @return DataPopulation\DataPopulationInterface
+     * @throws \InvalidArgumentException
      */
     public function getDataPopulation()
     {

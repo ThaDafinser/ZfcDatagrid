@@ -22,7 +22,7 @@ class HtmlTag extends AbstractFormatter
 
     /**
      *
-     * @var \ZfcDatagrid\Column\AbstractColumn[]
+     * @var AbstractColumn[]
      */
     protected $linkColumnPlaceholders = [];
 
@@ -131,7 +131,7 @@ class HtmlTag extends AbstractFormatter
 
     /**
      *
-     * @return \ZfcDatagrid\Column\AbstractColumn[]
+     * @return AbstractColumn[]
      */
     public function getLinkColumnPlaceholders()
     {

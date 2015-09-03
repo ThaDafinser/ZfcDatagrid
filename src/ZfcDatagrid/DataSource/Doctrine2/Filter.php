@@ -14,6 +14,9 @@ class Filter
      */
     private $qb;
 
+    /**
+     * @param QueryBuilder $qb
+     */
     public function __construct(QueryBuilder $qb)
     {
         $this->qb = $qb;
@@ -29,8 +32,8 @@ class Filter
     }
 
     /**
-     * @param  DatagridFilter            $filter
-     * @throws \InvalidArgumentException
+     * @param  DatagridFilter $filter
+     * @throws \Exception
      */
     public function applyFilter(DatagridFilter $filter)
     {
@@ -133,7 +136,7 @@ class Filter
             }
         }
 
-        if (count($wheres) > 0) {
+        if (!empty($wheres)) {
             $orWhere = $qb->expr()->orX();
             $orWhere->addMultiple($wheres);
 

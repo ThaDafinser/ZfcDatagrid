@@ -30,6 +30,11 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
         return $name;
     }
 
+    /**
+     * @param $row
+     * @param  bool|true $open
+     * @return string
+     */
     private function getTr($row, $open = true)
     {
         if ($open !== true) {
@@ -43,6 +48,11 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
         }
     }
 
+    /**
+     * @param $dataValue
+     * @param  array  $attributes
+     * @return string
+     */
     private function getTd($dataValue, $attributes = [])
     {
         $attr = [];

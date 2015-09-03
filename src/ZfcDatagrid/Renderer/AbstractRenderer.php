@@ -42,14 +42,29 @@ abstract class AbstractRenderer implements RendererInterface
      */
     protected $paginator;
 
+    /**
+     * @var \ZfcDatagrid\Column\AbstractColumn[]
+     */
     protected $columns = [];
 
+    /**
+     * @var \ZfcDataGrid\Column\Style\AbstractStyle[]
+     */
     protected $rowStyles = [];
 
+    /**
+     * @var array
+     */
     protected $sortConditions = null;
 
+    /**
+     * @var Filter[]
+     */
     protected $filters = null;
 
+    /**
+     * @var integer
+     */
     protected $currentPageNumber = null;
 
     /**
@@ -70,8 +85,16 @@ abstract class AbstractRenderer implements RendererInterface
      */
     protected $viewModel;
 
+    /**
+     *
+     * @var string
+     */
     protected $template;
 
+    /**
+     *
+     * @var string
+     */
     protected $templateToolbar;
 
     /**
@@ -159,9 +182,9 @@ abstract class AbstractRenderer implements RendererInterface
     /**
      * Get the default template path (if there is no own set)
      *
-     * @param  string $type
-     *                      layout or toolbar
+     * @param  string     $type layout or toolbar
      * @return string
+     * @throws \Exception
      */
     private function getTemplatePathDefault($type = 'layout')
     {
@@ -189,6 +212,10 @@ abstract class AbstractRenderer implements RendererInterface
         $this->templateToolbar = (string) $name;
     }
 
+    /**
+     * @return string
+     * @throws \Exception
+     */
     public function getToolbarTemplate()
     {
         if (null === $this->templateToolbar) {
@@ -201,7 +228,7 @@ abstract class AbstractRenderer implements RendererInterface
     /**
      * Set the toolbar view template variables
      *
-     * @param unknown $name
+     * @param array $variables
      */
     public function setToolbarTemplateVariables(array $variables)
     {
@@ -260,7 +287,7 @@ abstract class AbstractRenderer implements RendererInterface
 
     /**
      *
-     * @param array $rowStyles
+     * @param \ZfcDataGrid\Column\Style\AbstractStyle[] $rowStyles
      */
     public function setRowStyles($rowStyles = [])
     {
@@ -269,7 +296,7 @@ abstract class AbstractRenderer implements RendererInterface
 
     /**
      *
-     * @return array
+     * @return \ZfcDataGrid\Column\Style\AbstractStyle[]
      */
     public function getRowStyles()
     {
@@ -549,7 +576,7 @@ abstract class AbstractRenderer implements RendererInterface
 
     /**
      *
-     * @return array
+     * @return Filter[]
      */
     public function getFilters()
     {
@@ -572,7 +599,7 @@ abstract class AbstractRenderer implements RendererInterface
     /**
      * Get the default filter conditions defined for the columns
      *
-     * @return array
+     * @return Filter[]
      */
     public function getFiltersDefault()
     {

@@ -39,7 +39,8 @@ abstract class AbstractDataSource implements DataSourceInterface
      * - Doctrine2: Doctrine\ORM\QueryBuilder
      * - ...
      *
-     * @param mixed $data
+     * @param  mixed      $data
+     * @throws \Exception
      */
     public function __construct($data)
     {

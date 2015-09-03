@@ -3,8 +3,10 @@ namespace ZfcDatagrid\Column;
 
 class Select extends AbstractColumn
 {
+    /** @var  string */
     protected $selectPart1;
 
+    /** @var string|object|null  */
     protected $selectPart2 = null;
 
     /**
@@ -24,8 +26,9 @@ class Select extends AbstractColumn
      * $column = new Column('(SELECT GROUP_CONCAT....)', 'someAlias')
      * Use the subselect -> UNIQUE will be the second parameter
      *
-     * @param string|object $columnOrIndexOrObject
-     * @param string        $tableOrAliasOrUniqueId
+     * @param  string|object $columnOrIndexOrObject
+     * @param  string        $tableOrAliasOrUniqueId
+     * @throws \Exception
      */
     public function __construct($columnOrIndexOrObject, $tableOrAliasOrUniqueId = null)
     {
@@ -52,8 +55,8 @@ class Select extends AbstractColumn
 
     /**
      *
-     * @todo Move this to Column\Select
-     * @deprecated remove this
+     * @params string $part1
+     * @params string|object|null $part2
      */
     public function setSelect($part1, $part2 = null)
     {
@@ -63,8 +66,7 @@ class Select extends AbstractColumn
 
     /**
      *
-     * @todo Move this to Column\Select
-     * @deprecated remove this
+     * @return string
      */
     public function getSelectPart1()
     {
@@ -73,8 +75,7 @@ class Select extends AbstractColumn
 
     /**
      *
-     * @todo Move this to Column\Select
-     * @deprecated remove this
+     * @return string|object|null
      */
     public function getSelectPart2()
     {

@@ -156,6 +156,7 @@ class PrepareData
                  * Maybe the data come not from another DataSource?
                  */
                 if ($col instanceof Column\ExternalData) {
+                    /* @var $col \ZfcDatagrid\Column\ExternalData */
                     // @todo improve the interface...
                     $dataPopulation = $col->getDataPopulation();
 

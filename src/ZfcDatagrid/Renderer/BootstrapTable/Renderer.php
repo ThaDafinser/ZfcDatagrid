@@ -7,16 +7,25 @@ use ZfcDatagrid\Renderer\AbstractRenderer;
 
 class Renderer extends AbstractRenderer
 {
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'bootstrapTable';
     }
 
+    /**
+     * @return bool
+     */
     public function isExport()
     {
         return false;
     }
 
+    /**
+     * @return bool
+     */
     public function isHtml()
     {
         return true;
@@ -25,6 +34,7 @@ class Renderer extends AbstractRenderer
     /**
      *
      * @return HttpRequest
+     * @throws \Exception
      */
     public function getRequest()
     {
@@ -41,6 +51,7 @@ class Renderer extends AbstractRenderer
      * @see \ZfcDatagrid\Renderer\AbstractRenderer::getSortConditions()
      *
      * @return array
+     * @throws \Exception
      */
     public function getSortConditions()
     {
@@ -86,7 +97,7 @@ class Renderer extends AbstractRenderer
             }
         }
 
-        if (count($sortConditions) > 0) {
+        if (!empty($sortConditions)) {
             $this->sortConditions = $sortConditions;
         } else {
             // No user sorting -> get default sorting
@@ -129,7 +140,7 @@ class Renderer extends AbstractRenderer
             }
         }
 
-        if (count($filters) > 0) {
+        if (!empty($filters)) {
             $this->filters = $filters;
         } else {
             // No user sorting -> get default sorting
@@ -139,6 +150,10 @@ class Renderer extends AbstractRenderer
         return $this->filters;
     }
 
+    /**
+     * @return int
+     * @throws \Exception
+     */
     public function getCurrentPageNumber()
     {
         $optionsRenderer = $this->getOptionsRenderer();
@@ -152,6 +167,9 @@ class Renderer extends AbstractRenderer
         return (int) $this->currentPageNumber;
     }
 
+    /**
+     * @param Datagrid $grid
+     */
     public function prepareViewModel(Datagrid $grid)
     {
         parent::prepareViewModel($grid);
@@ -171,6 +189,9 @@ class Renderer extends AbstractRenderer
         }
     }
 
+    /**
+     * @return \Zend\View\Model\ViewModel
+     */
     public function execute()
     {
         $viewModel = $this->getViewModel();

@@ -3,6 +3,10 @@ namespace ZfcDatagrid;
 
 class Module
 {
+    /**
+     *
+     * @return array|mixed
+     */
     public function getConfig()
     {
         $config = include __DIR__ . '/../../config/module.config.php';

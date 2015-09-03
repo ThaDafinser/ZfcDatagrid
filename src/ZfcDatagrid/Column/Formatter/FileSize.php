@@ -8,10 +8,11 @@ class FileSize extends AbstractFormatter
     /**
      * We implement isApply here ourself, because it's always valid!
      *
-     * @var unknown
+     * @var array
      */
     protected $validRenderers = [];
 
+    /** @var array */
     protected static $prefixes = [
         '',
         'K',
@@ -24,6 +25,9 @@ class FileSize extends AbstractFormatter
         'Y',
     ];
 
+    /**
+     * @return bool
+     */
     public function isApply()
     {
         return true;

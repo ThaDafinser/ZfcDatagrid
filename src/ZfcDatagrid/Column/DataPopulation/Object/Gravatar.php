@@ -5,6 +5,7 @@ use ZfcDatagrid\Column\DataPopulation\ObjectAwareInterface;
 
 class Gravatar implements ObjectAwareInterface
 {
+    /** @var  string */
     protected $email;
 
     /**

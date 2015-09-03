@@ -47,8 +47,8 @@ class Filter
     }
 
     /**
-     * @param  DatagridFilter            $filter
-     * @throws \InvalidArgumentException
+     * @param  DatagridFilter $filter
+     * @throws \Exception
      */
     public function applyFilter(DatagridFilter $filter)
     {
@@ -143,7 +143,7 @@ class Filter
             }
         }
 
-        if (count($wheres) > 0) {
+        if (!empty($wheres)) {
             $set = new PredicateSet($wheres, PredicateSet::OP_OR);
             $select->where->andPredicate($set);
         }

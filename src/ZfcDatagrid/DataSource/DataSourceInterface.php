@@ -48,7 +48,7 @@ interface DataSourceInterface
 
     /**
      *
-     * @param array $filters
+     * @param Filter $filters
      */
     public function addFilter(Filter $filter);
 

@@ -17,6 +17,9 @@ class DatagridManager extends AbstractPluginManager
      */
     protected $shareByDefault = false;
 
+    /**
+     * @param mixed $plugin
+     */
     public function validatePlugin($plugin)
     {
     }
