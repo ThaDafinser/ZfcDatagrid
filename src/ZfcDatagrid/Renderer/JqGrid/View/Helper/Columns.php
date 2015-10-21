@@ -93,6 +93,9 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
             if (isset($rendererParameters['cellattr'])) {
                 $options['cellattr'] = (string) $rendererParameters['cellattr'];
             }
+            if (isset($rendererParameters['classes'])) {
+                $options['classes'] = (string) $rendererParameters['classes'];
+            }
 
             /*
              * Filtering
