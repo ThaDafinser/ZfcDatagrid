@@ -220,7 +220,7 @@ class Renderer extends AbstractExport
          * Save the file
          */
         $path         = $optionsExport['path'];
-        $saveFilename = $this->getCacheId() . '.xlsx';
+        $saveFilename = date('Y-m-d_H-i-s') . $this->getCacheId() . '.xlsx';
 
         $excelWriter = new \PHPExcel_Writer_Excel2007($phpExcel);
         $excelWriter->setPreCalculateFormulas(false);

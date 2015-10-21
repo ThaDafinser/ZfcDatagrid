@@ -111,7 +111,7 @@ class Renderer extends AbstractExport
         $optionsExport = $options['settings']['export'];
 
         $path         = $optionsExport['path'];
-        $saveFilename = $this->getCacheId() . '.pdf';
+        $saveFilename = date('Y-m-d_H-i-s') . $this->getCacheId() . '.pdf';
         $pdf->Output($path . '/' . $saveFilename, 'F');
 
         $response = new ResponseStream();

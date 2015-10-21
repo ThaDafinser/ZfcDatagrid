@@ -48,7 +48,7 @@ class Renderer extends AbstractExport
         $optionsExport = $options['settings']['export'];
 
         $path         = $optionsExport['path'];
-        $saveFilename = $this->getCacheId() . '.csv';
+        $saveFilename = date('Y-m-d_H-i-s') . $this->getCacheId() . '.csv';
 
         $fp = fopen($path . '/' . $saveFilename, 'w');
 
