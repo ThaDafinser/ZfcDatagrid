@@ -7,6 +7,7 @@ namespace ZfcDatagrid\Renderer\TCPDF;
 use TCPDF;
 use Zend\Http\Headers;
 use Zend\Http\Response\Stream as ResponseStream;
+use ZfcDatagrid\Column\Style;
 use ZfcDatagrid\Library\ImageResize;
 use ZfcDatagrid\Renderer\AbstractExport;
 
@@ -235,6 +236,12 @@ class Renderer extends AbstractExport
                         $value = implode(PHP_EOL, $value);
                     }
 
+                    foreach ($col->getStyles() as $style) {
+                        if ($style instanceof Style\Html) {
+                            $value = str_replace(['<br>', '<br />', '<br/>'], [PHP_EOL, PHP_EOL, PHP_EOL], $value);
+                        }
+                    }
+
                     $height = $pdf->getStringHeight($col->getWidth(), $value);
 
                     // include borders top/bottom
@@ -358,6 +365,10 @@ class Renderer extends AbstractExport
 
                         case 'ZfcDatagrid\Column\Style\Strikethrough':
                             $text   = '<del>' . $text . '</del>';
+                            $isHtml = true;
+                            break;
+
+                        case 'ZfcDatagrid\Column\Style\Html':
                             $isHtml = true;
                             break;
 

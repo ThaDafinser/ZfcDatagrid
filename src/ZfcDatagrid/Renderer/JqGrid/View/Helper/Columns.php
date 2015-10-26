@@ -265,6 +265,10 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                     // At this stage jqgrid haven't created the columns...
                     break;
 
+                case 'ZfcDatagrid\Column\Style\Html':
+                    // do NOTHING! just pass the HTML!
+                    break;
+
                 case 'ZfcDatagrid\Column\Style\Align':
                     $styleString = 'cellvalue = \'<span style="text-align: ' . $style->getAlignment() . ';">\' + cellvalue + \'</span>\';';
                     break;

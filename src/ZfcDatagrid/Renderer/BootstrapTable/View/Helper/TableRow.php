@@ -141,6 +141,10 @@ class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
                             $classes[] = $style->getClass();
                             break;
 
+                        case 'ZfcDatagrid\Column\Style\Html':
+                            // do NOTHING! just pass the HTML!
+                            break;
+
                         default:
                             throw new \InvalidArgumentException('Not defined style: "' . get_class($style) . '"');
                             break;

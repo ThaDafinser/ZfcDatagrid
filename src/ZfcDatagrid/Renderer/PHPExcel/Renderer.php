@@ -148,9 +148,12 @@ class Renderer extends AbstractExport
                                 $columnStyle->getFont()->setStrikethrough(true);
                                 break;
 
+                            case 'ZfcDatagrid\Column\Style\Html':
+                                // @todo strip the html?
+                                break;
+
                             default:
                                 throw new \Exception('Not defined yet: "' . get_class($style) . '"');
-
                                 break;
                         }
                     }
