@@ -239,6 +239,7 @@ class Renderer extends AbstractExport
                     foreach ($col->getStyles() as $style) {
                         if ($style instanceof Style\Html) {
                             $value = str_replace(['<br>', '<br />', '<br/>'], [PHP_EOL, PHP_EOL, PHP_EOL], $value);
+                            $value = strip_tags($value);
                         }
                     }
 
