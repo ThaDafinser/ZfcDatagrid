@@ -204,6 +204,9 @@ class PrepareData
                 if ($col->isTranslationEnabled() === true) {
                     if (is_array($row[$col->getUniqueId()])) {
                         foreach ($row[$col->getUniqueId()] as &$value) {
+                            if(is_array($value)){
+                                continue;
+                            }
                             $value = $this->getTranslator()->translate($value);
                         }
                     } else {
