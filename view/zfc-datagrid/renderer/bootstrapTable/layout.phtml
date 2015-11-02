@@ -12,7 +12,7 @@ if(count($this->massActions) > 0){
     $(function(){
         <?php //If daterange bootstrapTable filter is enable show it ?>
             $('input.daterange').daterangepicker(
-            <?= Zend\Json\Json::encode($this->daterangeParameters, false, array('enableJsonExprFinder' => true)); ?>
+            <?= Zend\Json\Json::encode($this->daterangeParameters, false, ['enableJsonExprFinder' => true]); ?>
             ).on('apply.daterangepicker', function(ev,picker){
                 this.form.submit();
             });
@@ -21,7 +21,7 @@ if(count($this->massActions) > 0){
     <?php $this->inlineScript()->captureEnd(); ?>
 <?php endif; ?>
 
-<form name="form_<?php echo $this->gridId; ?>" method="<?= $this->parameterNames['method']; ?>" action="<?php echo $this->url(null, array(), array(), true); ?>">
+<form name="form_<?php echo $this->gridId; ?>" method="<?= $this->parameterNames['method']; ?>" action="<?php echo $this->url(null, [], [], true); ?>">
 
     <input type="submit" style="width: 0px; height:0px; margin: 0; padding: 0; border: 0;" name="hiddenSubmit" />
     <input type="hidden" name="<?php echo $this->parameterNames['sortColumns']; ?>" value="<?php echo $this->activeParameters[$this->parameterNames['sortColumns']]; ?>" />
@@ -40,7 +40,7 @@ $orderOnclick = 'document.forms[\'form_'.$this->gridId.'\'].elements[\'' . $this
 $orderOnclick .= 'document.forms[\'form_'.$this->gridId.'\'].elements[\'' . $this->parameterNames['sortDirections'] . '\'].value = \'%s\';';
 $orderOnclick.= 'document.forms[\'form_'.$this->gridId.'\'].submit(); return false;';
 
-$classes = array('table', 'table-striped', 'table-bordered');
+$classes = ['table', 'table-striped', 'table-bordered'];
 if($this->rowClickAction !== null){
     $classes[] = 'table-hover';
 }
@@ -48,137 +48,139 @@ if($this->rowClickAction !== null){
 
 <?php echo $this->partial($this->templateToolbar);?>
 
-<table class="<?php echo implode(' ', $classes); ?>">
-    <thead>
-        <tr style="background-color: #EEE">
-            <?php 
-            if($hasMassActions === true){
-                echo '<th><input type="checkbox" onclick="' . $this->gridId . '_toggleCheckboxes(this);" /></th>';
-            }
-            
-            foreach($this->columns as $col){
-                /* @var $col \ZfcDatagrid\Column\AbstractColumn */
-                $classes = array();
-                $styles = array();
-                
-                $id = $col->getUniqueId();
-                
-                $label = '';
-                if($col->getLabel() != ''){
-                    $label = $this->translate($col->getLabel());
-                }
-                
-                $width = $col->getWidth();
-                if($width != ''){
-                    $styles[] = 'width: '.$this->escapehtmlattr($width).'%';
-                }
-                
-                
-                if($col->isHidden() === true){
-                    $classes[] = 'hidden';
-                }
-                if($col->getType() instanceof Type\Number){
-                    $styles[] = 'text-align: right';
-                }
-                ?>
-                <th id="<?php echo $this->escapehtmlattr($id); ?>" class="<?php echo implode(',', $classes); ?>" style="<?php echo implode(';', $styles); ?>">
-                    
-                    <?php if($col->isUserSortEnabled() === true): 
-                        if($col->isSortActive() === true && $col->getSortActiveDirection() === 'ASC'){
-                            $direction = 'DESC';
-                        } else{
-                            $direction = 'ASC';
-                        }
-                        ?>
-                        <a href="<?php echo 
-                            $this->url(null, 
-                                array(),
-                                array(
-                                    'query' => array_merge($this->activeParameters, array(
-                                            $this->parameterNames['sortColumns'] => $col->getUniqueId(),
-                                            $this->parameterNames['sortDirections'] => $direction,
-                                        )
-                                    )
-                                ),
-                                true
-                            );?>
-                        " onclick="<?php echo sprintf($orderOnclick, $col->getUniqueId(), $direction); ?>">
-                            <?php echo $this->escapeHtml($label); ?>
-                        </a>
-                    <?php else: ?>
-                        <?php echo $this->escapeHtml($label); ?>
-                    <?php endif; ?>
-                    
-                    <?php 
-                    if($col->isSortActive() === true){
-                        if($col->getSortActiveDirection() === 'ASC'):?>
-                            <i class="icon-chevron-down glyphicon glyphicon-chevron-down"></i>
-                        <?php else: ?>
-                            <i class="icon-chevron-up glyphicon glyphicon-chevron-up"></i>
-                        <?php endif;
-                    }
-                    ?>
-                </th>
-                <?php
-            }
-            ?>
-        </tr>
-        
-        <!-- User filters -->
-        <?php if($this->isUserFilterEnabled === true):?>
+<div class="table-responsive">
+    <table class="<?php echo implode(' ', $classes); ?>">
+        <thead>
             <tr style="background-color: #EEE">
                 <?php
                 if($hasMassActions === true){
-                    echo '<td></td>';
+                    echo '<th><input type="checkbox" onclick="' . $this->gridId . '_toggleCheckboxes(this);" /></th>';
                 }
+
                 foreach($this->columns as $col){
                     /* @var $col \ZfcDatagrid\Column\AbstractColumn */
+                    $classes = [];
+                    $styles = [];
 
-                    $classes = array();
+                    $id = $col->getUniqueId();
+
+                    $label = '';
+                    if($col->getLabel() != ''){
+                        $label = $this->translate($col->getLabel());
+                    }
+
+                    $width = $col->getWidth();
+                    if($width != ''){
+                        $styles[] = 'width: '.$this->escapehtmlattr($width).'%';
+                    }
+
+
                     if($col->isHidden() === true){
                         $classes[] = 'hidden';
                     }
-                    
-                    $htmlFilter = '';
-                    if ($col->isUserFilterEnabled() === true) {
-
-                        if ($col->hasFilterSelectOptions() === true) {
-                            $htmlFilter = '<select name="toolbarFilters[' . $col->getUniqueId() . ']" style="width: 80%" onchange="this.form.submit()" class="form-control" >';
-                            foreach ($col->getFilterSelectOptions() as $value => $option) {
-                                if ($col->getFilterActiveValue() === $value) {
-                                    $htmlFilter .= '<option value="' . $value . '" selected="selected">' . $option . '</option>';
-                                } else if (($col->getFilterActiveValue() === '') && ($value === '')){
-                                    $htmlFilter .= '<option value="' . $value . '" selected="selected">' . $option . '</option>';
-                                } else {
-                                    $htmlFilter .= '<option value="' . $value . '">' . $option . '</option>';
-                                }
-                            }
-                            $htmlFilter .= '</select>';
-
-                        } else if ($col->getType() instanceof \ZfcDatagrid\Column\Type\DateTime){
-                            $htmlFilter = '<input type="text" name="toolbarFilters[' . $col->getUniqueId() . ']" style="width: 80%" value="' . $col->getFilterActiveValue() . '" class="form-control daterange" />';
-                        } else {
-                            $htmlFilter = '<input type="text" name="toolbarFilters[' . $col->getUniqueId() . ']" style="width: 80%" value="' . $col->getFilterActiveValue() . '" class="form-control" />';
-                        }
+                    if($col->getType() instanceof Type\Number){
+                        $styles[] = 'text-align: right';
                     }
                     ?>
-                    <td class="<?php echo implode(',', $classes); ?>">
-                        <?php echo $htmlFilter; ?>
-                    </td>
+                    <th id="<?php echo $this->escapehtmlattr($id); ?>" class="<?php echo implode(',', $classes); ?>" style="<?php echo implode(';', $styles); ?>">
+
+                        <?php if($col->isUserSortEnabled() === true):
+                            if($col->isSortActive() === true && $col->getSortActiveDirection() === 'ASC'){
+                                $direction = 'DESC';
+                            } else{
+                                $direction = 'ASC';
+                            }
+                            ?>
+                            <a href="<?php echo
+                                $this->url(null,
+                                    [],
+                                    [
+                                        'query' => array_merge($this->activeParameters, [
+                                                $this->parameterNames['sortColumns'] => $col->getUniqueId(),
+                                                $this->parameterNames['sortDirections'] => $direction,
+                                            ]
+                                        )
+                                    ],
+                                    true
+                                );?>
+                            " onclick="<?php echo sprintf($orderOnclick, $col->getUniqueId(), $direction); ?>">
+                                <?php echo $this->escapeHtml($label); ?>
+                            </a>
+                        <?php else: ?>
+                            <?php echo $this->escapeHtml($label); ?>
+                        <?php endif; ?>
+
+                        <?php
+                        if($col->isSortActive() === true){
+                            if($col->getSortActiveDirection() === 'ASC'):?>
+                                <i class="icon-chevron-down glyphicon glyphicon-chevron-down"></i>
+                            <?php else: ?>
+                                <i class="icon-chevron-up glyphicon glyphicon-chevron-up"></i>
+                            <?php endif;
+                        }
+                        ?>
+                    </th>
                     <?php
                 }
                 ?>
             </tr>
-        <?php endif; ?>
-    </thead><!-- END table header -->
-     
-    <!-- Start table BODY -->
-    <tbody>
-        <?php foreach($this->data as $row): ?>
-            <?php echo $this->bootstrapTableRow($row, $this->columns, $this->rowClickAction, $this->rowStyles, $hasMassActions); ?>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+
+            <!-- User filters -->
+            <?php if($this->isUserFilterEnabled === true):?>
+                <tr style="background-color: #EEE">
+                    <?php
+                    if($hasMassActions === true){
+                        echo '<td></td>';
+                    }
+                    foreach($this->columns as $col){
+                        /* @var $col \ZfcDatagrid\Column\AbstractColumn */
+
+                        $classes = [];
+                        if($col->isHidden() === true){
+                            $classes[] = 'hidden';
+                        }
+
+                        $htmlFilter = '';
+                        if ($col->isUserFilterEnabled() === true) {
+
+                            if ($col->hasFilterSelectOptions() === true) {
+                                $htmlFilter = '<select name="toolbarFilters[' . $col->getUniqueId() . ']" style="width: 80%" onchange="this.form.submit()" class="form-control" >';
+                                foreach ($col->getFilterSelectOptions() as $value => $option) {
+                                    if ($col->getFilterActiveValue() === $value) {
+                                        $htmlFilter .= '<option value="' . $value . '" selected="selected">' . $option . '</option>';
+                                    } else if (($col->getFilterActiveValue() === '') && ($value === '')){
+                                        $htmlFilter .= '<option value="' . $value . '" selected="selected">' . $option . '</option>';
+                                    } else {
+                                        $htmlFilter .= '<option value="' . $value . '">' . $option . '</option>';
+                                    }
+                                }
+                                $htmlFilter .= '</select>';
+
+                            } else if ($col->getType() instanceof \ZfcDatagrid\Column\Type\DateTime){
+                                $htmlFilter = '<input type="text" name="toolbarFilters[' . $col->getUniqueId() . ']" style="width: 80%" value="' . $col->getFilterActiveValue() . '" class="form-control daterange" />';
+                            } else {
+                                $htmlFilter = '<input type="text" name="toolbarFilters[' . $col->getUniqueId() . ']" style="width: 80%" value="' . $col->getFilterActiveValue() . '" class="form-control" />';
+                            }
+                        }
+                        ?>
+                        <td class="<?php echo implode(',', $classes); ?>">
+                            <?php echo $htmlFilter; ?>
+                        </td>
+                        <?php
+                    }
+                    ?>
+                </tr>
+            <?php endif; ?>
+        </thead><!-- END table header -->
+
+        <!-- Start table BODY -->
+        <tbody>
+            <?php foreach($this->data as $row): ?>
+                <?php echo $this->bootstrapTableRow($row, $this->columns, $this->rowClickAction, $this->rowStyles, $hasMassActions); ?>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 
 <?php echo $this->partial('zfc-datagrid/renderer/bootstrapTable/footer'); ?>
 </form>
