@@ -44,7 +44,7 @@ If you want to help out on this project:
 
 Install it with ``composer``
 ```sh
-php composer.phar require thadafinser/zfc-datagrid:1.*
+composer require thadafinser/zfc-datagrid -o
 ```
 
 > NOTE: with 1.x we dropped support for other installation technics. Especially the ZF2 autoloading was dropped. You just need to switch to composer installation, which will make your life easier, since it comes with all needed features
