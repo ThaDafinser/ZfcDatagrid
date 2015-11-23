@@ -55,7 +55,15 @@ class Renderer extends AbstractExport
                 ->setSize(15);
         }
 
-        $this->calculateColumnWidth($this->getColumnsToExport());
+        /*
+         * Print settings
+         */
+        $this->setPrinting($phpExcel);
+
+        /*
+         * Calculate column width
+         */
+        $this->calculateColumnWidth($sheet, $this->getColumnsToExport());
 
         /*
          * Header
@@ -215,11 +223,6 @@ class Renderer extends AbstractExport
         ]);
 
         /*
-         * Print settings
-         */
-        $this->setPrinting($phpExcel);
-
-        /*
          * Save the file
          */
         $path         = $optionsExport['path'];
@@ -257,15 +260,22 @@ class Renderer extends AbstractExport
     /**
      * Calculates the column width, based on the papersize and orientation
      *
-     * @param array $columns
+     * @param PHPExcel_Worksheet $sheet
+     * @param array              $columns
      */
-    protected function calculateColumnWidth(array $columns)
+    protected function calculateColumnWidth(PHPExcel_Worksheet $sheet, array $columns)
     {
         // First make sure the columns width is 100 "percent"
         $this->calculateColumnWidthPercent($columns);
 
+        // width is in mm
         $paperWidth = $this->getPaperWidth();
-        $paperWidth /= 2.19;
+
+        // remove margins (they are in inches!)
+        $paperWidth -= $sheet->getPageMargins()->getLeft() / 0.0393700787402;
+        $paperWidth -= $sheet->getPageMargins()->getRight() / 0.0393700787402;
+
+        $paperWidth /= 2;
 
         $factor = $paperWidth / 100;
         foreach ($columns as $column) {
