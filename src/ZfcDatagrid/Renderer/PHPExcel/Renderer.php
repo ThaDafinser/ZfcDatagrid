@@ -265,7 +265,7 @@ class Renderer extends AbstractExport
         $this->calculateColumnWidthPercent($columns);
 
         $paperWidth = $this->getPaperWidth();
-        $paperWidth /= 2.29;
+        $paperWidth /= 2.19;
 
         $factor = $paperWidth / 100;
         foreach ($columns as $column) {
