@@ -19,7 +19,7 @@ If you need help, please use following ressources
 - [Installation](https://github.com/ThaDafinser/ZfcDatagrid#installation) 
 -  ["Getting started guide"](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/docs/02.%20Quick%20Start.md)
 - [Documentation](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/docs/)
-- [Code examples](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/src/ZfcDatagrid/Examples/Controller/)
+- [Code examples](https://github.com/ThaDafinser/ZfcDatagridExamples/tree/master/src/ZfcDatagridExamples/Controller/)
 - [Issues/Help](https://github.com/ThaDafinser/ZfcDatagrid/issues)
 
 If you want to help out on this project:
