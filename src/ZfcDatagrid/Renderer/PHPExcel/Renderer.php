@@ -260,10 +260,10 @@ class Renderer extends AbstractExport
     /**
      * Calculates the column width, based on the papersize and orientation
      *
-     * @param PHPExcel_Worksheet $sheet
-     * @param array              $columns
+     * @param \PHPExcel_Worksheet $sheet
+     * @param array               $columns
      */
-    protected function calculateColumnWidth(PHPExcel_Worksheet $sheet, array $columns)
+    protected function calculateColumnWidth(\PHPExcel_Worksheet $sheet, array $columns)
     {
         // First make sure the columns width is 100 "percent"
         $this->calculateColumnWidthPercent($columns);
