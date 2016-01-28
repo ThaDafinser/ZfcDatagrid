@@ -18,7 +18,7 @@ cache:
     
 before_script:
  - composer self-update
- - update --prefer-source -n --verbose
+ - composer update --prefer-source -n --verbose
 
 script:
  - vendor/bin/php-cs-fixer fix src --level=psr2 --dry-run -vv
