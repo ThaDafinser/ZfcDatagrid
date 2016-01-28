@@ -51,7 +51,9 @@ class Renderer extends AbstractExport
         $saveFilename = date('Y-m-d_H-i-s') . $this->getCacheId() . '.csv';
 
         $fp = fopen($path . '/' . $saveFilename, 'w');
-
+        // Force UTF-8 for CSV rendering in EXCEL.
+        fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF));
+        
         /*
          * Save the file
          */
