@@ -266,6 +266,22 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         $this->assertSame($translator, $renderer->getTranslator());
     }
 
+    public function testTranslate()
+    {
+        /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
+        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $this->assertEquals('foobar', $renderer->translate('foobar'));
+
+        $translator = $this->getMock('Zend\I18n\Translator\Translator', ['translate'], [], '', false);
+        $translator->expects($this->any())
+            ->method('translate')
+            ->willReturn('barfoo');
+
+        $renderer->setTranslator($translator);
+
+        $this->assertEquals('barfoo', $renderer->translate('foobar'));
+    }
+
     public function testTitle()
     {
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */

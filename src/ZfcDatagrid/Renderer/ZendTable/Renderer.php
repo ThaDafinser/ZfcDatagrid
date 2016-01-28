@@ -220,7 +220,6 @@ class Renderer extends AbstractRenderer
     private function getTable()
     {
         $paginator  = $this->getPaginator();
-        $translator = $this->getTranslator();
 
         $options = [
             'columnWidths' => $this->getColumnWidths(),
@@ -246,10 +245,8 @@ class Renderer extends AbstractRenderer
          */
         $tableRow = new Table\Row();
         foreach ($this->getColumnsToDisplay() as $column) {
-            $label = $column->getLabel();
-            if ($this->getTranslator() !== null) {
-                $label = $this->getTranslator()->translate($label);
-            }
+            $label = $this->translate($column->getLabel());
+
             if (function_exists('mb_strtoupper')) {
                 $label = mb_strtoupper($label);
             } else {
@@ -299,12 +296,19 @@ class Renderer extends AbstractRenderer
          */
         $tableRow = new Table\Row();
 
-        $footer = $translator->translate('Page') . ' ';
-        $footer .= $paginator->getCurrentPageNumber() . ' ' . $translator->translate('of') . ' ' . $paginator->count();
+        $footer = $this->translate('Page') . ' ';
+        $footer .= sprintf('%s %s %s', $paginator->getCurrentPageNumber(), $this->translate('of'), $paginator->count());
 
         $footer .= ' / ';
 
-        $footer .= $translator->translate('Showing') . ' ' . $paginator->getCurrentItemCount() . ' ' . $translator->translate('of') . ' ' . $paginator->getTotalItemCount() . ' ' . $translator->translate('items');
+        $footer .= sprintf(
+            '%s %s %s %s %s',
+            $this->translate('Showing'),
+            $paginator->getCurrentItemCount(),
+            $this->translate('of'),
+            $paginator->getTotalItemCount(),
+            $this->translate('items')
+        );
 
         $tableColumn = new Table\Column($footer);
         $tableColumn->setColSpan(count($options['columnWidths']));

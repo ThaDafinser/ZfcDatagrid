@@ -2,6 +2,7 @@
 /**
  * Output as a PDF file
  */
+
 namespace ZfcDatagrid\Renderer\TCPDF;
 
 use TCPDF;
@@ -272,7 +273,7 @@ class Renderer extends AbstractExport
 
             $this->columnsPositionX[$col->getUniqueId()] = $x;
 
-            $label = $this->getTranslator()->translate($col->getLabel());
+            $label = $this->translate($col->getLabel());
 
             // Do not wrap header labels, it will look very ugly, that's why max height is set to 7!
             $pdf->MultiCell($col->getWidth(), 7, $label, 1, $this->getTextAlignment(), true, 2, $x, $y, true, 0, false, true, 7);
