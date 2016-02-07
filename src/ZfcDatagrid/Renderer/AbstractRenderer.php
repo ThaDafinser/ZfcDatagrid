@@ -437,6 +437,15 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
+     * @param $string
+     * @return string
+     */
+    public function translate($string)
+    {
+        return $this->getTranslator() ? $this->getTranslator()->translate($string) : $string;
+    }
+
+    /**
      * Set the title
      *
      * @param string $title
@@ -455,6 +464,9 @@ abstract class AbstractRenderer implements RendererInterface
         return $this->title;
     }
 
+    /**
+     * @param Cache\Storage\StorageInterface $cache
+     */
     public function setCache(Cache\Storage\StorageInterface $cache)
     {
         $this->cache = $cache;

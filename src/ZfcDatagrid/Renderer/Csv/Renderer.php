@@ -3,6 +3,7 @@
  * Render datagrid as CSV
  *
  */
+
 namespace ZfcDatagrid\Renderer\Csv;
 
 use Zend\Http\Headers;
@@ -61,7 +62,7 @@ class Renderer extends AbstractExport
         if (isset($optionsRenderer['header']) && true === $optionsRenderer['header']) {
             $header = [];
             foreach ($this->getColumnsToExport() as $col) {
-                $header[] = $this->getTranslator()->translate($col->getLabel());
+                $header[] = $this->translate($col->getLabel());
             }
             fputcsv($fp, $header, $delimiter, $enclosure);
         }

@@ -2,6 +2,7 @@
 /**
  * Output as an excel file
  */
+
 namespace ZfcDatagrid\Renderer\PHPExcel;
 
 use PHPExcel;
@@ -45,8 +46,7 @@ class Renderer extends AbstractExport
         // Sheet 1
         $phpExcel->setActiveSheetIndex(0);
         $sheet = $phpExcel->getActiveSheet();
-        $sheet->setTitle($this->getTranslator()
-            ->translate($optionsRenderer['sheetName']));
+        $sheet->setTitle($this->translate($optionsRenderer['sheetName']));
 
         if (true === $optionsRenderer['displayTitle']) {
             $sheet->setCellValue('A' . $optionsRenderer['rowTitle'], $this->getTitle());
@@ -72,8 +72,7 @@ class Renderer extends AbstractExport
         $yRow    = $optionsRenderer['startRowData'];
         foreach ($this->getColumnsToExport() as $col) {
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
-            $label = $this->getTranslator()->translate($col->getLabel());
-            $sheet->setCellValueByColumnAndRow($xColumn, $yRow, $label);
+            $sheet->setCellValueByColumnAndRow($xColumn, $yRow, $this->translate($col->getLabel()));
 
             $sheet->getColumnDimension(PHPExcel_Cell::stringFromColumnIndex($xColumn))->setWidth($col->getWidth());
 
@@ -341,13 +340,14 @@ class Renderer extends AbstractExport
         $phpExcel->setActiveSheetIndex(0);
     }
 
+    /**
+     * @param \PHPExcel_Worksheet $sheet
+     */
     protected function setHeaderFooter(\PHPExcel_Worksheet $sheet)
     {
-        $translator = $this->getTranslator();
+        $textRight = $this->translate('Page') . ' &P / &N';
 
-        $textRight = $translator->translate('Page') . ' &P / &N';
-
-        $sheet->getHeaderFooter()->setOddHeader('&L&16&G ' . $translator->translate($this->getTitle()));
+        $sheet->getHeaderFooter()->setOddHeader('&L&16&G ' . $this->translate($this->getTitle()));
         $sheet->getHeaderFooter()->setOddFooter('&R' . $textRight);
     }
 }
