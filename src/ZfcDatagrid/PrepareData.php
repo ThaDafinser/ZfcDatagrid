@@ -196,7 +196,9 @@ class PrepareData
                 /*
                  * Type converting
                  */
-                $row[$col->getUniqueId()] = $col->getType()->getUserValue($row[$col->getUniqueId()]);
+                if ($this->getRendererName() != 'PHPExcel') {
+                    $row[$col->getUniqueId()] = $col->getType()->getUserValue($row[$col->getUniqueId()]);
+                }
 
                 /*
                  * Translate (nach typ convertierung -> PhpArray...)
@@ -221,7 +223,7 @@ class PrepareData
                     array_walk_recursive($row[$col->getUniqueId()], function (&$value) {
                         $value = trim($value);
                     });
-                } else {
+                } elseif (!is_object($row[$col->getUniqueId()])) {
                     $row[$col->getUniqueId()] = trim($row[$col->getUniqueId()]);
                 }
 

@@ -12,10 +12,6 @@ matrix:
 # faster builds on new travis setup not using sudo
 sudo: false
 
-cache:
-  directories:
-    - vendor
-    
 before_script:
  - composer self-update
  - composer update --prefer-source -n --verbose

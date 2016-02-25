@@ -86,6 +86,8 @@ class Renderer extends AbstractExport
         foreach ($this->getData() as $row) {
             $xColumn = 0;
             foreach ($this->getColumnsToExport() as $col) {
+                /* @var $col \ZfcDatagrid\Column\AbstractColumn */
+
                 $value = $row[$col->getUniqueId()];
                 if (is_array($value)) {
                     $value = implode(PHP_EOL, $value);
@@ -93,7 +95,29 @@ class Renderer extends AbstractExport
 
                 /* @var $column \ZfcDatagrid\Column\AbstractColumn */
                 $currentColumn = PHPExcel_Cell::stringFromColumnIndex($xColumn);
-                $sheet->getCell($currentColumn . $yRow)->setValueExplicit($value, PHPExcel_Cell_DataType::TYPE_STRING);
+                $cell          = $sheet->getCell($currentColumn . $yRow);
+
+                switch (get_class($col->getType())) {
+
+                    case 'ZfcDatagrid\Column\Type\Number':
+                        $cell->setValueExplicit($value, PHPExcel_Cell_DataType::TYPE_NUMERIC);
+                        break;
+
+                    case 'ZfcDatagrid\Column\Type\DateTime':
+                        if ($value instanceof \DateTime) {
+                            $value->setTimezone(new \DateTimeZone($col->getType()
+                                ->getOutputTimezone()));
+                        }
+                        $cell->setValue(\PHPExcel_Shared_Date::PHPToExcel($value));
+                        $cell->getStyle()
+                        ->getNumberFormat()
+                        ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_DATE_DATETIME);
+                        break;
+
+                    default:
+                        $cell->setValueExplicit($value, PHPExcel_Cell_DataType::TYPE_STRING);
+                        break;
+                }
 
                 $columnStyle = $sheet->getStyle($currentColumn . $yRow);
                 $columnStyle->getAlignment()->setWrapText(true);

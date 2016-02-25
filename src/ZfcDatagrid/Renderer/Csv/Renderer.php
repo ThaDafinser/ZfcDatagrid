@@ -53,8 +53,8 @@ class Renderer extends AbstractExport
 
         $fp = fopen($path . '/' . $saveFilename, 'w');
         // Force UTF-8 for CSV rendering in EXCEL.
-        fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF));
-        
+        fprintf($fp, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
         /*
          * Save the file
          */
