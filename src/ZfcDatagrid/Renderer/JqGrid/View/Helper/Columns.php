@@ -36,10 +36,8 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
 
         if (null === $this->translator) {
             if ($this->getServiceLocator()
-                ->getServiceLocator()
                 ->has('translator')) {
                 $this->translator = $this->getServiceLocator()
-                    ->getServiceLocator()
                     ->get('translator');
             } else {
                 $this->translator = false;
@@ -82,8 +80,20 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                 $options['formatter'] = (string) $formatter;
             }
 
-            if ($column->getType() instanceof Type\Number) {
-                $options['align'] = (string) 'right';
+            $alignAlreadyDefined = false;
+            if ($column->hasStyles()) {
+                foreach ($column->getStyles() as $style) {
+                    /** @var \ZfcDatagrid\Column\Style\Align $style */
+                    if (get_class($style) == 'ZfcDatagrid\Column\Style\Align') {
+                        $options['align'] = $style->getAlignment();
+                        $alignAlreadyDefined = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!$alignAlreadyDefined && $column->getType() instanceof Type\Number) {
+                $options['align'] = Column\Style\Align::$RIGHT;
             }
 
             /*
