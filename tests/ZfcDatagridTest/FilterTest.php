@@ -398,13 +398,16 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
     public function testIsArrayCommaWithNumber()
     {
-        $this->column->setType(new Number());
+        $number = new Number();
+        $number->setLocale('en');
+
+        $this->column->setType($number);
 
         $filter = new Filter();
         $filter->setFromColumn($this->column, '=2,5');
 
         $this->assertEquals(Filter::EQUAL, $filter->getOperator());
-        $this->assertEquals([2.5], $filter->getValues());
+        $this->assertSame(['2,5'], $filter->getValues());
     }
 
     public function testIsApplyLike()
