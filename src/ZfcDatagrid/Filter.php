@@ -122,12 +122,10 @@ class Filter
                 $value = trim(substr($inputFilterValue, 1));
             }
 
-            if (substr($inputFilterValue, 0, 2) == '!~' || (substr($value, 0, 1) == '%' || substr($value,
-                        -1) == '%' || substr($value, 0, 1) == '*' || substr($value, -1) == '*')
+            if (substr($inputFilterValue, 0, 2) == '!~' || (substr($value, 0, 1) == '%' || substr($value, -1) == '%' || substr($value, 0, 1) == '*' || substr($value, -1) == '*')
             ) {
                 // NOT LIKE
-                if ((substr($value, 0, 1) == '*' && substr($value, -1) == '*') || (substr($value, 0,
-                            1) == '%' && substr($value, -1) == '%')
+                if ((substr($value, 0, 1) == '*' && substr($value, -1) == '*') || (substr($value, 0, 1) == '%' && substr($value, -1) == '%')
                 ) {
                     $operator = self::NOT_LIKE;
                     $value    = substr($value, 1);
@@ -145,9 +143,7 @@ class Filter
                 // NOT EQUAL
                 $operator = self::NOT_EQUAL;
             }
-        } elseif (substr($inputFilterValue, 0, 1) == '~' || substr($inputFilterValue, 0,
-                1) == '%' || substr($inputFilterValue, -1) == '%' || substr($inputFilterValue, 0,
-                1) == '*' || substr($inputFilterValue, -1) == '*'
+        } elseif (substr($inputFilterValue, 0, 1) == '~' || substr($inputFilterValue, 0, 1) == '%' || substr($inputFilterValue, -1) == '%' || substr($inputFilterValue, 0, 1) == '*' || substr($inputFilterValue, -1) == '*'
         ) {
             // LIKE
             if (substr($inputFilterValue, 0, 1) == '~') {
@@ -155,8 +151,7 @@ class Filter
             }
             $value = trim($value);
 
-            if ((substr($value, 0, 1) == '*' && substr($value, -1) == '*') || (substr($value, 0,
-                        1) == '%' && substr($value, -1) == '%')
+            if ((substr($value, 0, 1) == '*' && substr($value, -1) == '*') || (substr($value, 0, 1) == '%' && substr($value, -1) == '%')
             ) {
                 $operator = self::LIKE;
                 $value    = substr($value, 1);
