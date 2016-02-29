@@ -12,6 +12,7 @@ use ZfcDatagrid\Renderer\JqGrid\View\Helper;
  */
 class ColumnsTest extends PHPUnit_Framework_TestCase
 {
+    /** @var \PHPUnit_Framework_MockObject_MockObject|\Zend\View\HelperPluginManager */
     private $sm;
 
     /**
@@ -41,6 +42,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $helper = new Helper\Columns();
 
         $helper->setServiceLocator($this->sm);
+        $this->assertInstanceOf('Zend\ServiceManager\ServiceLocatorInterface', $helper->getServiceLocator());
         $this->assertSame($this->sm, $helper->getServiceLocator());
     }
 
@@ -223,4 +225,52 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('Exception', 'Currently not supported filter operation: "' . Filter::IN . '"');
         $result = $helper($cols);
     }
+
+    public function testTranslate()
+    {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\Zend\ServiceManager\ServiceManager $sm */
+        $sm = $this->getMock('Zend\ServiceManager\ServiceManager', null);
+
+        $helper = new Helper\Columns();
+        $helper->setServiceLocator($sm);
+
+        $reflection = new \ReflectionClass($helper);
+        $method = $reflection->getMethod('translate');
+        $method->setAccessible(true);
+
+        $result = $method->invokeArgs($helper, ['test']);
+
+        $this->assertEquals('test', $result);
+    }
+
+    public function testTranslateWithMockedTranslator()
+    {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\Zend\ServiceManager\ServiceManager $sm */
+        $sm = $this->getMock('Zend\ServiceManager\ServiceManager', null);
+
+        $translator = $this->getMockBuilder('Zend\I18n\Translator\Translator')
+            ->disableOriginalConstructor()
+            ->setMethods(['translate'])
+            ->getMock();
+
+        // Configure the stub.
+        $translator->method('translate')
+            ->will($this->returnValueMap([
+                ['test', 'default', null, 'translate']
+            ]));
+
+        $sm->setService('translator', $translator);
+        $helper = new Helper\Columns();
+        $helper->setServiceLocator($sm);
+
+        $reflection = new \ReflectionClass($helper);
+        $method = $reflection->getMethod('translate');
+        $method->setAccessible(true);
+
+        $result = $method->invokeArgs($helper, ['test']);
+
+        $this->assertEquals('translate', $result);
+    }
+
+
 }

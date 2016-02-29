@@ -13,6 +13,7 @@ use ZfcDatagrid\Filter;
  */
 class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
 {
+    /** @var  \Zend\I18n\Translator\Translator|null|false */
     private $translator;
 
     const STYLE_BOLD = 'cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';';
@@ -35,12 +36,8 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
         }
 
         if (null === $this->translator) {
-            if ($this->getServiceLocator()
-                ->getServiceLocator()
-                ->has('translator')) {
-                $this->translator = $this->getServiceLocator()
-                    ->getServiceLocator()
-                    ->get('translator');
+            if ($this->getServiceLocator()->has('translator')) {
+                $this->translator = $this->getServiceLocator()->get('translator');
             } else {
                 $this->translator = false;
 
@@ -82,8 +79,20 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                 $options['formatter'] = (string) $formatter;
             }
 
-            if ($column->getType() instanceof Type\Number) {
-                $options['align'] = (string) 'right';
+            $alignAlreadyDefined = false;
+            if ($column->hasStyles()) {
+                foreach ($column->getStyles() as $style) {
+                    /** @var \ZfcDatagrid\Column\Style\Align $style */
+                    if (get_class($style) == 'ZfcDatagrid\Column\Style\Align') {
+                        $options['align'] = $style->getAlignment();
+                        $alignAlreadyDefined = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!$alignAlreadyDefined && $column->getType() instanceof Type\Number) {
+                $options['align'] = Column\Style\Align::$RIGHT;
             }
 
             /*
@@ -270,7 +279,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                     break;
 
                 case 'ZfcDatagrid\Column\Style\Align':
-                    $styleString = 'cellvalue = \'<span style="text-align: ' . $style->getAlignment() . ';">\' + cellvalue + \'</span>\';';
+                    // do NOTHING! we have to add the align style in the gridcell and not in a span!
                     break;
 
                 default:
