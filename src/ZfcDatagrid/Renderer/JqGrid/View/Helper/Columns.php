@@ -84,7 +84,7 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
                 foreach ($column->getStyles() as $style) {
                     /** @var \ZfcDatagrid\Column\Style\Align $style */
                     if (get_class($style) == 'ZfcDatagrid\Column\Style\Align') {
-                        $options['align'] = $style->getAlignment();
+                        $options['align']    = $style->getAlignment();
                         $alignAlreadyDefined = true;
                         break;
                     }

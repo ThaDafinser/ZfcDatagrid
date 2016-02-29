@@ -102,14 +102,14 @@ class Filter
         if (substr($inputFilterValue, 0, 2) == '=(') {
             $operator = self::IN;
             $value    = substr($inputFilterValue, 2);
-            if (substr($value, - 1) == ')') {
-                $value = substr($value, 0, - 1);
+            if (substr($value, -1) == ')') {
+                $value = substr($value, 0, -1);
             }
         } elseif (substr($inputFilterValue, 0, 3) == '!=(') {
             $operator = self::NOT_IN;
             $value    = substr($inputFilterValue, 3);
-            if (substr($value, - 1) == ')') {
-                $value = substr($value, 0, - 1);
+            if (substr($value, -1) == ')') {
+                $value = substr($value, 0, -1);
             }
         } elseif (substr($inputFilterValue, 0, 2) == '!=' || substr($inputFilterValue, 0, 2) == '<>') {
             $operator = self::NOT_EQUAL;
@@ -122,18 +122,22 @@ class Filter
                 $value = trim(substr($inputFilterValue, 1));
             }
 
-            if (substr($inputFilterValue, 0, 2) == '!~' || (substr($value, 0, 1) == '%' || substr($value, - 1) == '%' || substr($value, 0, 1) == '*' || substr($value, - 1) == '*')) {
+            if (substr($inputFilterValue, 0, 2) == '!~' || (substr($value, 0, 1) == '%' || substr($value,
+                        -1) == '%' || substr($value, 0, 1) == '*' || substr($value, -1) == '*')
+            ) {
                 // NOT LIKE
-                if ((substr($value, 0, 1) == '*' && substr($value, - 1) == '*') || (substr($value, 0, 1) == '%' && substr($value, - 1) == '%')) {
+                if ((substr($value, 0, 1) == '*' && substr($value, -1) == '*') || (substr($value, 0,
+                            1) == '%' && substr($value, -1) == '%')
+                ) {
                     $operator = self::NOT_LIKE;
                     $value    = substr($value, 1);
-                    $value    = substr($value, 0, - 1);
+                    $value    = substr($value, 0, -1);
                 } elseif (substr($value, 0, 1) == '*' || substr($value, 0, 1) == '%') {
                     $operator = self::NOT_LIKE_LEFT;
                     $value    = substr($value, 1);
-                } elseif (substr($value, - 1) == '*' || substr($value, - 1) == '%') {
+                } elseif (substr($value, -1) == '*' || substr($value, -1) == '%') {
                     $operator = self::NOT_LIKE_RIGHT;
-                    $value    = substr($value, 0, - 1);
+                    $value    = substr($value, 0, -1);
                 } else {
                     $operator = self::NOT_LIKE;
                 }
@@ -141,23 +145,28 @@ class Filter
                 // NOT EQUAL
                 $operator = self::NOT_EQUAL;
             }
-        } elseif (substr($inputFilterValue, 0, 1) == '~' || substr($inputFilterValue, 0, 1) == '%' || substr($inputFilterValue, - 1) == '%' || substr($inputFilterValue, 0, 1) == '*' || substr($inputFilterValue, - 1) == '*') {
+        } elseif (substr($inputFilterValue, 0, 1) == '~' || substr($inputFilterValue, 0,
+                1) == '%' || substr($inputFilterValue, -1) == '%' || substr($inputFilterValue, 0,
+                1) == '*' || substr($inputFilterValue, -1) == '*'
+        ) {
             // LIKE
             if (substr($inputFilterValue, 0, 1) == '~') {
                 $value = substr($inputFilterValue, 1);
             }
             $value = trim($value);
 
-            if ((substr($value, 0, 1) == '*' && substr($value, - 1) == '*') || (substr($value, 0, 1) == '%' && substr($value, - 1) == '%')) {
+            if ((substr($value, 0, 1) == '*' && substr($value, -1) == '*') || (substr($value, 0,
+                        1) == '%' && substr($value, -1) == '%')
+            ) {
                 $operator = self::LIKE;
                 $value    = substr($value, 1);
-                $value    = substr($value, 0, - 1);
+                $value    = substr($value, 0, -1);
             } elseif (substr($value, 0, 1) == '*' || substr($value, 0, 1) == '%') {
                 $operator = self::LIKE_LEFT;
                 $value    = substr($value, 1);
-            } elseif (substr($value, - 1) == '*' || substr($value, - 1) == '%') {
+            } elseif (substr($value, -1) == '*' || substr($value, -1) == '%') {
                 $operator = self::LIKE_RIGHT;
-                $value    = substr($value, 0, - 1);
+                $value    = substr($value, 0, -1);
             } else {
                 $operator = self::LIKE;
             }
@@ -196,9 +205,12 @@ class Filter
         $columnType = $this->getColumn()->getType();
         if ($columnType instanceof Column\Type\DateTime && $columnType->isDaterangePickerEnabled() === true) {
             $value = explode(' - ', $value);
-        } elseif (! is_array($value)) {
+        } elseif (!$columnType instanceof Column\Type\Number && !is_array($value)) {
             $value = explode(',', $value);
+        } elseif (!is_array($value)) {
+            $value = [$value];
         }
+
         foreach ($value as &$val) {
             $val = trim($val);
         }
