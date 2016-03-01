@@ -2,6 +2,7 @@
 namespace ZfcDatagridTest;
 
 use PHPUnit_Framework_TestCase;
+use ZfcDatagrid\Column\Type\Number;
 use ZfcDatagrid\Filter;
 
 /**
@@ -9,6 +10,7 @@ use ZfcDatagrid\Filter;
  */
 class FilterTest extends PHPUnit_Framework_TestCase
 {
+    /** @var \ZfcDatagrid\Column\AbstractColumn|\PHPUnit_Framework_MockObject_MockObject  */
     private $column;
 
     public function setUp()
@@ -383,6 +385,29 @@ class FilterTest extends PHPUnit_Framework_TestCase
             '2',
             '4',
         ], $filter->getValues());
+    }
+
+    public function testIsArrayComma()
+    {
+        $filter = new Filter();
+        $filter->setFromColumn($this->column, '=2,5');
+
+        $this->assertEquals(Filter::EQUAL, $filter->getOperator());
+        $this->assertEquals([2, 5], $filter->getValues());
+    }
+
+    public function testIsArrayCommaWithNumber()
+    {
+        $number = new Number();
+        $number->setLocale('en');
+
+        $this->column->setType($number);
+
+        $filter = new Filter();
+        $filter->setFromColumn($this->column, '=2,5');
+
+        $this->assertEquals(Filter::EQUAL, $filter->getOperator());
+        $this->assertSame(['2,5'], $filter->getValues());
     }
 
     public function testIsApplyLike()

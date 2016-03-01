@@ -235,7 +235,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $helper->setServiceLocator($sm);
 
         $reflection = new \ReflectionClass($helper);
-        $method = $reflection->getMethod('translate');
+        $method     = $reflection->getMethod('translate');
         $method->setAccessible(true);
 
         $result = $method->invokeArgs($helper, ['test']);
@@ -256,7 +256,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         // Configure the stub.
         $translator->method('translate')
             ->will($this->returnValueMap([
-                ['test', 'default', null, 'translate']
+                ['test', 'default', null, 'translate'],
             ]));
 
         $sm->setService('translator', $translator);
@@ -264,13 +264,11 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $helper->setServiceLocator($sm);
 
         $reflection = new \ReflectionClass($helper);
-        $method = $reflection->getMethod('translate');
+        $method     = $reflection->getMethod('translate');
         $method->setAccessible(true);
 
         $result = $method->invokeArgs($helper, ['test']);
 
         $this->assertEquals('translate', $result);
     }
-
-
 }
