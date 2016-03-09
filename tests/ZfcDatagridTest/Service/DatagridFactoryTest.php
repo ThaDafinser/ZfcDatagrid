@@ -10,6 +10,7 @@ use ZfcDatagrid\Service\DatagridFactory;
  */
 class DatagridFactoryTest extends PHPUnit_Framework_TestCase
 {
+    /** @var array */
     private $config = [
         'ZfcDatagrid' => [
             'cache' => [
@@ -17,10 +18,22 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
                     'name' => 'Filesystem',
                 ],
             ],
+            'generalParameterNames' => [
+                'rendererType' => null,
+            ],
+            'settings' => [
+                'default' => [
+                    'renderer' => [
+                        'http' => 'bootstrapTable',
+                    ],
+                ],
+            ],
         ],
     ];
 
     private $applicationMock;
+
+    private $rendererServiceMock;
 
     public function setUp()
     {
@@ -30,6 +43,9 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
         $this->applicationMock->expects($this->any())
             ->method('getMvcEvent')
             ->will($this->returnValue($mvcEventMock));
+
+        $this->rendererServiceMock = $this->getMockBuilder('ZfcDatagrid\Renderer\BootstrapTable\Renderer')
+            ->getMock();
     }
 
     public function testCreateServiceException()
@@ -48,6 +64,7 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
         $sm = new ServiceManager();
         $sm->setService('config', $this->config);
         $sm->setService('application', $this->applicationMock);
+        $sm->setService('zfcDatagrid.renderer.bootstrapTable', $this->rendererServiceMock);
 
         $factory = new DatagridFactory();
         $grid    = $factory->createService($sm);
@@ -62,6 +79,7 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
         $sm = new ServiceManager();
         $sm->setService('config', $this->config);
         $sm->setService('application', $this->applicationMock);
+        $sm->setService('zfcDatagrid.renderer.bootstrapTable', $this->rendererServiceMock);
         $sm->setService('translator', $translatorMock);
 
         $factory = new DatagridFactory();
@@ -78,6 +96,7 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
         $sm = new ServiceManager();
         $sm->setService('config', $this->config);
         $sm->setService('application', $this->applicationMock);
+        $sm->setService('zfcDatagrid.renderer.bootstrapTable', $this->rendererServiceMock);
         $sm->setService('translator', $mvcTranslatorMock);
 
         $factory = new DatagridFactory();

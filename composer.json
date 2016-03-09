@@ -45,8 +45,9 @@
         "zendframework/zend-console": "~2.5",
         "zendframework/zend-db": "~2.5",
         "zendframework/zend-i18n": "~2.5",
-        "zendframework/zend-servicemanager": "~2.5",
-        "zendframework/zend-text": "~2.5"
+        "zendframework/zend-servicemanager": "~2.7",
+        "zendframework/zend-text": "~2.5",
+        "zendframework/zend-json": "~2.5"
     },
     
     "suggest" : {
@@ -56,7 +57,8 @@
         "phpoffice/phpexcel": "~1.7",
         "tecnick.com/tcpdf": "~6.0",
 
-        "zendframework/zend-text": "~2.5"
+        "zendframework/zend-text": "~2.5",
+        "zendframework/zend-json": "to support date ranges"
     },
     
     "autoload": {

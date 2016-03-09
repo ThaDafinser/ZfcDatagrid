@@ -39,12 +39,10 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($this->getMock('Zend\Http\PhpEnvironment\Request')));
-        $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceManager');
 
         $this->grid = new Datagrid();
         $this->grid->setOptions($this->config);
         $this->grid->setMvcEvent($mvcEvent);
-        $this->grid->setServiceLocator($serviceLocator);
     }
 
     public function testInit()
@@ -92,16 +90,6 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
         $this->grid->setCacheId('myCacheId');
         $this->assertEquals('myCacheId', $this->grid->getCacheId());
-    }
-
-    public function testServiceLocator()
-    {
-        $this->assertInstanceOf('Zend\ServiceManager\ServiceManager', $this->grid->getServiceLocator());
-
-        $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceManager');
-        $this->grid->setServiceLocator($serviceLocator);
-        $this->assertInstanceOf('Zend\ServiceManager\ServiceManager', $this->grid->getServiceLocator());
-        $this->assertEquals($serviceLocator, $this->grid->getServiceLocator());
     }
 
     public function testMvcEvent()
