@@ -36,11 +36,12 @@
     },
     
     "require-dev": {
-        "phpunit/PHPUnit": "~4|~5",
-        "satooshi/php-coveralls": "~0.6",
-        "fabpot/php-cs-fixer": "1.10.*",
+        "phpunit/phpunit": "^4.8|^5.2",
+        "fabpot/php-cs-fixer": "^1.11",
         
-        "doctrine/doctrine-orm-module": "~0.9",
+        "doctrine/orm": ">=2.5,<2.7",
+        "doctrine/dbal": ">=2.5,<2.7",
+        "doctrine/doctrine-orm-module": "^0.9",
         
         "zendframework/zend-console": "~2.5",
         "zendframework/zend-db": "~2.5",
@@ -52,9 +53,12 @@
     "suggest" : {
         "ext-intl": "*",
         
-        "doctrine/doctrine-orm-module": "~0.9",
-        "phpoffice/phpexcel": "~1.7",
-        "tecnick.com/tcpdf": "~6.0",
+        "doctrine/orm": ">=2.5,<2.7",
+        "doctrine/dbal": ">=2.5,<2.7",
+        "doctrine/doctrine-orm-module": "^0.9",
+        
+        "phpoffice/phpexcel": "^1.8",
+        "tecnickcom/tcpdf": "^6.2",
 
         "zendframework/zend-text": "~2.5"
     },
