@@ -26,7 +26,7 @@
     "require": {
         "php": "~5.5|~7.0",
         
-        "zendframework/zend-mvc": "~2.5",
+        "zendframework/zend-mvc": "~2.7",
         "zendframework/zend-modulemanager": "~2.5",
         "zendframework/zend-session": "~2.5",
         "zendframework/zend-view": "~2.5",
@@ -47,7 +47,8 @@
         "zendframework/zend-db": "~2.5",
         "zendframework/zend-i18n": "~2.5",
         "zendframework/zend-servicemanager": "~2.5",
-        "zendframework/zend-text": "~2.5"
+        "zendframework/zend-text": "~2.5",
+        "zendframework/zend-json": "~2.5"
     },
     
     "suggest" : {
@@ -60,7 +61,8 @@
         "phpoffice/phpexcel": "^1.8",
         "tecnickcom/tcpdf": "^6.2",
 
-        "zendframework/zend-text": "~2.5"
+        "zendframework/zend-text": "~2.5",
+        "zendframework/zend-json": "to support date ranges"
     },
     
     "autoload": {

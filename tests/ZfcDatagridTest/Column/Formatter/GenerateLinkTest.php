@@ -12,9 +12,28 @@ class GenerateLinkTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructor()
     {
-        $generateLink = new GenerateLink(new ServiceManager(), 'route');
+        /** @var \Zend\View\Renderer\PhpRenderer $phpRenderer */
+        $phpRenderer = $this->getMockBuilder('Zend\View\Renderer\PhpRenderer')
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $this->assertInstanceOf('Zend\ServiceManager\ServiceManager', $generateLink->getServiceManager());
+        $generateLink = new GenerateLink($phpRenderer, 'route');
+
+        $this->assertEquals('route', $generateLink->getRoute());
+        $this->assertEmpty($generateLink->getRouteKey());
+        $this->assertEmpty($generateLink->getRouteParams());
+    }
+    public function testConstructorFallBackVersion()
+    {
+        $phpRenderer = $this->getMockBuilder('Zend\View\Renderer\PhpRenderer')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $sm = new ServiceManager();
+        $sm->setService('ViewRenderer', $phpRenderer);
+
+        $generateLink = new GenerateLink($sm, 'route');
+
         $this->assertEquals('route', $generateLink->getRoute());
         $this->assertEmpty($generateLink->getRouteKey());
         $this->assertEmpty($generateLink->getRouteParams());

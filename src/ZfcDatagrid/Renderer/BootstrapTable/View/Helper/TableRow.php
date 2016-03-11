@@ -1,8 +1,6 @@
 <?php
 namespace ZfcDatagrid\Renderer\BootstrapTable\View\Helper;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\View\Helper\AbstractHelper;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Action\AbstractAction;
@@ -10,24 +8,34 @@ use ZfcDatagrid\Column\Action\AbstractAction;
 /**
  * View Helper
  */
-class TableRow extends AbstractHelper implements ServiceLocatorAwareInterface
+class TableRow extends AbstractHelper
 {
-    use ServiceLocatorAwareTrait;
+    /** @var  \Zend\I18n\Translator\Translator|null|false */
+    private $translator;
+
+    /**
+     * @param  false|null|\Zend\I18n\Translator\Translator $translator
+     * @return self
+     */
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
+
+        return $this;
+    }
 
     /**
      *
-     * @param  string $name
+     * @param  string $message
      * @return string
      */
-    private function translate($name)
+    private function translate($message)
     {
-        if ($this->getServiceLocator()->has('translator') === true) {
-            return $this->getServiceLocator()
-                ->get('translator')
-                ->translate($name);
+        if (null === $this->translator) {
+            return $message;
         }
 
-        return $name;
+        return $this->translator->translate($message);
     }
 
     /**
