@@ -11,18 +11,14 @@ use Zend\Http\PhpEnvironment\Request as HttpRequest;
 use Zend\I18n\Translator\Translator;
 use Zend\Mvc\MvcEvent;
 use Zend\Paginator\Paginator;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\Session\Container as SessionContainer;
 use Zend\Stdlib\ResponseInterface;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 use ZfcDatagrid\Column\Style;
 
-class Datagrid implements ServiceLocatorAwareInterface
+class Datagrid
 {
-    use ServiceLocatorAwareTrait;
-
     /**
      *
      * @var array
@@ -204,6 +200,12 @@ class Datagrid implements ServiceLocatorAwareInterface
      * @var string
      */
     protected $forceRenderer;
+
+    /**
+     *
+     * @var Renderer\AbstractRenderer
+     */
+    private $rendererService;
 
     /**
      * @var array
@@ -868,11 +870,8 @@ class Datagrid implements ServiceLocatorAwareInterface
     public function getRenderer()
     {
         if (null === $this->renderer) {
-            $rendererName = 'zfcDatagrid.renderer.' . $this->getRendererName();
-
-            if ($this->getServiceLocator()->has($rendererName) === true) {
-                /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
-                $renderer = $this->getServiceLocator()->get($rendererName);
+            if (isset($this->rendererService)) {
+                $renderer = $this->rendererService;
                 if (! $renderer instanceof Renderer\AbstractRenderer) {
                     throw new \Exception('Renderer service must implement "ZfcDatagrid\Renderer\AbstractRenderer"');
                 }
@@ -894,7 +893,7 @@ class Datagrid implements ServiceLocatorAwareInterface
 
                 $this->renderer = $renderer;
             } else {
-                throw new \Exception(sprintf('Renderer service was not found, please register it: "%s"', $rendererName));
+                throw new \Exception(sprintf('Renderer service was not found, please register it: "zfcDatagrid.renderer.%s"', $this->getRendererName()));
             }
         }
 
@@ -1182,5 +1181,16 @@ class Datagrid implements ServiceLocatorAwareInterface
         }
 
         return false;
+    }
+
+    /**
+     * @param  Renderer\AbstractRenderer $rendererService
+     * @return self
+     */
+    public function setRendererService(Renderer\AbstractRenderer $rendererService)
+    {
+        $this->rendererService = $rendererService;
+
+        return $this;
     }
 }
