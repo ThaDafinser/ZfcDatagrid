@@ -3,7 +3,6 @@
 use ZfcDatagrid\Datagrid;
 use ZfcDatagrid\Renderer;
 use ZfcDatagrid\Service;
-use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
     'ZfcDatagrid' => [
@@ -210,17 +209,31 @@ return [
             'zfcDatagrid_dbAdapter' => Service\ZendDbAdapterFactory::class,
 
             // HTML renderer
-            Renderer\BootstrapTable\Renderer::class => InvokableFactory::class,
-            Renderer\JqGrid\Renderer::class => InvokableFactory::class,
+            Renderer\BootstrapTable\Renderer::class => function() {
+                return new Renderer\BootstrapTable\Renderer();
+            },
+            Renderer\JqGrid\Renderer::class => function() {
+                return new Renderer\JqGrid\Renderer();
+            },
 
             // CLI renderer
-            Renderer\ZendTable\Renderer::class => InvokableFactory::class,
+            Renderer\ZendTable\Renderer::class => function() {
+                return new Renderer\ZendTable\Renderer();
+            },
 
             // Export renderer
-            Renderer\PrintHtml\Renderer::class => InvokableFactory::class,
-            Renderer\PHPExcel\Renderer::class => InvokableFactory::class,
-            Renderer\TCPDF\Renderer::class => InvokableFactory::class,
-            Renderer\Csv\Renderer::class => InvokableFactory::class,
+            Renderer\PrintHtml\Renderer::class => function() {
+                return new Renderer\PrintHtml\Renderer();
+            },
+            Renderer\PHPExcel\Renderer::class => function() {
+                return new Renderer\PHPExcel\Renderer();
+            },
+            Renderer\TCPDF\Renderer::class => function() {
+                return new Renderer\TCPDF\Renderer();
+            },
+            Renderer\Csv\Renderer::class => function() {
+                return new Renderer\Csv\Renderer();
+            },
         ],
 
         'aliases' => [
