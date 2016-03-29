@@ -12,9 +12,28 @@ class GenerateLinkTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructor()
     {
-        $generateLink = new GenerateLink(new ServiceManager(), 'route');
+        /** @var \Zend\View\Renderer\PhpRenderer $phpRenderer */
+        $phpRenderer = $this->getMockBuilder('Zend\View\Renderer\PhpRenderer')
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $this->assertInstanceOf('Zend\ServiceManager\ServiceManager', $generateLink->getServiceManager());
+        $generateLink = new GenerateLink($phpRenderer, 'route');
+
+        $this->assertEquals('route', $generateLink->getRoute());
+        $this->assertEmpty($generateLink->getRouteKey());
+        $this->assertEmpty($generateLink->getRouteParams());
+    }
+    public function testConstructorFallBackVersion()
+    {
+        $phpRenderer = $this->getMockBuilder('Zend\View\Renderer\PhpRenderer')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $sm = new ServiceManager();
+        $sm->setService('ViewRenderer', $phpRenderer);
+
+        $generateLink = new GenerateLink($sm, 'route');
+
         $this->assertEquals('route', $generateLink->getRoute());
         $this->assertEmpty($generateLink->getRouteKey());
         $this->assertEmpty($generateLink->getRouteParams());
@@ -22,11 +41,13 @@ class GenerateLinkTest extends \PHPUnit_Framework_TestCase
 
     public function testGetFormattedValue()
     {
+        /** @var \ZfcDatagrid\Column\AbstractColumn $col */
         $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $col->setUniqueId('foo');
 
         $phpRenderer = $this->getMockBuilder('Zend\View\Renderer\PhpRenderer')
             ->disableOriginalConstructor()
+            ->setMethods(['url'])
             ->getMock();
 
         $phpRenderer->expects($this->any())

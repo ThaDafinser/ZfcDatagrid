@@ -8,8 +8,6 @@ use ZfcDatagrid\Datagrid;
 
 abstract class AbstractDatagrid extends Datagrid implements FactoryInterface
 {
-    private $isResponse = false;
-
     /**
      *
      * @return Datagrid
@@ -17,7 +15,6 @@ abstract class AbstractDatagrid extends Datagrid implements FactoryInterface
     public function createService(ServiceLocatorInterface $sm)
     {
         $this->setServiceLocator($sm);
-
         $config = $sm->get('config');
 
         if (! isset($config['ZfcDatagrid'])) {
@@ -32,6 +29,8 @@ abstract class AbstractDatagrid extends Datagrid implements FactoryInterface
         if ($sm->has('translator') === true) {
             parent::setTranslator($sm->get('translator'));
         }
+        /** @noinspection PhpParamsInspection */
+        parent::setRendererService($sm->get('zfcDatagrid.renderer.' . parent::getRendererName()));
         parent::init();
 
         return $this;
@@ -44,7 +43,7 @@ abstract class AbstractDatagrid extends Datagrid implements FactoryInterface
     {
         $this->initGrid();
 
-        return parent::render();
+        parent::render();
     }
 
     /**

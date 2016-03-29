@@ -1,11 +1,11 @@
 <?php
 namespace ZfcDatagrid\Column\Formatter;
 
-use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\Renderer\RendererInterface;
 use ZfcDatagrid\Column\AbstractColumn;
 
-class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInterface
+class GenerateLink extends AbstractFormatter
 {
     /** @var array */
     protected $validRenderers = [
@@ -19,20 +19,26 @@ class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInter
     protected $routeParams;
     /** @var  string|null */
     protected $routeKey;
-    /** @var  ServiceManager */
-    protected $serviceManager;
     /** @var  \Zend\View\Renderer\PhpRenderer */
     protected $viewRenderer;
 
     /**
-     * @param ServiceManager $sm
-     * @param                $route
-     * @param null           $key
-     * @param array          $params
+     * @param ServiceLocatorInterface|RendererInterface $viewRenderer
+     * @param                                           $route
+     * @param null                                      $key
+     * @param array                                     $params
      */
-    public function __construct(ServiceManager $sm, $route, $key = null, $params = [])
+    public function __construct($viewRenderer, $route, $key = null, $params = [])
     {
-        $this->setServiceManager($sm);
+        /**
+         * old fallback that should be removed in 2.0
+         * TODO remove in 2.0
+         */
+        if (!$viewRenderer instanceof RendererInterface) {
+            $viewRenderer = $viewRenderer->get('ViewRenderer');
+        }
+
+        $this->setViewRenderer($viewRenderer);
         $this->setRoute($route);
         $this->setRouteParams($params);
         $this->setRouteKey($key);
@@ -61,32 +67,22 @@ class GenerateLink extends AbstractFormatter implements ServiceManagerAwareInter
     }
 
     /**
-     * Set service manager
-     * @param ServiceManager $serviceManager
-     */
-    public function setServiceManager(ServiceManager $serviceManager)
-    {
-        $this->serviceManager = $serviceManager;
-    }
-
-    /**
-     * @return ServiceManager
-     */
-    public function getServiceManager()
-    {
-        return $this->serviceManager;
-    }
-
-    /**
      * @return \Zend\View\Renderer\PhpRenderer
      */
     public function getViewRenderer()
     {
-        if (! $this->viewRenderer) {
-            $this->viewRenderer = $this->getServiceManager()->get('ViewRenderer');
-        }
-
         return $this->viewRenderer;
+    }
+
+    /**
+     * @param  \Zend\View\Renderer\PhpRenderer $viewRenderer
+     * @return self
+     */
+    public function setViewRenderer($viewRenderer)
+    {
+        $this->viewRenderer = $viewRenderer;
+
+        return $this;
     }
 
     /**

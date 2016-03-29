@@ -1,8 +1,6 @@
 <?php
 namespace ZfcDatagrid\Renderer\JqGrid\View\Helper;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\View\Helper\AbstractHelper;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Type;
@@ -11,7 +9,7 @@ use ZfcDatagrid\Filter;
 /**
  * View Helper
  */
-class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
+class Columns extends AbstractHelper
 {
     /** @var  \Zend\I18n\Translator\Translator|null|false */
     private $translator;
@@ -22,7 +20,16 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
 
     const STYLE_STRIKETHROUGH = 'cellvalue = \'<span style="text-decoration: line-through;">\' + cellvalue + \'</span>\';';
 
-    use ServiceLocatorAwareTrait;
+    /**
+     * @param  false|null|\Zend\I18n\Translator\Translator $translator
+     * @return self
+     */
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
+
+        return $this;
+    }
 
     /**
      *
@@ -31,18 +38,8 @@ class Columns extends AbstractHelper implements ServiceLocatorAwareInterface
      */
     private function translate($message)
     {
-        if (false === $this->translator) {
-            return $message;
-        }
-
         if (null === $this->translator) {
-            if ($this->getServiceLocator()->has('translator')) {
-                $this->translator = $this->getServiceLocator()->get('translator');
-            } else {
-                $this->translator = false;
-
-                return $message;
-            }
+            return $message;
         }
 
         return $this->translator->translate($message);
