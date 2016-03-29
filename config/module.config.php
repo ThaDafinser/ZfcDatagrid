@@ -3,6 +3,7 @@
 use ZfcDatagrid\Datagrid;
 use ZfcDatagrid\Renderer;
 use ZfcDatagrid\Service;
+use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
     'ZfcDatagrid' => [
@@ -209,31 +210,17 @@ return [
             'zfcDatagrid_dbAdapter' => Service\ZendDbAdapterFactory::class,
 
             // HTML renderer
-            Renderer\BootstrapTable\Renderer::class => function() {
-                return new Renderer\BootstrapTable\Renderer();
-            },
-            Renderer\JqGrid\Renderer::class => function() {
-                return new Renderer\JqGrid\Renderer();
-            },
+            Renderer\BootstrapTable\Renderer::class => InvokableFactory::class,
+            Renderer\JqGrid\Renderer::class => InvokableFactory::class,
 
             // CLI renderer
-            Renderer\ZendTable\Renderer::class => function() {
-                return new Renderer\ZendTable\Renderer();
-            },
+            Renderer\ZendTable\Renderer::class => InvokableFactory::class,
 
             // Export renderer
-            Renderer\PrintHtml\Renderer::class => function() {
-                return new Renderer\PrintHtml\Renderer();
-            },
-            Renderer\PHPExcel\Renderer::class => function() {
-                return new Renderer\PHPExcel\Renderer();
-            },
-            Renderer\TCPDF\Renderer::class => function() {
-                return new Renderer\TCPDF\Renderer();
-            },
-            Renderer\Csv\Renderer::class => function() {
-                return new Renderer\Csv\Renderer();
-            },
+            Renderer\PrintHtml\Renderer::class => InvokableFactory::class,
+            Renderer\PHPExcel\Renderer::class => InvokableFactory::class,
+            Renderer\TCPDF\Renderer::class => InvokableFactory::class,
+            Renderer\Csv\Renderer::class => InvokableFactory::class,
         ],
 
         'aliases' => [
@@ -261,26 +248,8 @@ return [
             'jqgridColumns'     => Renderer\JqGrid\View\Helper\Columns::class,
         ],
         'factories' => [
-            Renderer\BootstrapTable\View\Helper\TableRow::class => function($sm) {
-                /** @var $sm \Zend\ServiceManager\ServiceLocatorInterface */
-                $tableRow = new Renderer\BootstrapTable\View\Helper\TableRow();
-                if($sm->has('translator')){
-                    /** @noinspection PhpParamsInspection */
-                    $tableRow->setTranslator($sm->get('translator'));
-                }
-
-                return $tableRow;
-            },
-            Renderer\JqGrid\View\Helper\Columns::class => function($sm) {
-                /** @var $sm \Zend\ServiceManager\ServiceLocatorInterface */
-                $tableRow = new Renderer\JqGrid\View\Helper\Columns();
-                if($sm->has('translator')){
-                    /** @noinspection PhpParamsInspection */
-                    $tableRow->setTranslator($sm->get('translator'));
-                }
-
-                return $tableRow;
-            },
+            Renderer\BootstrapTable\View\Helper\TableRow::class => Renderer\BootstrapTable\View\Helper\TableRowFactory::class,
+            Renderer\JqGrid\View\Helper\Columns::class => Renderer\JqGrid\View\Helper\ColumnsFactory::class,
         ],
     ],
 

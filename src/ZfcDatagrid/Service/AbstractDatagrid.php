@@ -14,6 +14,7 @@ abstract class AbstractDatagrid extends Datagrid implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $sm)
     {
+        $this->setServiceLocator($sm);
         $config = $sm->get('config');
 
         if (! isset($config['ZfcDatagrid'])) {

@@ -25,6 +25,7 @@ class DatagridFactory implements FactoryInterface
         $application = $sm->get('application');
 
         $grid = new Datagrid();
+        $grid->setServiceLocator($sm);
         $grid->setOptions($config['ZfcDatagrid']);
         $grid->setMvcEvent($application->getMvcEvent());
         if ($sm->has('translator') === true) {

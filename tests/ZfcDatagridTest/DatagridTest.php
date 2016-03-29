@@ -273,7 +273,10 @@ class DatagridTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals([], $this->grid->getColumns());
 
-        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col = $this->getMockBuilder('ZfcDatagrid\Column\AbstractColumn')
+            ->setMethods(['getUniqueId'])
+            ->getMock();
+
         $col->expects($this->any())
             ->method('getUniqueId')
             ->will($this->returnValue('myUniqueId'));

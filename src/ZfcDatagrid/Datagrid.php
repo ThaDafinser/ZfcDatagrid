@@ -11,6 +11,7 @@ use Zend\Http\PhpEnvironment\Request as HttpRequest;
 use Zend\I18n\Translator\Translator;
 use Zend\Mvc\MvcEvent;
 use Zend\Paginator\Paginator;
+use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\Session\Container as SessionContainer;
 use Zend\Stdlib\ResponseInterface;
 use Zend\View\Model\JsonModel;
@@ -19,6 +20,8 @@ use ZfcDatagrid\Column\Style;
 
 class Datagrid
 {
+    use ServiceLocatorAwareTrait;
+
     /**
      *
      * @var array

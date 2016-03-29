@@ -41,11 +41,13 @@ class GenerateLinkTest extends \PHPUnit_Framework_TestCase
 
     public function testGetFormattedValue()
     {
+        /** @var \ZfcDatagrid\Column\AbstractColumn $col */
         $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $col->setUniqueId('foo');
 
         $phpRenderer = $this->getMockBuilder('Zend\View\Renderer\PhpRenderer')
             ->disableOriginalConstructor()
+            ->setMethods(['url'])
             ->getMock();
 
         $phpRenderer->expects($this->any())
