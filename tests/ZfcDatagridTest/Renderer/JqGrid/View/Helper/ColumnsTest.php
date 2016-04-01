@@ -23,13 +23,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $sm2 = $this->getMock('Zend\ServiceManager\ServiceManager');
-
-        $sm = $this->getMock('Zend\View\HelperPluginManager', [], [], '', false);
-        $sm->expects($this->any())
-            ->method('getServiceLocator')
-            ->will($this->returnValue($sm2));
-        $this->sm = $sm;
+        $this->sm = $this->getMock('Zend\View\HelperPluginManager', [], [], '', false);
 
         $myCol = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $myCol->setUniqueId('myCol');
@@ -37,19 +31,9 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $this->myCol = $myCol;
     }
 
-    public function testServiceLocator()
-    {
-        $helper = new Helper\Columns();
-
-        $helper->setServiceLocator($this->sm);
-        $this->assertInstanceOf('Zend\ServiceManager\ServiceLocatorInterface', $helper->getServiceLocator());
-        $this->assertSame($this->sm, $helper->getServiceLocator());
-    }
-
     public function testSimple()
     {
         $helper = new Helper\Columns();
-        $helper->setServiceLocator($this->sm);
 
         $cols = [
             clone $this->myCol,
@@ -64,7 +48,6 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
     public function testStyleBold()
     {
         $helper = new Helper\Columns();
-        $helper->setServiceLocator($this->sm);
 
         $col1 = clone $this->myCol;
         $col1->addStyle(new Style\Bold());
@@ -81,7 +64,6 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
     public function testStyleItalic()
     {
         $helper = new Helper\Columns();
-        $helper->setServiceLocator($this->sm);
 
         $col1 = clone $this->myCol;
         $col1->addStyle(new Style\Italic());
@@ -98,7 +80,6 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
     public function testStyleColor()
     {
         $helper = new Helper\Columns();
-        $helper->setServiceLocator($this->sm);
 
         $col1 = clone $this->myCol;
         $col1->addStyle(new Style\Color(Style\Color::$RED));
@@ -115,7 +96,6 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
     public function testStyleBackgroundColor()
     {
         $helper = new Helper\Columns();
-        $helper->setServiceLocator($this->sm);
 
         $col1 = clone $this->myCol;
         $col1->addStyle(new Style\BackgroundColor(Style\BackgroundColor::$RED));
@@ -133,7 +113,6 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
     {
         $styleMock = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
         $helper    = new Helper\Columns();
-        $helper->setServiceLocator($this->sm);
 
         $col1 = clone $this->myCol;
         $col1->addStyle($styleMock);
@@ -151,7 +130,6 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
     public function testStyleByValueEqual()
     {
         $helper = new Helper\Columns();
-        $helper->setServiceLocator($this->sm);
 
         $col1 = clone $this->myCol;
 
@@ -172,7 +150,6 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
     public function testCSSClassCell()
     {
         $helper = new Helper\Columns();
-        $helper->setServiceLocator($this->sm);
 
         $col1 = clone $this->myCol;
         $col1->addStyle(new Style\CSSClass('test-class'));
@@ -189,7 +166,6 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
     public function testStyleByValueNotEqual()
     {
         $helper = new Helper\Columns();
-        $helper->setServiceLocator($this->sm);
 
         $col1 = clone $this->myCol;
 
@@ -210,7 +186,6 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
     public function testStyleByValueNotSupported()
     {
         $helper = new Helper\Columns();
-        $helper->setServiceLocator($this->sm);
 
         $col1 = clone $this->myCol;
 
@@ -232,7 +207,6 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $sm = $this->getMock('Zend\ServiceManager\ServiceManager', null);
 
         $helper = new Helper\Columns();
-        $helper->setServiceLocator($sm);
 
         $reflection = new \ReflectionClass($helper);
         $method     = $reflection->getMethod('translate');
@@ -245,9 +219,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
 
     public function testTranslateWithMockedTranslator()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\Zend\ServiceManager\ServiceManager $sm */
-        $sm = $this->getMock('Zend\ServiceManager\ServiceManager', null);
-
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\Zend\I18n\Translator\Translator $translator */
         $translator = $this->getMockBuilder('Zend\I18n\Translator\Translator')
             ->disableOriginalConstructor()
             ->setMethods(['translate'])
@@ -259,9 +231,8 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
                 ['test', 'default', null, 'translate'],
             ]));
 
-        $sm->setService('translator', $translator);
         $helper = new Helper\Columns();
-        $helper->setServiceLocator($sm);
+        $helper->setTranslator($translator);
 
         $reflection = new \ReflectionClass($helper);
         $method     = $reflection->getMethod('translate');
