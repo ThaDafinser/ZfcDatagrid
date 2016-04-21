@@ -1,6 +1,11 @@
 <?php
-return [
 
+use ZfcDatagrid\Datagrid;
+use ZfcDatagrid\Renderer;
+use ZfcDatagrid\Service;
+use Zend\ServiceManager\Factory\InvokableFactory;
+
+return [
     'ZfcDatagrid' => [
 
         'settings' => [
@@ -198,38 +203,53 @@ return [
 
     'service_manager' => [
 
-        'invokables' => [
+        'factories' => [
+            Service\DatagridManager::class => Service\DatagridManagerFactory::class,
+            Datagrid::class => Service\DatagridFactory::class,
+
+            'zfcDatagrid_dbAdapter' => Service\ZendDbAdapterFactory::class,
 
             // HTML renderer
-            'zfcDatagrid.renderer.bootstrapTable' => 'ZfcDatagrid\Renderer\BootstrapTable\Renderer',
-            'zfcDatagrid.renderer.jqgrid'         => 'ZfcDatagrid\Renderer\JqGrid\Renderer',
+            Renderer\BootstrapTable\Renderer::class => InvokableFactory::class,
+            Renderer\JqGrid\Renderer::class => InvokableFactory::class,
 
             // CLI renderer
-            'zfcDatagrid.renderer.zendTable' => 'ZfcDatagrid\Renderer\ZendTable\Renderer',
+            Renderer\ZendTable\Renderer::class => InvokableFactory::class,
 
             // Export renderer
-            'zfcDatagrid.renderer.printHtml' => 'ZfcDatagrid\Renderer\PrintHtml\Renderer',
-            'zfcDatagrid.renderer.PHPExcel'  => 'ZfcDatagrid\Renderer\PHPExcel\Renderer',
-            'zfcDatagrid.renderer.TCPDF'     => 'ZfcDatagrid\Renderer\TCPDF\Renderer',
-            'zfcDatagrid.renderer.csv'       => 'ZfcDatagrid\Renderer\Csv\Renderer',
-        ],
-
-        'factories' => [
-            'ZfcDatagridManager'   => 'ZfcDatagrid\Service\DatagridManagerFactory',
-            'ZfcDatagrid\Datagrid' => 'ZfcDatagrid\Service\DatagridFactory',
-
-            'zfcDatagrid_dbAdapter' => 'ZfcDatagrid\Service\ZendDbAdapterFactory',
+            Renderer\PrintHtml\Renderer::class => InvokableFactory::class,
+            Renderer\PHPExcel\Renderer::class => InvokableFactory::class,
+            Renderer\TCPDF\Renderer::class => InvokableFactory::class,
+            Renderer\Csv\Renderer::class => InvokableFactory::class,
         ],
 
         'aliases' => [
-            'zfcDatagrid' => 'ZfcDatagrid\Datagrid',
+            'zfcDatagrid' => Datagrid::class,
+            'ZfcDatagridManager' => Service\DatagridManager::class,
+
+            // HTML renderer
+            'zfcDatagrid.renderer.bootstrapTable' => Renderer\BootstrapTable\Renderer::class,
+            'zfcDatagrid.renderer.jqgrid'         => Renderer\JqGrid\Renderer::class,
+
+            // CLI renderer
+            'zfcDatagrid.renderer.zendTable' => Renderer\ZendTable\Renderer::class,
+
+            // Export renderer
+            'zfcDatagrid.renderer.printHtml' => Renderer\PrintHtml\Renderer::class,
+            'zfcDatagrid.renderer.PHPExcel'  => Renderer\PHPExcel\Renderer::class,
+            'zfcDatagrid.renderer.TCPDF'     => Renderer\TCPDF\Renderer::class,
+            'zfcDatagrid.renderer.csv'       => Renderer\Csv\Renderer::class,
         ],
     ],
 
     'view_helpers' => [
-        'invokables' => [
-            'bootstrapTableRow' => 'ZfcDatagrid\Renderer\BootstrapTable\View\Helper\TableRow',
-            'jqgridColumns'     => 'ZfcDatagrid\Renderer\JqGrid\View\Helper\Columns',
+        'aliases' => [
+            'bootstrapTableRow' => Renderer\BootstrapTable\View\Helper\TableRow::class,
+            'jqgridColumns'     => Renderer\JqGrid\View\Helper\Columns::class,
+        ],
+        'factories' => [
+            Renderer\BootstrapTable\View\Helper\TableRow::class => Renderer\BootstrapTable\View\Helper\TableRowFactory::class,
+            Renderer\JqGrid\View\Helper\Columns::class => Renderer\JqGrid\View\Helper\ColumnsFactory::class,
         ],
     ],
 
