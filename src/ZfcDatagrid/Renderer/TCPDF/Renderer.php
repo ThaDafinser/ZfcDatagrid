@@ -314,10 +314,10 @@ class Renderer extends AbstractExport
                             if ($file !== false) {
                                 list($width, $height) = $this->calcImageSize($file, $col->getWidth() - 2, $rowHeight - 2);
 
-                                $pdf->Image('@' . $file, $x + 1, $y + 1, $width, $height, '', '', 'L', false);
+                                $pdf->Image('@' . $file, $x + 1, $y + 1, $width, $height, '', '', 'L', true);
                             }
                         } else {
-                            $pdf->Image($link, $x + 1, $y + 1, 0, $resizeHeight, '', '', 'L', false);
+                            $pdf->Image($link, $x + 1, $y + 1, 0, $resizeHeight, '', '', 'L', true);
                         }
                     } catch (\Exception $e) {
                         // if tcpdf couldnt find a image, continue and log it
