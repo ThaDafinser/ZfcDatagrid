@@ -18,7 +18,6 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace ZfcDatagridTest\DataSource\Doctrine2\Mocks;
 
 /**

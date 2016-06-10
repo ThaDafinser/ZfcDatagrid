@@ -26,7 +26,8 @@ class FilterTest extends PHPUnit_Framework_TestCase
     public function testConstruct()
     {
         /* @var $filter \ZfcDatagrid\Filter */
-        $filter = $this->getMock('ZfcDatagrid\Filter');
+        $filter = $this->getMockBuilder('ZfcDatagrid\Filter')
+            ->getMock();
         $filter->setFromColumn($this->column, 'myValue,123');
 
         $filterArray = new FilterArray($filter);
@@ -416,9 +417,13 @@ class FilterTest extends PHPUnit_Framework_TestCase
         ]));
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testException()
     {
-        $filter = $this->getMock('ZfcDatagrid\Filter');
+        $filter = $this->getMockBuilder('ZfcDatagrid\Filter')
+            ->getMock();
         $filter->expects($this->any())
             ->method('getColumn')
             ->will($this->returnValue($this->column));
@@ -430,8 +435,6 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $filter->expects($this->any())
             ->method('getOperator')
             ->will($this->returnValue(' () '));
-
-        $this->setExpectedException('InvalidArgumentException');
 
         $filterArray = new FilterArray($filter);
         $filterArray->applyFilter([

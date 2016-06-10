@@ -206,21 +206,25 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         ]));
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testSetShowOnValueOperatorException()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
         $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
 
-        $this->setExpectedException('InvalidArgumentException');
         $action->setShowOnValueOperator('XOR');
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testIsDisplayedException()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
         $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
 
-        $this->setExpectedException('InvalidArgumentException');
         $action->addShowOnValue($this->column, '23', 'UNknownFilter');
         $action->isDisplayed([
             $this->column->getUniqueId() => '32',

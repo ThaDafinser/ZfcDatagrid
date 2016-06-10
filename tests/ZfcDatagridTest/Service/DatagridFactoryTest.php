@@ -37,9 +37,12 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $mvcEventMock = $this->getMock('Zend\Mvc\MvcEvent');
+        $mvcEventMock = $this->getMockBuilder('Zend\Mvc\MvcEvent')
+            ->getMock();
 
-        $this->applicationMock = $this->getMock('Zend\Mvc\Application', [], [], '', false);
+        $this->applicationMock = $this->getMockBuilder('Zend\Mvc\Application')
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->applicationMock->expects($this->any())
             ->method('getMvcEvent')
             ->will($this->returnValue($mvcEventMock));
@@ -48,10 +51,12 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Config key "ZfcDatagrid" is missing
+     */
     public function testCreateServiceException()
     {
-        $this->setExpectedException('InvalidArgumentException', 'Config key "ZfcDatagrid" is missing');
-
         $sm = new ServiceManager();
         $sm->setService('config', []);
 
@@ -74,7 +79,9 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
 
     public function testCanCreateServiceWithTranslator()
     {
-        $translatorMock = $this->getMock('Zend\I18n\Translator\Translator', [], [], '', false);
+        $translatorMock = $this->getMockBuilder('Zend\I18n\Translator\Translator')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $sm = new ServiceManager();
         $sm->setService('config', $this->config);
@@ -91,7 +98,9 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
 
     public function testCanCreateServiceWithMvcTranslator()
     {
-        $mvcTranslatorMock = $this->getMock('Zend\Mvc\I18n\Translator', [], [], '', false);
+        $mvcTranslatorMock = $this->getMockBuilder('Zend\Mvc\I18n\Translator')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $sm = new ServiceManager();
         $sm->setService('config', $this->config);

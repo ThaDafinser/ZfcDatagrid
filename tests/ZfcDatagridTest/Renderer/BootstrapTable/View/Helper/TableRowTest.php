@@ -36,7 +36,8 @@ class TableRowTest extends PHPUnit_Framework_TestCase
 
         $this->myCol = $myCol;
 
-        $this->serviceLocator = $this->getMock('Zend\ServiceManager\ServiceManager');
+        $this->serviceLocator = $this->getMockBuilder('Zend\ServiceManager\ServiceManager')
+            ->getMock();
     }
 
     public function testCanExecute()
@@ -101,6 +102,9 @@ class TableRowTest extends PHPUnit_Framework_TestCase
         $this->assertContains('<pre>First value</pre>', $html);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testStyle()
     {
         $helper = new TableRow();
@@ -166,7 +170,6 @@ class TableRowTest extends PHPUnit_Framework_TestCase
             $myCol,
         ];
 
-        $this->setExpectedException('InvalidArgumentException');
         $html = $helper($this->rowWithId, $cols);
     }
 

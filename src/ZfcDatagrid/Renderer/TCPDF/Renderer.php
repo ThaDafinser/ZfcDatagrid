@@ -2,7 +2,6 @@
 /**
  * Output as a PDF file
  */
-
 namespace ZfcDatagrid\Renderer\TCPDF;
 
 use TCPDF;

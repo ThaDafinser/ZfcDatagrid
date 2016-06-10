@@ -590,19 +590,23 @@ class FilterTest extends PHPUnit_Framework_TestCase
         ], Filter::BETWEEN));
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testIsApplyBetweenInvalidArgumentException()
     {
         $filter = new Filter();
 
-        $this->setExpectedException('\InvalidArgumentException');
         $filter->isApply(123, 100, Filter::BETWEEN);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testIsApplyInvalidArgumentException()
     {
         $filter = new Filter();
 
-        $this->setExpectedException('\InvalidArgumentException');
         $filter->isApply(123, 100, 'UndefinedFilter');
     }
 }

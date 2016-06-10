@@ -12,7 +12,7 @@ class ObjectTest extends PHPUnit_Framework_TestCase
 {
     public function testObject()
     {
-        $mock = $this->getMock('ZfcDatagrid\Column\DataPopulation\Object\Gravatar');
+        $mock = $this->getMockBuilder('ZfcDatagrid\Column\DataPopulation\Object\Gravatar')->getMock();
         $mock->expects($this->any())
             ->method('toString')
             ->will($this->returnValue('myReturn'));
@@ -28,7 +28,7 @@ class ObjectTest extends PHPUnit_Framework_TestCase
     public function testParameters()
     {
         $column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
-        $mock   = $this->getMock('ZfcDatagrid\Column\DataPopulation\Object\Gravatar');
+        $mock   = $this->getMockBuilder('ZfcDatagrid\Column\DataPopulation\Object\Gravatar')->getMock();
         $mock->expects($this->any())
         ->method('toString')
         ->will($this->returnValue('myReturn'));
