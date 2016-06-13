@@ -44,11 +44,19 @@ class RendererTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($renderer->isHtml());
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Request must be an instance of Zend\Http\PhpEnvironment\Request for HTML rendering
+     */
     public function testGetRequestException()
     {
-        $request = $this->getMock('Zend\Console\Request', [], [], '', false);
+        $request = $this->getMockBuilder('Zend\Console\Request')
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', [], [], '', false);
+        $mvcEvent = $this->getMockBuilder('Zend\Mvc\MvcEvent')
+            ->disableOriginalConstructor()
+            ->getMock();
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));
@@ -56,15 +64,18 @@ class RendererTest extends PHPUnit_Framework_TestCase
         $renderer = new JqGrid\Renderer();
         $renderer->setMvcEvent($mvcEvent);
 
-        $this->setExpectedException('Exception', 'Request must be an instance of Zend\Http\PhpEnvironment\Request for HTML rendering');
         $renderer->getRequest();
     }
 
     public function testGetRequest()
     {
-        $request = $this->getMock('Zend\Http\PhpEnvironment\Request', [], [], '', false);
+        $request = $this->getMockBuilder('Zend\Http\PhpEnvironment\Request')
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', [], [], '', false);
+        $mvcEvent = $this->getMockBuilder('Zend\Mvc\MvcEvent')
+            ->disableOriginalConstructor()
+            ->getMock();
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));

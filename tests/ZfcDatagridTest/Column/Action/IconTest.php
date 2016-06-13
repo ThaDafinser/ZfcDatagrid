@@ -45,11 +45,12 @@ class IconTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('<a href="#"><img src="/images/21/add.png" /></a>', $icon->toHtml([]));
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testException()
     {
         $icon = new Icon();
-
-        $this->setExpectedException('InvalidArgumentException');
 
         $icon->toHtml([]);
     }

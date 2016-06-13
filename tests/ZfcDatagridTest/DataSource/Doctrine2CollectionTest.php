@@ -40,15 +40,21 @@ class Doctrine2CollectionTest extends DataSourceTestCase
         $this->source = $source;
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Unknown data input: "instanceof stdClass"
+     */
     public function testConstructException()
     {
-        $this->setExpectedException('InvalidArgumentException', 'Unknown data input: "instanceof stdClass"');
         $source = new Doctrine2Collection(new \stdClass());
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Unknown data input: ""
+     */
     public function testConstructExceptionClass()
     {
-        $this->setExpectedException('InvalidArgumentException', 'Unknown data input: ""');
         $source = new Doctrine2Collection(null);
     }
 
@@ -61,7 +67,9 @@ class Doctrine2CollectionTest extends DataSourceTestCase
 
     public function testEntityManager()
     {
-        $em = $this->getMock('Doctrine\ORM\EntityManager', [], [], '', false);
+        $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $source = clone $this->source;
         $this->assertNull($source->getEntityManager());

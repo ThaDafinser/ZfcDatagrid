@@ -45,11 +45,13 @@ class ButtonTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($html, $button->toHtml(['myCol' => 'Blubb']));
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testHtmlException()
     {
         $button = new Button();
 
-        $this->setExpectedException('InvalidArgumentException');
         $button->toHtml([]);
     }
 }

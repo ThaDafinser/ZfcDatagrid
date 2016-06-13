@@ -23,7 +23,9 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->sm = $this->getMock('Zend\View\HelperPluginManager', [], [], '', false);
+        $this->sm = $this->getMockBuilder('Zend\View\HelperPluginManager')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $myCol = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $myCol->setUniqueId('myCol');
@@ -109,6 +111,10 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $this->assertStringEndsWith('search: true,searchoptions: {"clearSearch":false}}]', $result);
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessageRegExp  /Not defined style: \"[a-zA-Z0-9_]+\"/
+     */
     public function testStyleException()
     {
         $styleMock = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
@@ -120,7 +126,6 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
             $col1,
         ];
 
-        $this->setExpectedException('Exception', 'Not defined style: "' . get_class($styleMock) . '"');
         $result = $helper($cols);
 
         $this->assertStringStartsWith('[{name:', $result);
@@ -183,6 +188,10 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
         $this->assertStringEndsWith('if (rowObject.myCol != \'123\') {cellvalue = \'<span style="font-weight: bold;">\' + cellvalue + \'</span>\';} return cellvalue; },searchoptions: {"clearSearch":false}}]', $result);
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Currently not supported filter operation: "=(%s)"
+     */
     public function testStyleByValueNotSupported()
     {
         $helper = new Helper\Columns();
@@ -197,14 +206,15 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
             $col1,
         ];
 
-        $this->setExpectedException('Exception', 'Currently not supported filter operation: "' . Filter::IN . '"');
         $result = $helper($cols);
     }
 
     public function testTranslate()
     {
         /** @var \PHPUnit_Framework_MockObject_MockObject|\Zend\ServiceManager\ServiceManager $sm */
-        $sm = $this->getMock('Zend\ServiceManager\ServiceManager', null);
+        $sm = $this->getMockBuilder('Zend\ServiceManager\ServiceManager')
+            ->setMethods(null)
+            ->getMock();
 
         $helper = new Helper\Columns();
 

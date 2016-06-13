@@ -62,7 +62,8 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
 
         $this->assertNull($renderer->getViewModel());
 
-        $viewModel = $this->getMock('Zend\View\Model\ViewModel');
+        $viewModel = $this->getMockBuilder('Zend\View\Model\ViewModel')
+            ->getMock();
         $renderer->setViewModel($viewModel);
         $this->assertSame($viewModel, $renderer->getViewModel());
     }
@@ -239,9 +240,13 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
         $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
 
-        $request = $this->getMock('Zend\Http\Request', [], [], '', false);
+        $request = $this->getMockBuilder('Zend\Http\Request')
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', [], [], '', false);
+        $mvcEvent = $this->getMockBuilder('Zend\Mvc\MvcEvent')
+            ->disableOriginalConstructor()
+            ->getMock();
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));
@@ -259,7 +264,9 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
         $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
 
-        $translator = $this->getMock('Zend\I18n\Translator\Translator', [], [], '', false);
+        $translator = $this->getMockBuilder('Zend\I18n\Translator\Translator')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->assertNull($renderer->getTranslator());
         $renderer->setTranslator($translator);
@@ -272,7 +279,10 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
         $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
         $this->assertEquals('foobar', $renderer->translate('foobar'));
 
-        $translator = $this->getMock('Zend\I18n\Translator\Translator', ['translate'], [], '', false);
+        $translator = $this->getMockBuilder('Zend\I18n\Translator\Translator')
+            ->disableOriginalConstructor()
+            ->setMethods(['translate'])
+            ->getMock();
         $translator->expects($this->any())
             ->method('translate')
             ->willReturn('barfoo');
@@ -341,12 +351,16 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
 
     public function testGetFiltersDefault()
     {
-        $request = $this->getMock('Zend\Http\PhpEnvironment\Request', [], [], '', false);
+        $request = $this->getMockBuilder('Zend\Http\PhpEnvironment\Request')
+            ->disableOriginalConstructor()
+            ->getMock();
         $request->expects($this->any())
             ->method('isPost')
             ->will($this->returnValue(false));
 
-        $mvcEvent = $this->getMock('Zend\Mvc\MvcEvent', [], [], '', false);
+        $mvcEvent = $this->getMockBuilder('Zend\Mvc\MvcEvent')
+            ->disableOriginalConstructor()
+            ->getMock();
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));

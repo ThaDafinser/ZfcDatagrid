@@ -27,14 +27,14 @@ class ActionTest extends PHPUnit_Framework_TestCase
 
         $this->assertCount(0, $column->getActions());
 
-        $action = $this->getMock('ZfcDatagrid\Column\Action\Button');
+        $action = $this->getMockBuilder('ZfcDatagrid\Column\Action\Button')->getMock();
         $column->addAction($action);
 
         $this->assertCount(1, $column->getActions());
 
-        $action2 = $this->getMock('ZfcDatagrid\Column\Action\Button');
+        $action2 = $this->getMockBuilder('ZfcDatagrid\Column\Action\Button')->getMock();
         $column->addAction($action2);
-        $action3 = $this->getMock('ZfcDatagrid\Column\Action\Button');
+        $action3 = $this->getMockBuilder('ZfcDatagrid\Column\Action\Button')->getMock();
         $column->addAction($action3);
 
         $this->assertCount(3, $column->getActions());
@@ -43,8 +43,8 @@ class ActionTest extends PHPUnit_Framework_TestCase
         $this->assertCount(2, $column->getActions());
 
         $actions = [
-            $this->getMock('ZfcDatagrid\Column\Action\Button'),
-            $this->getMock('ZfcDatagrid\Column\Action\Button'),
+            $this->getMockBuilder('ZfcDatagrid\Column\Action\Button')->getMock(),
+            $this->getMockBuilder('ZfcDatagrid\Column\Action\Button')->getMock(),
         ];
         $column->setActions($actions);
         $this->assertEquals($actions, $column->getActions());

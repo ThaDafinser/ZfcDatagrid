@@ -46,20 +46,20 @@ class ZendSelectTest extends DataSourceTestCase
     {
         parent::setUp();
 
-        $this->mockDriver     = $this->getMock('Zend\Db\Adapter\Driver\DriverInterface');
-        $this->mockConnection = $this->getMock('Zend\Db\Adapter\Driver\ConnectionInterface');
+        $this->mockDriver     = $this->getMockBuilder('Zend\Db\Adapter\Driver\DriverInterface')->getMock();
+        $this->mockConnection = $this->getMockBuilder('Zend\Db\Adapter\Driver\ConnectionInterface')->getMock();
         $this->mockDriver->expects($this->any())
             ->method('checkEnvironment')
             ->will($this->returnValue(true));
         $this->mockDriver->expects($this->any())
             ->method('getConnection')
             ->will($this->returnValue($this->mockConnection));
-        $this->mockPlatform = $this->getMock('Zend\Db\Adapter\Platform\PlatformInterface');
+        $this->mockPlatform = $this->getMockBuilder('Zend\Db\Adapter\Platform\PlatformInterface')->getMock();
         $this->mockPlatform->expects($this->any())
             ->method('getIdentifierSeparator')
             ->will($this->returnValue('.'));
 
-        $this->mockStatement = $this->getMock('Zend\Db\Adapter\Driver\StatementInterface');
+        $this->mockStatement = $this->getMockBuilder('Zend\Db\Adapter\Driver\StatementInterface')->getMock();
         $this->mockDriver->expects($this->any())
             ->method('createStatement')
             ->will($this->returnValue($this->mockStatement));
@@ -78,31 +78,38 @@ class ZendSelectTest extends DataSourceTestCase
         ]);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage A instance of Zend\Db\SqlSelect is needed to use this dataSource!
+     */
     public function testConstruct()
     {
-        $select = $this->getMock('Zend\Db\Sql\Select');
+        $select = $this->getMockBuilder('Zend\Db\Sql\Select')->getMock();
 
         $source = new ZendSelect($select);
 
         $this->assertInstanceOf('Zend\Db\Sql\Select', $source->getData());
         $this->assertEquals($select, $source->getData());
 
-        $this->setExpectedException('InvalidArgumentException', 'A instance of Zend\Db\SqlSelect is needed to use this dataSource!');
-
         $source = new ZendSelect([]);
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Object "Zend\Db\Sql\Sql" is missing, please call setAdapter() first!
+     */
     public function testExecuteException()
     {
-        $select = $this->getMock('Zend\Db\Sql\Select');
+        $select = $this->getMockBuilder('Zend\Db\Sql\Select')->getMock();
 
         $source = new ZendSelect($select);
-
-        $this->setExpectedException('Exception', 'Object "Zend\Db\Sql\Sql" is missing, please call setAdapter() first!');
 
         $source->execute();
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testAdapter()
     {
         $source = clone $this->source;
@@ -113,7 +120,6 @@ class ZendSelectTest extends DataSourceTestCase
         $source->setAdapter($this->adapter);
         $this->assertInstanceOf('Zend\Db\Sql\Sql', $source->getAdapter());
 
-        $this->setExpectedException('InvalidArgumentException');
         $source->setAdapter('something');
     }
 
