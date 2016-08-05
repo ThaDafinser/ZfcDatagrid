@@ -45,18 +45,20 @@ class SelectTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('myAlias', $col->getUniqueId());
     }
 
+    /**
+     * @expectedException \Exception
+     */
     public function testException()
     {
-        $this->setExpectedException('Exception');
-
         $expr = new \Zend\Db\Sql\Expression('Something...');
         $col  = new Column\Select($expr);
     }
 
+    /**
+     * @expectedException \Exception
+     */
     public function testExceptionNotString()
     {
-        $this->setExpectedException('Exception');
-
         $expr = new \Zend\Db\Sql\Expression('Something...');
         $col  = new Column\Select($expr, new \stdClass());
     }

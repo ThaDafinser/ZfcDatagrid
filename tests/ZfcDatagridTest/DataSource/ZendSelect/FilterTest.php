@@ -53,16 +53,20 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->column2->setUniqueId('myCol2');
         $this->column2->setSelect('myCol2');
 
-        $this->mockDriver     = $this->getMock('Zend\Db\Adapter\Driver\DriverInterface');
-        $this->mockConnection = $this->getMock('Zend\Db\Adapter\Driver\ConnectionInterface');
+        $this->mockDriver     = $this->getMockBuilder('Zend\Db\Adapter\Driver\DriverInterface')
+            ->getMock();
+        $this->mockConnection = $this->getMockBuilder('Zend\Db\Adapter\Driver\ConnectionInterface')
+            ->getMock();
         $this->mockDriver->expects($this->any())
             ->method('checkEnvironment')
             ->will($this->returnValue(true));
         $this->mockDriver->expects($this->any())
             ->method('getConnection')
             ->will($this->returnValue($this->mockConnection));
-        $this->mockPlatform  = $this->getMock('Zend\Db\Adapter\Platform\PlatformInterface');
-        $this->mockStatement = $this->getMock('Zend\Db\Adapter\Driver\StatementInterface');
+        $this->mockPlatform  = $this->getMockBuilder('Zend\Db\Adapter\Platform\PlatformInterface')
+            ->getMock();
+        $this->mockStatement = $this->getMockBuilder('Zend\Db\Adapter\Driver\StatementInterface')
+            ->getMock();
         $this->mockDriver->expects($this->any())
             ->method('createStatement')
             ->will($this->returnValue($this->mockStatement));
@@ -409,9 +413,13 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('myValue', $operator->getMaxValue());
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testException()
     {
-        $filter = $this->getMock('ZfcDatagrid\Filter');
+        $filter = $this->getMockBuilder('ZfcDatagrid\Filter')
+            ->getMock();
         $filter->expects($this->any())
             ->method('getColumn')
             ->will($this->returnValue($this->column));
@@ -424,7 +432,6 @@ class FilterTest extends PHPUnit_Framework_TestCase
             ->method('getOperator')
             ->will($this->returnValue(' () '));
 
-        $this->setExpectedException('InvalidArgumentException');
         $filterSelect = clone $this->filterSelect;
         $filterSelect->applyFilter($filter);
     }

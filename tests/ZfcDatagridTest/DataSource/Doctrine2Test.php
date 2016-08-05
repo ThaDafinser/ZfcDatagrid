@@ -33,6 +33,9 @@ class Doctrine2Test extends AbstractDoctrine2Test
         ]);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testConstruct()
     {
         $source = clone $this->source;
@@ -40,7 +43,6 @@ class Doctrine2Test extends AbstractDoctrine2Test
         $this->assertInstanceOf('Doctrine\ORM\QueryBuilder', $source->getData());
         $this->assertSame($this->qb, $source->getData());
 
-        $this->setExpectedException('InvalidArgumentException');
         $source = new Doctrine2(new \stdClass('something'));
     }
 

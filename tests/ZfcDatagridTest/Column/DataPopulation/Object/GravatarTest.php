@@ -22,11 +22,13 @@ class GravatarTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://www.gravatar.com/avatar/' . md5('martin.keckeis1@gmail.com'), $gravatar->toString());
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testException()
     {
         $gravatar = new Gravatar();
 
-        $this->setExpectedException('InvalidArgumentException');
         $gravatar->setParameterFromColumn('invalidPara', 'someValue');
     }
 }

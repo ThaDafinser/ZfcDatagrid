@@ -30,13 +30,14 @@ class PhpArrayTest extends DataSourceTestCase
         $this->source = $source;
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testConstruct()
     {
         $source = clone $this->source;
 
         $this->assertEquals($this->data, $source->getData());
-
-        $this->setExpectedException('InvalidArgumentException');
 
         $source = new PhpArray(null);
     }

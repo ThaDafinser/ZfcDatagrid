@@ -136,7 +136,8 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
             $this->col1,
         ]);
 
-        $translator = $this->getMock('Zend\I18n\Translator\Translator');
+        $translator = $this->getMockBuilder('Zend\I18n\Translator\Translator')
+            ->getMock();
 
         $prepare->setTranslator($translator);
         $this->assertEquals($translator, $prepare->getTranslator());
@@ -288,7 +289,8 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
             $this->col3,
         ]);
 
-        $translator = $this->getMock('Zend\I18n\Translator\Translator');
+        $translator = $this->getMockBuilder('Zend\I18n\Translator\Translator')
+            ->getMock();
         $translator->expects($this->any())
             ->method('translate')
             ->will($this->returnCallback(function ($name) {
@@ -339,7 +341,8 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
             $col3,
         ]);
 
-        $translator = $this->getMock('Zend\I18n\Translator\Translator');
+        $translator = $this->getMockBuilder('Zend\I18n\Translator\Translator')
+            ->getMock();
         $translator->expects($this->any())
             ->method('translate')
             ->will($this->returnCallback(function ($name) {
@@ -383,7 +386,8 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
     {
         $data = $this->data;
 
-        $mock = $this->getMock('ZfcDatagrid\Column\DataPopulation\Object\Gravatar');
+        $mock = $this->getMockBuilder('ZfcDatagrid\Column\DataPopulation\Object\Gravatar')
+            ->getMock();
         $mock->expects($this->any())
             ->method('toString')
             ->will($this->returnValue('myReturn'));
@@ -392,7 +396,8 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
         $object->setObject($mock);
         $object->addObjectParameterColumn('email', $this->col1);
 
-        $col = $this->getMock('ZfcDatagrid\Column\ExternalData');
+        $col = $this->getMockBuilder('ZfcDatagrid\Column\ExternalData')
+            ->getMock();
         $col->expects($this->any())
             ->method('getUniqueId')
             ->will($this->returnValue('colPopulation'));

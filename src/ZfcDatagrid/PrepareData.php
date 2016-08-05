@@ -221,7 +221,9 @@ class PrepareData
                  */
                 if (is_array($row[$col->getUniqueId()])) {
                     array_walk_recursive($row[$col->getUniqueId()], function (&$value) {
-                        $value = trim($value);
+                        if (!is_object($value)) {
+                            $value = trim($value);
+                        }
                     });
                 } elseif (!is_object($row[$col->getUniqueId()])) {
                     $row[$col->getUniqueId()] = trim($row[$col->getUniqueId()]);

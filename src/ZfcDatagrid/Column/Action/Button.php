@@ -34,8 +34,8 @@ class Button extends AbstractAction
     }
 
     /**
-     *
      * @return string
+     * @throws \Exception
      */
     protected function getHtmlType()
     {

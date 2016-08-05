@@ -38,6 +38,10 @@ class AbstractExportTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(date('Y-m-d_H-i-s') . '_My_title', $filename);
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Currently only "A" paper formats are supported!
+     */
     public function testPaperWidth()
     {
         $exportMock = clone $this->exportMock;
@@ -110,7 +114,6 @@ class AbstractExportTest extends PHPUnit_Framework_TestCase
         ];
         $exportMock->setOptions($options);
 
-        $this->setExpectedException('Exception', 'Currently only "A" paper formats are supported!');
         $width = $method->invoke($exportMock);
     }
 }

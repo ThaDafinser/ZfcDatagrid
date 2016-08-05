@@ -46,8 +46,13 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->requestMock  = $this->getMock('Zend\Console\Request', [], [], '', false);
-        $this->mvcEventMock = $this->getMock('Zend\Mvc\MvcEvent', [], [], '', false);
+        $this->requestMock  = $this->getMockBuilder('Zend\Console\Request')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->mvcEventMock = $this->getMockBuilder('Zend\Mvc\MvcEvent')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->colMock = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
     }
@@ -73,9 +78,15 @@ class RendererTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($renderer->isHtml());
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Request must be an instance of Zend\Console\Request for console rendering
+     */
     public function testGetRequestException()
     {
-        $request = $this->getMock('Zend\Http\PhpEnvironment\Request', [], [], '', false);
+        $request = $this->getMockBuilder('Zend\Http\PhpEnvironment\Request')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $mvcEvent = clone $this->mvcEventMock;
         $mvcEvent->expects($this->any())
@@ -85,7 +96,6 @@ class RendererTest extends PHPUnit_Framework_TestCase
         $renderer = new ZendTable\Renderer();
         $renderer->setMvcEvent($mvcEvent);
 
-        $this->setExpectedException('Exception', 'Request must be an instance of Zend\Console\Request for console rendering');
         $renderer->getRequest();
     }
 
@@ -307,6 +317,10 @@ class RendererTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(99, $renderer->getItemsPerPage());
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage No columns to display available
+     */
     public function testGetColumnsToDisplay()
     {
         $reflection = new ReflectionClass('ZfcDatagrid\Renderer\ZendTable\Renderer');
@@ -319,7 +333,9 @@ class RendererTest extends PHPUnit_Framework_TestCase
         $col2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
         $col2->setWidth(20);
 
-        $col3 = $this->getMock('ZfcDatagrid\Column\Action');
+        $col3 = $this->getMockBuilder('ZfcDatagrid\Column\Action')
+            ->disableOriginalConstructor()
+            ->getMock();
         $col3->setWidth(20);
 
         $renderer = new ZendTable\Renderer();
@@ -344,7 +360,6 @@ class RendererTest extends PHPUnit_Framework_TestCase
             $col2,
         ], $result);
 
-        $this->setExpectedException('Exception', 'No columns to display available');
         $renderer = new ZendTable\Renderer();
         $method->invoke($renderer);
     }

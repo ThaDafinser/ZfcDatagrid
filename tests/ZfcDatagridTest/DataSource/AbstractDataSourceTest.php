@@ -87,7 +87,8 @@ class AbstractDataSourceTest extends PHPUnit_Framework_TestCase
     {
         $ds = clone $this->dsMock;
 
-        $filter = $this->getMock('ZfcDatagrid\Filter');
+        $filter = $this->getMockBuilder('ZfcDatagrid\Filter')
+            ->getMock();
         $ds->addFilter($filter);
 
         $this->assertEquals([
@@ -99,7 +100,8 @@ class AbstractDataSourceTest extends PHPUnit_Framework_TestCase
     {
         $ds = clone $this->dsMock;
 
-        $adapter = $this->getMock('Zend\Paginator\Adapter\ArrayAdapter');
+        $adapter = $this->getMockBuilder('Zend\Paginator\Adapter\ArrayAdapter')
+            ->getMock();
         $ds->setPaginatorAdapter($adapter);
 
         $this->assertInstanceOf('Zend\Paginator\Adapter\AdapterInterface', $ds->getPaginatorAdapter());

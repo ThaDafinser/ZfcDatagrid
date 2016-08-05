@@ -4,6 +4,7 @@ namespace ZfcDatagrid;
 use ArrayIterator;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\QueryBuilder;
+use Interop\Container\ContainerInterface;
 use Zend\Cache;
 use Zend\Console\Request as ConsoleRequest;
 use Zend\Db\Sql\Select as ZendSelect;
@@ -11,7 +12,7 @@ use Zend\Http\PhpEnvironment\Request as HttpRequest;
 use Zend\I18n\Translator\Translator;
 use Zend\Mvc\MvcEvent;
 use Zend\Paginator\Paginator;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Session\Container as SessionContainer;
 use Zend\Stdlib\ResponseInterface;
 use Zend\View\Model\JsonModel;
@@ -20,8 +21,6 @@ use ZfcDatagrid\Column\Style;
 
 class Datagrid
 {
-    use ServiceLocatorAwareTrait;
-
     /**
      *
      * @var array
@@ -220,6 +219,11 @@ class Datagrid
         'select',
         'sortDefault',
     ];
+
+    /**
+     * @var ServiceLocatorInterface
+     */
+    protected $serviceLocator = null;
 
     /**
      * Init method is called automatically with the service creation
@@ -1195,5 +1199,28 @@ class Datagrid
         $this->rendererService = $rendererService;
 
         return $this;
+    }
+
+    /**
+     * Set service locator
+     *
+     * @param  ContainerInterface $serviceLocator
+     * @return mixed
+     */
+    public function setServiceLocator(ContainerInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+
+        return $this;
+    }
+
+    /**
+     * Get service locator
+     *
+     * @return ContainerInterface
+     */
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
     }
 }

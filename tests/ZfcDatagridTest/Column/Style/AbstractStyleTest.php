@@ -158,12 +158,14 @@ class AbstractStyleTest extends PHPUnit_Framework_TestCase
         ]));
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testSetByValueOperatorException()
     {
         /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
         $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
 
-        $this->setExpectedException('InvalidArgumentException');
         $style->setByValueOperator('XOR');
     }
 
