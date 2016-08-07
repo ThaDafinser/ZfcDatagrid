@@ -9,7 +9,8 @@ php:
   - hhvm
   - nightly
 
-allow_failures:
+matrix:
+  allow_failures:
   - php: nightly
 
 env:
