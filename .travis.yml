@@ -19,7 +19,7 @@ env:
     - DEPENDENCIES=""
 
 before_script:
-  - php -i
+ - php -i
  - composer self-update
  - composer update -o --prefer-source $DEPENDENCIES
 
