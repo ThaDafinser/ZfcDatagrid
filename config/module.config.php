@@ -192,8 +192,7 @@ return [
                 'delimiter' => ',',
                 'enclosure' => '"',
             ],
-        ]
-        ,
+        ],
 
         // General parameters
         'generalParameterNames' => [
@@ -243,10 +242,12 @@ return [
     ],
 
     'view_helpers' => [
+        
         'aliases' => [
             'bootstrapTableRow' => Renderer\BootstrapTable\View\Helper\TableRow::class,
             'jqgridColumns'     => Renderer\JqGrid\View\Helper\Columns::class,
         ],
+        
         'factories' => [
             Renderer\BootstrapTable\View\Helper\TableRow::class => Renderer\BootstrapTable\View\Helper\TableRowFactory::class,
             Renderer\JqGrid\View\Helper\Columns::class => Renderer\JqGrid\View\Helper\ColumnsFactory::class,

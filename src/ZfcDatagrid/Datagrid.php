@@ -877,31 +877,39 @@ class Datagrid
     public function getRenderer()
     {
         if (null === $this->renderer) {
-            if (isset($this->rendererService)) {
-                $renderer = $this->rendererService;
-                if (! $renderer instanceof Renderer\AbstractRenderer) {
-                    throw new \Exception('Renderer service must implement "ZfcDatagrid\Renderer\AbstractRenderer"');
-                }
-                $renderer->setOptions($this->getOptions());
-                $renderer->setMvcEvent($this->getMvcEvent());
-                if ($this->getToolbarTemplate() !== null) {
-                    $renderer->setToolbarTemplate($this->getToolbarTemplate());
-                }
-                $renderer->setToolbarTemplateVariables($this->getToolbarTemplateVariables());
-                $renderer->setViewModel($this->getViewModel());
-                if ($this->hasTranslator()) {
-                    $renderer->setTranslator($this->getTranslator());
-                }
-                $renderer->setTitle($this->getTitle());
-                $renderer->setColumns($this->getColumns());
-                $renderer->setRowStyles($this->getRowStyles());
-                $renderer->setCache($this->getCache());
-                $renderer->setCacheId($this->getCacheId());
+            if (!isset($this->rendererService)) {
+                $rendererName = 'zfcDatagrid.renderer.' . $this->getRendererName();
+                $service      = $this->getServiceLocator()->has($rendererName);
 
-                $this->renderer = $renderer;
-            } else {
-                throw new \Exception(sprintf('Renderer service was not found, please register it: "zfcDatagrid.renderer.%s"', $this->getRendererName()));
+                if ($this->getServiceLocator()->has($rendererName) !== true) {
+                    throw new \Exception(sprintf('Renderer service was not found, please register it: "zfcDatagrid.renderer.%s"', $this->getRendererName()));
+                }
+
+                $this->rendererService = $this->getServiceLocator()->get($rendererName);
             }
+
+            $renderer = $this->rendererService;
+            if (! $renderer instanceof Renderer\AbstractRenderer) {
+                throw new \Exception('Renderer service must be an instanceof "ZfcDatagrid\Renderer\AbstractRenderer"');
+            }
+
+            $renderer->setOptions($this->getOptions());
+            $renderer->setMvcEvent($this->getMvcEvent());
+            if ($this->getToolbarTemplate() !== null) {
+                $renderer->setToolbarTemplate($this->getToolbarTemplate());
+            }
+            $renderer->setToolbarTemplateVariables($this->getToolbarTemplateVariables());
+            $renderer->setViewModel($this->getViewModel());
+            if ($this->hasTranslator()) {
+                $renderer->setTranslator($this->getTranslator());
+            }
+            $renderer->setTitle($this->getTitle());
+            $renderer->setColumns($this->getColumns());
+            $renderer->setRowStyles($this->getRowStyles());
+            $renderer->setCache($this->getCache());
+            $renderer->setCacheId($this->getCacheId());
+
+            $this->renderer = $renderer;
         }
 
         return $this->renderer;
