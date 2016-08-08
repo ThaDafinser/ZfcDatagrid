@@ -39,6 +39,7 @@
     "require-dev": {
         "phpunit/phpunit": "^4.8|^5.2",
         "friendsofphp/php-cs-fixer": "^1.11",
+        
         "doctrine/doctrine-orm-module": "dev-master as 1.2",
         "doctrine/doctrine-module":  "dev-master",
         
@@ -51,6 +52,7 @@
     
     "suggest" : {
         "ext-intl": "*",
+        
         "doctrine/doctrine-orm-module": "for doctrine support",
         
         "phpoffice/phpexcel": "^1.8",
@@ -61,13 +63,13 @@
     },
 
     "autoload": {
-        "psr-0": {
-            "ZfcDatagrid\\": "src/"
+        "psr-4": {
+            "ZfcDatagrid\\": "src/ZfcDatagrid"
         }
     },
     "autoload-dev": {
-        "psr-0": {
-            "ZfcDatagridTest\\": "tests/"
+        "psr-4": {
+            "ZfcDatagridTest\\": "tests/ZfcDatagridTest"
         }
     }
 }
