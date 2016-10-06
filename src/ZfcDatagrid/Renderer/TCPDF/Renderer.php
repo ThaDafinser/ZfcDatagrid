@@ -214,12 +214,15 @@ class Renderer extends AbstractExport
     {
         $optionsRenderer = $this->getOptionsRenderer();
         $sizePoint       = $optionsRenderer['style']['data']['size'];
+        $padding   = $optionsRenderer['style']['data']['padding'];
+        $contentPadding = $optionsRenderer['style']['data']['content_padding'];
+
         // Points to MM
         $size = $sizePoint / 2.83464566929134;
 
         $pdf = $this->getPdf();
 
-        $rowHeight = $size + 4;
+        $rowHeight = $size + $padding;
         foreach ($this->getColumnsToExport() as $col) {
             /* @var $col \ZfcDatagrid\Column\AbstractColumn */
 
@@ -227,7 +230,7 @@ class Renderer extends AbstractExport
 
                 case 'ZfcDatagrid\Column\Type\Image':
                     // "min" height for such a column
-                    $height = $col->getType()->getResizeHeight() + 2;
+                    $height = $col->getType()->getResizeHeight() + $contentPadding;
                     break;
 
                 default:
@@ -246,7 +249,7 @@ class Renderer extends AbstractExport
                     $height = $pdf->getStringHeight($col->getWidth(), $value);
 
                     // include borders top/bottom
-                    $height += 2;
+                    $height += $contentPadding;
                     break;
             }
 
