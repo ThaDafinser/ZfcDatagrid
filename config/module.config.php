@@ -171,6 +171,8 @@ return [
                     'data' => [
                         'font' => 'helvetica',
                         'size' => 11,
+                        'padding' => 4,
+                        'content_padding' => 2,
 
                         'color' => [
                             0,
