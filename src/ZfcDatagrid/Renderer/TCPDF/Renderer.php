@@ -215,7 +215,7 @@ class Renderer extends AbstractExport
         $optionsRenderer = $this->getOptionsRenderer();
         $sizePoint       = $optionsRenderer['style']['data']['size'];
         $padding   = $optionsRenderer['style']['data']['padding'];
-        $contentPadding = $optionsRenderer['style']['data']['content_padding'];
+        $contentPadding = $optionsRenderer['style']['data']['contentPadding'];
 
         // Points to MM
         $size = $sizePoint / 2.83464566929134;
