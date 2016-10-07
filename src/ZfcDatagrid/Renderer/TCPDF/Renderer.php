@@ -263,6 +263,8 @@ class Renderer extends AbstractExport
 
     protected function printTableHeader()
     {
+        $optionsRenderer = $this->getOptionsRenderer();
+        $height = $optionsRenderer['style']['header']['height'];
         $this->setFontHeader();
 
         $pdf         = $this->getPdf();
@@ -278,7 +280,7 @@ class Renderer extends AbstractExport
             $label = $this->translate($col->getLabel());
 
             // Do not wrap header labels, it will look very ugly, that's why max height is set to 7!
-            $pdf->MultiCell($col->getWidth(), 7, $label, 1, $this->getTextAlignment(), true, 2, $x, $y, true, 0, false, true, 7);
+            $pdf->MultiCell($col->getWidth(), $height, $label, 1, $this->getTextAlignment(), true, 2, $x, $y, true, 0, false, true, 7);
         }
     }
 
