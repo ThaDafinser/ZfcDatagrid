@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\DataSource;
 
 use Zend\Db\Sql;
@@ -9,21 +10,20 @@ use ZfcDatagrid\Column;
 class ZendSelect extends AbstractDataSource
 {
     /**
-     *
      * @var Sql\Select
      */
     private $select;
 
     /**
-     *
      * @var \Zend\Db\Sql\Sql
      */
     private $sqlObject;
 
     /**
-     * Data source
+     * Data source.
      *
-     * @param  Sql\Select                $data
+     * @param Sql\Select $data
+     *
      * @throws \InvalidArgumentException
      */
     public function __construct($data)
@@ -36,7 +36,6 @@ class ZendSelect extends AbstractDataSource
     }
 
     /**
-     *
      * @return Sql\Select
      */
     public function getData()
@@ -46,6 +45,7 @@ class ZendSelect extends AbstractDataSource
 
     /**
      * @param $adapterOrSqlObject
+     *
      * @throws \InvalidArgumentException
      */
     public function setAdapter($adapterOrSqlObject)
@@ -60,7 +60,6 @@ class ZendSelect extends AbstractDataSource
     }
 
     /**
-     *
      * @return \Zend\Db\Sql\Sql
      */
     public function getAdapter()
@@ -69,12 +68,11 @@ class ZendSelect extends AbstractDataSource
     }
 
     /**
-     *
      * @throws \Exception
      */
     public function execute()
     {
-        if ($this->getAdapter() === null || ! $this->getAdapter() instanceof \Zend\Db\Sql\Sql) {
+        if ($this->getAdapter() === null || !$this->getAdapter() instanceof \Zend\Db\Sql\Sql) {
             throw new \Exception('Object "Zend\Db\Sql\Sql" is missing, please call setAdapter() first!');
         }
 
@@ -95,7 +93,7 @@ class ZendSelect extends AbstractDataSource
 
             $colString = $col->getSelectPart1();
             if ($col->getSelectPart2() != '') {
-                $colString = new Expression($platform->quoteIdentifier($colString) . $platform->getIdentifierSeparator() . $platform->quoteIdentifier($col->getSelectPart2()));
+                $colString = new Expression($platform->quoteIdentifier($colString).$platform->getIdentifierSeparator().$platform->quoteIdentifier($col->getSelectPart2()));
             }
 
             $selectColumns[$col->getUniqueId()] = $colString;
@@ -118,7 +116,7 @@ class ZendSelect extends AbstractDataSource
             foreach ($this->getSortConditions() as $sortCondition) {
                 /** @var \ZfcDataGrid\Column\AbstractColumn $col */
                 $col = $sortCondition['column'];
-                $select->order($col->getUniqueId() . ' ' . $sortCondition['sortDirection']);
+                $select->order($col->getUniqueId().' '.$sortCondition['sortDirection']);
             }
         }
 

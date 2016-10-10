@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\DataSource;
 
 use Zend\Paginator\Adapter\ArrayAdapter as PaginatorAdapter;
@@ -9,7 +10,7 @@ class PhpArray extends AbstractDataSource
     private $data = [];
 
     /**
-     * Set the data source
+     * Set the data source.
      *
      * @param array $data
      */
@@ -18,12 +19,11 @@ class PhpArray extends AbstractDataSource
         if (is_array($data)) {
             $this->data = $data;
         } else {
-            throw new \InvalidArgumentException("Unsupported data input, please provide an array");
+            throw new \InvalidArgumentException('Unsupported data input, please provide an array');
         }
     }
 
     /**
-     *
      * @return array
      */
     public function getData()
@@ -34,13 +34,13 @@ class PhpArray extends AbstractDataSource
     /**
      * Execute the query and set the paginator
      * - with sort statements
-     * - with filters statements
+     * - with filters statements.
      */
     public function execute()
     {
         $data = $this->getData();
 
-        /**
+        /*
          * Step 1) Apply sorting
          *
          * @see http://php.net/manual/de/function.array-multisort.php
@@ -50,7 +50,7 @@ class PhpArray extends AbstractDataSource
             $data = $this->sortArrayMultiple($data, $this->getSortConditions());
         }
 
-        /**
+        /*
          * Step 2) Apply filters
          */
         foreach ($this->getFilters() as $filter) {
@@ -64,7 +64,7 @@ class PhpArray extends AbstractDataSource
         }
 
         /**
-         * Step 3) Remove unneeded columns
+         * Step 3) Remove unneeded columns.
          *
          * @todo ? Better performance or let it be?
          */
@@ -76,7 +76,7 @@ class PhpArray extends AbstractDataSource
 
             $colString = $col->getSelectPart1();
             if ($col->getSelectPart2() != '') {
-                $colString = $col->getSelectPart1() . '_' . $col->getSelectPart2();
+                $colString = $col->getSelectPart1().'_'.$col->getSelectPart2();
             }
 
             $selectedColumns[] = $colString;
@@ -84,21 +84,21 @@ class PhpArray extends AbstractDataSource
 
         foreach ($data as &$row) {
             foreach ($row as $keyRowCol => $rowCol) {
-                if (! in_array($keyRowCol, $selectedColumns)) {
+                if (!in_array($keyRowCol, $selectedColumns)) {
                     unset($row[$keyRowCol]);
                 }
             }
         }
 
-        /**
+        /*
          * Step 4) Pagination
          */
         $this->setPaginatorAdapter(new PaginatorAdapter($data));
     }
 
     /**
+     * @param array $sortCondition
      *
-     * @param  array $sortCondition
      * @return array
      */
     private function getSortArrayParameter($sortCondition)
@@ -108,22 +108,22 @@ class PhpArray extends AbstractDataSource
         ];
 
         if ('DESC' === $sortCondition['sortDirection']) {
-            $desc        = SORT_DESC;
+            $desc = SORT_DESC;
             $sortArray[] = $desc;
         } else {
-            $asc         = SORT_ASC;
+            $asc = SORT_ASC;
             $sortArray[] = $asc;
         }
 
         switch (get_class($sortCondition['column']->getType())) {
 
             case 'ZfcDatagrid\Column\Type\Number':
-                $numeric     = SORT_NUMERIC;
+                $numeric = SORT_NUMERIC;
                 $sortArray[] = $numeric;
                 break;
 
             default:
-                $regular     = SORT_REGULAR;
+                $regular = SORT_REGULAR;
                 $sortArray[] = $regular;
                 break;
         }
@@ -132,9 +132,10 @@ class PhpArray extends AbstractDataSource
     }
 
     /**
-     *
      * @see http://php.net/manual/de/function.array-multisort.php Example in comments: array_orderby()
+     *
      * @author jimpoz at jimpoz dot com
+     *
      * @return array
      */
     private function sortArrayMultiple(array $data, $sortConditions)
@@ -148,7 +149,7 @@ class PhpArray extends AbstractDataSource
 
             $dataCol = [];
             foreach ($data as $key => $row) {
-                if (! isset($row[$column])) {
+                if (!isset($row[$column])) {
                     $value = '';
                 } else {
                     $value = $row[$column];
@@ -167,10 +168,11 @@ class PhpArray extends AbstractDataSource
     }
 
     /**
-     * Multisort an array
+     * Multisort an array.
      *
-     * @param  array                     $data
-     * @param  array                     $sortArguments
+     * @param array $data
+     * @param array $sortArguments
+     *
      * @throws \InvalidArgumentException
      *
      * @return array
@@ -181,7 +183,7 @@ class PhpArray extends AbstractDataSource
         foreach ($sortArguments as $values) {
             $remain = count($values) % 3;
             if ($remain != 0) {
-                throw new \InvalidArgumentException('The parameter count for each sortArgument has to be three. Given count of: ' . count($values));
+                throw new \InvalidArgumentException('The parameter count for each sortArgument has to be three. Given count of: '.count($values));
             }
             $args[] = $values[0]; // column value
             $args[] = $values[1]; // sort direction

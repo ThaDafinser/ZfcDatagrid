@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\DataSource;
 
 use Zend\Paginator\Adapter\AdapterInterface as PaginatorAdapterInterface;
@@ -8,25 +9,22 @@ use ZfcDatagrid\Filter;
 abstract class AbstractDataSource implements DataSourceInterface
 {
     /**
-     *
      * @var array
      */
     protected $columns = [];
 
     /**
-     *
      * @var array
      */
     protected $sortConditions = [];
 
     /**
-     *
      * @var array
      */
     protected $filters = [];
 
     /**
-     * The data result
+     * The data result.
      *
      * @var \Zend\Paginator\Adapter\AdapterInterface
      */
@@ -39,7 +37,8 @@ abstract class AbstractDataSource implements DataSourceInterface
      * - Doctrine2: Doctrine\ORM\QueryBuilder
      * - ...
      *
-     * @param  mixed      $data
+     * @param mixed $data
+     *
      * @throws \Exception
      */
     public function __construct($data)
@@ -49,7 +48,7 @@ abstract class AbstractDataSource implements DataSourceInterface
     }
 
     /**
-     * Set the columns
+     * Set the columns.
      *
      * @param array $columns
      */
@@ -59,7 +58,6 @@ abstract class AbstractDataSource implements DataSourceInterface
     }
 
     /**
-     *
      * @return Column\AbstractColumn[]
      */
     public function getColumns()
@@ -68,7 +66,7 @@ abstract class AbstractDataSource implements DataSourceInterface
     }
 
     /**
-     * Set sort conditions
+     * Set sort conditions.
      *
      * @param Column\AbstractColumn $column
      * @param string                $sortDirection
@@ -76,7 +74,7 @@ abstract class AbstractDataSource implements DataSourceInterface
     public function addSortCondition(Column\AbstractColumn $column, $sortDirection = 'ASC')
     {
         $this->sortConditions[] = [
-            'column'        => $column,
+            'column' => $column,
             'sortDirection' => $sortDirection,
         ];
     }
@@ -90,7 +88,6 @@ abstract class AbstractDataSource implements DataSourceInterface
     }
 
     /**
-     *
      * @return array
      */
     public function getSortConditions()
@@ -99,7 +96,7 @@ abstract class AbstractDataSource implements DataSourceInterface
     }
 
     /**
-     * Add a filter rule
+     * Add a filter rule.
      *
      * @param Filter $filter
      */
@@ -109,7 +106,6 @@ abstract class AbstractDataSource implements DataSourceInterface
     }
 
     /**
-     *
      * @param array $filters
      */
     public function setFilters(array $filters)
@@ -118,7 +114,6 @@ abstract class AbstractDataSource implements DataSourceInterface
     }
 
     /**
-     *
      * @return \ZfcDatagrid\Filter[]
      */
     public function getFilters()
@@ -135,7 +130,6 @@ abstract class AbstractDataSource implements DataSourceInterface
     }
 
     /**
-     *
      * @return \Zend\Paginator\Adapter\AdapterInterface
      */
     public function getPaginatorAdapter()
@@ -144,7 +138,8 @@ abstract class AbstractDataSource implements DataSourceInterface
     }
 
     /**
-     * Get the data back from construct
+     * Get the data back from construct.
+     *
      * @return mixed
      */
     abstract public function getData();
@@ -152,7 +147,7 @@ abstract class AbstractDataSource implements DataSourceInterface
     /**
      * Execute the query and set the paginator
      * - with sort statements
-     * - with filters statements
+     * - with filters statements.
      */
     abstract public function execute();
 }

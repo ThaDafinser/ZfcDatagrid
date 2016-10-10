@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Column\Formatter;
 
 use ZfcDatagrid\Column\AbstractColumn;
@@ -34,13 +35,13 @@ class FileSize extends AbstractFormatter
     }
 
     /**
-     * The value should be in bytes
+     * The value should be in bytes.
      *
      * @see \ZfcDatagrid\Column\Formatter\AbstractFormatter::getFormattedValue()
      */
     public function getFormattedValue(AbstractColumn $column)
     {
-        $row   = $this->getRowData();
+        $row = $this->getRowData();
         $value = $row[$column->getUniqueId()];
 
         if ('' == $value) {
@@ -50,7 +51,7 @@ class FileSize extends AbstractFormatter
         $index = 0;
         while ($value >= 1024 && $index < count(self::$prefixes)) {
             $value = $value / 1024;
-            $index ++;
+            ++$index;
         }
 
         return sprintf('%1.2f %sB', $value, self::$prefixes[$index]);

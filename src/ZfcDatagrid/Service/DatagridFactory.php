@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Service;
 
 use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
@@ -10,9 +11,10 @@ use ZfcDatagrid\Datagrid;
 class DatagridFactory implements FactoryInterface
 {
     /**
-     * @param  ContainerInterface $container
-     * @param  string             $requestedName
-     * @param  array|null         $options
+     * @param ContainerInterface $container
+     * @param string             $requestedName
+     * @param array|null         $options
+     *
      * @return Datagrid
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
@@ -35,15 +37,15 @@ class DatagridFactory implements FactoryInterface
             $grid->setTranslator($container->get('translator'));
         }
 
-        $grid->setRendererService($container->get('zfcDatagrid.renderer.' . $grid->getRendererName()));
+        $grid->setRendererService($container->get('zfcDatagrid.renderer.'.$grid->getRendererName()));
         $grid->init();
 
         return $grid;
     }
 
     /**
+     * @param ServiceLocatorInterface $serviceLocator
      *
-     * @param  ServiceLocatorInterface $serviceLocator
      * @return Datagrid
      */
     public function createService(ServiceLocatorInterface $serviceLocator)

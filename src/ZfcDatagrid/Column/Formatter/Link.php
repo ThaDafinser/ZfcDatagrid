@@ -1,10 +1,10 @@
 <?php
+
 namespace ZfcDatagrid\Column\Formatter;
 
 class Link extends HtmlTag
 {
     /**
-     *
      * @var array
      */
     protected $attributes = [
@@ -12,7 +12,6 @@ class Link extends HtmlTag
     ];
 
     /**
-     *
      * @var string
      */
     protected $name = 'a';

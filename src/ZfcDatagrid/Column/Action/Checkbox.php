@@ -1,8 +1,8 @@
 <?php
+
 namespace ZfcDatagrid\Column\Action;
 
 /**
- *
  * @todo Checkbox for multi row actions...
  */
 class Checkbox extends AbstractAction
@@ -17,7 +17,6 @@ class Checkbox extends AbstractAction
     }
 
     /**
-     *
      * @return string
      */
     protected function getHtmlType()
@@ -33,6 +32,6 @@ class Checkbox extends AbstractAction
         $this->removeAttribute('name');
         $this->removeAttribute('value');
 
-        return '<input type="checkbox" name="' . $this->name . '" value="' . $row['idConcated'] . '" ' . $this->getAttributesString($row) . ' />';
+        return '<input type="checkbox" name="'.$this->name.'" value="'.$row['idConcated'].'" '.$this->getAttributesString($row).' />';
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Renderer;
 
 use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
@@ -13,31 +14,26 @@ use ZfcDatagrid\Filter;
 abstract class AbstractRenderer implements RendererInterface
 {
     /**
-     *
      * @var array
      */
     protected $options = [];
 
     /**
-     *
      * @var string
      */
     protected $title;
 
     /**
-     *
      * @var Cache\Storage\StorageInterface
      */
     protected $cache;
 
     /**
-     *
      * @var string
      */
     protected $cacheId;
 
     /**
-     *
      * @var Paginator
      */
     protected $paginator;
@@ -63,48 +59,41 @@ abstract class AbstractRenderer implements RendererInterface
     protected $filters = null;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $currentPageNumber = null;
 
     /**
-     *
      * @var array
      */
     protected $data = [];
 
     /**
-     *
      * @var MvcEvent
      */
     protected $mvcEvent;
 
     /**
-     *
      * @var ViewModel
      */
     protected $viewModel;
 
     /**
-     *
      * @var string
      */
     protected $template;
 
     /**
-     *
      * @var string
      */
     protected $templateToolbar;
 
     /**
-     *
      * @var array
      */
     protected $toolbarTemplateVariables = [];
 
     /**
-     *
      * @var Translator
      */
     protected $translator;
@@ -115,7 +104,6 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     *
      * @return array
      */
     public function getOptions()
@@ -124,7 +112,6 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     *
      * @return array
      */
     public function getOptionsRenderer()
@@ -138,7 +125,6 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     *
      * @param ViewModel $viewModel
      */
     public function setViewModel(ViewModel $viewModel)
@@ -147,7 +133,6 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     *
      * @return \Zend\View\Model\ViewModel
      */
     public function getViewModel()
@@ -156,7 +141,7 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     * Set the view template
+     * Set the view template.
      *
      * @param string $name
      */
@@ -166,7 +151,7 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     * Get the view template name
+     * Get the view template name.
      *
      * @return string
      */
@@ -180,10 +165,12 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     * Get the default template path (if there is no own set)
+     * Get the default template path (if there is no own set).
      *
-     * @param  string     $type layout or toolbar
+     * @param string $type layout or toolbar
+     *
      * @return string
+     *
      * @throws \Exception
      */
     private function getTemplatePathDefault($type = 'layout')
@@ -194,16 +181,16 @@ abstract class AbstractRenderer implements RendererInterface
         }
 
         if ('layout' === $type) {
-            return 'zfc-datagrid/renderer/' . $this->getName() . '/' . $type;
+            return 'zfc-datagrid/renderer/'.$this->getName().'/'.$type;
         } elseif ('toolbar' === $type) {
             return 'zfc-datagrid/toolbar/toolbar';
         }
 
-        throw new \Exception('Unknown type: "' . $type . '"');
+        throw new \Exception('Unknown type: "'.$type.'"');
     }
 
     /**
-     * Set the toolbar view template name
+     * Set the toolbar view template name.
      *
      * @param string $name
      */
@@ -214,6 +201,7 @@ abstract class AbstractRenderer implements RendererInterface
 
     /**
      * @return string
+     *
      * @throws \Exception
      */
     public function getToolbarTemplate()
@@ -226,7 +214,7 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     * Set the toolbar view template variables
+     * Set the toolbar view template variables.
      *
      * @param array $variables
      */
@@ -236,7 +224,7 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     * Get the toolbar template variables
+     * Get the toolbar template variables.
      *
      * @return array
      */
@@ -257,7 +245,6 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     *
      * @return \Zend\Paginator\Paginator
      */
     public function getPaginator()
@@ -266,7 +253,7 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     * Set the columns
+     * Set the columns.
      *
      * @param array $columns
      */
@@ -276,7 +263,7 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     * Get all columns
+     * Get all columns.
      *
      * @return \ZfcDatagrid\Column\AbstractColumn[]
      */
@@ -286,7 +273,6 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     *
      * @param \ZfcDataGrid\Column\Style\AbstractStyle[] $rowStyles
      */
     public function setRowStyles($rowStyles = [])
@@ -295,7 +281,6 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     *
      * @return \ZfcDataGrid\Column\Style\AbstractStyle[]
      */
     public function getRowStyles()
@@ -304,7 +289,7 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     * Calculate the sum of the displayed column width to 100%
+     * Calculate the sum of the displayed column width to 100%.
      *
      * @param array $columns
      */
@@ -327,7 +312,7 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     * The prepared data
+     * The prepared data.
      *
      * @param array $data
      */
@@ -337,7 +322,6 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     *
      * @return array
      */
     public function getData()
@@ -346,7 +330,6 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     *
      * @return array
      */
     public function getCacheData()
@@ -355,14 +338,14 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     *
      * @throws \Exception
+     *
      * @return array|false
      */
     private function getCacheSortConditions()
     {
         $cacheData = $this->getCacheData();
-        if (! isset($cacheData['sortConditions'])) {
+        if (!isset($cacheData['sortConditions'])) {
             return false;
         }
 
@@ -370,14 +353,14 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     *
      * @throws \Exception
+     *
      * @return array|false
      */
     private function getCacheFilters()
     {
         $cacheData = $this->getCacheData();
-        if (! isset($cacheData['filters'])) {
+        if (!isset($cacheData['filters'])) {
             return false;
         }
 
@@ -405,7 +388,6 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     *
      * @return \Zend\Stdlib\RequestInterface
      */
     public function getRequest()
@@ -414,13 +396,13 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
+     * @param Translator $translator
      *
-     * @param  Translator                $translator
      * @throws \InvalidArgumentException
      */
     public function setTranslator($translator)
     {
-        if (! $translator instanceof Translator && ! $translator instanceof \Zend\I18n\Translator\TranslatorInterface) {
+        if (!$translator instanceof Translator && !$translator instanceof \Zend\I18n\Translator\TranslatorInterface) {
             throw new \InvalidArgumentException('Translator must be an instanceof "Zend\I18n\Translator\Translator" or "Zend\I18n\Translator\TranslatorInterface"');
         }
 
@@ -428,7 +410,6 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     *
      * @return \Zend\I18n\Translator\Translator
      */
     public function getTranslator()
@@ -438,6 +419,7 @@ abstract class AbstractRenderer implements RendererInterface
 
     /**
      * @param $string
+     *
      * @return string
      */
     public function translate($string)
@@ -446,7 +428,7 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     * Set the title
+     * Set the title.
      *
      * @param string $title
      */
@@ -456,7 +438,6 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     *
      * @return string
      */
     public function getTitle()
@@ -473,7 +454,6 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     *
      * @return Cache\Storage\StorageInterface
      */
     public function getCache()
@@ -482,7 +462,6 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     *
      * @param string $cacheId
      */
     public function setCacheId($cacheId)
@@ -491,7 +470,6 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     *
      * @return string
      */
     public function getCacheId()
@@ -501,18 +479,18 @@ abstract class AbstractRenderer implements RendererInterface
 
     /**
      * Set the sort conditions explicit (e.g.
-     * from a custom form)
+     * from a custom form).
      *
      * @param array $sortConditions
      */
     public function setSortConditions(array $sortConditions)
     {
         foreach ($sortConditions as $sortCondition) {
-            if (! is_array($sortCondition)) {
+            if (!is_array($sortCondition)) {
                 throw new InvalidArgumentException('Sort condition have to be an array');
             }
 
-            if (! array_key_exists('column', $sortCondition)) {
+            if (!array_key_exists('column', $sortCondition)) {
                 throw new InvalidArgumentException('Sort condition missing array key column');
             }
         }
@@ -521,7 +499,6 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     *
      * @return array
      */
     public function getSortConditions()
@@ -543,7 +520,7 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     * Get the default sort conditions defined for the columns
+     * Get the default sort conditions defined for the columns.
      *
      * @return array
      */
@@ -556,7 +533,7 @@ abstract class AbstractRenderer implements RendererInterface
                 $sortDefaults = $column->getSortDefault();
 
                 $sortConditions[$sortDefaults['priority']] = [
-                    'column'        => $column,
+                    'column' => $column,
                     'sortDirection' => $sortDefaults['sortDirection'],
                 ];
 
@@ -571,14 +548,14 @@ abstract class AbstractRenderer implements RendererInterface
 
     /**
      * Set filters explicit (e.g.
-     * from a custom form)
+     * from a custom form).
      *
      * @param array $filters
      */
     public function setFilters(array $filters)
     {
         foreach ($filters as $filter) {
-            if (! $filter instanceof Filter) {
+            if (!$filter instanceof Filter) {
                 throw new InvalidArgumentException('Filter have to be an instanceof ZfcDatagrid\Filter');
             }
         }
@@ -587,7 +564,6 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     *
      * @return Filter[]
      */
     public function getFilters()
@@ -609,7 +585,7 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     * Get the default filter conditions defined for the columns
+     * Get the default filter conditions defined for the columns.
      *
      * @return Filter[]
      */
@@ -632,9 +608,9 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     * Set the current page number
+     * Set the current page number.
      *
-     * @param integer $page
+     * @param int $page
      */
     public function setCurrentPageNumber($page)
     {
@@ -642,9 +618,9 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     * Should be implemented for each renderer itself (just default)
+     * Should be implemented for each renderer itself (just default).
      *
-     * @return integer
+     * @return int
      */
     public function getCurrentPageNumber()
     {
@@ -656,14 +632,14 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     * Should be implemented for each renderer itself (just default)
+     * Should be implemented for each renderer itself (just default).
      *
-     * @return integer
+     * @return int
      */
     public function getItemsPerPage($defaultItems = 25)
     {
         if ($this->isExport() === true) {
-            return (int) - 1;
+            return (int) -1;
         }
 
         return $defaultItems;
@@ -691,7 +667,7 @@ abstract class AbstractRenderer implements RendererInterface
         }
         $viewModel->setVariable('rendererName', $this->getName());
 
-        $options               = $this->getOptions();
+        $options = $this->getOptions();
         $generalParameterNames = $options['generalParameterNames'];
         $viewModel->setVariable('generalParameterNames', $generalParameterNames);
 
@@ -717,17 +693,17 @@ abstract class AbstractRenderer implements RendererInterface
             $parameterNames = $optionsRenderer['parameterNames'];
             $viewModel->setVariable('parameterNames', $parameterNames);
 
-            $activeParameters                                 = [];
+            $activeParameters = [];
             $activeParameters[$parameterNames['currentPage']] = $this->getCurrentPageNumber();
             {
-                $sortColumns    = [];
+                $sortColumns = [];
                 $sortDirections = [];
                 foreach ($this->getSortConditions() as $sortCondition) {
-                    $sortColumns[]    = $sortCondition['column']->getUniqueId();
+                    $sortColumns[] = $sortCondition['column']->getUniqueId();
                     $sortDirections[] = $sortCondition['sortDirection'];
                 }
 
-                $activeParameters[$parameterNames['sortColumns']]    = implode(',', $sortColumns);
+                $activeParameters[$parameterNames['sortColumns']] = implode(',', $sortColumns);
                 $activeParameters[$parameterNames['sortDirections']] = implode(',', $sortDirections);
             }
             $viewModel->setVariable('activeParameters', $activeParameters);
@@ -737,27 +713,31 @@ abstract class AbstractRenderer implements RendererInterface
     }
 
     /**
-     * Return the name of the renderer
+     * Return the name of the renderer.
+     *
      * @return string
      */
     abstract public function getName();
 
     /**
-     * Determine if the renderer is for export
-     * @return boolean
+     * Determine if the renderer is for export.
+     *
+     * @return bool
      */
     abstract public function isExport();
 
     /**
      * Determin if the renderer is HTML
      * It can be export + html -> f.x.
-     * printing for HTML
-     * @return boolean
+     * printing for HTML.
+     *
+     * @return bool
      */
     abstract public function isHtml();
 
     /**
      * Execute all...
+     *
      * @return ViewModel Response\Stream
      */
     abstract public function execute();

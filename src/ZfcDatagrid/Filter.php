@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid;
 
 use InvalidArgumentException;
@@ -7,7 +8,7 @@ class Filter
 {
     /**
      * The constant values are used for display on the usergrid filter
-     * This is for help, how the data is filtered really
+     * This is for help, how the data is filtered really.
      *
      * @var string
      */
@@ -55,7 +56,6 @@ class Filter
     const BETWEEN = '%s <> %s';
 
     /**
-     *
      * @var Column\AbstractColumn
      */
     private $column;
@@ -67,7 +67,7 @@ class Filter
     private $displayColumnValue;
 
     /**
-     * Apply a filter based on a column
+     * Apply a filter based on a column.
      *
      * @param Column\AbstractColumn $column
      * @param string                $inputFilterValue
@@ -79,14 +79,15 @@ class Filter
     }
 
     /**
-     * Convert the input filter to operator + filter + display filter value
+     * Convert the input filter to operator + filter + display filter value.
      *
      * Partly idea taken from ZfDatagrid
      *
      * @see https://github.com/zfdatagrid/grid/blob/master/library/Bvb/Grid.php#L1438
      *
-     * @param  string $inputFilterValue
-     * @param  mixed  $defaultOperator
+     * @param string $inputFilterValue
+     * @param mixed  $defaultOperator
+     *
      * @return array
      */
     private function setColumnOperator($inputFilterValue, $defaultOperator = self::LIKE)
@@ -97,23 +98,23 @@ class Filter
         $this->displayColumnValue = $inputFilterValue;
 
         $operator = $defaultOperator;
-        $value    = $inputFilterValue;
+        $value = $inputFilterValue;
 
         if (substr($inputFilterValue, 0, 2) == '=(') {
             $operator = self::IN;
-            $value    = substr($inputFilterValue, 2);
+            $value = substr($inputFilterValue, 2);
             if (substr($value, -1) == ')') {
                 $value = substr($value, 0, -1);
             }
         } elseif (substr($inputFilterValue, 0, 3) == '!=(') {
             $operator = self::NOT_IN;
-            $value    = substr($inputFilterValue, 3);
+            $value = substr($inputFilterValue, 3);
             if (substr($value, -1) == ')') {
                 $value = substr($value, 0, -1);
             }
         } elseif (substr($inputFilterValue, 0, 2) == '!=' || substr($inputFilterValue, 0, 2) == '<>') {
             $operator = self::NOT_EQUAL;
-            $value    = substr($inputFilterValue, 2);
+            $value = substr($inputFilterValue, 2);
         } elseif (substr($inputFilterValue, 0, 2) == '!~' || substr($inputFilterValue, 0, 1) == '!') {
             // NOT LIKE or NOT EQUAL
             if (substr($inputFilterValue, 0, 2) == '!~') {
@@ -126,14 +127,14 @@ class Filter
                 // NOT LIKE
                 if ((substr($value, 0, 1) == '*' && substr($value, -1) == '*') || (substr($value, 0, 1) == '%' && substr($value, -1) == '%')) {
                     $operator = self::NOT_LIKE;
-                    $value    = substr($value, 1);
-                    $value    = substr($value, 0, -1);
+                    $value = substr($value, 1);
+                    $value = substr($value, 0, -1);
                 } elseif (substr($value, 0, 1) == '*' || substr($value, 0, 1) == '%') {
                     $operator = self::NOT_LIKE_LEFT;
-                    $value    = substr($value, 1);
+                    $value = substr($value, 1);
                 } elseif (substr($value, -1) == '*' || substr($value, -1) == '%') {
                     $operator = self::NOT_LIKE_RIGHT;
-                    $value    = substr($value, 0, -1);
+                    $value = substr($value, 0, -1);
                 } else {
                     $operator = self::NOT_LIKE;
                 }
@@ -150,38 +151,38 @@ class Filter
 
             if ((substr($value, 0, 1) == '*' && substr($value, -1) == '*') || (substr($value, 0, 1) == '%' && substr($value, -1) == '%')) {
                 $operator = self::LIKE;
-                $value    = substr($value, 1);
-                $value    = substr($value, 0, -1);
+                $value = substr($value, 1);
+                $value = substr($value, 0, -1);
             } elseif (substr($value, 0, 1) == '*' || substr($value, 0, 1) == '%') {
                 $operator = self::LIKE_LEFT;
-                $value    = substr($value, 1);
+                $value = substr($value, 1);
             } elseif (substr($value, -1) == '*' || substr($value, -1) == '%') {
                 $operator = self::LIKE_RIGHT;
-                $value    = substr($value, 0, -1);
+                $value = substr($value, 0, -1);
             } else {
                 $operator = self::LIKE;
             }
         } elseif (substr($inputFilterValue, 0, 2) == '==') {
             $operator = self::EQUAL;
-            $value    = substr($inputFilterValue, 2);
+            $value = substr($inputFilterValue, 2);
         } elseif (substr($inputFilterValue, 0, 1) == '=') {
             $operator = self::EQUAL;
-            $value    = substr($inputFilterValue, 1);
+            $value = substr($inputFilterValue, 1);
         } elseif (substr($inputFilterValue, 0, 2) == '>=') {
             $operator = self::GREATER_EQUAL;
-            $value    = substr($inputFilterValue, 2);
+            $value = substr($inputFilterValue, 2);
         } elseif (substr($inputFilterValue, 0, 1) == '>') {
             $operator = self::GREATER;
-            $value    = substr($inputFilterValue, 1);
+            $value = substr($inputFilterValue, 1);
         } elseif (substr($inputFilterValue, 0, 2) == '<=') {
             $operator = self::LESS_EQUAL;
-            $value    = substr($inputFilterValue, 2);
+            $value = substr($inputFilterValue, 2);
         } elseif (substr($inputFilterValue, 0, 1) == '<') {
             $operator = self::LESS;
-            $value    = substr($inputFilterValue, 1);
+            $value = substr($inputFilterValue, 1);
         } elseif (strpos($inputFilterValue, '<>') !== false) {
             $operator = self::BETWEEN;
-            $value    = explode('<>', $inputFilterValue);
+            $value = explode('<>', $inputFilterValue);
         }
         $this->operator = $operator;
 
@@ -220,7 +221,7 @@ class Filter
          */
         foreach ($value as &$val) {
             $type = $this->getColumn()->getType();
-            $val  = $type->getFilterValue($val);
+            $val = $type->getFilterValue($val);
 
             // @TODO Translation + Replace
         }
@@ -229,9 +230,9 @@ class Filter
     }
 
     /**
-     * Is this a column filter
+     * Is this a column filter.
      *
-     * @return boolean
+     * @return bool
      */
     public function isColumnFilter()
     {
@@ -243,7 +244,7 @@ class Filter
     }
 
     /**
-     * Only needed for column filter
+     * Only needed for column filter.
      *
      * @return Column\AbstractColumn
      */
@@ -253,7 +254,6 @@ class Filter
     }
 
     /**
-     *
      * @return array
      */
     public function getValues()
@@ -262,7 +262,6 @@ class Filter
     }
 
     /**
-     *
      * @return string
      */
     public function getOperator()
@@ -271,7 +270,7 @@ class Filter
     }
 
     /**
-     * Get the value displayed to the user
+     * Get the value displayed to the user.
      *
      * @return string
      */
@@ -281,7 +280,7 @@ class Filter
     }
 
     /**
-     * Check if a value is the same (used for style, display actions)
+     * Check if a value is the same (used for style, display actions).
      *
      * @param mixed  $currentValue
      *                              rowValue
@@ -289,98 +288,98 @@ class Filter
      *                              filterValue
      * @param string $operator
      *
-     * @return boolean
+     * @return bool
      */
-    public static function isApply($currentValue, $expectedValue, $operator = Filter::EQUAL)
+    public static function isApply($currentValue, $expectedValue, $operator = self::EQUAL)
     {
         list($currentValue, $expectedValue) = self::convertValues($currentValue, $expectedValue, $operator);
 
         switch ($operator) {
 
-            case Filter::LIKE:
+            case self::LIKE:
                 if (stripos($currentValue, $expectedValue) !== false) {
                     return true;
                 }
                 break;
 
-            case Filter::LIKE_LEFT:
-                $length        = strlen($expectedValue);
-                $start         = 0 - $length;
+            case self::LIKE_LEFT:
+                $length = strlen($expectedValue);
+                $start = 0 - $length;
                 $searchedValue = substr($currentValue, $start, $length);
                 if (stripos($searchedValue, $expectedValue) !== false) {
                     return true;
                 }
                 break;
 
-            case Filter::LIKE_RIGHT:
-                $length        = strlen($expectedValue);
+            case self::LIKE_RIGHT:
+                $length = strlen($expectedValue);
                 $searchedValue = substr($currentValue, 0, $length);
                 if (stripos($searchedValue, $expectedValue) !== false) {
                     return true;
                 }
                 break;
 
-            case Filter::NOT_LIKE:
+            case self::NOT_LIKE:
                 if (stripos($currentValue, $expectedValue) === false) {
                     return true;
                 }
                 break;
 
-            case Filter::NOT_LIKE_LEFT:
-                $length        = strlen($expectedValue);
-                $start         = 0 - $length;
+            case self::NOT_LIKE_LEFT:
+                $length = strlen($expectedValue);
+                $start = 0 - $length;
                 $searchedValue = substr($currentValue, $start, $length);
                 if (stripos($searchedValue, $expectedValue) === false) {
                     return true;
                 }
                 break;
 
-            case Filter::NOT_LIKE_RIGHT:
-                $length        = strlen($expectedValue);
+            case self::NOT_LIKE_RIGHT:
+                $length = strlen($expectedValue);
                 $searchedValue = substr($currentValue, 0, $length);
                 if (stripos($searchedValue, $expectedValue) === false) {
                     return true;
                 }
                 break;
 
-            case Filter::EQUAL:
-            case Filter::IN:
+            case self::EQUAL:
+            case self::IN:
                 return $currentValue == $expectedValue;
                 break;
 
-            case Filter::NOT_EQUAL:
-            case Filter::NOT_IN:
+            case self::NOT_EQUAL:
+            case self::NOT_IN:
                 return $currentValue != $expectedValue;
                 break;
 
-            case Filter::GREATER_EQUAL:
+            case self::GREATER_EQUAL:
                 return $currentValue >= $expectedValue;
                 break;
 
-            case Filter::GREATER:
+            case self::GREATER:
                 return $currentValue > $expectedValue;
                 break;
 
-            case Filter::LESS_EQUAL:
+            case self::LESS_EQUAL:
                 return $currentValue <= $expectedValue;
                 break;
 
-            case Filter::LESS:
+            case self::LESS:
                 return $currentValue < $expectedValue;
                 break;
 
-            case Filter::BETWEEN:
+            case self::BETWEEN:
                 if (count($expectedValue) >= 2) {
                     if ($currentValue >= $expectedValue[0] && $currentValue <= $expectedValue[1]) {
                         return true;
                     }
                 } else {
-                    throw new InvalidArgumentException('Between needs exactly an array of two expected values. Give: "' . print_r($expectedValue, true));
+                    throw new InvalidArgumentException('Between needs exactly an array of two expected values. Give: "'.print_r($expectedValue, true));
                 }
                 break;
 
             default:
-                throw new InvalidArgumentException('currently not implemented filter type: "' . $operator . '"');
+                throw new InvalidArgumentException('currently not implemented filter type: "'.$operator.'"');
                 break;
         }
 
@@ -388,23 +387,23 @@ class Filter
     }
 
     /**
+     * @param string $currentValue
+     * @param string $expectedValue
+     * @param string $operator
      *
-     * @param  string   $currentValue
-     * @param  string   $expectedValue
-     * @param  string   $operator
      * @return string[]
      */
-    private static function convertValues($currentValue, $expectedValue, $operator = Filter::EQUAL)
+    private static function convertValues($currentValue, $expectedValue, $operator = self::EQUAL)
     {
         switch ($operator) {
 
-            case Filter::LIKE:
-            case Filter::LIKE_LEFT:
-            case Filter::LIKE_RIGHT:
-            case Filter::NOT_LIKE:
-            case Filter::NOT_LIKE_LEFT:
-            case Filter::NOT_LIKE_RIGHT:
-                $currentValue  = (string) $currentValue;
+            case self::LIKE:
+            case self::LIKE_LEFT:
+            case self::LIKE_RIGHT:
+            case self::NOT_LIKE:
+            case self::NOT_LIKE_LEFT:
+            case self::NOT_LIKE_RIGHT:
+                $currentValue = (string) $currentValue;
                 $expectedValue = (string) $expectedValue;
                 break;
         }

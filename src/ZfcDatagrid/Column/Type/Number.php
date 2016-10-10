@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Column\Type;
 
 use Locale;
@@ -17,14 +18,14 @@ class Number extends AbstractType
     /**
      * NumberFormat style to use.
      *
-     * @var integer
+     * @var int
      */
     protected $formatStyle;
 
     /**
      * NumberFormat type to use.
      *
-     * @var integer
+     * @var int
      */
     protected $formatType;
 
@@ -83,9 +84,10 @@ class Number extends AbstractType
     }
 
     /**
-     * Set an attribute
+     * Set an attribute.
      *
      * @link http://www.php.net/manual/en/numberformatter.setattribute.php
+     *
      * @param
      *            attr int <p>
      *            Attribute specifier - one of the
@@ -100,7 +102,7 @@ class Number extends AbstractType
     {
         $this->attributes[] = [
             'attribute' => $attr,
-            'value'     => $value,
+            'value' => $value,
         ];
     }
 
@@ -145,7 +147,6 @@ class Number extends AbstractType
     }
 
     /**
-     *
      * @return NumberFormatter
      */
     protected function getFormatter()
@@ -162,8 +163,8 @@ class Number extends AbstractType
     }
 
     /**
+     * @param string $val
      *
-     * @param  string $val
      * @return string
      */
     public function getFilterValue($val)
@@ -174,7 +175,7 @@ class Number extends AbstractType
             $val = substr($val, strlen($this->getPrefix()));
         }
         if (strlen($this->getSuffix()) > 0 && strpos($val, $this->getSuffix()) > 0) {
-            $val = substr($val, 0, - strlen($this->getSuffix()));
+            $val = substr($val, 0, -strlen($this->getSuffix()));
         }
 
         try {
@@ -191,9 +192,10 @@ class Number extends AbstractType
     }
 
     /**
-     * Convert the value from the source to the value, which the user will see
+     * Convert the value from the source to the value, which the user will see.
      *
-     * @param  string $val
+     * @param string $val
+     *
      * @return string
      */
     public function getUserValue($val)
@@ -202,6 +204,6 @@ class Number extends AbstractType
 
         $formattedValue = $formatter->format($val, $this->getFormatType());
 
-        return (string) $this->getPrefix() . $formattedValue . $this->getSuffix();
+        return (string) $this->getPrefix().$formattedValue.$this->getSuffix();
     }
 }

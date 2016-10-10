@@ -1,9 +1,10 @@
 <?php
+
 namespace ZfcDatagrid\Column\DataPopulation;
 
 class StaticValue implements DataPopulationInterface
 {
-    /** @var  mixed */
+    /** @var mixed */
     private $value;
 
     /**
@@ -31,8 +32,9 @@ class StaticValue implements DataPopulationInterface
     }
 
     /**
-     * @param  string     $name
-     * @param  mixed      $value
+     * @param string $name
+     * @param mixed  $value
+     *
      * @throws \Exception
      */
     public function setObjectParameter($name, $value)

@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid;
 
 use Zend\I18n\Translator\Translator;
@@ -6,19 +7,16 @@ use Zend\I18n\Translator\Translator;
 class PrepareData
 {
     /**
-     *
      * @var array
      */
     private $columns = [];
 
     /**
-     *
      * @var array
      */
     private $data = [];
 
     /**
-     *
      * @var array null
      */
     private $dataPrepared;
@@ -26,13 +24,11 @@ class PrepareData
     private $rendererName;
 
     /**
-     *
      * @var Translator
      */
     private $translator;
 
     /**
-     *
      * @param array $data
      * @param array $columns
      */
@@ -43,7 +39,6 @@ class PrepareData
     }
 
     /**
-     *
      * @param array $columns
      */
     public function setColumns(array $columns)
@@ -52,7 +47,6 @@ class PrepareData
     }
 
     /**
-     *
      * @return array
      */
     public function getColumns()
@@ -61,7 +55,6 @@ class PrepareData
     }
 
     /**
-     *
      * @param array $data
      */
     public function setData(array $data)
@@ -70,8 +63,8 @@ class PrepareData
     }
 
     /**
+     * @param bool $raw
      *
-     * @param  boolean $raw
      * @return array
      */
     public function getData($raw = false)
@@ -86,7 +79,6 @@ class PrepareData
     }
 
     /**
-     *
      * @param string $name
      */
     public function setRendererName($name = null)
@@ -95,7 +87,6 @@ class PrepareData
     }
 
     /**
-     *
      * @return string
      */
     public function getRendererName()
@@ -104,13 +95,13 @@ class PrepareData
     }
 
     /**
+     * @param Translator $translator
      *
-     * @param  Translator                $translator
      * @throws \InvalidArgumentException
      */
     public function setTranslator($translator)
     {
-        if (! $translator instanceof Translator && ! $translator instanceof \Zend\I18n\Translator\TranslatorInterface) {
+        if (!$translator instanceof Translator && !$translator instanceof \Zend\I18n\Translator\TranslatorInterface) {
             throw new \InvalidArgumentException('Translator must be an instanceof "Zend\I18n\Translator\Translator" or "Zend\I18n\Translator\TranslatorInterface"');
         }
 
@@ -118,7 +109,6 @@ class PrepareData
     }
 
     /**
-     *
      * @return \Zend\I18n\Translator\Translator
      */
     public function getTranslator()
@@ -130,7 +120,8 @@ class PrepareData
      * Return true if preparing executed, false if already done!
      *
      * @throws \Exception
-     * @return boolean
+     *
+     * @return bool
      */
     public function prepare()
     {
@@ -166,7 +157,7 @@ class PrepareData
                     $row[$col->getUniqueId()] = $dataPopulation->toString();
                 }
 
-                if (! isset($row[$col->getUniqueId()])) {
+                if (!isset($row[$col->getUniqueId()])) {
                     $row[$col->getUniqueId()] = '';
                 }
 

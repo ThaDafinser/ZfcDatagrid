@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Renderer\BootstrapTable\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
@@ -6,15 +7,16 @@ use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Action\AbstractAction;
 
 /**
- * View Helper
+ * View Helper.
  */
 class TableRow extends AbstractHelper
 {
-    /** @var  \Zend\I18n\Translator\Translator|null|false */
+    /** @var \Zend\I18n\Translator\Translator|null|false */
     private $translator;
 
     /**
-     * @param  false|null|\Zend\I18n\Translator\Translator $translator
+     * @param false|null|\Zend\I18n\Translator\Translator $translator
+     *
      * @return self
      */
     public function setTranslator($translator)
@@ -25,8 +27,8 @@ class TableRow extends AbstractHelper
     }
 
     /**
+     * @param string $message
      *
-     * @param  string $message
      * @return string
      */
     private function translate($message)
@@ -40,7 +42,8 @@ class TableRow extends AbstractHelper
 
     /**
      * @param $row
-     * @param  bool|true $open
+     * @param bool|true $open
+     *
      * @return string
      */
     private function getTr($row, $open = true)
@@ -49,7 +52,7 @@ class TableRow extends AbstractHelper
             return '</tr>';
         } else {
             if (isset($row['idConcated'])) {
-                return '<tr id="' . $row['idConcated'] . '">';
+                return '<tr id="'.$row['idConcated'].'">';
             } else {
                 return '<tr>';
             }
@@ -58,7 +61,8 @@ class TableRow extends AbstractHelper
 
     /**
      * @param $dataValue
-     * @param  array  $attributes
+     * @param array $attributes
+     *
      * @return string
      */
     private function getTd($dataValue, $attributes = [])
@@ -66,22 +70,23 @@ class TableRow extends AbstractHelper
         $attr = [];
         foreach ($attributes as $name => $value) {
             if ($value != '') {
-                $attr[] = $name . '="' . $value . '"';
+                $attr[] = $name.'="'.$value.'"';
             }
         }
 
         $attr = implode(' ', $attr);
 
-        return '<td ' . $attr . '>' . $dataValue . '</td>';
+        return '<td '.$attr.'>'.$dataValue.'</td>';
     }
 
     /**
+     * @param array          $row
+     * @param array          $cols
+     * @param AbstractAction $rowClickAction
+     * @param array          $rowStyles
      *
-     * @param  array          $row
-     * @param  array          $cols
-     * @param  AbstractAction $rowClickAction
-     * @param  array          $rowStyles
      * @throws \Exception
+     *
      * @return string
      */
     public function __invoke($row, array $cols, AbstractAction $rowClickAction = null, array $rowStyles = [], $hasMassActions = false)
@@ -89,7 +94,7 @@ class TableRow extends AbstractHelper
         $return = $this->getTr($row);
 
         if (true === $hasMassActions) {
-            $return .= '<td><input type="checkbox" name="massActionSelected[]" value="' . $row['idConcated'] . '" /></td>';
+            $return .= '<td><input type="checkbox" name="massActionSelected[]" value="'.$row['idConcated'].'" /></td>';
         }
 
         foreach ($cols as $col) {
@@ -98,7 +103,7 @@ class TableRow extends AbstractHelper
             $value = $row[$col->getUniqueId()];
 
             $cssStyles = [];
-            $classes   = [];
+            $classes = [];
 
             if ($col->isHidden() === true) {
                 $classes[] = 'hidden';
@@ -111,7 +116,7 @@ class TableRow extends AbstractHelper
                     break;
 
                 case 'ZfcDatagrid\Column\Type\PhpArray':
-                    $value = '<pre>' . print_r($value, true) . '</pre>';
+                    $value = '<pre>'.print_r($value, true).'</pre>';
                     break;
             }
 
@@ -130,19 +135,19 @@ class TableRow extends AbstractHelper
                             break;
 
                         case 'ZfcDatagrid\Column\Style\Color':
-                            $cssStyles[] = 'color: #' . $style->getRgbHexString();
+                            $cssStyles[] = 'color: #'.$style->getRgbHexString();
                             break;
 
                         case 'ZfcDatagrid\Column\Style\BackgroundColor':
-                            $cssStyles[] = 'background-color: #' . $style->getRgbHexString();
+                            $cssStyles[] = 'background-color: #'.$style->getRgbHexString();
                             break;
 
                         case 'ZfcDatagrid\Column\Style\Align':
-                            $cssStyles[] = 'text-align: ' . $style->getAlignment();
+                            $cssStyles[] = 'text-align: '.$style->getAlignment();
                             break;
 
                         case 'ZfcDatagrid\Column\Style\Strikethrough':
-                            $value = '<s>' . $value . '</s>';
+                            $value = '<s>'.$value.'</s>';
                             break;
 
                         case 'ZfcDatagrid\Column\Style\CSSClass':
@@ -154,7 +159,7 @@ class TableRow extends AbstractHelper
                             break;
 
                         default:
-                            throw new \InvalidArgumentException('Not defined style: "' . get_class($style) . '"');
+                            throw new \InvalidArgumentException('Not defined style: "'.get_class($style).'"');
                             break;
                     }
                 }
@@ -177,12 +182,12 @@ class TableRow extends AbstractHelper
             // "rowClick" action
             if ($col instanceof Column\Select && $rowClickAction instanceof AbstractAction
                     && $col->isRowClickEnabled()) {
-                $value = '<a href="' . $rowClickAction->getLinkReplaced($row) . '">' . $value . '</a>';
+                $value = '<a href="'.$rowClickAction->getLinkReplaced($row).'">'.$value.'</a>';
             }
 
             $attributes = [
-                'class'               => implode(' ', $classes),
-                'style'               => implode(';', $cssStyles),
+                'class' => implode(' ', $classes),
+                'style' => implode(';', $cssStyles),
                 'data-columnUniqueId' => $col->getUniqueId(),
             ];
 
