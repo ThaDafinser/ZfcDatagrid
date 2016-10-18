@@ -76,7 +76,7 @@ class Action extends AbstractColumn
     }
 
     /**
-     * 
+     *
      */
     public function clearActions()
     {
