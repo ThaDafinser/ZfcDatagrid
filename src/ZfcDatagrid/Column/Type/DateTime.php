@@ -175,19 +175,22 @@ class DateTime extends AbstractType
 
     /**
      *
-     * @param  string $val
+     * @param  mixed $val
      * @return string
      */
     public function getFilterValue($val)
     {
-        $formatter = new IntlDateFormatter($this->getLocale(), $this->getOutputDateType(), $this->getOutputTimeType(), $this->getOutputTimezone(), IntlDateFormatter::GREGORIAN, $this->getOutputPattern());
-        $timestamp = $formatter->parse($val);
+        if (!$val instanceof PhpDateTime) {
+            $formatter = new IntlDateFormatter($this->getLocale(), $this->getOutputDateType(), $this->getOutputTimeType(), $this->getOutputTimezone(), IntlDateFormatter::GREGORIAN, $this->getOutputPattern());
+            $timestamp = $formatter->parse($val);
+    
+            $val = new PhpDateTime();
+            $val->setTimestamp($timestamp);
+        }
+        
+        $val->setTimezone(new DateTimeZone($this->getSourceTimezone()));
 
-        $date = new PhpDateTime();
-        $date->setTimestamp($timestamp);
-        $date->setTimezone(new DateTimeZone($this->getSourceTimezone()));
-
-        return $date->format($this->getSourceDateTimeFormat());
+        return $val->format($this->getSourceDateTimeFormat());
     }
 
     /**
