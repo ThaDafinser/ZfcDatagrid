@@ -1,13 +1,14 @@
 <?php
+
 namespace ZfcDatagrid\Column\Style;
 
 /**
- * Abstract color class for font and backgroundColor
+ * Abstract color class for font and backgroundColor.
  */
 class AbstractColor extends AbstractStyle
 {
     /**
-     * Array values are RGB (red, green,blue)
+     * Array values are RGB (red, green,blue).
      *
      * @var array
      */
@@ -18,7 +19,6 @@ class AbstractColor extends AbstractStyle
     ];
 
     /**
-     *
      * @var array
      */
     public static $GREEN = [
@@ -28,7 +28,6 @@ class AbstractColor extends AbstractStyle
     ];
 
     /**
-     *
      * @var array
      */
     public static $BLUE = [
@@ -44,14 +43,14 @@ class AbstractColor extends AbstractStyle
     protected $blue;
 
     /**
-     * Set red green blue
+     * Set red green blue.
      *
-     * @param mixed   $redOrStaticOrArray
-     *                                    0-255
-     * @param integer $green
-     *                                    0-255
-     * @param integer $blue
-     *                                    0-255
+     * @param mixed $redOrStaticOrArray
+     *                                  0-255
+     * @param int   $green
+     *                                  0-255
+     * @param int   $blue
+     *                                  0-255
      */
     public function __construct($redOrStaticOrArray, $green = null, $blue = null)
     {
@@ -61,31 +60,30 @@ class AbstractColor extends AbstractStyle
             $red = $redOrStaticOrArray;
         }
 
-        $this->red   = (int) $red;
+        $this->red = (int) $red;
         $this->green = (int) $green;
-        $this->blue  = (int) $blue;
+        $this->blue = (int) $blue;
     }
 
     /**
-     * Set the RGB
+     * Set the RGB.
      *
-     * @param int     $red
-     *                       integer 0-255
-     * @param integer $green
-     *                       0-255
-     * @param integer $blue
-     *                       0-255
+     * @param int $red
+     *                   integer 0-255
+     * @param int $green
+     *                   0-255
+     * @param int $blue
+     *                   0-255
      */
     public function setRgb($red, $green, $blue)
     {
-        $this->red   = (int) $red;
+        $this->red = (int) $red;
         $this->green = (int) $green;
-        $this->blue  = (int) $blue;
+        $this->blue = (int) $blue;
     }
 
     /**
-     *
-     * @param integer $red
+     * @param int $red
      */
     public function setRed($red)
     {
@@ -93,8 +91,7 @@ class AbstractColor extends AbstractStyle
     }
 
     /**
-     *
-     * @return integer
+     * @return int
      */
     public function getRed()
     {
@@ -102,8 +99,7 @@ class AbstractColor extends AbstractStyle
     }
 
     /**
-     *
-     * @param integer $green
+     * @param int $green
      */
     public function setGreen($green)
     {
@@ -111,8 +107,7 @@ class AbstractColor extends AbstractStyle
     }
 
     /**
-     *
-     * @return integer
+     * @return int
      */
     public function getGreen()
     {
@@ -120,8 +115,7 @@ class AbstractColor extends AbstractStyle
     }
 
     /**
-     *
-     * @param integer $blue
+     * @param int $blue
      */
     public function setBlue($blue)
     {
@@ -129,8 +123,7 @@ class AbstractColor extends AbstractStyle
     }
 
     /**
-     *
-     * @return integer
+     * @return int
      */
     public function getBlue()
     {
@@ -138,20 +131,19 @@ class AbstractColor extends AbstractStyle
     }
 
     /**
-     *
      * @return array
      */
     public function getRgbArray()
     {
         return [
-            'red'   => $this->getRed(),
+            'red' => $this->getRed(),
             'green' => $this->getGreen(),
-            'blue'  => $this->getBlue(),
+            'blue' => $this->getBlue(),
         ];
     }
 
     /**
-     * Convert RGB dec to hex as a string
+     * Convert RGB dec to hex as a string.
      *
      * @return string
      */
@@ -159,17 +151,17 @@ class AbstractColor extends AbstractStyle
     {
         $red = dechex($this->getRed());
         if (strlen($red) === 1) {
-            $red = '0' . $red;
+            $red = '0'.$red;
         }
         $green = dechex($this->getGreen());
         if (strlen($green) === 1) {
-            $green = '0' . $green;
+            $green = '0'.$green;
         }
         $blue = dechex($this->getBlue());
         if (strlen($blue) === 1) {
-            $blue = '0' . $blue;
+            $blue = '0'.$blue;
         }
 
-        return $red . $green . $blue;
+        return $red.$green.$blue;
     }
 }

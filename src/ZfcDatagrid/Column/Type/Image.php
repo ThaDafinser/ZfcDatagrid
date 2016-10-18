@@ -1,7 +1,8 @@
 <?php
 /**
- * Image type
+ * Image type.
  */
+
 namespace ZfcDatagrid\Column\Type;
 
 use InvalidArgumentException;
@@ -9,13 +10,11 @@ use InvalidArgumentException;
 class Image extends AbstractType
 {
     /**
-     *
      * @var string
      */
     protected $resizeType = 'fixed';
 
     /**
-     *
      * @var float
      */
     protected $resizeHeight = 20.5;
@@ -29,9 +28,10 @@ class Image extends AbstractType
     }
 
     /**
-     * Set the resize type for TCPDF export
+     * Set the resize type for TCPDF export.
      *
-     * @param  string                   $type
+     * @param string $type
+     *
      * @throws InvalidArgumentException
      */
     public function setResizeType($type)
@@ -44,7 +44,6 @@ class Image extends AbstractType
     }
 
     /**
-     *
      * @return string
      */
     public function getResizeType()
@@ -53,7 +52,6 @@ class Image extends AbstractType
     }
 
     /**
-     *
      * @param float $height
      */
     public function setResizeHeight($height)
@@ -62,7 +60,6 @@ class Image extends AbstractType
     }
 
     /**
-     *
      * @return float
      */
     public function getResizeHeight()

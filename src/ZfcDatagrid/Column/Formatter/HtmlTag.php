@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Column\Formatter;
 
 use ZfcDatagrid\Column\AbstractColumn;
@@ -21,13 +22,11 @@ class HtmlTag extends AbstractFormatter
     protected $name = 'span';
 
     /**
-     *
      * @var AbstractColumn[]
      */
     protected $linkColumnPlaceholders = [];
 
     /**
-     *
      * @var array
      */
     protected $attributes = [];
@@ -49,7 +48,7 @@ class HtmlTag extends AbstractFormatter
     }
 
     /**
-     * Set a HTML attributes
+     * Set a HTML attributes.
      *
      * @param string $name
      * @param string $value
@@ -60,9 +59,10 @@ class HtmlTag extends AbstractFormatter
     }
 
     /**
-     * Get a HTML attribute
+     * Get a HTML attribute.
      *
-     * @param  string $name
+     * @param string $name
+     *
      * @return string
      */
     public function getAttribute($name)
@@ -75,7 +75,7 @@ class HtmlTag extends AbstractFormatter
     }
 
     /**
-     * Removes an HTML attribute
+     * Removes an HTML attribute.
      *
      * @param string $name
      */
@@ -87,7 +87,7 @@ class HtmlTag extends AbstractFormatter
     }
 
     /**
-     * Get all HTML attributes
+     * Get all HTML attributes.
      *
      * @return array
      */
@@ -97,7 +97,7 @@ class HtmlTag extends AbstractFormatter
     }
 
     /**
-     * Set the link
+     * Set the link.
      *
      * @param string $href
      */
@@ -107,7 +107,6 @@ class HtmlTag extends AbstractFormatter
     }
 
     /**
-     *
      * @return string
      */
     public function getLink()
@@ -117,20 +116,20 @@ class HtmlTag extends AbstractFormatter
 
     /**
      * Get the column row value placeholder
-     * $fmt->setLink('/myLink/something/'.$fmt->getColumnValuePlaceholder($myCol));
+     * $fmt->setLink('/myLink/something/'.$fmt->getColumnValuePlaceholder($myCol));.
      *
-     * @param  AbstractColumn $col
+     * @param AbstractColumn $col
+     *
      * @return string
      */
     public function getColumnValuePlaceholder(AbstractColumn $col)
     {
         $this->linkColumnPlaceholders[] = $col;
 
-        return ':' . $col->getUniqueId() . ':';
+        return ':'.$col->getUniqueId().':';
     }
 
     /**
-     *
      * @return AbstractColumn[]
      */
     public function getLinkColumnPlaceholders()
@@ -139,7 +138,7 @@ class HtmlTag extends AbstractFormatter
     }
 
     /**
-     * Returns the rowId placeholder
+     * Returns the rowId placeholder.
      *
      * @return string
      */
@@ -149,7 +148,8 @@ class HtmlTag extends AbstractFormatter
     }
 
     /**
-     * @param  AbstractColumn $col
+     * @param AbstractColumn $col
+     *
      * @return string
      */
     public function getFormattedValue(AbstractColumn $col)
@@ -160,9 +160,10 @@ class HtmlTag extends AbstractFormatter
     }
 
     /**
-     * Get the string version of the attributes
+     * Get the string version of the attributes.
      *
-     * @param  AbstractColumn $col
+     * @param AbstractColumn $col
+     *
      * @return string
      */
     protected function getAttributesString(AbstractColumn $col)
@@ -172,7 +173,7 @@ class HtmlTag extends AbstractFormatter
             if ('href' === $attrKey) {
                 $attrValue = $this->getLinkReplaced($col);
             }
-            $attributes[] = $attrKey . '="' . $attrValue . '"';
+            $attributes[] = $attrKey.'="'.$attrValue.'"';
         }
 
         return implode(' ', $attributes);
@@ -181,7 +182,8 @@ class HtmlTag extends AbstractFormatter
     /**
      * This is needed public for rowClickAction...
      *
-     * @param  AbstractColumn $col
+     * @param AbstractColumn $col
+     *
      * @return string
      */
     protected function getLinkReplaced(AbstractColumn $col)
@@ -203,7 +205,7 @@ class HtmlTag extends AbstractFormatter
         }
 
         foreach ($this->getLinkColumnPlaceholders() as $col) {
-            $link = str_replace(':' . $col->getUniqueId() . ':', rawurlencode($row[$col->getUniqueId()]), $link);
+            $link = str_replace(':'.$col->getUniqueId().':', rawurlencode($row[$col->getUniqueId()]), $link);
         }
 
         return $link;

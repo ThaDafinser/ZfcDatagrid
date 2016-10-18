@@ -1,17 +1,18 @@
 <?php
+
 namespace ZfcDatagrid\Column;
 
 class Select extends AbstractColumn
 {
-    /** @var  string */
+    /** @var string */
     protected $selectPart1;
 
-    /** @var string|object|null  */
+    /** @var string|object|null */
     protected $selectPart2 = null;
 
     /**
      * Specific column function filter e.g.
-     * WHERE MONTH(%s)
+     * WHERE MONTH(%s).
      *
      * @var string
      */
@@ -24,21 +25,22 @@ class Select extends AbstractColumn
      * $column = new Column('title')
      * Just the title from an array -> UNIQUE will be just the first parameter
      * $column = new Column('(SELECT GROUP_CONCAT....)', 'someAlias')
-     * Use the subselect -> UNIQUE will be the second parameter
+     * Use the subselect -> UNIQUE will be the second parameter.
      *
-     * @param  string|object $columnOrIndexOrObject
-     * @param  string        $tableOrAliasOrUniqueId
+     * @param string|object $columnOrIndexOrObject
+     * @param string        $tableOrAliasOrUniqueId
+     *
      * @throws \Exception
      */
     public function __construct($columnOrIndexOrObject, $tableOrAliasOrUniqueId = null)
     {
-        if ($tableOrAliasOrUniqueId !== null && ! is_string($tableOrAliasOrUniqueId)) {
+        if ($tableOrAliasOrUniqueId !== null && !is_string($tableOrAliasOrUniqueId)) {
             throw new \Exception('Variable $tableOrAliasOrUniqueId must be null or a string');
         }
 
         if (is_string($columnOrIndexOrObject) && $tableOrAliasOrUniqueId !== null) {
             // $column = new Column('id', 'user')
-            $this->setUniqueId($tableOrAliasOrUniqueId . '_' . $columnOrIndexOrObject);
+            $this->setUniqueId($tableOrAliasOrUniqueId.'_'.$columnOrIndexOrObject);
             $this->setSelect($tableOrAliasOrUniqueId, $columnOrIndexOrObject);
         } elseif (is_string($columnOrIndexOrObject)) {
             // $column = new Column('title')
@@ -54,7 +56,6 @@ class Select extends AbstractColumn
     }
 
     /**
-     *
      * @params string $part1
      * @params string|object|null $part2
      */
@@ -65,7 +66,6 @@ class Select extends AbstractColumn
     }
 
     /**
-     *
      * @return string
      */
     public function getSelectPart1()
@@ -74,7 +74,6 @@ class Select extends AbstractColumn
     }
 
     /**
-     *
      * @return string|object|null
      */
     public function getSelectPart2()
@@ -83,7 +82,6 @@ class Select extends AbstractColumn
     }
 
     /**
-     *
      * @param string $filterSelectExpression
      */
     public function setFilterSelectExpression($filterSelectExpression)
@@ -92,7 +90,6 @@ class Select extends AbstractColumn
     }
 
     /**
-     *
      * @return string
      */
     public function getFilterSelectExpression()
@@ -101,8 +98,7 @@ class Select extends AbstractColumn
     }
 
     /**
-     *
-     * @return boolean
+     * @return bool
      */
     public function hasFilterSelectExpression()
     {

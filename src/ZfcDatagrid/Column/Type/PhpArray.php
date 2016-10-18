@@ -1,17 +1,17 @@
 <?php
+
 namespace ZfcDatagrid\Column\Type;
 
 class PhpArray extends AbstractType
 {
     /**
-     * Separator of the string to be used to explode the array
+     * Separator of the string to be used to explode the array.
      *
      * @var string
      */
     protected $separator;
 
     /**
-     *
      * @param string $separator
      */
     public function __construct($separator = ',')
@@ -20,7 +20,7 @@ class PhpArray extends AbstractType
     }
 
     /**
-     * Set separator of the string to be used to explode the array
+     * Set separator of the string to be used to explode the array.
      *
      * @param string $separator
      */
@@ -45,14 +45,15 @@ class PhpArray extends AbstractType
     }
 
     /**
-     * Convert a value into an array
+     * Convert a value into an array.
      *
-     * @param  mixed $value
+     * @param mixed $value
+     *
      * @return array
      */
     public function getUserValue($value)
     {
-        if (! is_array($value)) {
+        if (!is_array($value)) {
             if ('' == $value) {
                 $value = [];
             } else {

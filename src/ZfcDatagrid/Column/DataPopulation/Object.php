@@ -1,28 +1,27 @@
 <?php
+
 namespace ZfcDatagrid\Column\DataPopulation;
 
 use ZfcDatagrid\Column;
 
 /**
- * Get the data from an external object
+ * Get the data from an external object.
  */
 class Object implements DataPopulationInterface
 {
     /**
-     *
      * @var ObjectAwareInterface
      */
     private $object;
 
     /**
-     *
      * @var array
      */
     private $objectParameters = [];
 
     /**
+     * @param ObjectAwareInterface $object
      *
-     * @param  ObjectAwareInterface $object
      * @throws \Exception
      */
     public function setObject(ObjectAwareInterface $object)
@@ -31,7 +30,6 @@ class Object implements DataPopulationInterface
     }
 
     /**
-     *
      * @return ObjectAwareInterface
      */
     public function getObject()
@@ -40,7 +38,7 @@ class Object implements DataPopulationInterface
     }
 
     /**
-     * Apply a dynamic parameter based on row/column value
+     * Apply a dynamic parameter based on row/column value.
      *
      * @param string                $objectParameterName
      * @param Column\AbstractColumn $column
@@ -49,12 +47,11 @@ class Object implements DataPopulationInterface
     {
         $this->objectParameters[] = [
             'objectParameterName' => $objectParameterName,
-            'column'              => $column,
+            'column' => $column,
         ];
     }
 
     /**
-     *
      * @return array
      */
     public function getObjectParametersColumn()
@@ -63,7 +60,7 @@ class Object implements DataPopulationInterface
     }
 
     /**
-     * Directly apply a "static" parameter
+     * Directly apply a "static" parameter.
      *
      * @param string $name
      * @param mixed  $value
@@ -74,7 +71,6 @@ class Object implements DataPopulationInterface
     }
 
     /**
-     *
      * @return string
      */
     public function toString()

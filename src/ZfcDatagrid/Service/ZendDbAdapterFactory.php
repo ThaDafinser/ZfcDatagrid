@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Service;
 
 use Interop\Container\ContainerInterface;
@@ -9,9 +10,10 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class ZendDbAdapterFactory implements FactoryInterface
 {
     /**
-     * @param  ContainerInterface $container
-     * @param  string             $requestedName
-     * @param  array|null         $options
+     * @param ContainerInterface $container
+     * @param string             $requestedName
+     * @param array|null         $options
+     *
      * @return Adapter
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
@@ -22,7 +24,8 @@ class ZendDbAdapterFactory implements FactoryInterface
     }
 
     /**
-     * @param  ServiceLocatorInterface $serviceLocator
+     * @param ServiceLocatorInterface $serviceLocator
+     *
      * @return Adapter
      */
     public function createService(ServiceLocatorInterface $serviceLocator)

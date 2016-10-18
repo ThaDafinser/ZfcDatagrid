@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Renderer\BootstrapTable\View\Helper;
 
 use Interop\Container\ContainerInterface;
@@ -9,9 +10,10 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class TableRowFactory implements FactoryInterface
 {
     /**
-     * @param  ContainerInterface $container
-     * @param  string             $requestedName
-     * @param  array|null         $options
+     * @param ContainerInterface $container
+     * @param string             $requestedName
+     * @param array|null         $options
+     *
      * @return TableRow
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
@@ -25,7 +27,8 @@ class TableRowFactory implements FactoryInterface
     }
 
     /**
-     * @param  ServiceLocatorInterface|AbstractPluginManager $serviceLocator
+     * @param ServiceLocatorInterface|AbstractPluginManager $serviceLocator
+     *
      * @return TableRow
      */
     public function createService(ServiceLocatorInterface $serviceLocator)

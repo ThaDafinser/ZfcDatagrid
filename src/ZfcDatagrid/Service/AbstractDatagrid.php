@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Service;
 
 use Interop\Container\ContainerInterface;
@@ -10,9 +11,10 @@ use ZfcDatagrid\Datagrid;
 abstract class AbstractDatagrid extends Datagrid implements FactoryInterface
 {
     /**
-     * @param  ContainerInterface $container
-     * @param  string             $requestedName
-     * @param  array|null         $options
+     * @param ContainerInterface $container
+     * @param string             $requestedName
+     * @param array|null         $options
+     *
      * @return $this
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
@@ -20,7 +22,7 @@ abstract class AbstractDatagrid extends Datagrid implements FactoryInterface
         $this->setServiceLocator($container);
         $config = $container->get('config');
 
-        if (! isset($config['ZfcDatagrid'])) {
+        if (!isset($config['ZfcDatagrid'])) {
             throw new InvalidArgumentException('Config key "ZfcDatagrid" is missing');
         }
 
@@ -34,14 +36,15 @@ abstract class AbstractDatagrid extends Datagrid implements FactoryInterface
             parent::setTranslator($container->get('translator'));
         }
 
-        parent::setRendererService($container->get('zfcDatagrid.renderer.' . parent::getRendererName()));
+        parent::setRendererService($container->get('zfcDatagrid.renderer.'.parent::getRendererName()));
         parent::init();
 
         return $this;
     }
 
     /**
-     * @param  ServiceLocatorInterface $serviceLocator
+     * @param ServiceLocatorInterface $serviceLocator
+     *
      * @return Datagrid
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
@@ -50,7 +53,7 @@ abstract class AbstractDatagrid extends Datagrid implements FactoryInterface
     }
 
     /**
-     * Call initGrid on rendering
+     * Call initGrid on rendering.
      */
     public function render()
     {
@@ -59,9 +62,5 @@ abstract class AbstractDatagrid extends Datagrid implements FactoryInterface
         parent::render();
     }
 
-    /**
-     *
-     * @return void
-     */
     abstract public function initGrid();
 }

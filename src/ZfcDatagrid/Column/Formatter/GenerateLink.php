@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Column\Formatter;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -13,13 +14,13 @@ class GenerateLink extends AbstractFormatter
         'bootstrapTable',
     ];
 
-    /** @var  string */
+    /** @var string */
     protected $route;
-    /** @var  array */
+    /** @var array */
     protected $routeParams;
-    /** @var  string|null */
+    /** @var string|null */
     protected $routeKey;
-    /** @var  \Zend\View\Renderer\PhpRenderer */
+    /** @var \Zend\View\Renderer\PhpRenderer */
     protected $viewRenderer;
 
     /**
@@ -30,7 +31,7 @@ class GenerateLink extends AbstractFormatter
      */
     public function __construct($viewRenderer, $route, $key = null, $params = [])
     {
-        /**
+        /*
          * old fallback that should be removed in 2.0
          * TODO remove in 2.0
          */
@@ -45,12 +46,13 @@ class GenerateLink extends AbstractFormatter
     }
 
     /**
-     * @param  AbstractColumn $column
+     * @param AbstractColumn $column
+     *
      * @return string
      */
     public function getFormattedValue(AbstractColumn $column)
     {
-        $row   = $this->getRowData();
+        $row = $this->getRowData();
         $value = $row[$column->getUniqueId()];
 
         $routeKey = !is_null($this->getRouteKey()) ?
@@ -58,7 +60,7 @@ class GenerateLink extends AbstractFormatter
             :
             $column->getUniqueId();
 
-        $params            = $this->getRouteParams();
+        $params = $this->getRouteParams();
         $params[$routeKey] = $value;
 
         $url = (string) $this->getViewRenderer()->url($this->getRoute(), $params);
@@ -75,7 +77,8 @@ class GenerateLink extends AbstractFormatter
     }
 
     /**
-     * @param  \Zend\View\Renderer\PhpRenderer $viewRenderer
+     * @param \Zend\View\Renderer\PhpRenderer $viewRenderer
+     *
      * @return self
      */
     public function setViewRenderer($viewRenderer)

@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Column\Type;
 
 use DateTime as PhpDateTime;
@@ -41,7 +42,6 @@ class DateTime extends AbstractType
     protected $outputPattern;
 
     /**
-     *
      * @param string $sourceDateTimeFormat
      *                                     PHP DateTime format
      * @param int    $outputDateType
@@ -69,7 +69,8 @@ class DateTime extends AbstractType
     }
 
     /**
-     * Set Daterange Filter enabled true/false
+     * Set Daterange Filter enabled true/false.
+     *
      * @param bool $val
      */
     public function setDaterangePickerEnabled($val = true)
@@ -78,7 +79,7 @@ class DateTime extends AbstractType
     }
 
     /**
-     * Check if the Daterange Filter is enabled
+     * Check if the Daterange Filter is enabled.
      */
     public function isDaterangePickerEnabled()
     {
@@ -174,8 +175,8 @@ class DateTime extends AbstractType
     }
 
     /**
+     * @param string $val
      *
-     * @param  string $val
      * @return string
      */
     public function getFilterValue($val)
@@ -191,9 +192,10 @@ class DateTime extends AbstractType
     }
 
     /**
-     * Convert the value from the source to the value, which the user will see in the column
+     * Convert the value from the source to the value, which the user will see in the column.
      *
-     * @param  mixed  $val
+     * @param mixed $val
+     *
      * @return string
      */
     public function getUserValue($val)

@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Renderer\ZendTable;
 
 use Zend\Console\Adapter\AdapterInterface as ConsoleAdapter;
@@ -11,24 +12,21 @@ use ZfcDataGrid\Column\Type;
 use ZfcDatagrid\Renderer\AbstractRenderer;
 
 /**
- * For CLI
+ * For CLI.
  */
 class Renderer extends AbstractRenderer
 {
     /**
-     *
      * @var ConsoleAdapter
      */
     private $consoleAdapter;
 
     /**
-     *
      * @var Column\AbstractColumn[]
      */
     private $columnsToDisplay;
 
     /**
-     *
      * @return string
      */
     public function getName()
@@ -37,7 +35,6 @@ class Renderer extends AbstractRenderer
     }
 
     /**
-     *
      * @return bool
      */
     public function isExport()
@@ -46,7 +43,6 @@ class Renderer extends AbstractRenderer
     }
 
     /**
-     *
      * @return bool
      */
     public function isHtml()
@@ -55,14 +51,14 @@ class Renderer extends AbstractRenderer
     }
 
     /**
-     *
      * @return ConsoleRequest
+     *
      * @throws \Exception
      */
     public function getRequest()
     {
         $request = parent::getRequest();
-        if (! $request instanceof ConsoleRequest) {
+        if (!$request instanceof ConsoleRequest) {
             throw new \Exception('Request must be an instance of Zend\Console\Request for console rendering');
         }
 
@@ -70,7 +66,6 @@ class Renderer extends AbstractRenderer
     }
 
     /**
-     *
      * @param ConsoleAdapter $adapter
      */
     public function setConsoleAdapter(ConsoleAdapter $adapter)
@@ -79,7 +74,6 @@ class Renderer extends AbstractRenderer
     }
 
     /**
-     *
      * @return ConsoleAdapter
      */
     public function getConsoleAdapter()
@@ -92,7 +86,6 @@ class Renderer extends AbstractRenderer
     }
 
     /**
-     *
      * @todo enable parameters from console
      *
      * @return array
@@ -106,14 +99,14 @@ class Renderer extends AbstractRenderer
         $request = $this->getRequest();
 
         $optionsRenderer = $this->getOptionsRenderer();
-        $parameterNames  = $optionsRenderer['parameterNames'];
+        $parameterNames = $optionsRenderer['parameterNames'];
 
         $sortConditions = [];
 
-        $sortColumns    = $request->getParam($parameterNames['sortColumns']);
+        $sortColumns = $request->getParam($parameterNames['sortColumns']);
         $sortDirections = $request->getParam($parameterNames['sortDirections']);
         if ($sortColumns != '') {
-            $sortColumns    = explode(',', $sortColumns);
+            $sortColumns = explode(',', $sortColumns);
             $sortDirections = explode(',', $sortDirections);
 
             foreach ($sortColumns as $key => $sortColumn) {
@@ -132,7 +125,7 @@ class Renderer extends AbstractRenderer
                     if ($column->getUniqueId() == $sortColumn) {
                         $sortConditions[] = [
                             'sortDirection' => $sortDirection,
-                            'column'        => $column,
+                            'column' => $column,
                         ];
 
                         $column->setSortActive($sortDirection);
@@ -152,7 +145,6 @@ class Renderer extends AbstractRenderer
     }
 
     /**
-     *
      * @todo enable parameters from console
      *
      * @return array
@@ -163,16 +155,16 @@ class Renderer extends AbstractRenderer
     }
 
     /**
-     * Should be implemented for each renderer itself (just default)
+     * Should be implemented for each renderer itself (just default).
      *
-     * @return integer
+     * @return int
      */
     public function getCurrentPageNumber()
     {
         $request = $this->getRequest();
 
         $optionsRenderer = $this->getOptionsRenderer();
-        $parameterNames  = $optionsRenderer['parameterNames'];
+        $parameterNames = $optionsRenderer['parameterNames'];
         if ($request->getParam($parameterNames['currentPage']) != '') {
             return (int) $request->getParam($parameterNames['currentPage']);
         }
@@ -181,9 +173,10 @@ class Renderer extends AbstractRenderer
     }
 
     /**
+     * @param int $defaultItems
      *
-     * @param  int        $defaultItems
      * @return int
+     *
      * @throws \Exception
      */
     public function getItemsPerPage($defaultItems = 25)
@@ -191,7 +184,7 @@ class Renderer extends AbstractRenderer
         $request = $this->getRequest();
 
         $optionsRenderer = $this->getOptionsRenderer();
-        $parameterNames  = $optionsRenderer['parameterNames'];
+        $parameterNames = $optionsRenderer['parameterNames'];
         if ($request->getParam($parameterNames['itemsPerPage']) != '') {
             return (int) $request->getParam($parameterNames['itemsPerPage']);
         }
@@ -200,7 +193,6 @@ class Renderer extends AbstractRenderer
     }
 
     /**
-     *
      * @return \Zend\Stdlib\ResponseInterface
      */
     public function execute()
@@ -214,12 +206,11 @@ class Renderer extends AbstractRenderer
     }
 
     /**
-     *
      * @return TextTable
      */
     private function getTable()
     {
-        $paginator  = $this->getPaginator();
+        $paginator = $this->getPaginator();
 
         $options = [
             'columnWidths' => $this->getColumnWidths(),
@@ -241,7 +232,7 @@ class Renderer extends AbstractRenderer
         $table->appendRow($tableRow);
 
         /**
-         * Header
+         * Header.
          */
         $tableRow = new Table\Row();
         foreach ($this->getColumnsToDisplay() as $column) {
@@ -296,7 +287,7 @@ class Renderer extends AbstractRenderer
          */
         $tableRow = new Table\Row();
 
-        $footer = $this->translate('Page') . ' ';
+        $footer = $this->translate('Page').' ';
         $footer .= sprintf('%s %s %s', $paginator->getCurrentPageNumber(), $this->translate('of'), $paginator->count());
 
         $footer .= ' / ';
@@ -321,9 +312,10 @@ class Renderer extends AbstractRenderer
     }
 
     /**
-     * Decide which columns we want to display
+     * Decide which columns we want to display.
      *
      * @return Column\AbstractColumn[]
+     *
      * @throws \Exception
      */
     private function getColumnsToDisplay()
@@ -336,7 +328,7 @@ class Renderer extends AbstractRenderer
         foreach ($this->getColumns() as $column) {
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
 
-            if (! $column instanceof Column\Action && $column->isHidden() === false) {
+            if (!$column instanceof Column\Action && $column->isHidden() === false) {
                 $columnsToDisplay[] = $column;
             }
         }
@@ -350,7 +342,6 @@ class Renderer extends AbstractRenderer
     }
 
     /**
-     *
      * @return array
      */
     private function getColumnWidths()
@@ -362,7 +353,7 @@ class Renderer extends AbstractRenderer
         $border = count($cols) + 1;
 
         $widthAvailable = $this->getConsoleAdapter()->getWidth() - $border;
-        $onePercent     = $widthAvailable / 100;
+        $onePercent = $widthAvailable / 100;
 
         $colWidths = [];
         foreach ($cols as $col) {
@@ -377,7 +368,7 @@ class Renderer extends AbstractRenderer
         while (array_sum($colWidths) < $widthAvailable) {
             $colWidths[$i] = $colWidths[$i] + 1;
 
-            $i ++;
+            ++$i;
         }
 
         return $colWidths;
