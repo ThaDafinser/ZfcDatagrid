@@ -28,5 +28,5 @@ script:
  - vendor/bin/php-cs-fixer fix src --level=psr2 --dry-run -vv
 
 after_script:
-  - if [ "$TRAVIS_PHP_VERSION" = "7.1" ]; then wget https://scrutinizer-ci.com/ocular.phar; fi
-  - if [ "$TRAVIS_PHP_VERSION" = "7.1" ]; then php ocular.phar code-coverage:upload --format=php-clover ./clover.xml; fi
+  - if [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then wget https://scrutinizer-ci.com/ocular.phar; fi
+  - if [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then php ocular.phar code-coverage:upload --format=php-clover ./clover.xml; fi
