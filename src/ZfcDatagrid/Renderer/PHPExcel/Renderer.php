@@ -2,7 +2,6 @@
 /**
  * Output as an excel file.
  */
-
 namespace ZfcDatagrid\Renderer\PHPExcel;
 
 use PHPExcel;

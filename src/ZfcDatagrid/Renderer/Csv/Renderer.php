@@ -2,7 +2,6 @@
 /**
  * Render datagrid as CSV.
  */
-
 namespace ZfcDatagrid\Renderer\Csv;
 
 use Zend\Http\Headers;

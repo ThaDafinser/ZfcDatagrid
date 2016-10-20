@@ -155,6 +155,7 @@ return [
                     'header' => [
                         'font' => 'helvetica',
                         'size' => 11,
+                        'height' => 7,
 
                         'color' => [
                             0,
@@ -171,6 +172,8 @@ return [
                     'data' => [
                         'font' => 'helvetica',
                         'size' => 11,
+                        'padding' => 4,
+                        'contentPadding' => 2,
 
                         'color' => [
                             0,

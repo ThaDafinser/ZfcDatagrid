@@ -73,6 +73,9 @@ class Action extends AbstractColumn
         unset($this->actions[$key]);
     }
 
+    /**
+     *
+     */
     public function clearActions()
     {
         $this->actions = [];

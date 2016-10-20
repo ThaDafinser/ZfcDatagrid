@@ -2,7 +2,6 @@
 /**
  * Output as a PDF file.
  */
-
 namespace ZfcDatagrid\Renderer\TCPDF;
 
 use TCPDF;
@@ -211,13 +210,16 @@ class Renderer extends AbstractExport
     protected function getRowHeight(array $row)
     {
         $optionsRenderer = $this->getOptionsRenderer();
-        $sizePoint = $optionsRenderer['style']['data']['size'];
+        $sizePoint       = $optionsRenderer['style']['data']['size'];
+        $padding   = $optionsRenderer['style']['data']['padding'];
+        $contentPadding = $optionsRenderer['style']['data']['contentPadding'];
+
         // Points to MM
         $size = $sizePoint / 2.83464566929134;
 
         $pdf = $this->getPdf();
 
-        $rowHeight = $size + 4;
+        $rowHeight = $size + $padding;
         foreach ($this->getColumnsToExport() as $col) {
             /* @var $col \ZfcDatagrid\Column\AbstractColumn */
 
@@ -225,7 +227,7 @@ class Renderer extends AbstractExport
 
                 case 'ZfcDatagrid\Column\Type\Image':
                     // "min" height for such a column
-                    $height = $col->getType()->getResizeHeight() + 2;
+                    $height = $col->getType()->getResizeHeight() + $contentPadding;
                     break;
 
                 default:
@@ -244,7 +246,7 @@ class Renderer extends AbstractExport
                     $height = $pdf->getStringHeight($col->getWidth(), $value);
 
                     // include borders top/bottom
-                    $height += 2;
+                    $height += $contentPadding;
                     break;
             }
 
@@ -258,6 +260,8 @@ class Renderer extends AbstractExport
 
     protected function printTableHeader()
     {
+        $optionsRenderer = $this->getOptionsRenderer();
+        $height = $optionsRenderer['style']['header']['height'];
         $this->setFontHeader();
 
         $pdf = $this->getPdf();
@@ -273,7 +277,7 @@ class Renderer extends AbstractExport
             $label = $this->translate($col->getLabel());
 
             // Do not wrap header labels, it will look very ugly, that's why max height is set to 7!
-            $pdf->MultiCell($col->getWidth(), 7, $label, 1, $this->getTextAlignment(), true, 2, $x, $y, true, 0, false, true, 7);
+            $pdf->MultiCell($col->getWidth(), $height, $label, 1, $this->getTextAlignment(), true, 2, $x, $y, true, 0, false, true, 7);
         }
     }
 
@@ -311,7 +315,7 @@ class Renderer extends AbstractExport
                             if ($file !== false) {
                                 list($width, $height) = $this->calcImageSize($file, $col->getWidth() - 2, $rowHeight - 2);
 
-                                $pdf->Image('@'.$file, $x + 1, $y + 1, $width, $height, '', '', 'L', true);
+                                $pdf->Image('@' . $file, $x + 1, $y + 1, $width, $height, '', '', 'L', true);
                             }
                         } else {
                             $pdf->Image($link, $x + 1, $y + 1, 0, $resizeHeight, '', '', 'L', true);
