@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Column\Type;
 
 use ZfcDatagrid\Filter;
@@ -6,7 +7,7 @@ use ZfcDatagrid\Filter;
 abstract class AbstractType implements TypeInterface
 {
     /**
-     * the default filter operation
+     * the default filter operation.
      *
      * @return string
      */
@@ -16,9 +17,10 @@ abstract class AbstractType implements TypeInterface
     }
 
     /**
-     * Convert the user value to a general value, which will be filtered
+     * Convert the user value to a general value, which will be filtered.
      *
-     * @param  string $val
+     * @param string $val
+     *
      * @return string
      */
     public function getFilterValue($val)
@@ -27,9 +29,10 @@ abstract class AbstractType implements TypeInterface
     }
 
     /**
-     * Convert the value from the source to the value, which the user will see
+     * Convert the value from the source to the value, which the user will see.
      *
-     * @param  string $val
+     * @param string $val
+     *
      * @return string
      */
     public function getUserValue($val)
@@ -38,7 +41,7 @@ abstract class AbstractType implements TypeInterface
     }
 
     /**
-     * Get the type name
+     * Get the type name.
      *
      * @return string
      */

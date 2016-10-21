@@ -1,7 +1,9 @@
 <?php
+
 namespace ZfcDatagrid\Service;
 
 use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcDatagrid\Datagrid;
@@ -9,32 +11,45 @@ use ZfcDatagrid\Datagrid;
 class DatagridFactory implements FactoryInterface
 {
     /**
+     * @param ContainerInterface $container
+     * @param string             $requestedName
+     * @param array|null         $options
      *
-     * @param  ServiceLocatorInterface $sm
      * @return Datagrid
      */
-    public function createService(ServiceLocatorInterface $sm)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $config = $sm->get('config');
+        $config = $container->get('config');
 
         if (!isset($config['ZfcDatagrid'])) {
             throw new InvalidArgumentException('Config key "ZfcDatagrid" is missing');
         }
 
         /* @var $application \Zend\Mvc\Application */
-        $application = $sm->get('application');
+        $application = $container->get('application');
 
         $grid = new Datagrid();
-        $grid->setServiceLocator($sm);
+        $grid->setServiceLocator($container);
         $grid->setOptions($config['ZfcDatagrid']);
         $grid->setMvcEvent($application->getMvcEvent());
-        if ($sm->has('translator') === true) {
-            $grid->setTranslator($sm->get('translator'));
+
+        if ($container->has('translator') === true) {
+            $grid->setTranslator($container->get('translator'));
         }
-        /** @noinspection PhpParamsInspection */
-        $grid->setRendererService($sm->get('zfcDatagrid.renderer.' . $grid->getRendererName()));
+
+        $grid->setRendererService($container->get('zfcDatagrid.renderer.'.$grid->getRendererName()));
         $grid->init();
 
         return $grid;
+    }
+
+    /**
+     * @param ServiceLocatorInterface $serviceLocator
+     *
+     * @return Datagrid
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        return $this($serviceLocator, Datagrid::class);
     }
 }

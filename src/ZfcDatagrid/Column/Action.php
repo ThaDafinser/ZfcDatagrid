@@ -1,12 +1,12 @@
 <?php
+
 namespace ZfcDatagrid\Column;
 
 /**
  * Action Column
- * IMPORTANT: Will only be shown on HTML renderer
+ * IMPORTANT: Will only be shown on HTML renderer.
  *
  * So Attributes for HTML are valid...
- *
  */
 class Action extends AbstractColumn
 {
@@ -14,7 +14,6 @@ class Action extends AbstractColumn
     private $actions = [];
 
     /**
-     *
      * @param string $uniqueId
      */
     public function __construct($uniqueId = 'action')
@@ -37,7 +36,6 @@ class Action extends AbstractColumn
     }
 
     /**
-     *
      * @return Action\AbstractAction[]
      */
     public function getActions()

@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Renderer\BootstrapTable;
 
 use Zend\Http\PhpEnvironment\Request as HttpRequest;
@@ -32,14 +33,14 @@ class Renderer extends AbstractRenderer
     }
 
     /**
-     *
      * @return HttpRequest
+     *
      * @throws \Exception
      */
     public function getRequest()
     {
         $request = parent::getRequest();
-        if (! $request instanceof HttpRequest) {
+        if (!$request instanceof HttpRequest) {
             throw new \Exception('Request must be an instance of Zend\Http\PhpEnvironment\Request for HTML rendering');
         }
 
@@ -47,10 +48,10 @@ class Renderer extends AbstractRenderer
     }
 
     /**
-     *
      * @see \ZfcDatagrid\Renderer\AbstractRenderer::getSortConditions()
      *
      * @return array
+     *
      * @throws \Exception
      */
     public function getSortConditions()
@@ -63,13 +64,13 @@ class Renderer extends AbstractRenderer
         $request = $this->getRequest();
 
         $optionsRenderer = $this->getOptionsRenderer();
-        $parameterNames  = $optionsRenderer['parameterNames'];
+        $parameterNames = $optionsRenderer['parameterNames'];
 
         $sortConditions = [];
-        $sortColumns    = $request->getPost($parameterNames['sortColumns'], $request->getQuery($parameterNames['sortColumns']));
+        $sortColumns = $request->getPost($parameterNames['sortColumns'], $request->getQuery($parameterNames['sortColumns']));
         $sortDirections = $request->getPost($parameterNames['sortDirections'], $request->getQuery($parameterNames['sortDirections']));
         if ($sortColumns != '') {
-            $sortColumns    = explode(',', $sortColumns);
+            $sortColumns = explode(',', $sortColumns);
             $sortDirections = explode(',', $sortDirections);
 
             if (count($sortColumns) != count($sortDirections)) {
@@ -88,7 +89,7 @@ class Renderer extends AbstractRenderer
                     if ($column->getUniqueId() == $sortColumn) {
                         $sortConditions[] = [
                             'sortDirection' => $sortDirection,
-                            'column'        => $column,
+                            'column' => $column,
                         ];
 
                         $column->setSortActive($sortDirection);
@@ -108,7 +109,6 @@ class Renderer extends AbstractRenderer
     }
 
     /**
-     *
      * @todo Make parameter config
      *
      * @see \ZfcDatagrid\Renderer\AbstractRenderer::getFilters()
@@ -152,12 +152,13 @@ class Renderer extends AbstractRenderer
 
     /**
      * @return int
+     *
      * @throws \Exception
      */
     public function getCurrentPageNumber()
     {
         $optionsRenderer = $this->getOptionsRenderer();
-        $parameterNames  = $optionsRenderer['parameterNames'];
+        $parameterNames = $optionsRenderer['parameterNames'];
 
         $request = $this->getRequest();
         if ($request instanceof HttpRequest) {

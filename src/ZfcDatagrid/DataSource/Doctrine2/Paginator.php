@@ -1,8 +1,7 @@
 <?php
 /**
  * This is just a proxy to detect if we can use the "fast" Pagination
- * or if we use the "safe" variant by Doctrine2
- *
+ * or if we use the "safe" variant by Doctrine2.
  */
 namespace ZfcDatagrid\DataSource\Doctrine2;
 
@@ -14,26 +13,23 @@ use ZfcDatagrid\DataSource\Doctrine2\PaginatorFast as ZfcDatagridPaginator;
 class Paginator implements AdapterInterface
 {
     /**
-     *
      * @var QueryBuilder
      */
     protected $qb = null;
 
     /**
-     * Total item count
+     * Total item count.
      *
-     * @var integer
+     * @var int
      */
     protected $rowCount = null;
 
     /**
-     *
      * @var \Doctrine\ORM\Tools\Pagination\Paginator
      */
     private $paginator;
 
     /**
-     *
      * @param QueryBuilder $qb
      */
     public function __construct(QueryBuilder $qb)
@@ -42,7 +38,6 @@ class Paginator implements AdapterInterface
     }
 
     /**
-     *
      * @return \Doctrine\ORM\QueryBuilder
      */
     public function getQueryBuilder()
@@ -51,13 +46,13 @@ class Paginator implements AdapterInterface
     }
 
     /**
-     * Test which pagination solution to use
+     * Test which pagination solution to use.
      *
-     * @return boolean
+     * @return bool
      */
     private function useCustomPaginator()
     {
-        $qb    = $this->getQueryBuilder();
+        $qb = $this->getQueryBuilder();
         $parts = $qb->getDQLParts();
 
         if ($parts['having'] !== null || true === $parts['distinct']) {
@@ -70,7 +65,6 @@ class Paginator implements AdapterInterface
     }
 
     /**
-     *
      * @return \Doctrine\ORM\Tools\Pagination\Paginator
      */
     private function getPaginator()
@@ -92,8 +86,9 @@ class Paginator implements AdapterInterface
     /**
      * Returns an array of items for a page.
      *
-     * @param  integer $offset
-     * @param  integer $itemCountPerPage
+     * @param int $offset
+     * @param int $itemCountPerPage
+     *
      * @return array
      */
     public function getItems($offset, $itemCountPerPage)
@@ -113,7 +108,7 @@ class Paginator implements AdapterInterface
     /**
      * Returns the total number of rows in the result set.
      *
-     * @return integer
+     * @return int
      */
     public function count()
     {

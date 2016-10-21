@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Column\Style;
 
 use ZfcDatagrid\Column\AbstractColumn;
@@ -9,20 +10,19 @@ abstract class AbstractStyle
     protected $byValueOperator = 'OR';
 
     /**
-     *
      * @var array
      */
     private $byValues = [];
 
     /**
-     * Display the values with AND or OR (if multiple showOnValues are defined)
+     * Display the values with AND or OR (if multiple showOnValues are defined).
      *
      * @param string $operator
      */
     public function setByValueOperator($operator = 'OR')
     {
         if ($operator != 'AND' && $operator != 'OR') {
-            throw new \InvalidArgumentException('not allowed operator: "' . $operator . '" (AND / OR is allowed)');
+            throw new \InvalidArgumentException('not allowed operator: "'.$operator.'" (AND / OR is allowed)');
         }
 
         $this->byValueOperator = (string) $operator;
@@ -30,7 +30,7 @@ abstract class AbstractStyle
 
     /**
      * Get the show on value operator, e.g.
-     * OR, AND
+     * OR, AND.
      *
      * @return string
      */
@@ -40,7 +40,7 @@ abstract class AbstractStyle
     }
 
     /**
-     * Set the style value based and not general
+     * Set the style value based and not general.
      *
      * @param AbstractColumn $column
      * @param mixed          $value
@@ -49,14 +49,13 @@ abstract class AbstractStyle
     public function addByValue(AbstractColumn $column, $value, $operator = Filter::EQUAL)
     {
         $this->byValues[] = [
-            'column'   => $column,
-            'value'    => $value,
+            'column' => $column,
+            'value' => $value,
             'operator' => $operator,
         ];
     }
 
     /**
-     *
      * @return array
      */
     public function getByValues()
@@ -65,8 +64,7 @@ abstract class AbstractStyle
     }
 
     /**
-     *
-     * @return boolean
+     * @return bool
      */
     public function hasByValues()
     {
@@ -78,9 +76,9 @@ abstract class AbstractStyle
     }
 
     /**
+     * @param array $row
      *
-     * @param  array   $row
-     * @return boolean
+     * @return bool
      */
     public function isApply(array $row)
     {

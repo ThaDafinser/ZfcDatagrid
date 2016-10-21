@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Renderer\PrintHtml;
 
 use Zend\View\Model\ViewModel;
@@ -22,7 +23,6 @@ class Renderer extends AbstractRenderer
     }
 
     /**
-     *
      * @return \Zend\View\Model\ViewModel
      */
     public function execute()

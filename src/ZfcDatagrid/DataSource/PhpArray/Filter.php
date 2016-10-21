@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\DataSource\PhpArray;
 
 use ZfcDatagrid\Filter as DatagridFilter;
@@ -6,13 +7,11 @@ use ZfcDatagrid\Filter as DatagridFilter;
 class Filter
 {
     /**
-     *
      * @var \ZfcDatagrid\Filter
      */
     private $filter;
 
     /**
-     *
      * @param \ZfcDatagrid\Filter $filter
      */
     public function __construct(DatagridFilter $filter)
@@ -21,7 +20,6 @@ class Filter
     }
 
     /**
-     *
      * @return \ZfcDatagrid\Filter
      */
     public function getFilter()
@@ -32,18 +30,20 @@ class Filter
     /**
      * Does the value get filtered?
      *
-     * @param  array      $row
+     * @param array $row
+     *
      * @throws \Exception
-     * @return boolean
+     *
+     * @return bool
      */
     public function applyFilter(array $row)
     {
         $wasTrueOneTime = false;
-        $isApply        = false;
+        $isApply = false;
 
         foreach ($this->getFilter()->getValues() as $filterValue) {
             $filter = $this->getFilter();
-            $col    = $filter->getColumn();
+            $col = $filter->getColumn();
 
             $value = $row[$col->getUniqueId()];
             $value = $col->getType()->getFilterValue($value);

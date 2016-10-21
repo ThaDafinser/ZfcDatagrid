@@ -1,7 +1,6 @@
 <?php
 /**
- * Methods which can be used in (all) export renderer
- *
+ * Methods which can be used in (all) export renderer.
  */
 namespace ZfcDatagrid\Renderer;
 
@@ -10,7 +9,6 @@ use ZfcDatagrid\Column;
 abstract class AbstractExport extends AbstractRenderer
 {
     /**
-     *
      * @var array
      */
     protected $allowedColumnTypes = [
@@ -21,15 +19,15 @@ abstract class AbstractExport extends AbstractRenderer
     ];
 
     /**
-     *
      * @var Column\AbstractColumn[]
      */
     protected $columnsToExport;
 
     /**
-     * Decide which columns we want to display
+     * Decide which columns we want to display.
      *
      * @return Column\AbstractColumn[]
+     *
      * @throws \Exception
      */
     protected function getColumnsToExport()
@@ -42,7 +40,7 @@ abstract class AbstractExport extends AbstractRenderer
         foreach ($this->getColumns() as $column) {
             /* @var $column \ZfcDatagrid\Column\AbstractColumn */
 
-            if (! $column instanceof Column\Action && $column->isHidden() === false && in_array(get_class($column->getType()), $this->allowedColumnTypes)) {
+            if (!$column instanceof Column\Action && $column->isHidden() === false && in_array(get_class($column->getType()), $this->allowedColumnTypes)) {
                 $columnsToExport[] = $column;
             }
         }
@@ -56,16 +54,17 @@ abstract class AbstractExport extends AbstractRenderer
     }
 
     /**
-     * Get the paper width in MM (milimeter)
+     * Get the paper width in MM (milimeter).
      *
      * @return float
+     *
      * @throws \Exception
      */
     protected function getPaperWidth()
     {
         $optionsRenderer = $this->getOptionsRenderer();
 
-        $papersize   = $optionsRenderer['papersize'];
+        $papersize = $optionsRenderer['papersize'];
         $orientation = $optionsRenderer['orientation'];
 
         if (substr($papersize, 0, 1) != 'A') {
@@ -78,7 +77,7 @@ abstract class AbstractExport extends AbstractRenderer
         // A0 dimensions = 841 x 1189 mm
         $currentX = 841;
         $currentY = 1189;
-        for ($i = 0; $i < $divisor; $i ++) {
+        for ($i = 0; $i < $divisor; ++$i) {
             $tempY = $currentX;
             $tempX = floor($currentY / 2);
 
@@ -95,20 +94,20 @@ abstract class AbstractExport extends AbstractRenderer
 
     /**
      * Get a valid filename to save
-     * (WITHOUT the extension!)
+     * (WITHOUT the extension!).
      *
      * @return string
      */
     protected function getFilename()
     {
-        $filenameParts   = [];
+        $filenameParts = [];
         $filenameParts[] = date('Y-m-d_H-i-s');
 
         if ($this->getTitle() != '') {
             $title = $this->getTitle();
             $title = str_replace(' ', '_', $title);
 
-            $filenameParts[] = preg_replace("/[^a-z0-9_-]+/i", "", $title);
+            $filenameParts[] = preg_replace('/[^a-z0-9_-]+/i', '', $title);
         }
 
         return implode('_', $filenameParts);

@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Column\Formatter;
 
 use ZfcDatagrid\Column\AbstractColumn;
@@ -23,7 +24,6 @@ abstract class AbstractFormatter
     }
 
     /**
-     *
      * @return array
      */
     public function getRowData()
@@ -32,7 +32,6 @@ abstract class AbstractFormatter
     }
 
     /**
-     *
      * @param string $name
      */
     public function setRendererName($name = null)
@@ -41,7 +40,6 @@ abstract class AbstractFormatter
     }
 
     /**
-     *
      * @return string null
      */
     public function getRendererName()
@@ -50,7 +48,6 @@ abstract class AbstractFormatter
     }
 
     /**
-     *
      * @param array $validRendrerers
      */
     public function setValidRendererNames(array $validRendrerers)
@@ -59,7 +56,6 @@ abstract class AbstractFormatter
     }
 
     /**
-     *
      * @return array
      */
     public function getValidRendererNames()
@@ -68,8 +64,7 @@ abstract class AbstractFormatter
     }
 
     /**
-     *
-     * @return boolean
+     * @return bool
      */
     public function isApply()
     {
@@ -81,8 +76,8 @@ abstract class AbstractFormatter
     }
 
     /**
+     * @param AbstractColumn $column
      *
-     * @param  AbstractColumn $column
      * @return string
      */
     public function format(AbstractColumn $column)
@@ -96,7 +91,6 @@ abstract class AbstractFormatter
     }
 
     /**
-     *
      * @param AbstractColumn $column
      *
      * @return string

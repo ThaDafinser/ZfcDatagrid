@@ -98,7 +98,7 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
 
     public function testCanCreateServiceWithMvcTranslator()
     {
-        $mvcTranslatorMock = $this->getMockBuilder('Zend\Mvc\I18n\Translator')
+        $mvcTranslatorMock = $this->getMockBuilder('Zend\I18n\Translator\Translator')
             ->disableOriginalConstructor()
             ->getMock();
 

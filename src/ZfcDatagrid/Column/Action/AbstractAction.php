@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Column\Action;
 
 use ZfcDatagrid\Column;
@@ -10,25 +11,21 @@ abstract class AbstractAction
     const ROW_ID_PLACEHOLDER = ':rowId:';
 
     /**
-     *
      * @var \ZfcDatagrid\Column\AbstractColumn[]
      */
     protected $linkColumnPlaceholders = [];
 
     /**
-     *
      * @var array
      */
     protected $htmlAttributes = [];
 
     /**
-     *
      * @var string
      */
     protected $showOnValueOperator = 'OR';
 
     /**
-     *
      * @var array
      */
     protected $showOnValues = [];
@@ -39,7 +36,7 @@ abstract class AbstractAction
     }
 
     /**
-     * Set the link
+     * Set the link.
      *
      * @param string $href
      */
@@ -49,7 +46,6 @@ abstract class AbstractAction
     }
 
     /**
-     *
      * @return string
      */
     public function getLink()
@@ -60,7 +56,8 @@ abstract class AbstractAction
     /**
      * This is needed public for rowClickAction...
      *
-     * @param  array  $row
+     * @param array $row
+     *
      * @return string
      */
     public function getLinkReplaced(array $row)
@@ -77,7 +74,7 @@ abstract class AbstractAction
         }
 
         foreach ($this->getLinkColumnPlaceholders() as $col) {
-            $link = str_replace(':' . $col->getUniqueId() . ':', $row[$col->getUniqueId()], $link);
+            $link = str_replace(':'.$col->getUniqueId().':', $row[$col->getUniqueId()], $link);
         }
 
         return $link;
@@ -85,20 +82,20 @@ abstract class AbstractAction
 
     /**
      * Get the column row value placeholder
-     * $action->setLink('/myLink/something/id/'.$action->getRowIdPlaceholder().'/something/'.$action->getColumnRowPlaceholder($myCol));
+     * $action->setLink('/myLink/something/id/'.$action->getRowIdPlaceholder().'/something/'.$action->getColumnRowPlaceholder($myCol));.
      *
-     * @param  AbstractColumn $col
+     * @param AbstractColumn $col
+     *
      * @return string
      */
     public function getColumnValuePlaceholder(AbstractColumn $col)
     {
         $this->linkColumnPlaceholders[] = $col;
 
-        return ':' . $col->getUniqueId() . ':';
+        return ':'.$col->getUniqueId().':';
     }
 
     /**
-     *
      * @return \ZfcDatagrid\Column\AbstractColumn[]
      */
     public function getLinkColumnPlaceholders()
@@ -109,7 +106,7 @@ abstract class AbstractAction
     /**
      * Returns the rowId placeholder
      * Can be used e.g.
-     * $action->setLink('/myLink/something/id/'.$action->getRowIdPlaceholder());
+     * $action->setLink('/myLink/something/id/'.$action->getRowIdPlaceholder());.
      *
      * @return string
      */
@@ -119,7 +116,7 @@ abstract class AbstractAction
     }
 
     /**
-     * Set a HTML attributes
+     * Set a HTML attributes.
      *
      * @param string $name
      * @param string $value
@@ -130,9 +127,10 @@ abstract class AbstractAction
     }
 
     /**
-     * Get a HTML attribute
+     * Get a HTML attribute.
      *
-     * @param  string $name
+     * @param string $name
+     *
      * @return string
      */
     public function getAttribute($name)
@@ -145,7 +143,7 @@ abstract class AbstractAction
     }
 
     /**
-     * Removes an HTML attribute
+     * Removes an HTML attribute.
      *
      * @param string $name
      */
@@ -157,7 +155,7 @@ abstract class AbstractAction
     }
 
     /**
-     * Get all HTML attributes
+     * Get all HTML attributes.
      *
      * @return array
      */
@@ -167,9 +165,10 @@ abstract class AbstractAction
     }
 
     /**
-     * Get the string version of the attributes
+     * Get the string version of the attributes.
      *
-     * @param  array  $row
+     * @param array $row
+     *
      * @return string
      */
     protected function getAttributesString(array $row)
@@ -179,14 +178,14 @@ abstract class AbstractAction
             if ('href' === $attrKey) {
                 $attrValue = $this->getLinkReplaced($row);
             }
-            $attributes[] = $attrKey . '="' . $attrValue . '"';
+            $attributes[] = $attrKey.'="'.$attrValue.'"';
         }
 
         return implode(' ', $attributes);
     }
 
     /**
-     * Set the title attribute
+     * Set the title attribute.
      *
      * @param string $name
      */
@@ -196,7 +195,7 @@ abstract class AbstractAction
     }
 
     /**
-     * Get the title attribute
+     * Get the title attribute.
      *
      * @return string
      */
@@ -206,7 +205,7 @@ abstract class AbstractAction
     }
 
     /**
-     * Add a css class
+     * Add a css class.
      *
      * @param string $className
      */
@@ -222,14 +221,14 @@ abstract class AbstractAction
     }
 
     /**
-     * Display the values with AND or OR (if multiple showOnValues are defined)
+     * Display the values with AND or OR (if multiple showOnValues are defined).
      *
      * @param string $operator
      */
     public function setShowOnValueOperator($operator = 'OR')
     {
         if ($operator != 'AND' && $operator != 'OR') {
-            throw new \InvalidArgumentException('not allowed operator: "' . $operator . '" (AND / OR is allowed)');
+            throw new \InvalidArgumentException('not allowed operator: "'.$operator.'" (AND / OR is allowed)');
         }
 
         $this->showOnValueOperator = (string) $operator;
@@ -237,7 +236,7 @@ abstract class AbstractAction
 
     /**
      * Get the show on value operator, e.g.
-     * OR, AND
+     * OR, AND.
      *
      * @return string
      */
@@ -247,7 +246,7 @@ abstract class AbstractAction
     }
 
     /**
-     * Show this action only on the values defined
+     * Show this action only on the values defined.
      *
      * @param Column\AbstractColumn $col
      * @param string                $value
@@ -256,14 +255,13 @@ abstract class AbstractAction
     public function addShowOnValue(Column\AbstractColumn $col, $value = null, $comparison = Filter::EQUAL)
     {
         $this->showOnValues[] = [
-            'column'     => $col,
-            'value'      => $value,
+            'column' => $col,
+            'value' => $value,
             'comparison' => $comparison,
         ];
     }
 
     /**
-     *
      * @return array
      */
     public function getShowOnValues()
@@ -272,8 +270,7 @@ abstract class AbstractAction
     }
 
     /**
-     *
-     * @return boolean
+     * @return bool
      */
     public function hasShowOnValues()
     {
@@ -287,8 +284,9 @@ abstract class AbstractAction
     /**
      * Display this action on this row?
      *
-     * @param  array   $row
-     * @return boolean
+     * @param array $row
+     *
+     * @return bool
      */
     public function isDisplayed(array $row)
     {
@@ -328,19 +326,19 @@ abstract class AbstractAction
     }
 
     /**
-     * Get the HTML from the type
+     * Get the HTML from the type.
      *
      * @return string
      */
     abstract protected function getHtmlType();
 
     /**
+     * @param array $row
      *
-     * @param  array  $row
      * @return string
      */
     public function toHtml(array $row)
     {
-        return '<a ' . $this->getAttributesString($row) . '>' . $this->getHtmlType() . '</a>';
+        return '<a '.$this->getAttributesString($row).'>'.$this->getHtmlType().'</a>';
     }
 }

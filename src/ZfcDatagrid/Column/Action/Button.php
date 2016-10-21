@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Column\Action;
 
 use ZfcDatagrid\Column\AbstractColumn;
@@ -16,7 +17,6 @@ class Button extends AbstractAction
     }
 
     /**
-     *
      * @param string|AbstractColumn $name
      */
     public function setLabel($name)
@@ -25,7 +25,6 @@ class Button extends AbstractAction
     }
 
     /**
-     *
      * @return string|AbstractColumn
      */
     public function getLabel()
@@ -34,8 +33,9 @@ class Button extends AbstractAction
     }
 
     /**
-     *
      * @return string
+     *
+     * @throws \Exception
      */
     protected function getHtmlType()
     {
@@ -43,8 +43,8 @@ class Button extends AbstractAction
     }
 
     /**
+     * @param array $row
      *
-     * @param  array  $row
      * @return string
      */
     public function toHtml(array $row)
@@ -58,6 +58,6 @@ class Button extends AbstractAction
             $label = $row[$label->getUniqueId()];
         }
 
-        return '<a ' . $this->getAttributesString($row) . '>' . $label . '</a>';
+        return '<a '.$this->getAttributesString($row).'>'.$label.'</a>';
     }
 }

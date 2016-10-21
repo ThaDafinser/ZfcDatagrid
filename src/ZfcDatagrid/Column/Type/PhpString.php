@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Column\Type;
 
 class PhpString extends AbstractType

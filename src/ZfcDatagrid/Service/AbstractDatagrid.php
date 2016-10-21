@@ -1,6 +1,8 @@
 <?php
+
 namespace ZfcDatagrid\Service;
 
+use Interop\Container\ContainerInterface;
 use InvalidArgumentException;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -9,35 +11,49 @@ use ZfcDatagrid\Datagrid;
 abstract class AbstractDatagrid extends Datagrid implements FactoryInterface
 {
     /**
+     * @param ContainerInterface $container
+     * @param string             $requestedName
+     * @param array|null         $options
      *
-     * @return Datagrid
+     * @return $this
      */
-    public function createService(ServiceLocatorInterface $sm)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $this->setServiceLocator($sm);
-        $config = $sm->get('config');
+        $this->setServiceLocator($container);
+        $config = $container->get('config');
 
-        if (! isset($config['ZfcDatagrid'])) {
+        if (!isset($config['ZfcDatagrid'])) {
             throw new InvalidArgumentException('Config key "ZfcDatagrid" is missing');
         }
 
         /* @var $application \Zend\Mvc\Application */
-        $application = $sm->get('application');
+        $application = $container->get('application');
 
         parent::setOptions($config['ZfcDatagrid']);
         parent::setMvcEvent($application->getMvcEvent());
-        if ($sm->has('translator') === true) {
-            parent::setTranslator($sm->get('translator'));
+
+        if ($container->has('translator') === true) {
+            parent::setTranslator($container->get('translator'));
         }
-        /** @noinspection PhpParamsInspection */
-        parent::setRendererService($sm->get('zfcDatagrid.renderer.' . parent::getRendererName()));
+
+        parent::setRendererService($container->get('zfcDatagrid.renderer.'.parent::getRendererName()));
         parent::init();
 
         return $this;
     }
 
     /**
-     * Call initGrid on rendering
+     * @param ServiceLocatorInterface $serviceLocator
+     *
+     * @return Datagrid
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        return $this($serviceLocator, Datagrid::class);
+    }
+
+    /**
+     * Call initGrid on rendering.
      */
     public function render()
     {
@@ -46,9 +62,5 @@ abstract class AbstractDatagrid extends Datagrid implements FactoryInterface
         parent::render();
     }
 
-    /**
-     *
-     * @return void
-     */
     abstract public function initGrid();
 }

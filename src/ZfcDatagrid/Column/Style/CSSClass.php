@@ -1,8 +1,9 @@
 <?php
+
 namespace ZfcDatagrid\Column\Style;
 
 /**
- * Css class for the row/cell
+ * Css class for the row/cell.
  */
 class CSSClass extends AbstractStyle
 {
@@ -13,7 +14,7 @@ class CSSClass extends AbstractStyle
      */
     public function __construct($class)
     {
-        $this->class  = $class;
+        $this->class = $class;
     }
 
     /**

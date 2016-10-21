@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Service;
 
 use Zend\Form\FormElementManager;
@@ -10,9 +11,10 @@ class DatagridManagerFactory extends AbstractPluginManagerFactory
     const PLUGIN_MANAGER_CLASS = 'ZfcDatagrid\Service\DatagridManager';
 
     /**
-     * Create and return the MVC controller plugin manager
+     * Create and return the MVC controller plugin manager.
      *
-     * @param  ServiceLocatorInterface $serviceLocator
+     * @param ServiceLocatorInterface $serviceLocator
+     *
      * @return FormElementManager
      */
     public function createService(ServiceLocatorInterface $serviceLocator)

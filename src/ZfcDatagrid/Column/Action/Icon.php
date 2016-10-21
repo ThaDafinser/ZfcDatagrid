@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\Column\Action;
 
 class Icon extends AbstractAction
@@ -9,7 +10,7 @@ class Icon extends AbstractAction
 
     /**
      * Set the icon class (CSS)
-     * - used for HTML if provided, overwise the iconLink is used
+     * - used for HTML if provided, overwise the iconLink is used.
      *
      * @param string $name
      */
@@ -19,7 +20,6 @@ class Icon extends AbstractAction
     }
 
     /**
-     *
      * @return string
      */
     public function getIconClass()
@@ -28,8 +28,7 @@ class Icon extends AbstractAction
     }
 
     /**
-     *
-     * @return boolean
+     * @return bool
      */
     public function hasIconClass()
     {
@@ -41,7 +40,7 @@ class Icon extends AbstractAction
     }
 
     /**
-     * Set the icon link (is used, if no icon class is provided)
+     * Set the icon link (is used, if no icon class is provided).
      *
      * @param string $httpLink
      */
@@ -51,7 +50,7 @@ class Icon extends AbstractAction
     }
 
     /**
-     * Get the icon link
+     * Get the icon link.
      *
      * @return string
      */
@@ -61,8 +60,7 @@ class Icon extends AbstractAction
     }
 
     /**
-     *
-     * @return boolean
+     * @return bool
      */
     public function hasIconLink()
     {
@@ -74,17 +72,16 @@ class Icon extends AbstractAction
     }
 
     /**
-     *
      * @return string
      */
     protected function getHtmlType()
     {
         if ($this->hasIconClass() === true) {
             // a css class is provided, so use it
-            return '<i class="' . $this->getIconClass() . '"></i>';
+            return '<i class="'.$this->getIconClass().'"></i>';
         } elseif ($this->hasIconLink() === true) {
             // no css class -> use the icon link instead
-            return '<img src="' . $this->getIconLink() . '" />';
+            return '<img src="'.$this->getIconLink().'" />';
         }
 
         throw new \InvalidArgumentException('Either a link or a class for the icon is required');

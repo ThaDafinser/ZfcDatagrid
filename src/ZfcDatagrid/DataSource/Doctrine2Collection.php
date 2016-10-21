@@ -1,4 +1,5 @@
 <?php
+
 namespace ZfcDatagrid\DataSource;
 
 use Doctrine\Common\Collections\Collection;
@@ -10,19 +11,17 @@ use ZfcDatagrid\DataSource\PhpArray as SourceArray;
 class Doctrine2Collection extends AbstractDataSource
 {
     /**
-     *
      * @var Collection
      */
     private $data;
 
     /**
-     *
      * @var EntityManager
      */
     private $em;
 
     /**
-     * Data source
+     * Data source.
      *
      * @param mixed $data
      */
@@ -33,14 +32,13 @@ class Doctrine2Collection extends AbstractDataSource
         } else {
             $return = $data;
             if (is_object($data)) {
-                $return = 'instanceof ' . get_class($return);
+                $return = 'instanceof '.get_class($return);
             }
-            throw new \InvalidArgumentException('Unknown data input: "' . $return . '"');
+            throw new \InvalidArgumentException('Unknown data input: "'.$return.'"');
         }
     }
 
     /**
-     *
      * @return Collection
      */
     public function getData()
@@ -49,7 +47,6 @@ class Doctrine2Collection extends AbstractDataSource
     }
 
     /**
-     *
      * @param EntityManager $em
      */
     public function setEntityManager(EntityManager $em)
@@ -58,7 +55,6 @@ class Doctrine2Collection extends AbstractDataSource
     }
 
     /**
-     *
      * @return EntityManager
      */
     public function getEntityManager()
@@ -66,9 +62,6 @@ class Doctrine2Collection extends AbstractDataSource
         return $this->em;
     }
 
-    /**
-     *
-     */
     public function execute()
     {
         $hydrator = new DoctrineHydrator($this->getEntityManager());
