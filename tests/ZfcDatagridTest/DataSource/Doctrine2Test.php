@@ -7,7 +7,7 @@ use ZfcDatagridTest\DataSource\Doctrine2\AbstractDoctrine2Test;
 
 /**
  * @group DataSource
- * @covers ZfcDatagrid\DataSource\Doctrine2
+ * @covers \ZfcDatagrid\DataSource\Doctrine2
  */
 class Doctrine2Test extends AbstractDoctrine2Test
 {
@@ -40,7 +40,7 @@ class Doctrine2Test extends AbstractDoctrine2Test
     {
         $source = clone $this->source;
 
-        $this->assertInstanceOf('Doctrine\ORM\QueryBuilder', $source->getData());
+        $this->assertInstanceOf(\Doctrine\ORM\QueryBuilder::class, $source->getData());
         $this->assertSame($this->qb, $source->getData());
 
         $source = new Doctrine2(new \stdClass('something'));
@@ -54,7 +54,7 @@ class Doctrine2Test extends AbstractDoctrine2Test
         $source->addSortCondition($this->colEdition, 'DESC');
         $source->execute();
 
-        $this->assertInstanceOf('ZfcDatagrid\DataSource\Doctrine2\Paginator', $source->getPaginatorAdapter());
+        $this->assertInstanceOf(\ZfcDatagrid\DataSource\Doctrine2\Paginator::class, $source->getPaginatorAdapter());
     }
 
     public function testFilter()
@@ -73,7 +73,7 @@ class Doctrine2Test extends AbstractDoctrine2Test
         $source->addFilter($filter);
         $source->execute();
 
-        $this->assertInstanceOf('Doctrine\ORM\Query\Expr\Andx', $source->getData()
+        $this->assertInstanceOf(\Doctrine\ORM\Query\Expr\Andx::class, $source->getData()
             ->getDQLPart('where'));
     }
 }

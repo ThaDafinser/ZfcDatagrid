@@ -6,7 +6,7 @@ use ReflectionClass;
 
 /**
  * @group Renderer
- * @covers ZfcDatagrid\Renderer\AbstractExport
+ * @covers \ZfcDatagrid\Renderer\AbstractExport
  */
 class AbstractExportTest extends PHPUnit_Framework_TestCase
 {
@@ -18,7 +18,7 @@ class AbstractExportTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->exportMock = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractExport');
+        $this->exportMock = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractExport::class);
     }
 
     public function testFilename()

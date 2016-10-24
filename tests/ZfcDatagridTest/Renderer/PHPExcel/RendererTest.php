@@ -6,7 +6,7 @@ use ZfcDatagrid\Renderer\PHPExcel;
 
 /**
  * @group Renderer
- * @covers ZfcDatagrid\Renderer\PHPExcel\Renderer
+ * @covers \ZfcDatagrid\Renderer\PHPExcel\Renderer
  */
 class RendererTest extends PHPUnit_Framework_TestCase
 {

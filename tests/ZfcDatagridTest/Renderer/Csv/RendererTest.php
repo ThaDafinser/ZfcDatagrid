@@ -6,7 +6,7 @@ use ZfcDatagrid\Renderer\Csv;
 
 /**
  * @group Renderer
- * @covers ZfcDatagrid\Renderer\Csv\Renderer
+ * @covers \ZfcDatagrid\Renderer\Csv\Renderer
  */
 class RendererTest extends PHPUnit_Framework_TestCase
 {

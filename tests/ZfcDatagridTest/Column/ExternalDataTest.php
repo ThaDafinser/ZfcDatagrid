@@ -7,7 +7,7 @@ use ZfcDatagrid\Column\DataPopulation;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\ExternalData
+ * @covers \ZfcDatagrid\Column\ExternalData
  */
 class ExternalDataTest extends PHPUnit_Framework_TestCase
 {
@@ -42,7 +42,7 @@ class ExternalDataTest extends PHPUnit_Framework_TestCase
         $col->setDataPopulation($object);
 
         $this->assertEquals(true, $col->hasDataPopulation());
-        $this->assertInstanceOf('ZfcDatagrid\Column\DataPopulation\Object', $col->getDataPopulation());
+        $this->assertInstanceOf(\ZfcDatagrid\Column\DataPopulation\Object::class, $col->getDataPopulation());
     }
 
     /**

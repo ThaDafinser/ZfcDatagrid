@@ -9,7 +9,7 @@ use ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity\Category;
 /**
  * @group DataSource
  *
- * @covers ZfcDatagrid\DataSource\Doctrine2Collection
+ * @covers \ZfcDatagrid\DataSource\Doctrine2Collection
  */
 class Doctrine2CollectionTest extends DataSourceTestCase
 {
@@ -67,7 +67,7 @@ class Doctrine2CollectionTest extends DataSourceTestCase
 
     public function testEntityManager()
     {
-        $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+        $em = $this->getMockBuilder(\Doctrine\ORM\EntityManager::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -80,7 +80,7 @@ class Doctrine2CollectionTest extends DataSourceTestCase
 
 //     public function testExecute()
 //     {
-//         $em = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
+//         $em = $this->getMock(\Doctrine\ORM\EntityManager::class, array(), array(), '', false);
 
 //         $source = clone $this->source;
 //         $source->setEntityManager($em);
@@ -89,7 +89,7 @@ class Doctrine2CollectionTest extends DataSourceTestCase
 //         $source->addSortCondition($this->colEdition, 'DESC');
 //         $source->execute();
 
-//         $this->assertInstanceOf('Zend\Paginator\Adapter\ArrayAdapter', $source->getPaginatorAdapter());
+//         $this->assertInstanceOf(\Zend\Paginator\Adapter\ArrayAdapter::class, $source->getPaginatorAdapter());
 //     }
 
     // public function testFilter()

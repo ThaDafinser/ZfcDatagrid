@@ -6,7 +6,7 @@ use ZfcDatagrid\Column\Action\Button;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\Action\Button
+ * @covers \ZfcDatagrid\Column\Action\Button
  */
 class ButtonTest extends PHPUnit_Framework_TestCase
 {
@@ -33,13 +33,13 @@ class ButtonTest extends PHPUnit_Framework_TestCase
 
     public function testColumnLabelAndToHtml()
     {
-        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $col->setUniqueId('myCol');
 
         $button = new Button();
 
         $button->setLabel($col);
-        $this->assertInstanceOf('ZfcDatagrid\Column\AbstractColumn', $button->getLabel());
+        $this->assertInstanceOf(\ZfcDatagrid\Column\AbstractColumn::class, $button->getLabel());
 
         $html = '<a href="#" class="btn btn-default">Blubb</a>';
         $this->assertEquals($html, $button->toHtml(['myCol' => 'Blubb']));

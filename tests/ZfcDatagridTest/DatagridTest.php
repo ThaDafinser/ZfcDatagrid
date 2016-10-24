@@ -12,7 +12,7 @@ use ZfcDatagrid\DataSource\PhpArray;
 
 /**
  * @group Datagrid
- * @covers ZfcDatagrid\Datagrid
+ * @covers \ZfcDatagrid\Datagrid
  */
 class DatagridTest extends PHPUnit_Framework_TestCase
 {
@@ -70,14 +70,14 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
     public function testSession()
     {
-        $this->assertInstanceOf('Zend\Session\Container', $this->grid->getSession());
+        $this->assertInstanceOf(\Zend\Session\Container::class, $this->grid->getSession());
         $this->assertEquals('defaultGrid', $this->grid->getSession()
             ->getName());
 
         $session = new Container('myName');
 
         $this->grid->setSession($session);
-        $this->assertInstanceOf('Zend\Session\Container', $this->grid->getSession());
+        $this->assertInstanceOf(\Zend\Session\Container::class, $this->grid->getSession());
         $this->assertSame($session, $this->grid->getSession());
         $this->assertEquals('myName', $this->grid->getSession()
             ->getName());
@@ -153,17 +153,17 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($grid->hasDataSource());
 
-        $select = $this->getMockBuilder('Zend\Db\Sql\Select')
+        $select = $this->getMockBuilder(\Zend\Db\Sql\Select::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $platform = $this->getMockBuilder('Zend\Db\Adapter\Platform\Sqlite')
+        $platform = $this->getMockBuilder(\Zend\Db\Adapter\Platform\Sqlite::class)
             ->getMock();
         $platform->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('myPlatform'));
 
-        $adapter = $this->getMockBuilder('Zend\Db\Adapter\Adapter')
+        $adapter = $this->getMockBuilder(\Zend\Db\Adapter\Adapter::class)
             ->disableOriginalConstructor()
             ->getMock();
         $adapter->expects($this->any())
@@ -172,7 +172,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
         $grid->setDataSource($select, $adapter);
         $this->assertTrue($grid->hasDataSource());
-        $this->assertInstanceOf('ZfcDatagrid\Datasource\ZendSelect', $grid->getDataSource());
+        $this->assertInstanceOf(\ZfcDatagrid\Datasource\ZendSelect::class, $grid->getDataSource());
         $grid->setDataSource($select);
     }
 
@@ -182,13 +182,13 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($grid->hasDataSource());
 
-        $qb = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
+        $qb = $this->getMockBuilder(\Doctrine\ORM\QueryBuilder::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $grid->setDataSource($qb);
         $this->assertTrue($grid->hasDataSource());
-        $this->assertInstanceOf('ZfcDatagrid\DataSource\Doctrine2', $grid->getDataSource());
+        $this->assertInstanceOf(\ZfcDatagrid\DataSource\Doctrine2::class, $grid->getDataSource());
     }
 
     /**
@@ -201,16 +201,16 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($grid->hasDataSource());
 
-        $coll = $this->getMockBuilder('Doctrine\Common\Collections\ArrayCollection')
+        $coll = $this->getMockBuilder(\Doctrine\Common\Collections\ArrayCollection::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $em   = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+        $em   = $this->getMockBuilder(\Doctrine\ORM\EntityManager::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $grid->setDataSource($coll, $em);
         $this->assertTrue($grid->hasDataSource());
-        $this->assertInstanceOf('ZfcDatagrid\DataSource\Doctrine2Collection', $grid->getDataSource());
+        $this->assertInstanceOf(\ZfcDatagrid\DataSource\Doctrine2Collection::class, $grid->getDataSource());
 
         $grid->setDataSource($coll);
     }
@@ -279,7 +279,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals([], $this->grid->getColumns());
 
-        $col = $this->getMockBuilder('ZfcDatagrid\Column\AbstractColumn')
+        $col = $this->getMockBuilder(\ZfcDatagrid\Column\AbstractColumn::class)
             ->setMethods(['getUniqueId'])
             ->getMock();
 
@@ -311,7 +311,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->assertEquals([], $grid->getColumns());
 
         $column = [
-            'colType' => 'ZfcDatagrid\Column\Select',
+            'colType' => \ZfcDatagrid\Column\Select::class,
             'label'   => 'My label',
             'select'  => [
                 'column' => 'myCol',
@@ -323,7 +323,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->assertCount(1, $grid->getColumns());
 
         $col = $grid->getColumnByUniqueId('myTable_myCol');
-        $this->assertInstanceOf('ZfcDatagrid\Column\Select', $col);
+        $this->assertInstanceOf(\ZfcDatagrid\Column\Select::class, $col);
         $this->assertEquals('My label', $col->getLabel());
     }
 
@@ -361,7 +361,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->assertCount(1, $grid->getColumns());
 
         $col = $grid->getColumnByUniqueId('myTable_myCol');
-        $this->assertInstanceOf('ZfcDatagrid\Column\Select', $col);
+        $this->assertInstanceOf(\ZfcDatagrid\Column\Select::class, $col);
         $this->assertEquals('My label', $col->getLabel());
     }
 
@@ -394,7 +394,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->assertCount(1, $grid->getColumns());
 
         $col = $grid->getColumnByUniqueId('action');
-        $this->assertInstanceOf('ZfcDatagrid\Column\Action', $col);
+        $this->assertInstanceOf(\ZfcDatagrid\Column\Action::class, $col);
         $this->assertEquals('My action', $col->getLabel());
     }
 
@@ -418,7 +418,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->assertCount(1, $grid->getColumns());
 
         $col = $grid->getColumnByUniqueId('myTable_myCol');
-        $this->assertInstanceOf('ZfcDatagrid\Column\Select', $col);
+        $this->assertInstanceOf(\ZfcDatagrid\Column\Select::class, $col);
 
         $this->assertEquals([
             $bold,
@@ -441,7 +441,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->assertCount(1, $grid->getColumns());
 
         $col = $grid->getColumnByUniqueId('myTable_myCol');
-        $this->assertInstanceOf('ZfcDatagrid\Column\Select', $col);
+        $this->assertInstanceOf(\ZfcDatagrid\Column\Select::class, $col);
 
         $this->assertEquals([
             'priority'      => 1,
@@ -468,7 +468,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->assertCount(1, $grid->getColumns());
 
         $col = $grid->getColumnByUniqueId('myTable_myCol');
-        $this->assertInstanceOf('ZfcDatagrid\Column\Select', $col);
+        $this->assertInstanceOf(\ZfcDatagrid\Column\Select::class, $col);
 
         $this->assertEquals([
             'priority'      => 1,
@@ -482,10 +482,10 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals([], $grid->getColumns());
 
-        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $col->setUniqueId('myUniqueId');
 
-        $col2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col2 = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $col2->setUniqueId('myUniqueId2');
 
         $grid->setColumns([
@@ -503,11 +503,11 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $grid = new Datagrid();
         $this->assertFalse($grid->hasRowStyles());
 
-        $grid->addRowStyle($this->getMockBuilder('ZfcDatagrid\Column\Style\Bold')->getMock());
+        $grid->addRowStyle($this->getMockBuilder(\ZfcDatagrid\Column\Style\Bold::class)->getMock());
         $this->assertCount(1, $grid->getRowStyles());
         $this->assertTrue($grid->hasRowStyles());
 
-        $grid->addRowStyle($this->getMockBuilder('ZfcDatagrid\Column\Style\Italic')->getMock());
+        $grid->addRowStyle($this->getMockBuilder(\ZfcDatagrid\Column\Style\Italic::class)->getMock());
         $this->assertCount(2, $grid->getRowStyles());
         $this->assertTrue($grid->hasRowStyles());
     }
@@ -524,7 +524,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
     {
         $this->assertFalse($this->grid->hasRowClickAction());
 
-        $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
+        $action = $this->getMockForAbstractClass(\ZfcDatagrid\Column\Action\AbstractAction::class);
         $this->grid->setRowClickAction($action);
         $this->assertEquals($action, $this->grid->getRowClickAction());
         $this->assertTrue($this->grid->hasRowClickAction());
@@ -544,7 +544,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $_ENV["FOO_VAR"] = "bar";
 
         $request  = new \Zend\Console\Request();
-        $mvcEvent = $this->getMockBuilder('Zend\Mvc\MvcEvent')->getMock();
+        $mvcEvent = $this->getMockBuilder(\Zend\Mvc\MvcEvent::class)->getMock();
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));
@@ -558,7 +558,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         // by HTTP request
         $_GET['rendererType'] = 'jqGrid';
         $request              = new \Zend\Http\PhpEnvironment\Request();
-        $mvcEvent             = $this->getMockBuilder('Zend\Mvc\MvcEvent')->getMock();
+        $mvcEvent             = $this->getMockBuilder(\Zend\Mvc\MvcEvent::class)->getMock();
         $mvcEvent->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($request));
@@ -581,7 +581,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $grid = new Datagrid();
 
         $defaultView = $grid->getViewModel();
-        $this->assertInstanceOf('Zend\View\Model\ViewModel', $defaultView);
+        $this->assertInstanceOf(\Zend\View\Model\ViewModel::class, $defaultView);
         $this->assertSame($defaultView, $grid->getViewModel());
     }
 
@@ -589,7 +589,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
     {
         $grid = new Datagrid();
 
-        $customView = $this->getMockBuilder('Zend\View\Model\ViewModel')->getMock();
+        $customView = $this->getMockBuilder(\Zend\View\Model\ViewModel::class)->getMock();
         $grid->setViewModel($customView);
         $this->assertSame($customView, $grid->getViewModel());
     }
@@ -603,7 +603,7 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $grid = new Datagrid();
         $grid->getViewModel();
 
-        $customView = $this->getMockBuilder('Zend\View\Model\ViewModel')->getMock();
+        $customView = $this->getMockBuilder(\Zend\View\Model\ViewModel::class)->getMock();
 
         $grid->setViewModel($customView);
     }

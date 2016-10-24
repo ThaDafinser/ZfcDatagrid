@@ -7,7 +7,7 @@ use ZfcDatagrid\Renderer\ZendTable;
 
 /**
  * @group Renderer
- * @covers ZfcDatagrid\Renderer\ZendTable\Renderer
+ * @covers \ZfcDatagrid\Renderer\ZendTable\Renderer
  */
 class RendererTest extends PHPUnit_Framework_TestCase
 {
@@ -46,15 +46,15 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->requestMock  = $this->getMockBuilder('Zend\Console\Request')
+        $this->requestMock  = $this->getMockBuilder(\Zend\Console\Request::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->mvcEventMock = $this->getMockBuilder('Zend\Mvc\MvcEvent')
+        $this->mvcEventMock = $this->getMockBuilder(\Zend\Mvc\MvcEvent::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->colMock = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $this->colMock = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
     }
 
     public function testGetName()
@@ -84,7 +84,7 @@ class RendererTest extends PHPUnit_Framework_TestCase
      */
     public function testGetRequestException()
     {
-        $request = $this->getMockBuilder('Zend\Http\PhpEnvironment\Request')
+        $request = $this->getMockBuilder(\Zend\Http\PhpEnvironment\Request::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -118,9 +118,9 @@ class RendererTest extends PHPUnit_Framework_TestCase
     {
         $renderer = new ZendTable\Renderer();
 
-        $this->assertInstanceOf('Zend\Console\Adapter\AdapterInterface', $renderer->getConsoleAdapter());
+        $this->assertInstanceOf(\Zend\Console\Adapter\AdapterInterface::class, $renderer->getConsoleAdapter());
 
-        $adapter = $this->getMockForAbstractClass('Zend\Console\Adapter\AbstractAdapter');
+        $adapter = $this->getMockForAbstractClass(\Zend\Console\Adapter\AbstractAdapter::class);
 
         $this->assertNotSame($adapter, $renderer->getConsoleAdapter());
         $renderer->setConsoleAdapter($adapter);
@@ -323,17 +323,17 @@ class RendererTest extends PHPUnit_Framework_TestCase
      */
     public function testGetColumnsToDisplay()
     {
-        $reflection = new ReflectionClass('ZfcDatagrid\Renderer\ZendTable\Renderer');
+        $reflection = new ReflectionClass(\ZfcDatagrid\Renderer\ZendTable\Renderer::class);
         $method     = $reflection->getMethod('getColumnsToDisplay');
         $method->setAccessible(true);
 
-        $col1 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col1 = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $col1->setWidth(30);
 
-        $col2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col2 = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $col2->setWidth(20);
 
-        $col3 = $this->getMockBuilder('ZfcDatagrid\Column\Action')
+        $col3 = $this->getMockBuilder(\ZfcDatagrid\Column\Action::class)
             ->disableOriginalConstructor()
             ->getMock();
         $col3->setWidth(20);
@@ -366,17 +366,17 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
     public function testGetColumnWidthsSmaller()
     {
-        $reflection = new ReflectionClass('ZfcDatagrid\Renderer\ZendTable\Renderer');
+        $reflection = new ReflectionClass(\ZfcDatagrid\Renderer\ZendTable\Renderer::class);
         $method     = $reflection->getMethod('getColumnWidths');
         $method->setAccessible(true);
 
-        $col1 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col1 = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $col1->setWidth(30);
 
-        $col2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col2 = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $col2->setWidth(20);
 
-        $consoleAdapter = $this->getMockForAbstractClass('Zend\Console\Adapter\AbstractAdapter');
+        $consoleAdapter = $this->getMockForAbstractClass(\Zend\Console\Adapter\AbstractAdapter::class);
         $renderer       = new ZendTable\Renderer();
         $renderer->setConsoleAdapter($consoleAdapter);
         $renderer->setColumns([
@@ -395,17 +395,17 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
     public function testGetColumnWidthsLarger()
     {
-        $reflection = new ReflectionClass('ZfcDatagrid\Renderer\ZendTable\Renderer');
+        $reflection = new ReflectionClass(\ZfcDatagrid\Renderer\ZendTable\Renderer::class);
         $method     = $reflection->getMethod('getColumnWidths');
         $method->setAccessible(true);
 
-        $col1 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col1 = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $col1->setWidth(60);
 
-        $col2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col2 = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $col2->setWidth(40);
 
-        $consoleAdapter = $this->getMockForAbstractClass('Zend\Console\Adapter\AbstractAdapter');
+        $consoleAdapter = $this->getMockForAbstractClass(\Zend\Console\Adapter\AbstractAdapter::class);
         $renderer       = new ZendTable\Renderer();
         $renderer->setConsoleAdapter($consoleAdapter);
         $renderer->setColumns([
@@ -424,17 +424,17 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
     public function testGetColumnWidthsRoundNecessary()
     {
-        $reflection = new ReflectionClass('ZfcDatagrid\Renderer\ZendTable\Renderer');
+        $reflection = new ReflectionClass(\ZfcDatagrid\Renderer\ZendTable\Renderer::class);
         $method     = $reflection->getMethod('getColumnWidths');
         $method->setAccessible(true);
 
-        $col1 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col1 = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $col1->setWidth(72);
 
-        $col2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col2 = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $col2->setWidth(5);
 
-        $consoleAdapter = $this->getMockForAbstractClass('Zend\Console\Adapter\AbstractAdapter');
+        $consoleAdapter = $this->getMockForAbstractClass(\Zend\Console\Adapter\AbstractAdapter::class);
         $renderer       = new ZendTable\Renderer();
         $renderer->setConsoleAdapter($consoleAdapter);
         $renderer->setColumns([

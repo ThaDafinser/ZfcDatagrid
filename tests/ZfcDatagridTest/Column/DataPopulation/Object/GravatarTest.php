@@ -6,7 +6,7 @@ use ZfcDatagrid\Column\DataPopulation\Object\Gravatar;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\DataPopulation\Object\Gravatar
+ * @covers \ZfcDatagrid\Column\DataPopulation\Object\Gravatar
  */
 class GravatarTest extends PHPUnit_Framework_TestCase
 {

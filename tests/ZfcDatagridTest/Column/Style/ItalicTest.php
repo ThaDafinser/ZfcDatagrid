@@ -6,7 +6,7 @@ use ZfcDatagrid\Column\Style;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\Style\Italic
+ * @covers \ZfcDatagrid\Column\Style\Italic
  */
 class ItalicTest extends PHPUnit_Framework_TestCase
 {

@@ -6,7 +6,7 @@ use Zend\ServiceManager\ServiceManager;
 use ZfcDatagrid\Service\ZendDbAdapterFactory;
 
 /**
- * @covers ZfcDatagrid\Service\ZendDbAdapterFactory
+ * @covers \ZfcDatagrid\Service\ZendDbAdapterFactory
  */
 class ZendDbAdapterFactoryTest extends PHPUnit_Framework_TestCase
 {
@@ -25,6 +25,6 @@ class ZendDbAdapterFactoryTest extends PHPUnit_Framework_TestCase
         $factory = new ZendDbAdapterFactory();
         $grid    = $factory->createService($sm);
 
-        $this->assertInstanceOf('Zend\Db\Adapter\Adapter', $grid);
+        $this->assertInstanceOf(\Zend\Db\Adapter\Adapter::class, $grid);
     }
 }

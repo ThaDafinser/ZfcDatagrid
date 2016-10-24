@@ -7,7 +7,7 @@ use ZfcDatagrid\Filter;
 
 /**
  * @group DataSource
- * @covers ZfcDatagrid\DataSource\PhpArray\Filter
+ * @covers \ZfcDatagrid\DataSource\PhpArray\Filter
  */
 class FilterTest extends PHPUnit_Framework_TestCase
 {
@@ -19,20 +19,20 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $this->column = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $this->column->setUniqueId('myCol');
     }
 
     public function testConstruct()
     {
         /* @var $filter \ZfcDatagrid\Filter */
-        $filter = $this->getMockBuilder('ZfcDatagrid\Filter')
+        $filter = $this->getMockBuilder(\ZfcDatagrid\Filter::class)
             ->getMock();
         $filter->setFromColumn($this->column, 'myValue,123');
 
         $filterArray = new FilterArray($filter);
 
-        $this->assertInstanceOf('ZfcDatagrid\Filter', $filterArray->getFilter());
+        $this->assertInstanceOf(\ZfcDatagrid\Filter::class, $filterArray->getFilter());
     }
 
     public function testLike()
@@ -422,7 +422,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      */
     public function testException()
     {
-        $filter = $this->getMockBuilder('ZfcDatagrid\Filter')
+        $filter = $this->getMockBuilder(\ZfcDatagrid\Filter::class)
             ->getMock();
         $filter->expects($this->any())
             ->method('getColumn')

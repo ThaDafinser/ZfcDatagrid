@@ -6,7 +6,7 @@ use ZfcDatagrid\Renderer\TCPDF;
 
 /**
  * @group Renderer
- * @covers ZfcDatagrid\Renderer\TCPDF\Renderer
+ * @covers \ZfcDatagrid\Renderer\TCPDF\Renderer
  */
 class RendererTest extends PHPUnit_Framework_TestCase
 {

@@ -6,7 +6,7 @@ use ZfcDatagrid\DataSource\Doctrine2\Filter as FilterDoctrine2;
 
 /**
  * @group DataSource
- * @covers ZfcDatagrid\DataSource\Doctrine2\Filter
+ * @covers \ZfcDatagrid\DataSource\Doctrine2\Filter
  */
 class FilterTest extends AbstractDoctrine2Test
 {
@@ -26,7 +26,7 @@ class FilterTest extends AbstractDoctrine2Test
 
     public function testBasic()
     {
-        $this->assertInstanceOf('Doctrine\ORM\QueryBuilder', $this->filterDoctrine2->getQueryBuilder());
+        $this->assertInstanceOf(\Doctrine\ORM\QueryBuilder::class, $this->filterDoctrine2->getQueryBuilder());
 
         // Test two filters
         $filter = new \ZfcDatagrid\Filter();
@@ -43,7 +43,7 @@ class FilterTest extends AbstractDoctrine2Test
         $where = $filterDoctrine2->getQueryBuilder()->getDQLPart('where');
 
         $this->assertEquals(2, $where->count());
-        $this->assertInstanceOf('Doctrine\ORM\Query\Expr\Andx', $where);
+        $this->assertInstanceOf(\Doctrine\ORM\Query\Expr\Andx::class, $where);
 
         $whereParts = $where->getParts();
 
@@ -51,13 +51,13 @@ class FilterTest extends AbstractDoctrine2Test
         $wherePart1 = $whereParts[0];
 
         $this->assertEquals(2, $wherePart1->count());
-        $this->assertInstanceOf('Doctrine\ORM\Query\Expr\Orx', $wherePart1);
+        $this->assertInstanceOf(\Doctrine\ORM\Query\Expr\Orx::class, $wherePart1);
 
         /* @var $wherePart2 \Doctrine\ORM\Query\Expr\Orx */
         $wherePart2 = $whereParts[1];
 
         $this->assertEquals(1, $wherePart2->count());
-        $this->assertInstanceOf('Doctrine\ORM\Query\Expr\Orx', $wherePart2);
+        $this->assertInstanceOf(\Doctrine\ORM\Query\Expr\Orx::class, $wherePart2);
     }
 
     /**
@@ -73,7 +73,7 @@ class FilterTest extends AbstractDoctrine2Test
 
         $whereParts = $where->getParts();
 
-        $this->assertInstanceOf('Doctrine\ORM\Query\Expr\Orx', $whereParts[$part]);
+        $this->assertInstanceOf(\Doctrine\ORM\Query\Expr\Orx::class, $whereParts[$part]);
 
         return $whereParts[$part]->getParts();
     }
@@ -319,7 +319,7 @@ class FilterTest extends AbstractDoctrine2Test
      */
     public function testException()
     {
-        $filter = $this->getMockBuilder('ZfcDatagrid\Filter')
+        $filter = $this->getMockBuilder(\ZfcDatagrid\Filter::class)
             ->getMock();
         $filter->expects($this->any())
             ->method('getColumn')

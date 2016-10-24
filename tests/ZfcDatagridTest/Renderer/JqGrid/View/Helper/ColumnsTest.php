@@ -8,7 +8,7 @@ use ZfcDatagrid\Renderer\JqGrid\View\Helper;
 
 /**
  * @group Renderer
- * @covers ZfcDatagrid\Renderer\JqGrid\View\Helper\Columns
+ * @covers \ZfcDatagrid\Renderer\JqGrid\View\Helper\Columns
  */
 class ColumnsTest extends PHPUnit_Framework_TestCase
 {
@@ -23,11 +23,11 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->sm = $this->getMockBuilder('Zend\View\HelperPluginManager')
+        $this->sm = $this->getMockBuilder(\Zend\View\HelperPluginManager::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $myCol = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $myCol = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $myCol->setUniqueId('myCol');
 
         $this->myCol = $myCol;
@@ -117,7 +117,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
      */
     public function testStyleException()
     {
-        $styleMock = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
+        $styleMock = $this->getMockForAbstractClass(\ZfcDatagrid\Column\Style\AbstractStyle::class);
         $helper    = new Helper\Columns();
 
         $col1 = clone $this->myCol;
@@ -212,7 +212,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
     public function testTranslate()
     {
         /** @var \PHPUnit_Framework_MockObject_MockObject|\Zend\ServiceManager\ServiceManager $sm */
-        $sm = $this->getMockBuilder('Zend\ServiceManager\ServiceManager')
+        $sm = $this->getMockBuilder(\Zend\ServiceManager\ServiceManager::class)
             ->setMethods(null)
             ->getMock();
 
@@ -230,7 +230,7 @@ class ColumnsTest extends PHPUnit_Framework_TestCase
     public function testTranslateWithMockedTranslator()
     {
         /** @var \PHPUnit_Framework_MockObject_MockObject|\Zend\I18n\Translator\Translator $translator */
-        $translator = $this->getMockBuilder('Zend\I18n\Translator\Translator')
+        $translator = $this->getMockBuilder(\Zend\I18n\Translator\Translator::class)
             ->disableOriginalConstructor()
             ->setMethods(['translate'])
             ->getMock();

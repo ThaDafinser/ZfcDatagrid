@@ -6,7 +6,7 @@ use ZfcDatagrid\Column\Formatter;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\Formatter\Image
+ * @covers \ZfcDatagrid\Column\Formatter\Image
  */
 class ImageTest extends PHPUnit_Framework_TestCase
 {

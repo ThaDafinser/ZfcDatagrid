@@ -5,7 +5,7 @@ use ZfcDatagrid\DataSource\Doctrine2\Paginator;
 
 /**
  * @group DataSource
- * @covers ZfcDatagrid\DataSource\Doctrine2\Paginator
+ * @covers \ZfcDatagrid\DataSource\Doctrine2\Paginator
  */
 class PaginatorTest extends AbstractDoctrine2Test
 {

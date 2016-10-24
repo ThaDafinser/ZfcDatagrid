@@ -7,7 +7,7 @@ use ZfcDatagrid\Column\Style;
 
 /**
  * @group Renderer
- * @covers ZfcDatagrid\Renderer\AbstractRenderer
+ * @covers \ZfcDatagrid\Renderer\AbstractRenderer
  */
 class AbstractRendererTest extends PHPUnit_Framework_TestCase
 {
@@ -19,12 +19,12 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->colMock = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $this->colMock = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
     }
 
     public function testOptions()
     {
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
         $renderer->setOptions([
             'test',
         ]);
@@ -36,7 +36,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
 
     public function testRendererOptions()
     {
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
         $renderer->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('abstract'));
@@ -58,11 +58,11 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
 
     public function testViewModel()
     {
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
 
         $this->assertNull($renderer->getViewModel());
 
-        $viewModel = $this->getMockBuilder('Zend\View\Model\ViewModel')
+        $viewModel = $this->getMockBuilder(\Zend\View\Model\ViewModel::class)
             ->getMock();
         $renderer->setViewModel($viewModel);
         $this->assertSame($viewModel, $renderer->getViewModel());
@@ -70,7 +70,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
 
     public function testTemplate()
     {
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
         $renderer->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('abstract'));
@@ -87,7 +87,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
 
     public function testTemplateConfig()
     {
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
         $renderer->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('abstract'));
@@ -109,7 +109,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
 
     public function testPaginator()
     {
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
 
         $this->assertNull($renderer->getPaginator());
 
@@ -122,7 +122,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
 
     public function testColumns()
     {
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
 
         $this->assertEquals([], $renderer->getColumns());
 
@@ -139,7 +139,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
     public function testRowStyles()
     {
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
 
         $this->assertEquals([], $renderer->getRowStyles());
 
@@ -155,7 +155,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
     public function testCalculateColumnWidthPercent()
     {
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
 
         $reflection = new ReflectionClass(get_class($renderer));
         $method     = $reflection->getMethod('calculateColumnWidthPercent');
@@ -198,7 +198,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
     public function testData()
     {
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
 
         $this->assertEquals([], $renderer->getData());
 
@@ -213,10 +213,10 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
 
 //     public function testCacheData()
 //     {
-//         $cache = $this->getMockForAbstractClass('Zend\Cache\Storage\Adapter\AbstractAdapter');
+//         $cache = $this->getMockForAbstractClass(\Zend\Cache\Storage\Adapter\AbstractAdapter::class);
 
 //         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
-//         $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+//         $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
 //         $renderer->setCache($cache);
 
 //         $this->assertEquals(array(), $renderer->getCacheData());
@@ -238,13 +238,13 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
     public function testMvcEvent()
     {
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
 
-        $request = $this->getMockBuilder('Zend\Http\Request')
+        $request = $this->getMockBuilder(\Zend\Http\Request::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $mvcEvent = $this->getMockBuilder('Zend\Mvc\MvcEvent')
+        $mvcEvent = $this->getMockBuilder(\Zend\Mvc\MvcEvent::class)
             ->disableOriginalConstructor()
             ->getMock();
         $mvcEvent->expects($this->any())
@@ -262,9 +262,9 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
     public function testTranslator()
     {
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
 
-        $translator = $this->getMockBuilder('Zend\I18n\Translator\Translator')
+        $translator = $this->getMockBuilder(\Zend\I18n\Translator\Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -276,10 +276,10 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
     public function testTranslate()
     {
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
         $this->assertEquals('foobar', $renderer->translate('foobar'));
 
-        $translator = $this->getMockBuilder('Zend\I18n\Translator\Translator')
+        $translator = $this->getMockBuilder(\Zend\I18n\Translator\Translator::class)
             ->disableOriginalConstructor()
             ->setMethods(['translate'])
             ->getMock();
@@ -295,7 +295,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
     public function testTitle()
     {
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
 
         $this->assertNull($renderer->getTitle());
 
@@ -306,7 +306,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
     public function testCacheId()
     {
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
 
         $this->assertNull($renderer->getCacheId());
 
@@ -317,7 +317,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
     public function testGetSortConditionsSortEmpty()
     {
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
 
         // no sorting
         $sortConditions = $renderer->getSortConditions();
@@ -331,7 +331,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
     public function testGetSortConditionsSortDefault()
     {
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
 
         $col1 = clone $this->colMock;
         $col1->setUniqueId('myCol');
@@ -351,14 +351,14 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
 
     public function testGetFiltersDefault()
     {
-        $request = $this->getMockBuilder('Zend\Http\PhpEnvironment\Request')
+        $request = $this->getMockBuilder(\Zend\Http\PhpEnvironment\Request::class)
             ->disableOriginalConstructor()
             ->getMock();
         $request->expects($this->any())
             ->method('isPost')
             ->will($this->returnValue(false));
 
-        $mvcEvent = $this->getMockBuilder('Zend\Mvc\MvcEvent')
+        $mvcEvent = $this->getMockBuilder(\Zend\Mvc\MvcEvent::class)
             ->disableOriginalConstructor()
             ->getMock();
         $mvcEvent->expects($this->any())
@@ -366,7 +366,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue($request));
 
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
         $renderer->setMvcEvent($mvcEvent);
 
         $col1 = clone $this->colMock;
@@ -390,7 +390,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
     public function testGetFiltersNothingOnlyFromCustom()
     {
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
 
         $col1 = clone $this->colMock;
         $col1->setUniqueId('myCol');
@@ -403,7 +403,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
     public function testCurrentPageNumber()
     {
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
 
         $this->assertEquals(1, $renderer->getCurrentPageNumber());
 
@@ -414,7 +414,7 @@ class AbstractRendererTest extends PHPUnit_Framework_TestCase
     public function testGetItemsPerPage()
     {
         /* @var $renderer \ZfcDatagrid\Renderer\AbstractRenderer */
-        $renderer = $this->getMockForAbstractClass('ZfcDatagrid\Renderer\AbstractRenderer');
+        $renderer = $this->getMockForAbstractClass(\ZfcDatagrid\Renderer\AbstractRenderer::class);
 
         $this->assertEquals(25, $renderer->getItemsPerPage());
         $this->assertEquals(100, $renderer->getItemsPerPage(100));

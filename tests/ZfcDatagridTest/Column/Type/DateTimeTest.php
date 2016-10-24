@@ -9,7 +9,7 @@ use ZfcDatagrid\Filter;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\Type\DateTime
+ * @covers \ZfcDatagrid\Column\Type\DateTime
  */
 class DateTimeTest extends PHPUnit_Framework_TestCase
 {

@@ -6,7 +6,7 @@ use ZfcDatagrid\Column;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\Select
+ * @covers \ZfcDatagrid\Column\Select
  */
 class SelectTest extends PHPUnit_Framework_TestCase
 {

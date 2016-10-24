@@ -6,7 +6,7 @@ use ZfcDatagrid\Column\Action\Icon;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\Action\Icon
+ * @covers \ZfcDatagrid\Column\Action\Icon
  */
 class IconTest extends PHPUnit_Framework_TestCase
 {
