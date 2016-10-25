@@ -6,7 +6,7 @@ use ZfcDatagrid\Renderer\PrintHtml;
 
 /**
  * @group Renderer
- * @covers ZfcDatagrid\Renderer\PrintHtml\Renderer
+ * @covers \ZfcDatagrid\Renderer\PrintHtml\Renderer
  */
 class RendererTest extends PHPUnit_Framework_TestCase
 {

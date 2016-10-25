@@ -5,7 +5,7 @@ use ZfcDatagrid\DataSource\Doctrine2\PaginatorFast;
 
 /**
  * @group DataSource
- * @covers ZfcDatagrid\DataSource\Doctrine2\PaginatorFast
+ * @covers \ZfcDatagrid\DataSource\Doctrine2\PaginatorFast
  */
 class PaginatorFastTest extends AbstractDoctrine2Test
 {

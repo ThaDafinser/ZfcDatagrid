@@ -7,7 +7,7 @@ use ZfcDatagrid\Filter;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\Type\AbstractType
+ * @covers \ZfcDatagrid\Column\Type\AbstractType
  */
 class AbstractTypeTest extends PHPUnit_Framework_TestCase
 {
@@ -19,7 +19,7 @@ class AbstractTypeTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->type = $this->getMockForAbstractClass('ZfcDatagrid\Column\Type\AbstractType');
+        $this->type = $this->getMockForAbstractClass(\ZfcDatagrid\Column\Type\AbstractType::class);
     }
 
     public function testGetFilterDefaultOperation()

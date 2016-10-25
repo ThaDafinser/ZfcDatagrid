@@ -6,7 +6,7 @@ use ZfcDatagrid\Library\ImageResize;
 
 /**
  * @group Library
- * @covers ZfcDatagrid\Library\ImageResize
+ * @covers \ZfcDatagrid\Library\ImageResize
  */
 class ImageResizeTest extends PHPUnit_Framework_TestCase
 {

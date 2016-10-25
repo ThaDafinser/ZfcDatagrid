@@ -6,7 +6,7 @@ use ZfcDatagrid\Column\Formatter;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\Formatter\Email
+ * @covers \ZfcDatagrid\Column\Formatter\Email
  */
 class EmailTest extends PHPUnit_Framework_TestCase
 {
@@ -22,7 +22,7 @@ class EmailTest extends PHPUnit_Framework_TestCase
 
     public function testGetFormattedValue()
     {
-        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $col->setUniqueId('myCol');
 
         $formatter = new Formatter\Email();

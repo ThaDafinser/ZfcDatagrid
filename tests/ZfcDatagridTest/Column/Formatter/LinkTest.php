@@ -6,7 +6,7 @@ use ZfcDatagrid\Column\Formatter;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\Formatter\Link
+ * @covers \ZfcDatagrid\Column\Formatter\Link
  */
 class LinkTest extends PHPUnit_Framework_TestCase
 {
@@ -22,7 +22,7 @@ class LinkTest extends PHPUnit_Framework_TestCase
 
     public function testGetFormattedValue()
     {
-        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $col->setUniqueId('myCol');
 
         $formatter = new Formatter\Link();

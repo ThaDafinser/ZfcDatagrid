@@ -6,7 +6,7 @@ use ZfcDatagrid\Column\Style;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\Style\Strikethrough
+ * @covers \ZfcDatagrid\Column\Style\Strikethrough
  */
 class StrikethroughTest extends PHPUnit_Framework_TestCase
 {

@@ -6,7 +6,7 @@ use ZfcDatagrid\Column\Style\AbstractColor;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\Style\AbstractColor
+ * @covers \ZfcDatagrid\Column\Style\AbstractColor
  */
 class ColorTest extends PHPUnit_Framework_TestCase
 {

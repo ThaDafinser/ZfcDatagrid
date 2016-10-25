@@ -8,7 +8,7 @@ use ZfcDatagridTest\DataSource\DataSourceTestCase;
  * @copyright goes to: https://github.com/doctrine/doctrine2/blob/master/tests/Doctrine/Tests/OrmTestCase.php
  *
  *  @group DataSource
- *  @covers ZfcDatagrid\DataSource\Doctrine2
+ *  @covers \ZfcDatagrid\DataSource\Doctrine2
  */
 abstract class AbstractDoctrine2Test extends DataSourceTestCase
 {
@@ -100,13 +100,13 @@ abstract class AbstractDoctrine2Test extends DataSourceTestCase
 
         $config->setEntityNamespaces([
             'ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity',
-            'ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity\Category',
+            \ZfcDatagridTest\DataSource\Doctrine2\Assets\Entity\Category::class,
         ]);
 
         if (null === $conn) {
             $conn = [
-                'driverClass'  => 'ZfcDatagridTest\DataSource\Doctrine2\Mocks\DriverMock',
-                'wrapperClass' => 'ZfcDatagridTest\DataSource\Doctrine2\Mocks\ConnectionMock',
+                'driverClass'  => \ZfcDatagridTest\DataSource\Doctrine2\Mocks\DriverMock::class,
+                'wrapperClass' => \ZfcDatagridTest\DataSource\Doctrine2\Mocks\ConnectionMock::class,
                 'user'         => 'john',
                 'password'     => 'wayne',
             ];

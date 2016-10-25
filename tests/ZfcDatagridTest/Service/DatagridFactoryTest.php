@@ -6,7 +6,7 @@ use Zend\ServiceManager\ServiceManager;
 use ZfcDatagrid\Service\DatagridFactory;
 
 /**
- * @covers ZfcDatagrid\Service\DatagridFactory
+ * @covers \ZfcDatagrid\Service\DatagridFactory
  */
 class DatagridFactoryTest extends PHPUnit_Framework_TestCase
 {
@@ -37,17 +37,17 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $mvcEventMock = $this->getMockBuilder('Zend\Mvc\MvcEvent')
+        $mvcEventMock = $this->getMockBuilder(\Zend\Mvc\MvcEvent::class)
             ->getMock();
 
-        $this->applicationMock = $this->getMockBuilder('Zend\Mvc\Application')
+        $this->applicationMock = $this->getMockBuilder(\Zend\Mvc\Application::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->applicationMock->expects($this->any())
             ->method('getMvcEvent')
             ->will($this->returnValue($mvcEventMock));
 
-        $this->rendererServiceMock = $this->getMockBuilder('ZfcDatagrid\Renderer\BootstrapTable\Renderer')
+        $this->rendererServiceMock = $this->getMockBuilder(\ZfcDatagrid\Renderer\BootstrapTable\Renderer::class)
             ->getMock();
     }
 
@@ -74,12 +74,12 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
         $factory = new DatagridFactory();
         $grid    = $factory->createService($sm);
 
-        $this->assertInstanceOf('ZfcDatagrid\Datagrid', $grid);
+        $this->assertInstanceOf(\ZfcDatagrid\Datagrid::class, $grid);
     }
 
     public function testCanCreateServiceWithTranslator()
     {
-        $translatorMock = $this->getMockBuilder('Zend\I18n\Translator\Translator')
+        $translatorMock = $this->getMockBuilder(\Zend\I18n\Translator\Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -92,13 +92,13 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
         $factory = new DatagridFactory();
         $grid    = $factory->createService($sm);
 
-        $this->assertInstanceOf('ZfcDatagrid\Datagrid', $grid);
+        $this->assertInstanceOf(\ZfcDatagrid\Datagrid::class, $grid);
         $this->assertEquals($translatorMock, $grid->getTranslator());
     }
 
     public function testCanCreateServiceWithMvcTranslator()
     {
-        $mvcTranslatorMock = $this->getMockBuilder('Zend\I18n\Translator\Translator')
+        $mvcTranslatorMock = $this->getMockBuilder(\Zend\I18n\Translator\Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -111,7 +111,7 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
         $factory = new DatagridFactory();
         $grid    = $factory->createService($sm);
 
-        $this->assertInstanceOf('ZfcDatagrid\Datagrid', $grid);
+        $this->assertInstanceOf(\ZfcDatagrid\Datagrid::class, $grid);
         $this->assertEquals($mvcTranslatorMock, $grid->getTranslator());
     }
 }

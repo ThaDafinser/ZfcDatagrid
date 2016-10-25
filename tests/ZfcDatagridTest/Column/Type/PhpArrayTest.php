@@ -6,7 +6,7 @@ use ZfcDatagrid\Column\Type;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\Type\PhpArray
+ * @covers \ZfcDatagrid\Column\Type\PhpArray
  */
 class PhpArrayTest extends PHPUnit_Framework_TestCase
 {

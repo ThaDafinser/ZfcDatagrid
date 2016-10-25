@@ -6,7 +6,7 @@ use ZfcDatagrid\Action\Mass;
 
 /**
  * @group Datagrid
- * @covers ZfcDatagrid\Action\Mass
+ * @covers \ZfcDatagrid\Action\Mass
  */
 class MassTest extends PHPUnit_Framework_TestCase
 {

@@ -6,7 +6,7 @@ use ZfcDatagrid\Column\Type\Number;
 use ZfcDatagrid\Filter;
 
 /**
- * @covers ZfcDatagrid\Filter
+ * @covers \ZfcDatagrid\Filter
  */
 class FilterTest extends PHPUnit_Framework_TestCase
 {
@@ -15,7 +15,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $this->column = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
     }
 
     public function tearDown()

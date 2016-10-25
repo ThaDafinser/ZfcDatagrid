@@ -7,7 +7,7 @@ use ZfcDatagrid\Filter;
 /**
  * @group DataSource
  *
- * @covers ZfcDatagrid\DataSource\PhpArray
+ * @covers \ZfcDatagrid\DataSource\PhpArray
  */
 class PhpArrayTest extends DataSourceTestCase
 {
@@ -48,7 +48,7 @@ class PhpArrayTest extends DataSourceTestCase
 
         $source->execute();
 
-        $this->assertInstanceOf('Zend\Paginator\Adapter\ArrayAdapter', $source->getPaginatorAdapter());
+        $this->assertInstanceOf(\Zend\Paginator\Adapter\ArrayAdapter::class, $source->getPaginatorAdapter());
     }
 
     public function testFilter()

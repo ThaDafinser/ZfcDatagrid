@@ -6,7 +6,7 @@ use ZfcDatagrid\Filter;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\Action\AbstractAction
+ * @covers \ZfcDatagrid\Column\Action\AbstractAction
  */
 class AbstractActionTest extends PHPUnit_Framework_TestCase
 {
@@ -18,14 +18,14 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $this->column = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $this->column->setUniqueId('colName');
     }
 
     public function testLink()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
-        $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
+        $action = $this->getMockForAbstractClass(\ZfcDatagrid\Column\Action\AbstractAction::class);
 
         $this->assertEquals('#', $action->getLink());
         $this->assertEquals('#', $action->getAttribute('href'));
@@ -37,7 +37,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
     public function testLinkPlaceholder()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
-        $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
+        $action = $this->getMockForAbstractClass(\ZfcDatagrid\Column\Action\AbstractAction::class);
 
         $action->setLink('/myLink/id/' . $action->getRowIdPlaceholder());
         $this->assertEquals('/myLink/id/:rowId:', $action->getLink());
@@ -47,7 +47,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         ]));
 
         // Column
-        $column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $column = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $column->setUniqueId('myCol');
 
         $action->setLink('/myLink/para1/' . $action->getColumnValuePlaceholder($column));
@@ -61,7 +61,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
     public function testToHtml()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
-        $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
+        $action = $this->getMockForAbstractClass(\ZfcDatagrid\Column\Action\AbstractAction::class);
         $action->expects($this->any())
             ->method('getHtmlType')
             ->will($this->returnValue(''));
@@ -72,7 +72,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
     public function testAttributes()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
-        $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
+        $action = $this->getMockForAbstractClass(\ZfcDatagrid\Column\Action\AbstractAction::class);
 
         $this->assertCount(1, $action->getAttributes());
         $this->assertEquals([
@@ -97,7 +97,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
     public function testTitle()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
-        $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
+        $action = $this->getMockForAbstractClass(\ZfcDatagrid\Column\Action\AbstractAction::class);
 
         $this->assertEquals('', $action->getTitle());
 
@@ -108,7 +108,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
     public function testAddClass()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
-        $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
+        $action = $this->getMockForAbstractClass(\ZfcDatagrid\Column\Action\AbstractAction::class);
 
         $this->assertEquals('', $action->getAttribute('class'));
 
@@ -122,7 +122,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
     public function testShowOnValue()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
-        $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
+        $action = $this->getMockForAbstractClass(\ZfcDatagrid\Column\Action\AbstractAction::class);
 
         $this->assertCount(0, $action->getShowOnValues());
 
@@ -134,7 +134,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
     public function testIsDisplayed()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
-        $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
+        $action = $this->getMockForAbstractClass(\ZfcDatagrid\Column\Action\AbstractAction::class);
 
         $this->assertTrue($action->isDisplayed([
             $this->column->getUniqueId() => '23',
@@ -155,7 +155,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
     public function testIsDisplayedNotEqual()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
-        $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
+        $action = $this->getMockForAbstractClass(\ZfcDatagrid\Column\Action\AbstractAction::class);
 
         $action->addShowOnValue($this->column, '23', Filter::NOT_EQUAL);
 
@@ -171,7 +171,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
     public function testIsDisplayedAndOperatorDisplay()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
-        $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
+        $action = $this->getMockForAbstractClass(\ZfcDatagrid\Column\Action\AbstractAction::class);
 
         $action->setShowOnValueOperator('AND');
 
@@ -190,7 +190,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
     public function testIsDisplayedAndOperatorNoDisplay()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
-        $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
+        $action = $this->getMockForAbstractClass(\ZfcDatagrid\Column\Action\AbstractAction::class);
 
         $action->setShowOnValueOperator('AND');
 
@@ -212,7 +212,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
     public function testSetShowOnValueOperatorException()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
-        $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
+        $action = $this->getMockForAbstractClass(\ZfcDatagrid\Column\Action\AbstractAction::class);
 
         $action->setShowOnValueOperator('XOR');
     }
@@ -223,7 +223,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
     public function testIsDisplayedException()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
-        $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
+        $action = $this->getMockForAbstractClass(\ZfcDatagrid\Column\Action\AbstractAction::class);
 
         $action->addShowOnValue($this->column, '23', 'UNknownFilter');
         $action->isDisplayed([
@@ -234,7 +234,7 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
     public function testIsDisplayedByColumn()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
-        $action = $this->getMockForAbstractClass('ZfcDatagrid\Column\Action\AbstractAction');
+        $action = $this->getMockForAbstractClass(\ZfcDatagrid\Column\Action\AbstractAction::class);
 
         $columnCompare = clone $this->column;
         $columnCompare->setUniqueId('columnCompare');

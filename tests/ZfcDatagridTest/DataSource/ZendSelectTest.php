@@ -15,7 +15,7 @@ use ZfcDatagrid\Filter;
 
 /**
  * @group DataSource
- * @covers ZfcDatagrid\DataSource\ZendSelect
+ * @covers \ZfcDatagrid\DataSource\ZendSelect
  */
 class ZendSelectTest extends DataSourceTestCase
 {
@@ -46,20 +46,20 @@ class ZendSelectTest extends DataSourceTestCase
     {
         parent::setUp();
 
-        $this->mockDriver     = $this->getMockBuilder('Zend\Db\Adapter\Driver\DriverInterface')->getMock();
-        $this->mockConnection = $this->getMockBuilder('Zend\Db\Adapter\Driver\ConnectionInterface')->getMock();
+        $this->mockDriver     = $this->getMockBuilder(\Zend\Db\Adapter\Driver\DriverInterface::class)->getMock();
+        $this->mockConnection = $this->getMockBuilder(\Zend\Db\Adapter\Driver\ConnectionInterface::class)->getMock();
         $this->mockDriver->expects($this->any())
             ->method('checkEnvironment')
             ->will($this->returnValue(true));
         $this->mockDriver->expects($this->any())
             ->method('getConnection')
             ->will($this->returnValue($this->mockConnection));
-        $this->mockPlatform = $this->getMockBuilder('Zend\Db\Adapter\Platform\PlatformInterface')->getMock();
+        $this->mockPlatform = $this->getMockBuilder(\Zend\Db\Adapter\Platform\PlatformInterface::class)->getMock();
         $this->mockPlatform->expects($this->any())
             ->method('getIdentifierSeparator')
             ->will($this->returnValue('.'));
 
-        $this->mockStatement = $this->getMockBuilder('Zend\Db\Adapter\Driver\StatementInterface')->getMock();
+        $this->mockStatement = $this->getMockBuilder(\Zend\Db\Adapter\Driver\StatementInterface::class)->getMock();
         $this->mockDriver->expects($this->any())
             ->method('createStatement')
             ->will($this->returnValue($this->mockStatement));
@@ -84,11 +84,11 @@ class ZendSelectTest extends DataSourceTestCase
      */
     public function testConstruct()
     {
-        $select = $this->getMockBuilder('Zend\Db\Sql\Select')->getMock();
+        $select = $this->getMockBuilder(\Zend\Db\Sql\Select::class)->getMock();
 
         $source = new ZendSelect($select);
 
-        $this->assertInstanceOf('Zend\Db\Sql\Select', $source->getData());
+        $this->assertInstanceOf(\Zend\Db\Sql\Select::class, $source->getData());
         $this->assertEquals($select, $source->getData());
 
         $source = new ZendSelect([]);
@@ -100,7 +100,7 @@ class ZendSelectTest extends DataSourceTestCase
      */
     public function testExecuteException()
     {
-        $select = $this->getMockBuilder('Zend\Db\Sql\Select')->getMock();
+        $select = $this->getMockBuilder(\Zend\Db\Sql\Select::class)->getMock();
 
         $source = new ZendSelect($select);
 
@@ -114,11 +114,11 @@ class ZendSelectTest extends DataSourceTestCase
     {
         $source = clone $this->source;
 
-        $this->assertInstanceOf('Zend\Db\Sql\Sql', $source->getAdapter());
+        $this->assertInstanceOf(\Zend\Db\Sql\Sql::class, $source->getAdapter());
         $this->assertEquals($this->sql, $source->getAdapter());
 
         $source->setAdapter($this->adapter);
-        $this->assertInstanceOf('Zend\Db\Sql\Sql', $source->getAdapter());
+        $this->assertInstanceOf(\Zend\Db\Sql\Sql::class, $source->getAdapter());
 
         $source->setAdapter('something');
     }
@@ -131,7 +131,7 @@ class ZendSelectTest extends DataSourceTestCase
         $source->addSortCondition($this->colEdition, 'DESC');
         $source->execute();
 
-        $this->assertInstanceOf('Zend\Paginator\Adapter\DbSelect', $source->getPaginatorAdapter());
+        $this->assertInstanceOf(\Zend\Paginator\Adapter\DbSelect::class, $source->getPaginatorAdapter());
     }
 
     public function testJoinTable()

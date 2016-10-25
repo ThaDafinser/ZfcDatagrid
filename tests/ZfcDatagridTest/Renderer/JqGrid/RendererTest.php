@@ -6,7 +6,7 @@ use ZfcDatagrid\Renderer\JqGrid;
 
 /**
  * @group Renderer
- * @covers ZfcDatagrid\Renderer\JqGrid\Renderer
+ * @covers \ZfcDatagrid\Renderer\JqGrid\Renderer
  */
 class RendererTest extends PHPUnit_Framework_TestCase
 {
@@ -50,11 +50,11 @@ class RendererTest extends PHPUnit_Framework_TestCase
      */
     public function testGetRequestException()
     {
-        $request = $this->getMockBuilder('Zend\Console\Request')
+        $request = $this->getMockBuilder(\Zend\Console\Request::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $mvcEvent = $this->getMockBuilder('Zend\Mvc\MvcEvent')
+        $mvcEvent = $this->getMockBuilder(\Zend\Mvc\MvcEvent::class)
             ->disableOriginalConstructor()
             ->getMock();
         $mvcEvent->expects($this->any())
@@ -69,11 +69,11 @@ class RendererTest extends PHPUnit_Framework_TestCase
 
     public function testGetRequest()
     {
-        $request = $this->getMockBuilder('Zend\Http\PhpEnvironment\Request')
+        $request = $this->getMockBuilder(\Zend\Http\PhpEnvironment\Request::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $mvcEvent = $this->getMockBuilder('Zend\Mvc\MvcEvent')
+        $mvcEvent = $this->getMockBuilder(\Zend\Mvc\MvcEvent::class)
             ->disableOriginalConstructor()
             ->getMock();
         $mvcEvent->expects($this->any())

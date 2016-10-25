@@ -43,17 +43,17 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->colId = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $this->colId = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $this->colId->setUniqueId('id');
         $this->colId->setIdentity(true);
 
-        $this->col1 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $this->col1 = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $this->col1->setUniqueId('col1');
 
-        $this->col2 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $this->col2 = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $this->col2->setUniqueId('col2');
 
-        $this->col3 = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $this->col3 = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $this->col3->setUniqueId('col3');
         $this->col3->setType(new Type\PhpArray());
 
@@ -136,7 +136,7 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
             $this->col1,
         ]);
 
-        $translator = $this->getMockBuilder('Zend\I18n\Translator\Translator')
+        $translator = $this->getMockBuilder(\Zend\I18n\Translator\Translator::class)
             ->getMock();
 
         $prepare->setTranslator($translator);
@@ -289,7 +289,7 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
             $this->col3,
         ]);
 
-        $translator = $this->getMockBuilder('Zend\I18n\Translator\Translator')
+        $translator = $this->getMockBuilder(\Zend\I18n\Translator\Translator::class)
             ->getMock();
         $translator->expects($this->any())
             ->method('translate')
@@ -341,7 +341,7 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
             $col3,
         ]);
 
-        $translator = $this->getMockBuilder('Zend\I18n\Translator\Translator')
+        $translator = $this->getMockBuilder(\Zend\I18n\Translator\Translator::class)
             ->getMock();
         $translator->expects($this->any())
             ->method('translate')
@@ -386,7 +386,7 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
     {
         $data = $this->data;
 
-        $mock = $this->getMockBuilder('ZfcDatagrid\Column\DataPopulation\Object\Gravatar')
+        $mock = $this->getMockBuilder(\ZfcDatagrid\Column\DataPopulation\Object\Gravatar::class)
             ->getMock();
         $mock->expects($this->any())
             ->method('toString')
@@ -396,7 +396,7 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
         $object->setObject($mock);
         $object->addObjectParameterColumn('email', $this->col1);
 
-        $col = $this->getMockBuilder('ZfcDatagrid\Column\ExternalData')
+        $col = $this->getMockBuilder(\ZfcDatagrid\Column\ExternalData::class)
             ->getMock();
         $col->expects($this->any())
             ->method('getUniqueId')

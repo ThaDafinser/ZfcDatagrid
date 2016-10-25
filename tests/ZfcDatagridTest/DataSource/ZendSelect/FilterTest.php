@@ -11,7 +11,7 @@ use ZfcDatagrid\DataSource\ZendSelect\Filter as FilterSelect;
 
 /**
  * @group DataSource
- * @covers ZfcDatagrid\DataSource\ZendSelect\Filter
+ * @covers \ZfcDatagrid\DataSource\ZendSelect\Filter
  */
 class FilterTest extends PHPUnit_Framework_TestCase
 {
@@ -35,7 +35,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->column = $this->getMockBuilder('ZfcDatagrid\Column\Select')->disableOriginalConstructor()->getMock();
+        $this->column = $this->getMockBuilder(\ZfcDatagrid\Column\Select::class)->disableOriginalConstructor()->getMock();
         $this->column->method('getSelectPart1')
         ->willReturn('myCol');
         $this->column->method('getType')
@@ -44,7 +44,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->column->setUniqueId('myCol');
         $this->column->setSelect('myCol');
 
-        $this->column2 = $this->getMockBuilder('ZfcDatagrid\Column\Select')->disableOriginalConstructor()->getMock();
+        $this->column2 = $this->getMockBuilder(\ZfcDatagrid\Column\Select::class)->disableOriginalConstructor()->getMock();
         $this->column2->method('getSelectPart1')
         ->willReturn('myCol2');
         $this->column2->method('getType')
@@ -53,9 +53,9 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->column2->setUniqueId('myCol2');
         $this->column2->setSelect('myCol2');
 
-        $this->mockDriver     = $this->getMockBuilder('Zend\Db\Adapter\Driver\DriverInterface')
+        $this->mockDriver     = $this->getMockBuilder(\Zend\Db\Adapter\Driver\DriverInterface::class)
             ->getMock();
-        $this->mockConnection = $this->getMockBuilder('Zend\Db\Adapter\Driver\ConnectionInterface')
+        $this->mockConnection = $this->getMockBuilder(\Zend\Db\Adapter\Driver\ConnectionInterface::class)
             ->getMock();
         $this->mockDriver->expects($this->any())
             ->method('checkEnvironment')
@@ -63,9 +63,9 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->mockDriver->expects($this->any())
             ->method('getConnection')
             ->will($this->returnValue($this->mockConnection));
-        $this->mockPlatform  = $this->getMockBuilder('Zend\Db\Adapter\Platform\PlatformInterface')
+        $this->mockPlatform  = $this->getMockBuilder(\Zend\Db\Adapter\Platform\PlatformInterface::class)
             ->getMock();
-        $this->mockStatement = $this->getMockBuilder('Zend\Db\Adapter\Driver\StatementInterface')
+        $this->mockStatement = $this->getMockBuilder(\Zend\Db\Adapter\Driver\StatementInterface::class)
             ->getMock();
         $this->mockDriver->expects($this->any())
             ->method('createStatement')
@@ -86,8 +86,8 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
     public function testBasic()
     {
-        $this->assertInstanceOf('Zend\Db\Sql\Select', $this->filterSelect->getSelect());
-        $this->assertInstanceOf('Zend\Db\Sql\Sql', $this->filterSelect->getSql());
+        $this->assertInstanceOf(\Zend\Db\Sql\Select::class, $this->filterSelect->getSelect());
+        $this->assertInstanceOf(\Zend\Db\Sql\Sql::class, $this->filterSelect->getSql());
 
         // Test two filters
         $filter = new \ZfcDatagrid\Filter();
@@ -143,11 +143,11 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($predicates));
 
         $like = $this->getWherePart($predicates, 0);
-        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Like', $like);
+        $this->assertInstanceOf(\Zend\Db\Sql\Predicate\Like::class, $like);
         $this->assertEquals('%myValue%', $like->getLike());
 
         $like = $this->getWherePart($predicates, 1);
-        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Like', $like);
+        $this->assertInstanceOf(\Zend\Db\Sql\Predicate\Like::class, $like);
         $this->assertEquals('%123%', $like->getLike());
     }
 
@@ -166,11 +166,11 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $predicates = $where->getPredicates();
 
         $like = $this->getWherePart($predicates, 0);
-        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Like', $like);
+        $this->assertInstanceOf(\Zend\Db\Sql\Predicate\Like::class, $like);
         $this->assertEquals('%myValue', $like->getLike());
 
         $like = $this->getWherePart($predicates, 1);
-        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Like', $like);
+        $this->assertInstanceOf(\Zend\Db\Sql\Predicate\Like::class, $like);
         $this->assertEquals('%123', $like->getLike());
     }
 
@@ -189,7 +189,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $predicates = $where->getPredicates();
 
         $like = $this->getWherePart($predicates, 0);
-        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Like', $like);
+        $this->assertInstanceOf(\Zend\Db\Sql\Predicate\Like::class, $like);
         $this->assertEquals('myValue%', $like->getLike());
     }
 
@@ -210,7 +210,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $notLike    = $this->getWherePart($predicates, 0);
         $parameters = $notLike->getParameters();
 
-        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Expression', $notLike);
+        $this->assertInstanceOf(\Zend\Db\Sql\Predicate\Expression::class, $notLike);
         $this->assertEquals('NOT LIKE ?', $notLike->getExpression());
         $this->assertEquals('%myValue%', $parameters[0]);
     }
@@ -232,7 +232,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $notLike    = $this->getWherePart($predicates, 0);
         $parameters = $notLike->getParameters();
 
-        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Expression', $notLike);
+        $this->assertInstanceOf(\Zend\Db\Sql\Predicate\Expression::class, $notLike);
         $this->assertEquals('NOT LIKE ?', $notLike->getExpression());
         $this->assertEquals('%myValue', $parameters[0]);
     }
@@ -254,7 +254,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $notLike    = $this->getWherePart($predicates, 0);
         $parameters = $notLike->getParameters();
 
-        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Expression', $notLike);
+        $this->assertInstanceOf(\Zend\Db\Sql\Predicate\Expression::class, $notLike);
         $this->assertEquals('NOT LIKE ?', $notLike->getExpression());
         $this->assertEquals('myValue%', $parameters[0]);
     }
@@ -275,7 +275,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $operator = $this->getWherePart($predicates, 0);
 
-        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Operator', $operator);
+        $this->assertInstanceOf(\Zend\Db\Sql\Predicate\Operator::class, $operator);
         $this->assertEquals(Operator::OP_EQ, $operator->getOperator());
         $this->assertEquals('myCol', $operator->getLeft());
         $this->assertEquals('myValue', $operator->getRight());
@@ -297,7 +297,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $operator = $this->getWherePart($predicates, 0);
 
-        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Operator', $operator);
+        $this->assertInstanceOf(\Zend\Db\Sql\Predicate\Operator::class, $operator);
         $this->assertEquals(Operator::OP_NE, $operator->getOperator());
         $this->assertEquals('myCol', $operator->getLeft());
         $this->assertEquals('myValue', $operator->getRight());
@@ -319,7 +319,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $operator = $this->getWherePart($predicates, 0);
 
-        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Operator', $operator);
+        $this->assertInstanceOf(\Zend\Db\Sql\Predicate\Operator::class, $operator);
         $this->assertEquals(Operator::OP_GTE, $operator->getOperator());
         $this->assertEquals('myCol', $operator->getLeft());
         $this->assertEquals('myValue', $operator->getRight());
@@ -341,7 +341,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $operator = $this->getWherePart($predicates, 0);
 
-        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Operator', $operator);
+        $this->assertInstanceOf(\Zend\Db\Sql\Predicate\Operator::class, $operator);
         $this->assertEquals(Operator::OP_GT, $operator->getOperator());
         $this->assertEquals('myCol', $operator->getLeft());
         $this->assertEquals('myValue', $operator->getRight());
@@ -363,7 +363,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $operator = $this->getWherePart($predicates, 0);
 
-        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Operator', $operator);
+        $this->assertInstanceOf(\Zend\Db\Sql\Predicate\Operator::class, $operator);
         $this->assertEquals(Operator::OP_LTE, $operator->getOperator());
         $this->assertEquals('myCol', $operator->getLeft());
         $this->assertEquals('myValue', $operator->getRight());
@@ -385,7 +385,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $operator = $this->getWherePart($predicates, 0);
 
-        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Operator', $operator);
+        $this->assertInstanceOf(\Zend\Db\Sql\Predicate\Operator::class, $operator);
         $this->assertEquals(Operator::OP_LT, $operator->getOperator());
         $this->assertEquals('myCol', $operator->getLeft());
         $this->assertEquals('myValue', $operator->getRight());
@@ -407,7 +407,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
         $operator = $this->getWherePart($predicates, 0);
 
-        $this->assertInstanceOf('Zend\Db\Sql\Predicate\Between', $operator);
+        $this->assertInstanceOf(\Zend\Db\Sql\Predicate\Between::class, $operator);
         $this->assertEquals('myCol', $operator->getIdentifier());
         $this->assertEquals('3', $operator->getMinValue());
         $this->assertEquals('myValue', $operator->getMaxValue());
@@ -418,7 +418,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      */
     public function testException()
     {
-        $filter = $this->getMockBuilder('ZfcDatagrid\Filter')
+        $filter = $this->getMockBuilder(\ZfcDatagrid\Filter::class)
             ->getMock();
         $filter->expects($this->any())
             ->method('getColumn')

@@ -10,7 +10,7 @@ use ZfcDatagrid\Renderer\BootstrapTable\View\Helper\TableRow;
 
 /**
  * @group Renderer
- * @covers ZfcDatagrid\Renderer\BootstrapTable\View\Helper\TableRow
+ * @covers \ZfcDatagrid\Renderer\BootstrapTable\View\Helper\TableRow
  */
 class TableRowTest extends PHPUnit_Framework_TestCase
 {
@@ -31,12 +31,12 @@ class TableRowTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $myCol = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $myCol = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $myCol->setUniqueId('myCol');
 
         $this->myCol = $myCol;
 
-        $this->serviceLocator = $this->getMockBuilder('Zend\ServiceManager\ServiceManager')
+        $this->serviceLocator = $this->getMockBuilder(\Zend\ServiceManager\ServiceManager::class)
             ->getMock();
     }
 
@@ -161,7 +161,7 @@ class TableRowTest extends PHPUnit_Framework_TestCase
         $this->assertContains('<td class="test-class"', $html);
 
         // exception
-        $style = $this->getMockForAbstractClass('ZfcDatagrid\Column\Style\AbstractStyle');
+        $style = $this->getMockForAbstractClass(\ZfcDatagrid\Column\Style\AbstractStyle::class);
 
         $myCol = clone $this->myCol;
         $myCol->addStyle($style);

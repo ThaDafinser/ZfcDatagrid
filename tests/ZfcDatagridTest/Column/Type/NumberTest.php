@@ -9,7 +9,7 @@ use ZfcDatagrid\Filter;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\Type\Number
+ * @covers \ZfcDatagrid\Column\Type\Number
  */
 class NumberTest extends PHPUnit_Framework_TestCase
 {

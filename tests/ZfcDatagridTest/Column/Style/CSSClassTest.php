@@ -6,7 +6,7 @@ use ZfcDatagrid\Column\Style\CSSClass;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\Style\CSSClass
+ * @covers \ZfcDatagrid\Column\Style\CSSClass
  */
 class CSSClassTest extends PHPUnit_Framework_TestCase
 {

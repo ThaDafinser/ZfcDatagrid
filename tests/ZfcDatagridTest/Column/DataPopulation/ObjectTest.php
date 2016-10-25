@@ -6,13 +6,13 @@ use ZfcDatagrid\Column\DataPopulation\Object;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\DataPopulation\Object
+ * @covers \ZfcDatagrid\Column\DataPopulation\Object
  */
 class ObjectTest extends PHPUnit_Framework_TestCase
 {
     public function testObject()
     {
-        $mock = $this->getMockBuilder('ZfcDatagrid\Column\DataPopulation\Object\Gravatar')->getMock();
+        $mock = $this->getMockBuilder(\ZfcDatagrid\Column\DataPopulation\Object\Gravatar::class)->getMock();
         $mock->expects($this->any())
             ->method('toString')
             ->will($this->returnValue('myReturn'));
@@ -27,8 +27,8 @@ class ObjectTest extends PHPUnit_Framework_TestCase
 
     public function testParameters()
     {
-        $column = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
-        $mock   = $this->getMockBuilder('ZfcDatagrid\Column\DataPopulation\Object\Gravatar')->getMock();
+        $column = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
+        $mock   = $this->getMockBuilder(\ZfcDatagrid\Column\DataPopulation\Object\Gravatar::class)->getMock();
         $mock->expects($this->any())
         ->method('toString')
         ->will($this->returnValue('myReturn'));

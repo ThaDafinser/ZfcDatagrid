@@ -6,7 +6,7 @@ use ZfcDatagrid\Column\Formatter;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\Formatter\FileSize
+ * @covers \ZfcDatagrid\Column\Formatter\FileSize
  */
 class FileSizeTest extends PHPUnit_Framework_TestCase
 {
@@ -24,7 +24,7 @@ class FileSizeTest extends PHPUnit_Framework_TestCase
 
     public function testGetFormattedValue()
     {
-        $col = $this->getMockForAbstractClass('ZfcDatagrid\Column\AbstractColumn');
+        $col = $this->getMockForAbstractClass(\ZfcDatagrid\Column\AbstractColumn::class);
         $col->setUniqueId('myCol');
 
         $formatter = new Formatter\FileSize();

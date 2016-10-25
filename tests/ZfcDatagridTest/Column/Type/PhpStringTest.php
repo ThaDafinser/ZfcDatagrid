@@ -6,7 +6,7 @@ use ZfcDatagrid\Column\Type;
 
 /**
  * @group Column
- * @covers ZfcDatagrid\Column\Type\PhpString
+ * @covers \ZfcDatagrid\Column\Type\PhpString
  */
 class PhpStringTest extends PHPUnit_Framework_TestCase
 {
