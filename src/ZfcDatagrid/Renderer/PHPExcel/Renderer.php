@@ -103,14 +103,26 @@ class Renderer extends AbstractExport
                         break;
 
                     case 'ZfcDatagrid\Column\Type\DateTime':
-                        if ($value instanceof \DateTime) {
-                            $value->setTimezone(new \DateTimeZone($col->getType()
-                                ->getOutputTimezone()));
+                        /* @var $dateType \ZfcDatagrid\Column\Type\DateTime */
+                        $dateType = $col->getType();
+                        
+                        if (! $value instanceof \DateTime && ! is_object($value)) {
+                            $value = \DateTime::createFromFormat($dateType->getSourceDateTimeFormat(), $value);
+                            $value->setTimezone(new \DateTimeZone($dateType->getSourceTimezone()));
                         }
+                        
+                        $value->setTimezone(new \DateTimeZone($dateType->getOutputTimezone()));
                         $cell->setValue(\PHPExcel_Shared_Date::PHPToExcel($value));
-                        $cell->getStyle()
-                        ->getNumberFormat()
-                        ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_DATE_DATETIME);
+                        
+                        if ($dateType->getOutputPattern()) {
+                            $outputPattern = $dateType->getOutputPattern();
+                        } else {
+                            $outputPattern = \PHPExcel_Style_NumberFormat::FORMAT_DATE_DATETIME;
+                        }
+                        
+                        $cell->$cell->getStyle()
+                            ->getNumberFormat()
+                            ->setFormatCode($outputPattern);
                         break;
 
                     default:
