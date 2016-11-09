@@ -106,7 +106,7 @@ class Renderer extends AbstractExport
                         /* @var $dateType \ZfcDatagrid\Column\Type\DateTime */
                         $dateType = $col->getType();
                         
-                        if (! $value instanceof \DateTime && ! is_object($value)) {
+                        if (! $value instanceof \DateTime && is_scalar($value)) {
                             $value = \DateTime::createFromFormat($dateType->getSourceDateTimeFormat(), $value);
                             $value->setTimezone(new \DateTimeZone($dateType->getSourceTimezone()));
                         }
