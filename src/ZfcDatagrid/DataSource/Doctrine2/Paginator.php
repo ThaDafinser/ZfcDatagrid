@@ -65,7 +65,7 @@ class Paginator implements AdapterInterface
     }
 
     /**
-     * @return \Doctrine\ORM\Tools\Pagination\Paginator
+     * @return Doctrine2Paginator|ZfcDatagridPaginator
      */
     private function getPaginator()
     {
