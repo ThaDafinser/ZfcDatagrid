@@ -121,7 +121,7 @@ class Renderer extends AbstractExport
                             $outputPattern = \PHPExcel_Style_NumberFormat::FORMAT_DATE_DATETIME;
                         }
 
-                        $cell->$cell->getStyle()
+                        $cell->getStyle()
                             ->getNumberFormat()
                             ->setFormatCode($outputPattern);
                         break;
