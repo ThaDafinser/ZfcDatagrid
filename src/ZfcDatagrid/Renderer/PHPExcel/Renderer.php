@@ -14,6 +14,7 @@ use PHPExcel_Style_Fill;
 use PHPExcel_Worksheet_PageSetup;
 use Zend\Http\Headers;
 use Zend\Http\Response\Stream as ResponseStream;
+use ZfcDatagrid\Column;
 use ZfcDatagrid\Renderer\AbstractExport;
 
 class Renderer extends AbstractExport
@@ -70,7 +71,7 @@ class Renderer extends AbstractExport
         $xColumn = 0;
         $yRow = $optionsRenderer['startRowData'];
         foreach ($this->getColumnsToExport() as $col) {
-            /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+            /* @var $column Column\AbstractColumn */
             $sheet->setCellValueByColumnAndRow($xColumn, $yRow, $this->translate($col->getLabel()));
 
             $sheet->getColumnDimension(PHPExcel_Cell::stringFromColumnIndex($xColumn))->setWidth($col->getWidth());
@@ -85,41 +86,41 @@ class Renderer extends AbstractExport
         foreach ($this->getData() as $row) {
             $xColumn = 0;
             foreach ($this->getColumnsToExport() as $col) {
-                /* @var $col \ZfcDatagrid\Column\AbstractColumn */
+                /* @var $col Column\AbstractColumn */
 
                 $value = $row[$col->getUniqueId()];
                 if (is_array($value)) {
                     $value = implode(PHP_EOL, $value);
                 }
 
-                /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+                /* @var $column Column\AbstractColumn */
                 $currentColumn = PHPExcel_Cell::stringFromColumnIndex($xColumn);
                 $cell = $sheet->getCell($currentColumn.$yRow);
 
                 switch (get_class($col->getType())) {
 
-                    case 'ZfcDatagrid\Column\Type\Number':
+                    case Column\Type\Number::class:
                         $cell->setValueExplicit($value, PHPExcel_Cell_DataType::TYPE_NUMERIC);
                         break;
 
-                    case 'ZfcDatagrid\Column\Type\DateTime':
-                        /* @var $dateType \ZfcDatagrid\Column\Type\DateTime */
+                    case Column\Type\DateTime::class:
+                        /* @var $dateType Column\Type\DateTime */
                         $dateType = $col->getType();
-                        
+
                         if (! $value instanceof \DateTime && is_scalar($value)) {
                             $value = \DateTime::createFromFormat($dateType->getSourceDateTimeFormat(), $value);
                             $value->setTimezone(new \DateTimeZone($dateType->getSourceTimezone()));
                         }
-                        
+
                         $value->setTimezone(new \DateTimeZone($dateType->getOutputTimezone()));
                         $cell->setValue(\PHPExcel_Shared_Date::PHPToExcel($value));
-                        
+
                         if ($dateType->getOutputPattern()) {
                             $outputPattern = $dateType->getOutputPattern();
                         } else {
                             $outputPattern = \PHPExcel_Style_NumberFormat::FORMAT_DATE_DATETIME;
                         }
-                        
+
                         $cell->$cell->getStyle()
                             ->getNumberFormat()
                             ->setFormatCode($outputPattern);
@@ -138,25 +139,25 @@ class Renderer extends AbstractExport
                  */
                 $styles = array_merge($this->getRowStyles(), $col->getStyles());
                 foreach ($styles as $style) {
-                    /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
+                    /* @var $style Column\Style\AbstractStyle */
                     if ($style->isApply($row) === true) {
                         switch (get_class($style)) {
 
-                            case 'ZfcDatagrid\Column\Style\Bold':
+                            case Column\Style\Bold::class:
                                 $columnStyle->getFont()->setBold(true);
                                 break;
 
-                            case 'ZfcDatagrid\Column\Style\Italic':
+                            case Column\Style\Italic::class:
                                 $columnStyle->getFont()->setItalic(true);
                                 break;
 
-                            case 'ZfcDatagrid\Column\Style\Color':
+                            case Column\Style\Color::class:
                                 $columnStyle->getFont()
                                     ->getColor()
                                     ->setRGB($style->getRgbHexString());
                                 break;
 
-                            case 'ZfcDatagrid\Column\Style\BackgroundColor':
+                            case Column\Style\BackgroundColor::class:
                                 $columnStyle->getFill()->applyFromArray([
                                     'type' => \PHPExcel_Style_Fill::FILL_SOLID,
                                     'color' => [
@@ -165,18 +166,18 @@ class Renderer extends AbstractExport
                                 ]);
                                 break;
 
-                            case 'ZfcDatagrid\Column\Style\Align':
+                            case Column\Style\Align::class:
                                 switch ($style->getAlignment()) {
-                                    case \ZfcDatagrid\Column\Style\Align::$RIGHT:
+                                    case Column\Style\Align::$RIGHT:
                                         $columnStyle->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
                                         break;
-                                    case \ZfcDatagrid\Column\Style\Align::$LEFT:
+                                    case Column\Style\Align::$LEFT:
                                         $columnStyle->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
                                         break;
-                                    case \ZfcDatagrid\Column\Style\Align::$CENTER:
+                                    case Column\Style\Align::$CENTER:
                                         $columnStyle->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
                                         break;
-                                    case \ZfcDatagrid\Column\Style\Align::$JUSTIFY:
+                                    case Column\Style\Align::$JUSTIFY:
                                         $columnStyle->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_JUSTIFY);
                                         break;
                                     default:
@@ -186,11 +187,11 @@ class Renderer extends AbstractExport
 
                                 break;
 
-                            case 'ZfcDatagrid\Column\Style\Strikethrough':
+                            case Column\Style\Strikethrough::class:
                                 $columnStyle->getFont()->setStrikethrough(true);
                                 break;
 
-                            case 'ZfcDatagrid\Column\Style\Html':
+                            case Column\Style\Html::class:
                                 // @todo strip the html?
                                 break;
 
@@ -313,7 +314,7 @@ class Renderer extends AbstractExport
 
         $factor = $paperWidth / 100;
         foreach ($columns as $column) {
-            /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+            /* @var $column Column\AbstractColumn */
             $column->setWidth($column->getWidth() * $factor);
         }
     }

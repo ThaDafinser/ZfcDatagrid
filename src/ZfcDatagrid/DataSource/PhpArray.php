@@ -117,7 +117,7 @@ class PhpArray extends AbstractDataSource
 
         switch (get_class($sortCondition['column']->getType())) {
 
-            case 'ZfcDatagrid\Column\Type\Number':
+            case Column\Type\Number::class:
                 $numeric = SORT_NUMERIC;
                 $sortArray[] = $numeric;
                 break;

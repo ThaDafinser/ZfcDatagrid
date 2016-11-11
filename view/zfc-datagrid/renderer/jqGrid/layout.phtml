@@ -1,5 +1,7 @@
-<?php 
+<?php
+
 use ZfcDatagrid\Column\Action\Button;
+use ZfcDatagrid\Column\Style;
 use ZfcDatagrid\Filter;
 
 /* @var $paginator \Zend\Paginator\Paginator */
@@ -38,7 +40,7 @@ foreach($this->columns as $col){
 
         switch (get_class($style)) {
 
-            case 'ZfcDatagrid\Column\Style\BackgroundColor':
+            case Style\BackgroundColor::class:
                 $css = '$(\'#\' + row.idConcated).find(\'td[aria-describedby=' . $this->gridId . '_' . $col->getUniqueId() . ']\').css(\'background-color\', \'#'.$style->getRgbHexString().'\');';
                 if ($style->hasByValues() === true) {
                     foreach ($style->getByValues() as $rule) {
@@ -82,31 +84,31 @@ foreach($this->rowStyles as $style){
     
     switch (get_class($style)) {
 
-        case 'ZfcDatagrid\Column\Style\Bold':
+        case Style\Bold::class:
             $css = '\'font-weight\', \'bold\'';
             break;
 
-        case 'ZfcDatagrid\Column\Style\Italic':
+        case Style\Italic::class:
             $css = '\'font-style\', \'italic\'';
             break;
         
-        case 'ZfcDatagrid\Column\Style\Strikethrough':
+        case Style\Strikethrough::class:
             $css = '\'text-decoration\', \'line-through\'';
             break;
 
-        case 'ZfcDatagrid\Column\Style\Color':
+        case Style\Color::class:
             $css = '\'color\', \'#' . $style->getRgbHexString().'\'';
             break;
 
-        case 'ZfcDatagrid\Column\Style\BackgroundColor':
+        case Style\BackgroundColor::class:
             $css = '\'background-color\', \'#' . $style->getRgbHexString().'\'';
             break;
         
-        case 'ZfcDatagrid\Column\Style\Align':
+        case Style\Align::class:
             $css = '\'text-align\'' . $style->getAlignment();
             break;
             
-        case 'ZfcDatagrid\Column\Style\CSSClass':
+        case Style\CSSClass::class:
             $cssClass = $style->getClass();
             break;
 

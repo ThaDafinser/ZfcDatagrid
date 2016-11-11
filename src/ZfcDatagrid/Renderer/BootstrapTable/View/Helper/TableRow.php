@@ -98,7 +98,7 @@ class TableRow extends AbstractHelper
         }
 
         foreach ($cols as $col) {
-            /* @var $col \ZfcDatagrid\Column\AbstractColumn */
+            /* @var $col Column\AbstractColumn */
 
             $value = $row[$col->getUniqueId()];
 
@@ -111,50 +111,50 @@ class TableRow extends AbstractHelper
 
             switch (get_class($col->getType())) {
 
-                case 'ZfcDatagrid\Column\Type\Number':
+                case Column\Type\Number::class:
                     $cssStyles[] = 'text-align: right';
                     break;
 
-                case 'ZfcDatagrid\Column\Type\PhpArray':
+                case Column\Type\PhpArray::class:
                     $value = '<pre>'.print_r($value, true).'</pre>';
                     break;
             }
 
             $styles = array_merge($rowStyles, $col->getStyles());
             foreach ($styles as $style) {
-                /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
+                /* @var $style Column\Style\AbstractStyle */
                 if ($style->isApply($row) === true) {
                     switch (get_class($style)) {
 
-                        case 'ZfcDatagrid\Column\Style\Bold':
+                        case Column\Style\Bold::class:
                             $cssStyles[] = 'font-weight: bold';
                             break;
 
-                        case 'ZfcDatagrid\Column\Style\Italic':
+                        case Column\Style\Italic::class:
                             $cssStyles[] = 'font-style: italic';
                             break;
 
-                        case 'ZfcDatagrid\Column\Style\Color':
+                        case Column\Style\Color::class:
                             $cssStyles[] = 'color: #'.$style->getRgbHexString();
                             break;
 
-                        case 'ZfcDatagrid\Column\Style\BackgroundColor':
+                        case Column\Style\BackgroundColor::class:
                             $cssStyles[] = 'background-color: #'.$style->getRgbHexString();
                             break;
 
-                        case 'ZfcDatagrid\Column\Style\Align':
+                        case Column\Style\Align::class:
                             $cssStyles[] = 'text-align: '.$style->getAlignment();
                             break;
 
-                        case 'ZfcDatagrid\Column\Style\Strikethrough':
+                        case Column\Style\Strikethrough::class:
                             $value = '<s>'.$value.'</s>';
                             break;
 
-                        case 'ZfcDatagrid\Column\Style\CSSClass':
+                        case Column\Style\CSSClass::class:
                             $classes[] = $style->getClass();
                             break;
 
-                        case 'ZfcDatagrid\Column\Style\Html':
+                        case Column\Style\Html::class:
                             // do NOTHING! just pass the HTML!
                             break;
 
@@ -166,10 +166,10 @@ class TableRow extends AbstractHelper
             }
 
             if ($col instanceof Column\Action) {
-                /* @var $col \ZfcDatagrid\Column\Action */
+                /* @var $col Column\Action */
                 $actions = [];
                 foreach ($col->getActions() as $action) {
-                    /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
+                    /* @var $action Column\Action\AbstractAction */
                     if ($action->isDisplayed($row) === true) {
                         $action->setTitle($this->translate($action->getTitle()));
                         $actions[] = $action->toHtml($row);
