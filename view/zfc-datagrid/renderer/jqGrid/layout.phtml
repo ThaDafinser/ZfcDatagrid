@@ -9,16 +9,16 @@ $paginator = $this->paginator;
 
 $parameterNames = $this->optionsRenderer['parameterNames'];
 
-$url = $this->url(null, array(), array(), true);
+$url = $this->url(null, [], [], true);
 if($this->overwriteUrl != ''){
     $url = $this->overwriteUrl;
 }
-$parametersHtml = array();
+$parametersHtml = [];
 foreach($this->parameters as $name => $value){
     $parametersHtml []= $name.': \''.$value.'\'';
 }
 
-$tableClasses = array();
+$tableClasses = [];
 $rowClickLink = '';
 
 if($this->rowClickAction){
