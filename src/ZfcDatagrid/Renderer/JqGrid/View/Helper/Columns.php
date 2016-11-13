@@ -57,7 +57,7 @@ class Columns extends AbstractHelper
         $return = [];
 
         foreach ($columns as $column) {
-            /* @var $column \ZfcDatagrid\Column\AbstractColumn */
+            /* @var $column Column\AbstractColumn */
 
             $options = [
                 'name' => (string) $column->getUniqueId(),
@@ -81,7 +81,7 @@ class Columns extends AbstractHelper
             $alignAlreadyDefined = false;
             if ($column->hasStyles()) {
                 foreach ($column->getStyles() as $style) {
-                    /** @var \ZfcDatagrid\Column\Style\Align $style */
+                    /** @var Column\Style\Align $style */
                     if (get_class($style) == 'ZfcDatagrid\Column\Style\Align') {
                         $options['align'] = $style->getAlignment();
                         $alignAlreadyDefined = true;
@@ -186,7 +186,7 @@ class Columns extends AbstractHelper
 
         switch (get_class($column->getType())) {
 
-            case 'ZfcDatagrid\Column\Type\PhpArray':
+            case Type\PhpArray::class:
                 $formatter .= 'cellvalue = \'<pre>\' + cellvalue.join(\'<br />\') + \'</pre>\';';
                 break;
         }
@@ -223,10 +223,9 @@ class Columns extends AbstractHelper
             $prepend = '';
             $append = '';
 
-            /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
+            /* @var $style Column\Style\AbstractStyle */
             foreach ($style->getByValues() as $rule) {
                 $colString = $rule['column']->getUniqueId();
-                $operator = '';
                 switch ($rule['operator']) {
 
                     case Filter::EQUAL:
@@ -249,36 +248,36 @@ class Columns extends AbstractHelper
             $styleString = '';
             switch (get_class($style)) {
 
-                case 'ZfcDatagrid\Column\Style\Bold':
+                case Column\Style\Bold::class:
                     $styleString = self::STYLE_BOLD;
                     break;
 
-                case 'ZfcDatagrid\Column\Style\Italic':
+                case Column\Style\Italic::class:
                     $styleString = self::STYLE_ITALIC;
                     break;
 
-                case 'ZfcDatagrid\Column\Style\Strikethrough':
+                case Column\Style\Strikethrough::class:
                     $styleString = self::STYLE_STRIKETHROUGH;
                     break;
 
-                case 'ZfcDatagrid\Column\Style\Color':
+                case Column\Style\Color::class:
                     $styleString = 'cellvalue = \'<span style="color: #'.$style->getRgbHexString().';">\' + cellvalue + \'</span>\';';
                     break;
 
-                case 'ZfcDatagrid\Column\Style\CSSClass':
+                case Column\Style\CSSClass::class:
                     $styleString = 'cellvalue = \'<span class="'.$style->getClass().'">\' + cellvalue + \'</span>\';';
                     break;
 
-                case 'ZfcDatagrid\Column\Style\BackgroundColor':
+                case Column\Style\BackgroundColor::class:
                     // do NOTHING! this is done by loadComplete event...
                     // At this stage jqgrid haven't created the columns...
                     break;
 
-                case 'ZfcDatagrid\Column\Style\Html':
+                case Column\Style\Html::class:
                     // do NOTHING! just pass the HTML!
                     break;
 
-                case 'ZfcDatagrid\Column\Style\Align':
+                case Column\Style\Align::class:
                     // do NOTHING! we have to add the align style in the gridcell and not in a span!
                     break;
 
