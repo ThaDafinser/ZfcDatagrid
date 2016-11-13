@@ -2,7 +2,6 @@
 
 namespace ZfcDatagrid\Column\Formatter;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Renderer\RendererInterface;
 use ZfcDatagrid\Column\AbstractColumn;
 
@@ -24,21 +23,13 @@ class GenerateLink extends AbstractFormatter
     protected $viewRenderer;
 
     /**
-     * @param ServiceLocatorInterface|RendererInterface $viewRenderer
-     * @param                                           $route
-     * @param null                                      $key
-     * @param array                                     $params
+     * @param RendererInterface $viewRenderer
+     * @param                   $route
+     * @param null              $key
+     * @param array             $params
      */
     public function __construct($viewRenderer, $route, $key = null, $params = [])
     {
-        /*
-         * old fallback that should be removed in 2.0
-         * TODO remove in 2.0
-         */
-        if (!$viewRenderer instanceof RendererInterface) {
-            $viewRenderer = $viewRenderer->get('ViewRenderer');
-        }
-
         $this->setViewRenderer($viewRenderer);
         $this->setRoute($route);
         $this->setRouteParams($params);
@@ -69,7 +60,7 @@ class GenerateLink extends AbstractFormatter
     }
 
     /**
-     * @return \Zend\View\Renderer\PhpRenderer
+     * @return RendererInterface
      */
     public function getViewRenderer()
     {
@@ -77,7 +68,7 @@ class GenerateLink extends AbstractFormatter
     }
 
     /**
-     * @param \Zend\View\Renderer\PhpRenderer $viewRenderer
+     * @param RendererInterface $viewRenderer
      *
      * @return self
      */

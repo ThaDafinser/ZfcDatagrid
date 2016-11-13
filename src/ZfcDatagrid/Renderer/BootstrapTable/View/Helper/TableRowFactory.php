@@ -3,9 +3,7 @@
 namespace ZfcDatagrid\Renderer\BootstrapTable\View\Helper;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\AbstractPluginManager;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class TableRowFactory implements FactoryInterface
 {
@@ -26,13 +24,4 @@ class TableRowFactory implements FactoryInterface
         return $tableRow;
     }
 
-    /**
-     * @param ServiceLocatorInterface|AbstractPluginManager $serviceLocator
-     *
-     * @return TableRow
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        return $this($serviceLocator->getServiceLocator(), TableRow::class);
-    }
 }

@@ -4,8 +4,7 @@ namespace ZfcDatagrid\Service;
 
 use Interop\Container\ContainerInterface;
 use Zend\Db\Adapter\Adapter;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class ZendDbAdapterFactory implements FactoryInterface
 {
@@ -23,13 +22,4 @@ class ZendDbAdapterFactory implements FactoryInterface
         return new Adapter($config['zfcDatagrid_dbAdapter']);
     }
 
-    /**
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return Adapter
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        return $this($serviceLocator, Adapter::class);
-    }
 }

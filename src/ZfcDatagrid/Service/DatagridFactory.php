@@ -4,8 +4,7 @@ namespace ZfcDatagrid\Service;
 
 use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use ZfcDatagrid\Datagrid;
 
 class DatagridFactory implements FactoryInterface
@@ -43,13 +42,4 @@ class DatagridFactory implements FactoryInterface
         return $grid;
     }
 
-    /**
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return Datagrid
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        return $this($serviceLocator, Datagrid::class);
-    }
 }
