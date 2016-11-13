@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Column\Type;
 
 class PhpArray extends AbstractType

@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Service;
 
 use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
@@ -36,10 +35,9 @@ class DatagridFactory implements FactoryInterface
             $grid->setTranslator($container->get('translator'));
         }
 
-        $grid->setRendererService($container->get('zfcDatagrid.renderer.'.$grid->getRendererName()));
+        $grid->setRendererService($container->get('zfcDatagrid.renderer.' . $grid->getRendererName()));
         $grid->init();
 
         return $grid;
     }
-
 }

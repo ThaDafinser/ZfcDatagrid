@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Renderer\BootstrapTable\View\Helper;
 
 use Interop\Container\ContainerInterface;
@@ -23,5 +22,4 @@ class TableRowFactory implements FactoryInterface
 
         return $tableRow;
     }
-
 }

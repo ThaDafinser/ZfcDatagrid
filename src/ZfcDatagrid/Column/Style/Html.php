@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Column\Style;
 
 class Html extends AbstractStyle

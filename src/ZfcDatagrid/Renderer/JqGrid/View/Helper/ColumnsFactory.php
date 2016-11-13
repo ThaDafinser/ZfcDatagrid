@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Renderer\JqGrid\View\Helper;
 
 use Interop\Container\ContainerInterface;
@@ -23,5 +22,4 @@ class ColumnsFactory implements FactoryInterface
 
         return $tableRow;
     }
-
 }

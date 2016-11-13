@@ -1,7 +1,6 @@
 <?php
 namespace ZfcDatagridTest\Column\Formatter;
 
-use Zend\ServiceManager\ServiceManager;
 use ZfcDatagrid\Column\Formatter\GenerateLink;
 
 /**

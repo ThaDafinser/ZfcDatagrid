@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Service;
 
 use Interop\Container\ContainerInterface;
@@ -21,5 +20,4 @@ class ZendDbAdapterFactory implements FactoryInterface
 
         return new Adapter($config['zfcDatagrid_dbAdapter']);
     }
-
 }
