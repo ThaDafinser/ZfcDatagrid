@@ -442,7 +442,7 @@ class Renderer extends AbstractExport
         $background = $style['background-color'];
 
         $pdf = $this->getPdf();
-        $pdf->setFont($font, '', $size);
+        $pdf->SetFont($font, '', $size);
         $pdf->SetTextColor($color[0], $color[1], $color[2]);
         $pdf->SetFillColor($background[0], $background[1], $background[2]);
         // "BOLD" fake
@@ -460,7 +460,7 @@ class Renderer extends AbstractExport
         $background = $style['background-color'];
 
         $pdf = $this->getPdf();
-        $pdf->setFont($font, '', $size);
+        $pdf->SetFont($font, '', $size);
         $pdf->SetTextColor($color[0], $color[1], $color[2]);
         $pdf->SetFillColor($background[0], $background[1], $background[2]);
         $pdf->setTextRenderingMode();
@@ -480,7 +480,7 @@ class Renderer extends AbstractExport
         $size = $style['size'];
 
         $pdf = $this->getPdf();
-        $pdf->setFont($font.'I', '', $size);
+        $pdf->SetFont($font.'I', '', $size);
     }
 
     /**
