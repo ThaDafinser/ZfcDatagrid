@@ -207,7 +207,6 @@ return [
     'service_manager' => [
 
         'factories' => [
-            Service\DatagridManager::class => Service\DatagridManagerFactory::class,
             Datagrid::class => Service\DatagridFactory::class,
 
             'zfcDatagrid_dbAdapter' => Service\ZendDbAdapterFactory::class,
@@ -228,7 +227,6 @@ return [
 
         'aliases' => [
             'zfcDatagrid' => Datagrid::class,
-            'ZfcDatagridManager' => Service\DatagridManager::class,
 
             // HTML renderer
             'zfcDatagrid.renderer.bootstrapTable' => Renderer\BootstrapTable\Renderer::class,
