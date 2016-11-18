@@ -3,6 +3,7 @@
  * This is just a proxy to detect if we can use the "fast" Pagination
  * or if we use the "safe" variant by Doctrine2.
  */
+
 namespace ZfcDatagrid\DataSource\Doctrine2;
 
 use Doctrine\ORM\QueryBuilder;
@@ -52,7 +53,7 @@ class Paginator implements AdapterInterface
      */
     private function useCustomPaginator()
     {
-        $qb = $this->getQueryBuilder();
+        $qb    = $this->getQueryBuilder();
         $parts = $qb->getDQLParts();
 
         if ($parts['having'] !== null || true === $parts['distinct']) {

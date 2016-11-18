@@ -61,7 +61,7 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
         $sm->setService('config', []);
 
         $factory = new DatagridFactory();
-        $grid    = $factory->createService($sm);
+        $grid    = $factory->__invoke($sm, \ZfcDatagrid\Datagrid::class);
     }
 
     public function testCanCreateService()
@@ -72,7 +72,7 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
         $sm->setService('zfcDatagrid.renderer.bootstrapTable', $this->rendererServiceMock);
 
         $factory = new DatagridFactory();
-        $grid    = $factory->createService($sm);
+        $grid    = $factory->__invoke($sm, \ZfcDatagrid\Datagrid::class);
 
         $this->assertInstanceOf(\ZfcDatagrid\Datagrid::class, $grid);
     }
@@ -90,7 +90,7 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
         $sm->setService('translator', $translatorMock);
 
         $factory = new DatagridFactory();
-        $grid    = $factory->createService($sm);
+        $grid    = $factory->__invoke($sm, \ZfcDatagrid\Datagrid::class);
 
         $this->assertInstanceOf(\ZfcDatagrid\Datagrid::class, $grid);
         $this->assertEquals($translatorMock, $grid->getTranslator());
@@ -109,7 +109,7 @@ class DatagridFactoryTest extends PHPUnit_Framework_TestCase
         $sm->setService('translator', $mvcTranslatorMock);
 
         $factory = new DatagridFactory();
-        $grid    = $factory->createService($sm);
+        $grid    = $factory->__invoke($sm, \ZfcDatagrid\Datagrid::class);
 
         $this->assertInstanceOf(\ZfcDatagrid\Datagrid::class, $grid);
         $this->assertEquals($mvcTranslatorMock, $grid->getTranslator());

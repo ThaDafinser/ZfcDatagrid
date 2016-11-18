@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Column\Formatter;
 
 use ZfcDatagrid\Column\AbstractColumn;
@@ -126,7 +125,7 @@ class HtmlTag extends AbstractFormatter
     {
         $this->linkColumnPlaceholders[] = $col;
 
-        return ':'.$col->getUniqueId().':';
+        return ':' . $col->getUniqueId() . ':';
     }
 
     /**
@@ -173,7 +172,7 @@ class HtmlTag extends AbstractFormatter
             if ('href' === $attrKey) {
                 $attrValue = $this->getLinkReplaced($col);
             }
-            $attributes[] = $attrKey.'="'.$attrValue.'"';
+            $attributes[] = $attrKey . '="' . $attrValue . '"';
         }
 
         return implode(' ', $attributes);
@@ -205,7 +204,7 @@ class HtmlTag extends AbstractFormatter
         }
 
         foreach ($this->getLinkColumnPlaceholders() as $col) {
-            $link = str_replace(':'.$col->getUniqueId().':', rawurlencode($row[$col->getUniqueId()]), $link);
+            $link = str_replace(':' . $col->getUniqueId() . ':', rawurlencode($row[$col->getUniqueId()]), $link);
         }
 
         return $link;

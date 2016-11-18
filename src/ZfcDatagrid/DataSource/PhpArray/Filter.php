@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\DataSource\PhpArray;
 
 use ZfcDatagrid\Filter as DatagridFilter;
@@ -39,11 +38,11 @@ class Filter
     public function applyFilter(array $row)
     {
         $wasTrueOneTime = false;
-        $isApply = false;
+        $isApply        = false;
 
         foreach ($this->getFilter()->getValues() as $filterValue) {
             $filter = $this->getFilter();
-            $col = $filter->getColumn();
+            $col    = $filter->getColumn();
 
             $value = $row[$col->getUniqueId()];
             $value = $col->getType()->getFilterValue($value);

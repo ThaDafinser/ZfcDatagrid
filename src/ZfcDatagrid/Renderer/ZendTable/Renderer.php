@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Renderer\ZendTable;
 
 use Zend\Console\Adapter\AdapterInterface as ConsoleAdapter;
@@ -99,14 +98,14 @@ class Renderer extends AbstractRenderer
         $request = $this->getRequest();
 
         $optionsRenderer = $this->getOptionsRenderer();
-        $parameterNames = $optionsRenderer['parameterNames'];
+        $parameterNames  = $optionsRenderer['parameterNames'];
 
         $sortConditions = [];
 
-        $sortColumns = $request->getParam($parameterNames['sortColumns']);
+        $sortColumns    = $request->getParam($parameterNames['sortColumns']);
         $sortDirections = $request->getParam($parameterNames['sortDirections']);
         if ($sortColumns != '') {
-            $sortColumns = explode(',', $sortColumns);
+            $sortColumns    = explode(',', $sortColumns);
             $sortDirections = explode(',', $sortDirections);
 
             foreach ($sortColumns as $key => $sortColumn) {
@@ -125,7 +124,7 @@ class Renderer extends AbstractRenderer
                     if ($column->getUniqueId() == $sortColumn) {
                         $sortConditions[] = [
                             'sortDirection' => $sortDirection,
-                            'column' => $column,
+                            'column'        => $column,
                         ];
 
                         $column->setSortActive($sortDirection);
@@ -164,7 +163,7 @@ class Renderer extends AbstractRenderer
         $request = $this->getRequest();
 
         $optionsRenderer = $this->getOptionsRenderer();
-        $parameterNames = $optionsRenderer['parameterNames'];
+        $parameterNames  = $optionsRenderer['parameterNames'];
         if ($request->getParam($parameterNames['currentPage']) != '') {
             return (int) $request->getParam($parameterNames['currentPage']);
         }
@@ -184,7 +183,7 @@ class Renderer extends AbstractRenderer
         $request = $this->getRequest();
 
         $optionsRenderer = $this->getOptionsRenderer();
-        $parameterNames = $optionsRenderer['parameterNames'];
+        $parameterNames  = $optionsRenderer['parameterNames'];
         if ($request->getParam($parameterNames['itemsPerPage']) != '') {
             return (int) $request->getParam($parameterNames['itemsPerPage']);
         }
@@ -287,7 +286,7 @@ class Renderer extends AbstractRenderer
          */
         $tableRow = new Table\Row();
 
-        $footer = $this->translate('Page').' ';
+        $footer = $this->translate('Page') . ' ';
         $footer .= sprintf('%s %s %s', $paginator->getCurrentPageNumber(), $this->translate('of'), $paginator->count());
 
         $footer .= ' / ';
@@ -353,7 +352,7 @@ class Renderer extends AbstractRenderer
         $border = count($cols) + 1;
 
         $widthAvailable = $this->getConsoleAdapter()->getWidth() - $border;
-        $onePercent = $widthAvailable / 100;
+        $onePercent     = $widthAvailable / 100;
 
         $colWidths = [];
         foreach ($cols as $col) {
