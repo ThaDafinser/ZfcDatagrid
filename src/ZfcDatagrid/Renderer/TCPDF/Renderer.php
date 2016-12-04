@@ -8,17 +8,18 @@ use TCPDF;
 use Zend\Http\Headers;
 use Zend\Http\Response\Stream as ResponseStream;
 use ZfcDatagrid\Column\Style;
+use ZfcDatagrid\Column\Type;
 use ZfcDatagrid\Library\ImageResize;
 use ZfcDatagrid\Renderer\AbstractExport;
 
 class Renderer extends AbstractExport
 {
     protected $allowedColumnTypes = [
-        'ZfcDatagrid\Column\Type\DateTime',
-        'ZfcDatagrid\Column\Type\Image',
-        'ZfcDatagrid\Column\Type\Number',
-        'ZfcDatagrid\Column\Type\PhpArray',
-        'ZfcDatagrid\Column\Type\PhpString',
+        Type\DateTime::class,
+        Type\Image::class,
+        Type\Number::class,
+        Type\PhpArray::class,
+        Type\PhpString::class,
     ];
 
     /**
@@ -225,7 +226,7 @@ class Renderer extends AbstractExport
 
             switch (get_class($col->getType())) {
 
-                case 'ZfcDatagrid\Column\Type\Image':
+                case Type\Image::class:
                     // "min" height for such a column
                     $height = $col->getType()->getResizeHeight() + $contentPadding;
                     break;
@@ -345,48 +346,48 @@ class Renderer extends AbstractExport
 
             $styles = array_merge($this->getRowStyles(), $col->getStyles());
             foreach ($styles as $style) {
-                /* @var $style \ZfcDatagrid\Column\Style\AbstractStyle */
+                /* @var $style Style\AbstractStyle */
                 if ($style->isApply($row) === true) {
                     switch (get_class($style)) {
 
-                        case 'ZfcDatagrid\Column\Style\Bold':
+                        case Style\Bold::class:
                             $this->setBold();
                             break;
 
-                        case 'ZfcDatagrid\Column\Style\Italic':
+                        case Style\Italic::class:
                             $this->setItalic();
                             break;
 
-                        case 'ZfcDatagrid\Column\Style\Color':
+                        case Style\Color::class:
                             $this->setColor($style->getRgbArray());
                             break;
 
-                        case 'ZfcDatagrid\Column\Style\BackgroundColor':
+                        case Style\BackgroundColor::class:
                             $this->setBackgroundColor($style->getRgbArray());
                             $backgroundColor = true;
                             break;
 
-                        case 'ZfcDatagrid\Column\Style\Strikethrough':
+                        case Style\Strikethrough::class:
                             $text = '<del>'.$text.'</del>';
                             $isHtml = true;
                             break;
 
-                        case 'ZfcDatagrid\Column\Style\Html':
+                        case Style\Html::class:
                             $isHtml = true;
                             break;
 
-                        case 'ZfcDatagrid\Column\Style\Align':
+                        case Style\Align::class:
                             switch ($style->getAlignment()) {
-                                case \ZfcDatagrid\Column\Style\Align::$RIGHT:
+                                case Style\Align::$RIGHT:
                                     $this->setTextAlignment('R');
                                     break;
-                                case \ZfcDatagrid\Column\Style\Align::$LEFT:
+                                case Style\Align::$LEFT:
                                     $this->setTextAlignment('L');
                                     break;
-                                case \ZfcDatagrid\Column\Style\Align::$CENTER:
+                                case Style\Align::$CENTER:
                                     $this->setTextAlignment('C');
                                     break;
-                                case \ZfcDatagrid\Column\Style\Align::$JUSTIFY:
+                                case Style\Align::$JUSTIFY:
                                     $this->setTextAlignment('J');
                                     break;
                                 default:

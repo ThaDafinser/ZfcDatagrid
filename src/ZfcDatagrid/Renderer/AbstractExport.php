@@ -12,10 +12,10 @@ abstract class AbstractExport extends AbstractRenderer
      * @var array
      */
     protected $allowedColumnTypes = [
-        'ZfcDatagrid\Column\Type\DateTime',
-        'ZfcDatagrid\Column\Type\Number',
-        'ZfcDatagrid\Column\Type\PhpArray',
-        'ZfcDatagrid\Column\Type\PhpString',
+        Column\Type\DateTime::class,
+        Column\Type\Number::class,
+        Column\Type\PhpArray::class,
+        Column\Type\PhpString::class,
     ];
 
     /**
