@@ -251,7 +251,7 @@ class PrepareData
                             && $this->getRouter() instanceof RouteStackInterface
                         ) {
                             /** @var Column\Formatter\RouterInterface */
-                            $formatter->setRouter($this->getrouter());
+                            $formatter->setRouter($this->getRouter());
                         }
                         $formatter->setRowData($row);
                         $formatter->setRendererName($this->getRendererName());
