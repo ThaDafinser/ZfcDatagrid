@@ -425,7 +425,7 @@ class Datagrid
      */
     public function hasRouter()
     {
-        return !is_null($this->translator);
+        return !is_null($this->router);
     }
 
     /**
