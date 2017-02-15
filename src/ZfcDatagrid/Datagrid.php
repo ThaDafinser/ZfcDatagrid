@@ -13,6 +13,7 @@ use Zend\Http\PhpEnvironment\Request as HttpRequest;
 use Zend\I18n\Translator\Translator;
 use Zend\Mvc\MvcEvent;
 use Zend\Paginator\Paginator;
+use Zend\Router\RouteStackInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Session\Container as SessionContainer;
 use Zend\Stdlib\ResponseInterface;
@@ -78,6 +79,11 @@ class Datagrid
      * @var Translator
      */
     protected $translator;
+
+    /**
+     * @var RouteStackInterface
+     */
+    protected $router;
 
     /**
      * @var string
@@ -396,6 +402,30 @@ class Datagrid
         }
 
         return false;
+    }
+
+    /**
+     * @param \Zend\Router\RouteStackInterface $router
+     */
+    public function setRouter( RouteStackInterface $router )
+    {
+        $this->router = $router;
+    }
+
+    /**
+     * @return RouteStackInterface
+     */
+    public function getRouter()
+    {
+        return $this->router;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasRouter()
+    {
+        return !is_null($this->translator);
     }
 
     /**
@@ -978,6 +1008,10 @@ class Datagrid
          * Step 3) Format the data - Translate - Replace - Date / time / datetime - Numbers - ...
          */
         $prepareData = new PrepareData($data, $this->getColumns());
+        if ($this->getRouter() instanceof RouteStackInterface) {
+            $prepareData->setRouter($this->getRouter());
+        }
+
         $prepareData->setRendererName($this->getRendererName());
         if ($this->hasTranslator()) {
             $prepareData->setTranslator($this->getTranslator());

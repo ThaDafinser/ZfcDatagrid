@@ -58,6 +58,25 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         ]));
     }
 
+    public function testRoute()
+    {
+        /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
+        $action = $this->getMockForAbstractClass(\ZfcDatagrid\Column\Action\AbstractAction::class);
+
+        $action->setRoute('my_route');
+        $this->assertEquals('my_route', $action->getRoute());
+
+        $action->setRouteParams(array(
+            'id'   => 1,
+            'foo'  => 'bar',
+        ));
+
+        $this->assertEquals(array(
+            'id'   => 1,
+            'foo'  => 'bar',
+        ), $action->getRouteParams());
+    }
+
     public function testToHtml()
     {
         /* @var $action \ZfcDatagrid\Column\Action\AbstractAction */
