@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Service;
 
 use Zend\Form\FormElementManager;

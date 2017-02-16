@@ -1,10 +1,10 @@
 <?php
-
 namespace ZfcDatagrid\Column\Formatter;
 
+use Zend\Router\RouteStackInterface;
 use ZfcDatagrid\Column\AbstractColumn;
 
-class HtmlTag extends AbstractFormatter
+class HtmlTag extends AbstractFormatter implements RouterInterface
 {
     const ROW_ID_PLACEHOLDER = ':rowId:';
 
@@ -30,6 +30,39 @@ class HtmlTag extends AbstractFormatter
      * @var array
      */
     protected $attributes = [];
+
+    /**
+     * @var string
+     */
+    protected $route;
+
+    /**
+     * @var array
+     */
+    protected $routeParams = [];
+
+    /**
+     * @var RouteStackInterface
+     */
+    public $router;
+
+    /**
+     * @param \Zend\Router\RouteStackInterface $router
+     *
+     * @return void
+     */
+    public function setRouter(RouteStackInterface $router)
+    {
+        $this->router = $router;
+    }
+
+    /**
+     * @return \Zend\Router\RouteStackInterface
+     */
+    public function getRouter()
+    {
+        return $this->router;
+    }
 
     /**
      * @param $name
@@ -115,6 +148,38 @@ class HtmlTag extends AbstractFormatter
     }
 
     /**
+     * @param string $route
+     */
+    public function setRoute($route)
+    {
+        $this->route = $route;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRoute()
+    {
+        return $this->route;
+    }
+
+    /**
+     * @param array $params
+     */
+    public function setRouteParams(array $params)
+    {
+        $this->routeParams = $params;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRouteParams()
+    {
+        return $this->routeParams;
+    }
+
+    /**
      * Get the column row value placeholder
      * $fmt->setLink('/myLink/something/'.$fmt->getColumnValuePlaceholder($myCol));.
      *
@@ -126,7 +191,7 @@ class HtmlTag extends AbstractFormatter
     {
         $this->linkColumnPlaceholders[] = $col;
 
-        return ':'.$col->getUniqueId().':';
+        return ':' . $col->getUniqueId() . ':';
     }
 
     /**
@@ -169,11 +234,19 @@ class HtmlTag extends AbstractFormatter
     protected function getAttributesString(AbstractColumn $col)
     {
         $attributes = [];
+
+        if ($this->getRoute() && $this->getRouter() instanceof RouteStackInterface) {
+            $this->setLink($this->getRouter()->assemble(
+                $this->getRouteParams(),
+                ['name' => $this->getRoute()]
+            ));
+        }
+
         foreach ($this->getAttributes() as $attrKey => $attrValue) {
             if ('href' === $attrKey) {
                 $attrValue = $this->getLinkReplaced($col);
             }
-            $attributes[] = $attrKey.'="'.$attrValue.'"';
+            $attributes[] = $attrKey . '="' . $attrValue . '"';
         }
 
         return implode(' ', $attributes);
@@ -205,7 +278,7 @@ class HtmlTag extends AbstractFormatter
         }
 
         foreach ($this->getLinkColumnPlaceholders() as $col) {
-            $link = str_replace(':'.$col->getUniqueId().':', rawurlencode($row[$col->getUniqueId()]), $link);
+            $link = str_replace(':' . $col->getUniqueId() . ':', rawurlencode($row[$col->getUniqueId()]), $link);
         }
 
         return $link;

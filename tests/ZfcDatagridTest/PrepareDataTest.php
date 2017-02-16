@@ -2,12 +2,16 @@
 namespace ZfcDatagridTest;
 
 use PHPUnit_Framework_TestCase;
+use Zend\Router\Http\HttpRouterFactory;
+use Zend\Router\Http\Segment;
+use Zend\Router\RoutePluginManagerFactory;
 use ZfcDatagrid\Column\DataPopulation\Object;
 use ZfcDatagrid\Column\Type;
 use ZfcDatagrid\PrepareData;
+use ZfcDatagridTest\Util\ServiceManagerFactory;
 
 /**
- * @covers ZfcDatagrid\PrepareData
+ * @covers \ZfcDatagrid\PrepareData
  */
 class PrepareDataTest extends PHPUnit_Framework_TestCase
 {
@@ -294,7 +298,7 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
         $translator->expects($this->any())
             ->method('translate')
             ->will($this->returnCallback(function ($name) {
-            switch ($name) {
+                switch ($name) {
 
                 case 'yes':
                     return 'ja';
@@ -309,8 +313,8 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
                     break;
             }
 
-            return $name;
-        }));
+                return $name;
+            }));
 
         $prepare->setTranslator($translator);
 
@@ -346,15 +350,15 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
         $translator->expects($this->any())
             ->method('translate')
             ->will($this->returnCallback(function ($name) {
-            switch ($name) {
+                switch ($name) {
 
                 case 'tag2':
                     return 'Tag 2';
                     break;
             }
 
-            return $name;
-        }));
+                return $name;
+            }));
 
         $prepare->setTranslator($translator);
 
@@ -448,6 +452,70 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
         $data[0]['col1'] = '<a href="test">test</a>';
         $data[1]['col1'] = '<a href="test">test</a>';
         $data[2]['col1'] = '<a href="test">test</a>';
+
+        $data[1]['col2'] = '';
+
+        $this->assertEquals($data, $prepare->getData());
+    }
+
+    public function getRouter()
+    {
+        $config = [
+            'router' => [
+                'routes' => [
+                    'myTestRoute' => [
+                        'type'    => Segment::class,
+                        'options' => [
+                            'route'    => '/foo[/:bar]',
+                            'defaults' => [
+                                'controller' => 'MyController',
+                                'action'     => 'index',
+                                'bar'        => 'baz',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        // Setup service manager, we need that for the route
+        ServiceManagerFactory::setConfig($config);
+        $serviceLocator = ServiceManagerFactory::getServiceManager();
+
+        $routePluginManager = new RoutePluginManagerFactory();
+        $serviceLocator->setService('RoutePluginManager', $routePluginManager->createService($serviceLocator));
+        $routerFactory = new HttpRouterFactory();
+
+        return $routerFactory->createService($serviceLocator);
+    }
+
+    public function testRouterDependency()
+    {
+        $data = $this->data;
+
+        $col1      = clone $this->col1;
+        $formatter = new \ZfcDatagrid\Column\Formatter\Link();
+        $formatter->setRoute('myTestRoute');
+        $formatter->setRouteParams(['bar' => 'xyz']);
+        $col1->addFormatter($formatter);
+        $prepare = new PrepareData($data, [
+            $this->colId,
+            $col1,
+            $this->col2,
+        ]);
+        $prepare->setRendererName('bootstrapTable');
+
+        $router = $this->getRouter();
+        $prepare->setRouter($router);
+        $this->assertSame($router, $prepare->getRouter());
+
+        $data[0]['idConcated'] = '1';
+        $data[1]['idConcated'] = '2';
+        $data[2]['idConcated'] = '3';
+
+        $data[0]['col1'] = '<a href="/foo/xyz">test</a>';
+        $data[1]['col1'] = '<a href="/foo/xyz">test</a>';
+        $data[2]['col1'] = '<a href="/foo/xyz">test</a>';
 
         $data[1]['col2'] = '';
 

@@ -1,8 +1,8 @@
 <?php
-
 namespace ZfcDatagrid;
 
 use Zend\I18n\Translator\Translator;
+use Zend\Router\RouteStackInterface;
 
 class PrepareData
 {
@@ -27,6 +27,11 @@ class PrepareData
      * @var Translator
      */
     private $translator;
+
+    /**
+     * @var \Zend\Router\RouteStackInterface
+     */
+    private $router;
 
     /**
      * @param array $data
@@ -114,6 +119,22 @@ class PrepareData
     public function getTranslator()
     {
         return $this->translator;
+    }
+
+    /**
+     * @param \Zend\Router\RouteStackInterface $router
+     */
+    public function setRouter(RouteStackInterface $router)
+    {
+        $this->router = $router;
+    }
+
+    /**
+     * @return \Zend\Router\RouteStackInterface
+     */
+    public function getRouter()
+    {
+        return $this->router;
     }
 
     /**
@@ -225,6 +246,12 @@ class PrepareData
                  */
                 if ($col->hasFormatters() === true) {
                     foreach ($col->getFormatters() as $formatter) {
+                        if ($formatter instanceof Column\Formatter\RouterInterface
+                            && $this->getRouter() instanceof RouteStackInterface
+                        ) {
+                            /** @var Column\Formatter\RouterInterface */
+                            $formatter->setRouter($this->getRouter());
+                        }
                         $formatter->setRowData($row);
                         $formatter->setRendererName($this->getRendererName());
 

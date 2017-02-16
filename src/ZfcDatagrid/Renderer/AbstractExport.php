@@ -2,6 +2,7 @@
 /**
  * Methods which can be used in (all) export renderer.
  */
+
 namespace ZfcDatagrid\Renderer;
 
 use ZfcDatagrid\Column;
@@ -64,7 +65,7 @@ abstract class AbstractExport extends AbstractRenderer
     {
         $optionsRenderer = $this->getOptionsRenderer();
 
-        $papersize = $optionsRenderer['papersize'];
+        $papersize   = $optionsRenderer['papersize'];
         $orientation = $optionsRenderer['orientation'];
 
         if (substr($papersize, 0, 1) != 'A') {
@@ -100,7 +101,7 @@ abstract class AbstractExport extends AbstractRenderer
      */
     protected function getFilename()
     {
-        $filenameParts = [];
+        $filenameParts   = [];
         $filenameParts[] = date('Y-m-d_H-i-s');
 
         if ($this->getTitle() != '') {

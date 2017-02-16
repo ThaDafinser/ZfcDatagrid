@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Service;
 
 use Interop\Container\ContainerInterface;
@@ -36,7 +35,7 @@ abstract class AbstractDatagrid extends Datagrid implements FactoryInterface
             parent::setTranslator($container->get('translator'));
         }
 
-        parent::setRendererService($container->get('zfcDatagrid.renderer.'.parent::getRendererName()));
+        parent::setRendererService($container->get('zfcDatagrid.renderer.' . parent::getRendererName()));
         parent::init();
 
         return $this;

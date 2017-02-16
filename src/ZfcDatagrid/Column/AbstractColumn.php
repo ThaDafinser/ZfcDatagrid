@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Column;
 
 use ZfcDatagrid\Column\Formatter\AbstractFormatter;
@@ -258,7 +257,7 @@ abstract class AbstractColumn
     public function setSortDefault($priority = 1, $direction = 'ASC')
     {
         $this->sortDefault = [
-            'priority' => $priority,
+            'priority'      => $priority,
             'sortDirection' => $direction,
         ];
     }
@@ -432,7 +431,7 @@ abstract class AbstractColumn
      */
     public function setFilterActive($value = '')
     {
-        $this->filterActive = (bool) true;
+        $this->filterActive      = (bool) true;
         $this->filterActiveValue = $value;
     }
 
@@ -488,7 +487,7 @@ abstract class AbstractColumn
      */
     public function setReplaceValues(array $values, $notReplacedGetEmpty = true)
     {
-        $this->replaceValues = $values;
+        $this->replaceValues       = $values;
         $this->notReplacedGetEmpty = (bool) $notReplacedGetEmpty;
 
         $this->setFilterDefaultOperation(Filter::EQUAL);
@@ -532,7 +531,7 @@ abstract class AbstractColumn
             $this->rendererParameter[$rendererType] = [];
         }
 
-        $parameters = $this->rendererParameter[$rendererType];
+        $parameters        = $this->rendererParameter[$rendererType];
         $parameters[$name] = $value;
 
         $this->rendererParameter[$rendererType] = $parameters;

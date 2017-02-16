@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\DataSource;
 
 use Doctrine\Common\Collections\Collection;
@@ -32,9 +31,9 @@ class Doctrine2Collection extends AbstractDataSource
         } else {
             $return = $data;
             if (is_object($data)) {
-                $return = 'instanceof '.get_class($return);
+                $return = 'instanceof ' . get_class($return);
             }
-            throw new \InvalidArgumentException('Unknown data input: "'.$return.'"');
+            throw new \InvalidArgumentException('Unknown data input: "' . $return . '"');
         }
     }
 
