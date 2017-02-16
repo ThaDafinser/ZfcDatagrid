@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Renderer\JqGrid\View\Helper;
 
 use Interop\Container\ContainerInterface;

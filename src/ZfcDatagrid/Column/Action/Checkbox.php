@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Column\Action;
 
 /**
@@ -32,6 +31,6 @@ class Checkbox extends AbstractAction
         $this->removeAttribute('name');
         $this->removeAttribute('value');
 
-        return '<input type="checkbox" name="'.$this->name.'" value="'.$row['idConcated'].'" '.$this->getAttributesString($row).' />';
+        return '<input type="checkbox" name="' . $this->name . '" value="' . $row['idConcated'] . '" ' . $this->getAttributesString($row) . ' />';
     }
 }

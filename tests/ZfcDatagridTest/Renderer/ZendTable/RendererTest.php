@@ -155,12 +155,12 @@ class RendererTest extends PHPUnit_Framework_TestCase
         $request->expects($this->any())
             ->method('getParam')
             ->will($this->returnCallback(function ($name) {
-            if ('dirs' == $name) {
-                return 'ASC,DESC';
-            } else {
-                return 'myCol1,myCol2';
-            }
-        }));
+                if ('dirs' == $name) {
+                    return 'ASC,DESC';
+                } else {
+                    return 'myCol1,myCol2';
+                }
+            }));
 
         $mvcEvent = clone $this->mvcEventMock;
         $mvcEvent->expects($this->any())
@@ -207,12 +207,12 @@ class RendererTest extends PHPUnit_Framework_TestCase
         $request->expects($this->any())
             ->method('getParam')
             ->will($this->returnCallback(function ($name) {
-            if ('dirs' == $name) {
-                return 'WRONG_DIRECTION';
-            } else {
-                return 'myCol1,myCol2';
-            }
-        }));
+                if ('dirs' == $name) {
+                    return 'WRONG_DIRECTION';
+                } else {
+                    return 'myCol1,myCol2';
+                }
+            }));
 
         $mvcEvent = clone $this->mvcEventMock;
         $mvcEvent->expects($this->any())

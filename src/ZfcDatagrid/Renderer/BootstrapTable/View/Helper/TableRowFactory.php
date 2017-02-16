@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Renderer\BootstrapTable\View\Helper;
 
 use Interop\Container\ContainerInterface;

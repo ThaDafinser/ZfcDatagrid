@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Column\Type;
 
 use Locale;
@@ -102,7 +101,7 @@ class Number extends AbstractType
     {
         $this->attributes[] = [
             'attribute' => $attr,
-            'value' => $value,
+            'value'     => $value,
         ];
     }
 
@@ -204,6 +203,6 @@ class Number extends AbstractType
 
         $formattedValue = $formatter->format($val, $this->getFormatType());
 
-        return (string) $this->getPrefix().$formattedValue.$this->getSuffix();
+        return (string) $this->getPrefix() . $formattedValue . $this->getSuffix();
     }
 }

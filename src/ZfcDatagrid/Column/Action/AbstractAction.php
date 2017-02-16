@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Column\Action;
 
 use ZfcDatagrid\Column;
@@ -33,7 +32,7 @@ abstract class AbstractAction
     /**
      * @var array
      */
-    protected $routeParams = array();
+    protected $routeParams = [];
 
     /**
      * @var array
@@ -116,7 +115,7 @@ abstract class AbstractAction
         }
 
         foreach ($this->getLinkColumnPlaceholders() as $col) {
-            $link = str_replace(':'.$col->getUniqueId().':', $row[$col->getUniqueId()], $link);
+            $link = str_replace(':' . $col->getUniqueId() . ':', $row[$col->getUniqueId()], $link);
         }
 
         return $link;
@@ -134,7 +133,7 @@ abstract class AbstractAction
     {
         $this->linkColumnPlaceholders[] = $col;
 
-        return ':'.$col->getUniqueId().':';
+        return ':' . $col->getUniqueId() . ':';
     }
 
     /**
@@ -220,7 +219,7 @@ abstract class AbstractAction
             if ('href' === $attrKey) {
                 $attrValue = $this->getLinkReplaced($row);
             }
-            $attributes[] = $attrKey.'="'.$attrValue.'"';
+            $attributes[] = $attrKey . '="' . $attrValue . '"';
         }
 
         return implode(' ', $attributes);
@@ -270,7 +269,7 @@ abstract class AbstractAction
     public function setShowOnValueOperator($operator = 'OR')
     {
         if ($operator != 'AND' && $operator != 'OR') {
-            throw new \InvalidArgumentException('not allowed operator: "'.$operator.'" (AND / OR is allowed)');
+            throw new \InvalidArgumentException('not allowed operator: "' . $operator . '" (AND / OR is allowed)');
         }
 
         $this->showOnValueOperator = (string) $operator;
@@ -297,8 +296,8 @@ abstract class AbstractAction
     public function addShowOnValue(Column\AbstractColumn $col, $value = null, $comparison = Filter::EQUAL)
     {
         $this->showOnValues[] = [
-            'column' => $col,
-            'value' => $value,
+            'column'     => $col,
+            'value'      => $value,
             'comparison' => $comparison,
         ];
     }
@@ -381,6 +380,6 @@ abstract class AbstractAction
      */
     public function toHtml(array $row)
     {
-        return '<a '.$this->getAttributesString($row).'>'.$this->getHtmlType().'</a>';
+        return '<a ' . $this->getAttributesString($row) . '>' . $this->getHtmlType() . '</a>';
     }
 }

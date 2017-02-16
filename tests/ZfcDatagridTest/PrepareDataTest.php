@@ -298,7 +298,7 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
         $translator->expects($this->any())
             ->method('translate')
             ->will($this->returnCallback(function ($name) {
-            switch ($name) {
+                switch ($name) {
 
                 case 'yes':
                     return 'ja';
@@ -313,8 +313,8 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
                     break;
             }
 
-            return $name;
-        }));
+                return $name;
+            }));
 
         $prepare->setTranslator($translator);
 
@@ -350,15 +350,15 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
         $translator->expects($this->any())
             ->method('translate')
             ->will($this->returnCallback(function ($name) {
-            switch ($name) {
+                switch ($name) {
 
                 case 'tag2':
                     return 'Tag 2';
                     break;
             }
 
-            return $name;
-        }));
+                return $name;
+            }));
 
         $prepare->setTranslator($translator);
 
@@ -460,26 +460,26 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
 
     public function getRouter()
     {
-        $config = array(
-            'router' => array(
-                'routes' => array(
-                    'myTestRoute' => array(
+        $config = [
+            'router' => [
+                'routes' => [
+                    'myTestRoute' => [
                         'type'    => Segment::class,
-                        'options' => array(
+                        'options' => [
                             'route'    => '/foo[/:bar]',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => 'MyController',
                                 'action'     => 'index',
                                 'bar'        => 'baz',
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        );
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
         // Setup service manager, we need that for the route
-        ServiceManagerFactory::setConfig( $config );
+        ServiceManagerFactory::setConfig($config);
         $serviceLocator = ServiceManagerFactory::getServiceManager();
 
         $routePluginManager = new RoutePluginManagerFactory();
@@ -493,10 +493,10 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
     {
         $data = $this->data;
 
-        $col1 = clone $this->col1;
+        $col1      = clone $this->col1;
         $formatter = new \ZfcDatagrid\Column\Formatter\Link();
         $formatter->setRoute('myTestRoute');
-        $formatter->setRouteParams(array('bar' => 'xyz'));
+        $formatter->setRouteParams(['bar' => 'xyz']);
         $col1->addFormatter($formatter);
         $prepare = new PrepareData($data, [
             $this->colId,

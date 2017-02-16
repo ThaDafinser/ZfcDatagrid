@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Column\Formatter;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -52,7 +51,7 @@ class GenerateLink extends AbstractFormatter
      */
     public function getFormattedValue(AbstractColumn $column)
     {
-        $row = $this->getRowData();
+        $row   = $this->getRowData();
         $value = $row[$column->getUniqueId()];
 
         $routeKey = !is_null($this->getRouteKey()) ?
@@ -60,7 +59,7 @@ class GenerateLink extends AbstractFormatter
             :
             $column->getUniqueId();
 
-        $params = $this->getRouteParams();
+        $params            = $this->getRouteParams();
         $params[$routeKey] = $value;
 
         $url = (string) $this->getViewRenderer()->url($this->getRoute(), $params);

@@ -66,15 +66,15 @@ class AbstractActionTest extends PHPUnit_Framework_TestCase
         $action->setRoute('my_route');
         $this->assertEquals('my_route', $action->getRoute());
 
-        $action->setRouteParams(array(
+        $action->setRouteParams([
             'id'   => 1,
             'foo'  => 'bar',
-        ));
+        ]);
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             'id'   => 1,
             'foo'  => 'bar',
-        ), $action->getRouteParams());
+        ], $action->getRouteParams());
     }
 
     public function testToHtml()

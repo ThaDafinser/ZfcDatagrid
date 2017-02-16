@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagridTest\Util;
 
 use Zend\Mvc\Service\ServiceListenerFactory;
@@ -14,7 +13,7 @@ class ServiceManagerFactory
     /**
      * @var array
      */
-    protected static $config = array();
+    protected static $config = [];
 
     /**
      * @param array $config
@@ -30,12 +29,12 @@ class ServiceManagerFactory
     public static function getServiceManager()
     {
         $serviceManager = new ServiceManager(
-            isset(static::$config['service_manager']) ? static::$config['service_manager'] : array()
+            isset(static::$config['service_manager']) ? static::$config['service_manager'] : []
         );
         $serviceManager->setService('Applicationconfig', static::$config);
         $serviceManager->setFactory('ServiceListener', ServiceListenerFactory::class);
 
-        $serviceManager->setService( 'config', self::$config );
+        $serviceManager->setService('config', self::$config);
 
         return $serviceManager;
     }

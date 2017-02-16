@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Column\Formatter;
 
 use Zend\Router\RouteStackInterface;
@@ -40,7 +39,7 @@ class HtmlTag extends AbstractFormatter implements RouterInterface
     /**
      * @var array
      */
-    protected $routeParams = array();
+    protected $routeParams = [];
 
     /**
      * @var RouteStackInterface
@@ -192,7 +191,7 @@ class HtmlTag extends AbstractFormatter implements RouterInterface
     {
         $this->linkColumnPlaceholders[] = $col;
 
-        return ':'.$col->getUniqueId().':';
+        return ':' . $col->getUniqueId() . ':';
     }
 
     /**
@@ -237,9 +236,9 @@ class HtmlTag extends AbstractFormatter implements RouterInterface
         $attributes = [];
 
         if ($this->getRoute() && $this->getRouter() instanceof RouteStackInterface) {
-            $this->setLink( $this->getRouter()->assemble(
+            $this->setLink($this->getRouter()->assemble(
                 $this->getRouteParams(),
-                array('name' => $this->getRoute())
+                ['name' => $this->getRoute()]
             ));
         }
 
@@ -247,7 +246,7 @@ class HtmlTag extends AbstractFormatter implements RouterInterface
             if ('href' === $attrKey) {
                 $attrValue = $this->getLinkReplaced($col);
             }
-            $attributes[] = $attrKey.'="'.$attrValue.'"';
+            $attributes[] = $attrKey . '="' . $attrValue . '"';
         }
 
         return implode(' ', $attributes);
@@ -279,7 +278,7 @@ class HtmlTag extends AbstractFormatter implements RouterInterface
         }
 
         foreach ($this->getLinkColumnPlaceholders() as $col) {
-            $link = str_replace(':'.$col->getUniqueId().':', rawurlencode($row[$col->getUniqueId()]), $link);
+            $link = str_replace(':' . $col->getUniqueId() . ':', rawurlencode($row[$col->getUniqueId()]), $link);
         }
 
         return $link;

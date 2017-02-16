@@ -614,26 +614,26 @@ class DatagridTest extends PHPUnit_Framework_TestCase
 
     public function getRouter()
     {
-        $config = array(
-            'router' => array(
-                'routes' => array(
-                    'myTestRoute' => array(
+        $config = [
+            'router' => [
+                'routes' => [
+                    'myTestRoute' => [
                         'type'    => Segment::class,
-                        'options' => array(
+                        'options' => [
                             'route'    => '/foo[/:bar]',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => 'MyController',
                                 'action'     => 'index',
                                 'bar'        => 'baz',
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        );
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
         // Setup service manager, we need that for the route
-        ServiceManagerFactory::setConfig( $config );
+        ServiceManagerFactory::setConfig($config);
         $serviceLocator = ServiceManagerFactory::getServiceManager();
 
         $routePluginManager = new RoutePluginManagerFactory();

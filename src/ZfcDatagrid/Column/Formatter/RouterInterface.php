@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Column\Formatter;
 
 use Zend\Router\RouteStackInterface;

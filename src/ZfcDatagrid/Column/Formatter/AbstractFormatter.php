@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Column\Formatter;
 
 use ZfcDatagrid\Column\AbstractColumn;

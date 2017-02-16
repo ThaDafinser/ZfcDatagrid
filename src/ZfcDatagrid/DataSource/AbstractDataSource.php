@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\DataSource;
 
 use Zend\Paginator\Adapter\AdapterInterface as PaginatorAdapterInterface;
@@ -74,7 +73,7 @@ abstract class AbstractDataSource implements DataSourceInterface
     public function addSortCondition(Column\AbstractColumn $column, $sortDirection = 'ASC')
     {
         $this->sortConditions[] = [
-            'column' => $column,
+            'column'        => $column,
             'sortDirection' => $sortDirection,
         ];
     }

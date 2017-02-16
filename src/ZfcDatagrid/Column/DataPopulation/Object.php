@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Column\DataPopulation;
 
 use ZfcDatagrid\Column;
@@ -47,7 +46,7 @@ class Object implements DataPopulationInterface
     {
         $this->objectParameters[] = [
             'objectParameterName' => $objectParameterName,
-            'column' => $column,
+            'column'              => $column,
         ];
     }
 

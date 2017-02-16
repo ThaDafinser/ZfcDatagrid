@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Column\Action;
 
 class Icon extends AbstractAction
@@ -78,10 +77,10 @@ class Icon extends AbstractAction
     {
         if ($this->hasIconClass() === true) {
             // a css class is provided, so use it
-            return '<i class="'.$this->getIconClass().'"></i>';
+            return '<i class="' . $this->getIconClass() . '"></i>';
         } elseif ($this->hasIconLink() === true) {
             // no css class -> use the icon link instead
-            return '<img src="'.$this->getIconLink().'" />';
+            return '<img src="' . $this->getIconLink() . '" />';
         }
 
         throw new \InvalidArgumentException('Either a link or a class for the icon is required');

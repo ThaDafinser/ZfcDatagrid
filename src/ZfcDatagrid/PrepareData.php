@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid;
 
 use Zend\I18n\Translator\Translator;

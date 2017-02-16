@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\DataSource;
 
 use Doctrine\ORM;
@@ -29,7 +28,7 @@ class Doctrine2 extends AbstractDataSource
             if (is_object($data)) {
                 $return = get_class($return);
             }
-            throw new \InvalidArgumentException('Unknown data input...'.$return);
+            throw new \InvalidArgumentException('Unknown data input...' . $return);
         }
     }
 
@@ -59,9 +58,9 @@ class Doctrine2 extends AbstractDataSource
 
             $colString = $col->getSelectPart1();
             if ($col->getSelectPart2() != '') {
-                $colString .= '.'.$col->getSelectPart2();
+                $colString .= '.' . $col->getSelectPart2();
             }
-            $colString .= ' '.$col->getUniqueId();
+            $colString .= ' ' . $col->getUniqueId();
 
             $selectColumns[] = $colString;
         }
@@ -80,18 +79,18 @@ class Doctrine2 extends AbstractDataSource
                 $col = $sortCondition['column'];
 
                 if (!$col instanceof Column\Select) {
-                    throw new \Exception('This column cannot be sorted: '.$col->getUniqueId());
+                    throw new \Exception('This column cannot be sorted: ' . $col->getUniqueId());
                 }
 
                 /* @var $col \ZfcDatagrid\Column\Select */
                 $colString = $col->getSelectPart1();
                 if ($col->getSelectPart2() != '') {
-                    $colString .= '.'.$col->getSelectPart2();
+                    $colString .= '.' . $col->getSelectPart2();
                 }
 
                 if ($col->getType() instanceof Type\Number) {
-                    $qb->addSelect('ABS('.$colString.') sortColumn'.$key);
-                    $qb->add('orderBy', new Expr\OrderBy('sortColumn'.$key, $sortCondition['sortDirection']), true);
+                    $qb->addSelect('ABS(' . $colString . ') sortColumn' . $key);
+                    $qb->add('orderBy', new Expr\OrderBy('sortColumn' . $key, $sortCondition['sortDirection']), true);
                 } else {
                     $qb->add('orderBy', new Expr\OrderBy($col->getUniqueId(), $sortCondition['sortDirection']), true);
                 }

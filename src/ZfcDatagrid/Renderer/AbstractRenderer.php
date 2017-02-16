@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Renderer;
 
 use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
@@ -181,12 +180,12 @@ abstract class AbstractRenderer implements RendererInterface
         }
 
         if ('layout' === $type) {
-            return 'zfc-datagrid/renderer/'.$this->getName().'/'.$type;
+            return 'zfc-datagrid/renderer/' . $this->getName() . '/' . $type;
         } elseif ('toolbar' === $type) {
             return 'zfc-datagrid/toolbar/toolbar';
         }
 
-        throw new \Exception('Unknown type: "'.$type.'"');
+        throw new \Exception('Unknown type: "' . $type . '"');
     }
 
     /**
@@ -533,7 +532,7 @@ abstract class AbstractRenderer implements RendererInterface
                 $sortDefaults = $column->getSortDefault();
 
                 $sortConditions[$sortDefaults['priority']] = [
-                    'column' => $column,
+                    'column'        => $column,
                     'sortDirection' => $sortDefaults['sortDirection'],
                 ];
 
@@ -667,7 +666,7 @@ abstract class AbstractRenderer implements RendererInterface
         }
         $viewModel->setVariable('rendererName', $this->getName());
 
-        $options = $this->getOptions();
+        $options               = $this->getOptions();
         $generalParameterNames = $options['generalParameterNames'];
         $viewModel->setVariable('generalParameterNames', $generalParameterNames);
 
@@ -693,17 +692,17 @@ abstract class AbstractRenderer implements RendererInterface
             $parameterNames = $optionsRenderer['parameterNames'];
             $viewModel->setVariable('parameterNames', $parameterNames);
 
-            $activeParameters = [];
+            $activeParameters                                 = [];
             $activeParameters[$parameterNames['currentPage']] = $this->getCurrentPageNumber();
             {
-                $sortColumns = [];
+                $sortColumns    = [];
                 $sortDirections = [];
                 foreach ($this->getSortConditions() as $sortCondition) {
-                    $sortColumns[] = $sortCondition['column']->getUniqueId();
+                    $sortColumns[]    = $sortCondition['column']->getUniqueId();
                     $sortDirections[] = $sortCondition['sortDirection'];
                 }
 
-                $activeParameters[$parameterNames['sortColumns']] = implode(',', $sortColumns);
+                $activeParameters[$parameterNames['sortColumns']]    = implode(',', $sortColumns);
                 $activeParameters[$parameterNames['sortDirections']] = implode(',', $sortDirections);
             }
             $viewModel->setVariable('activeParameters', $activeParameters);

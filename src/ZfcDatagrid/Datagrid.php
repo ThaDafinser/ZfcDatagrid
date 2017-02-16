@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid;
 
 use ArrayIterator;
@@ -337,7 +336,7 @@ class Datagrid
         if (null === $this->cacheId) {
             $this->cacheId = md5($this->getSession()
                 ->getManager()
-                ->getId().'_'.$this->getId());
+                ->getId() . '_' . $this->getId());
         }
 
         return $this->cacheId;
@@ -349,7 +348,7 @@ class Datagrid
     public function setMvcEvent(MvcEvent $mvcEvent)
     {
         $this->mvcEvent = $mvcEvent;
-        $this->request = $mvcEvent->getRequest();
+        $this->request  = $mvcEvent->getRequest();
     }
 
     /**
@@ -407,7 +406,7 @@ class Datagrid
     /**
      * @param \Zend\Router\RouteStackInterface $router
      */
-    public function setRouter( RouteStackInterface $router )
+    public function setRouter(RouteStackInterface $router)
     {
         $this->router = $router;
     }
@@ -595,7 +594,7 @@ class Datagrid
     public function getExportRenderers()
     {
         if (null === $this->exportRenderers) {
-            $options = $this->getOptions();
+            $options               = $this->getOptions();
             $this->exportRenderers = $options['settings']['export']['formats'];
         }
 
@@ -622,8 +621,8 @@ class Datagrid
         $colType = isset($config['colType']) ? $config['colType'] : 'Select';
         if (class_exists($colType, true)) {
             $class = $colType;
-        } elseif (class_exists('ZfcDatagrid\\Column\\'.$colType, true)) {
-            $class = 'ZfcDatagrid\\Column\\'.$colType;
+        } elseif (class_exists('ZfcDatagrid\\Column\\' . $colType, true)) {
+            $class = 'ZfcDatagrid\\Column\\' . $colType;
         } else {
             throw new \InvalidArgumentException(sprintf('Column type: "%s" not found!', $colType));
         }
@@ -640,7 +639,7 @@ class Datagrid
         }
 
         foreach ($config as $key => $value) {
-            $method = 'set'.ucfirst($key);
+            $method = 'set' . ucfirst($key);
             if (method_exists($instance, $method)) {
                 if (in_array($key, $this->specialMethods)) {
                     if (!is_array($value)) {
@@ -674,7 +673,7 @@ class Datagrid
         $useColumns = [];
 
         foreach ($columns as $col) {
-            $col = $this->createColumn($col);
+            $col                             = $this->createColumn($col);
             $useColumns[$col->getUniqueId()] = $col;
         }
 
@@ -688,7 +687,7 @@ class Datagrid
      */
     public function addColumn($col)
     {
-        $col = $this->createColumn($col);
+        $col                                = $this->createColumn($col);
         $this->columns[$col->getUniqueId()] = $col;
     }
 
@@ -828,7 +827,7 @@ class Datagrid
      */
     public function getRendererName()
     {
-        $options = $this->getOptions();
+        $options       = $this->getOptions();
         $parameterName = $options['generalParameterNames']['rendererType'];
 
         if ($this->forceRenderer !== null) {
@@ -987,8 +986,8 @@ class Datagrid
         if ($this->getOptions()['settings']['export']['enabled'] && $renderer->isExport() === false) {
             $cacheData = [
                 'sortConditions' => $renderer->getSortConditions(),
-                'filters' => $renderer->getFilters(),
-                'currentPage' => $this->getPaginator()->getCurrentPageNumber(),
+                'filters'        => $renderer->getFilters(),
+                'currentPage'    => $this->getPaginator()->getCurrentPageNumber(),
             ];
             $success = $this->getCache()->setItem($this->getCacheId(), $cacheData);
             if ($success !== true) {
