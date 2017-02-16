@@ -58,11 +58,19 @@
         "zendframework/zend-json": "to support date ranges"
     },
 
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.4-dev",
+            "dev-develop": "2.0-dev"
+        }
+    },
+
     "autoload": {
         "psr-4": {
             "ZfcDatagrid\\": "src/ZfcDatagrid"
         }
     },
+
     "autoload-dev": {
         "psr-4": {
             "ZfcDatagridTest\\": "tests/ZfcDatagridTest"
