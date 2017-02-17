@@ -1,11 +1,9 @@
 <?php
-
 namespace ZfcDatagrid\Service;
 
 use Interop\Container\ContainerInterface;
 use InvalidArgumentException;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use ZfcDatagrid\Datagrid;
 
 abstract class AbstractDatagrid extends Datagrid implements FactoryInterface
@@ -36,20 +34,10 @@ abstract class AbstractDatagrid extends Datagrid implements FactoryInterface
             parent::setTranslator($container->get('translator'));
         }
 
-        parent::setRendererService($container->get('zfcDatagrid.renderer.'.parent::getRendererName()));
+        parent::setRendererService($container->get('zfcDatagrid.renderer.' . parent::getRendererName()));
         parent::init();
 
         return $this;
-    }
-
-    /**
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return Datagrid
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        return $this($serviceLocator, Datagrid::class);
     }
 
     /**

@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\DataSource;
 
 use Zend\Paginator\Adapter\ArrayAdapter as PaginatorAdapter;
@@ -76,7 +75,7 @@ class PhpArray extends AbstractDataSource
 
             $colString = $col->getSelectPart1();
             if ($col->getSelectPart2() != '') {
-                $colString = $col->getSelectPart1().'_'.$col->getSelectPart2();
+                $colString = $col->getSelectPart1() . '_' . $col->getSelectPart2();
             }
 
             $selectedColumns[] = $colString;
@@ -108,22 +107,22 @@ class PhpArray extends AbstractDataSource
         ];
 
         if ('DESC' === $sortCondition['sortDirection']) {
-            $desc = SORT_DESC;
+            $desc        = SORT_DESC;
             $sortArray[] = $desc;
         } else {
-            $asc = SORT_ASC;
+            $asc         = SORT_ASC;
             $sortArray[] = $asc;
         }
 
         switch (get_class($sortCondition['column']->getType())) {
 
             case Column\Type\Number::class:
-                $numeric = SORT_NUMERIC;
+                $numeric     = SORT_NUMERIC;
                 $sortArray[] = $numeric;
                 break;
 
             default:
-                $regular = SORT_REGULAR;
+                $regular     = SORT_REGULAR;
                 $sortArray[] = $regular;
                 break;
         }
@@ -183,7 +182,7 @@ class PhpArray extends AbstractDataSource
         foreach ($sortArguments as $values) {
             $remain = count($values) % 3;
             if ($remain != 0) {
-                throw new \InvalidArgumentException('The parameter count for each sortArgument has to be three. Given count of: '.count($values));
+                throw new \InvalidArgumentException('The parameter count for each sortArgument has to be three. Given count of: ' . count($values));
             }
             $args[] = $values[0]; // column value
             $args[] = $values[1]; // sort direction

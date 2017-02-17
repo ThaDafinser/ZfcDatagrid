@@ -294,7 +294,7 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
         $translator->expects($this->any())
             ->method('translate')
             ->will($this->returnCallback(function ($name) {
-            switch ($name) {
+                switch ($name) {
 
                 case 'yes':
                     return 'ja';
@@ -309,8 +309,8 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
                     break;
             }
 
-            return $name;
-        }));
+                return $name;
+            }));
 
         $prepare->setTranslator($translator);
 
@@ -346,15 +346,15 @@ class PrepareDataTest extends PHPUnit_Framework_TestCase
         $translator->expects($this->any())
             ->method('translate')
             ->will($this->returnCallback(function ($name) {
-            switch ($name) {
+                switch ($name) {
 
                 case 'tag2':
                     return 'Tag 2';
                     break;
             }
 
-            return $name;
-        }));
+                return $name;
+            }));
 
         $prepare->setTranslator($translator);
 

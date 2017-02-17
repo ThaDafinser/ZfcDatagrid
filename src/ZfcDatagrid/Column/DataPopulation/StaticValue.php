@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Column\DataPopulation;
 
 class StaticValue implements DataPopulationInterface

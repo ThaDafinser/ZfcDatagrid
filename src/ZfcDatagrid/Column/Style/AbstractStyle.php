@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Column\Style;
 
 use ZfcDatagrid\Column\AbstractColumn;
@@ -22,7 +21,7 @@ abstract class AbstractStyle
     public function setByValueOperator($operator = 'OR')
     {
         if ($operator != 'AND' && $operator != 'OR') {
-            throw new \InvalidArgumentException('not allowed operator: "'.$operator.'" (AND / OR is allowed)');
+            throw new \InvalidArgumentException('not allowed operator: "' . $operator . '" (AND / OR is allowed)');
         }
 
         $this->byValueOperator = (string) $operator;
@@ -49,8 +48,8 @@ abstract class AbstractStyle
     public function addByValue(AbstractColumn $column, $value, $operator = Filter::EQUAL)
     {
         $this->byValues[] = [
-            'column' => $column,
-            'value' => $value,
+            'column'   => $column,
+            'value'    => $value,
             'operator' => $operator,
         ];
     }

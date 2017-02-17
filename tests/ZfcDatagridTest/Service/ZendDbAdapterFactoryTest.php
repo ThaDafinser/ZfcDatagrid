@@ -23,7 +23,7 @@ class ZendDbAdapterFactoryTest extends PHPUnit_Framework_TestCase
         $sm->setService('config', $this->config);
 
         $factory = new ZendDbAdapterFactory();
-        $grid    = $factory->createService($sm);
+        $grid    = $factory->__invoke($sm, 'zfcDatagrid_dbAdapter');
 
         $this->assertInstanceOf(\Zend\Db\Adapter\Adapter::class, $grid);
     }

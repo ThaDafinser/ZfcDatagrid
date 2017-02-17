@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Renderer\PrintHtml;
 
 use Zend\View\Model\ViewModel;

@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Column\DataPopulation\Object;
 
 use ZfcDatagrid\Column\DataPopulation\ObjectAwareInterface;
@@ -24,7 +23,7 @@ class Gravatar implements ObjectAwareInterface
                 break;
 
             default:
-                throw new \InvalidArgumentException('Not allowed parameter: '.$name);
+                throw new \InvalidArgumentException('Not allowed parameter: ' . $name);
                 break;
         }
     }
@@ -51,6 +50,6 @@ class Gravatar implements ObjectAwareInterface
             $hash = md5($this->email);
         }
 
-        return 'http://www.gravatar.com/avatar/'.$hash;
+        return 'http://www.gravatar.com/avatar/' . $hash;
     }
 }

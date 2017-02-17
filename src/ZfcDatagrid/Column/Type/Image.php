@@ -2,6 +2,7 @@
 /**
  * Image type.
  */
+
 namespace ZfcDatagrid\Column\Type;
 
 use InvalidArgumentException;

@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcDatagrid\Renderer\JqGrid\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
@@ -60,14 +59,14 @@ class Columns extends AbstractHelper
             /* @var $column Column\AbstractColumn */
 
             $options = [
-                'name' => (string) $column->getUniqueId(),
+                'name'  => (string) $column->getUniqueId(),
                 'index' => (string) $column->getUniqueId(),
                 'label' => $this->translate((string) $column->getLabel()),
 
-                'width' => $column->getWidth(),
-                'hidden' => (bool) $column->isHidden(),
+                'width'    => $column->getWidth(),
+                'hidden'   => (bool) $column->isHidden(),
                 'sortable' => (bool) $column->isUserSortEnabled(),
-                'search' => (bool) $column->isUserFilterEnabled(),
+                'search'   => (bool) $column->isUserFilterEnabled(),
             ];
 
             /*
@@ -83,7 +82,7 @@ class Columns extends AbstractHelper
                 foreach ($column->getStyles() as $style) {
                     /** @var Column\Style\Align $style */
                     if (get_class($style) == 'ZfcDatagrid\Column\Style\Align') {
-                        $options['align'] = $style->getAlignment();
+                        $options['align']    = $style->getAlignment();
                         $alignAlreadyDefined = true;
                         break;
                     }
@@ -108,10 +107,10 @@ class Columns extends AbstractHelper
             /*
              * Filtering
              */
-            $searchoptions = [];
+            $searchoptions                = [];
             $searchoptions['clearSearch'] = false;
             if ($column->hasFilterSelectOptions() === true) {
-                $options['stype'] = 'select';
+                $options['stype']       = 'select';
                 $searchoptions['value'] = $column->getFilterSelectOptions();
 
                 if ($column->hasFilterDefaultValue() === true) {
@@ -145,21 +144,21 @@ class Columns extends AbstractHelper
                     }
                 } elseif ('formatter' == $key) {
                     if (stripos($value, 'formatter') === false && stripos($value, 'function') === false) {
-                        $value = '"'.$value.'"';
+                        $value = '"' . $value . '"';
                     }
                 } elseif ('cellattr' == $key) {
                     // SKIP THIS
                 } else {
-                    $value = '"'.$value.'"';
+                    $value = '"' . $value . '"';
                 }
 
-                $colModel[] = (string) $key.': '.$value;
+                $colModel[] = (string) $key . ': ' . $value;
             }
 
-            $return[] = '{'.implode(',', $colModel).'}';
+            $return[] = '{' . implode(',', $colModel) . '}';
         }
 
-        return '['.implode(',', $return).']';
+        return '[' . implode(',', $return) . ']';
     }
 
     /**
@@ -199,7 +198,7 @@ class Columns extends AbstractHelper
             $prefix = 'function (cellvalue, options, rowObject) {';
             $suffix = ' return cellvalue; }';
 
-            $formatter = $prefix.$formatter.$suffix;
+            $formatter = $prefix . $formatter . $suffix;
         }
 
         return $formatter;
@@ -221,7 +220,7 @@ class Columns extends AbstractHelper
          */
         foreach ($col->getStyles() as $style) {
             $prepend = '';
-            $append = '';
+            $append  = '';
 
             /* @var $style Column\Style\AbstractStyle */
             foreach ($style->getByValues() as $rule) {
@@ -237,11 +236,11 @@ class Columns extends AbstractHelper
                         break;
 
                     default:
-                        throw new \Exception('Currently not supported filter operation: "'.$rule['operator'].'"');
+                        throw new \Exception('Currently not supported filter operation: "' . $rule['operator'] . '"');
                         break;
                 }
 
-                $prepend = 'if (rowObject.'.$colString.' '.$operator.' \''.$rule['value'].'\') {';
+                $prepend = 'if (rowObject.' . $colString . ' ' . $operator . ' \'' . $rule['value'] . '\') {';
                 $append .= '}';
             }
 
@@ -261,11 +260,12 @@ class Columns extends AbstractHelper
                     break;
 
                 case Column\Style\Color::class:
-                    $styleString = 'cellvalue = \'<span style="color: #'.$style->getRgbHexString().';">\' + cellvalue + \'</span>\';';
+                    $styleString = 'cellvalue = \'<span style="color: #' . $style->getRgbHexString() . ';">\' + cellvalue + \'</span>\';';
                     break;
 
                 case Column\Style\CSSClass::class:
-                    $styleString = 'cellvalue = \'<span class="'.$style->getClass().'">\' + cellvalue + \'</span>\';';
+                    $styleString = 'cellvalue = \'<span class="' . $style->getClass() . '">\' + cellvalue + \'</span>\';';
+
                     break;
 
                 case Column\Style\BackgroundColor::class:
@@ -282,11 +282,11 @@ class Columns extends AbstractHelper
                     break;
 
                 default:
-                    throw new \Exception('Not defined style: "'.get_class($style).'"');
+                    throw new \Exception('Not defined style: "' . get_class($style) . '"');
                     break;
             }
 
-            $styleFormatter[] = $prepend.$styleString.$append;
+            $styleFormatter[] = $prepend . $styleString . $append;
         }
 
         return $styleFormatter;

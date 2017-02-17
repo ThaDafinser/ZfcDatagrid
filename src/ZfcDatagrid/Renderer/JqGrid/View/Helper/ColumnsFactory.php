@@ -1,11 +1,8 @@
 <?php
-
 namespace ZfcDatagrid\Renderer\JqGrid\View\Helper;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\AbstractPluginManager;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class ColumnsFactory implements FactoryInterface
 {
@@ -24,15 +21,5 @@ class ColumnsFactory implements FactoryInterface
         }
 
         return $tableRow;
-    }
-
-    /**
-     * @param ServiceLocatorInterface|AbstractPluginManager $serviceLocator
-     *
-     * @return Columns
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        return $this($serviceLocator->getServiceLocator(), Columns::class);
     }
 }
