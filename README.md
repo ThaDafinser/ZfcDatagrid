@@ -53,6 +53,8 @@ Add `ZfcDatagrid` to your `config/application.config.php`
 
 Finally create the folder: `data/ZfcDatagrid`
 
+You can cotinue 
+
 ### Test if it works
 
 > NOTE: This needs the additional module `ZfcDatagridExamples` https://github.com/ThaDafinser/ZfcDatagridExamples
@@ -77,7 +79,14 @@ php index.php datagrid person --page 2
 php index.php datagrid person --sortBys=age
 php index.php datagrid person --sortBys=age,givenName --sortDirs=ASC,DESC
 ```
+## Continue with your own datagrid
+
+Please read [Documentation](https://github.com/ThaDafinser/ZfcDatagrid/blob/master/docs/)
+
+You can also use the [zfc-data-grid-plugin](https://github.com/agerecompany/zfc-data-grid-plugin) to create columns with an array configuration, instead of objects!
+
 
 ## Screenshots
 ![ScreenShot](https://raw.github.com/ThaDafinser/ZfcDatagrid/master/docs/screenshots/ZfcDatagrid_bootstrap.jpg)
 ![ScreenShot](https://raw.github.com/ThaDafinser/ZfcDatagrid/master/docs/screenshots/ZfcDatagrid_console.jpg)
+

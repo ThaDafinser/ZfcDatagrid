@@ -171,6 +171,11 @@ class TableRow extends AbstractHelper
                     /* @var $action Column\Action\AbstractAction */
                     if ($action->isDisplayed($row) === true) {
                         $action->setTitle($this->translate($action->getTitle()));
+
+                        if ($action->getRoute()) {
+                            $action->setLink($this->view->url($action->getRoute(), $action->getRouteParams()));
+                        }
+
                         $actions[] = $action->toHtml($row);
                     }
                 }

@@ -25,6 +25,16 @@ abstract class AbstractAction
     protected $showOnValueOperator = 'OR';
 
     /**
+     * @var string
+     */
+    protected $route;
+
+    /**
+     * @var array
+     */
+    protected $routeParams = [];
+
+    /**
      * @var array
      */
     protected $showOnValues = [];
@@ -50,6 +60,38 @@ abstract class AbstractAction
     public function getLink()
     {
         return $this->getAttribute('href');
+    }
+
+    /**
+     * @param string $route
+     */
+    public function setRoute($route)
+    {
+        $this->route = $route;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRoute()
+    {
+        return $this->route;
+    }
+
+    /**
+     * @param array $params
+     */
+    public function setRouteParams(array $params)
+    {
+        $this->routeParams = $params;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRouteParams()
+    {
+        return $this->routeParams;
     }
 
     /**
