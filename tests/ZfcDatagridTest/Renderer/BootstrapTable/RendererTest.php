@@ -1,14 +1,14 @@
 <?php
 namespace ZfcDatagridTest\Renderer\BootstrapTable;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Renderer\BootstrapTable;
 
 /**
  * @group Renderer
  * @covers \ZfcDatagrid\Renderer\BootstrapTable\Renderer
  */
-class RendererTest extends PHPUnit_Framework_TestCase
+class RendererTest extends TestCase
 {
     public function testGetName()
     {

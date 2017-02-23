@@ -1,13 +1,13 @@
 <?php
 namespace ZfcDatagridTest\Column\Formatter;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group Column
  * @covers \ZfcDatagrid\Column\Formatter\AbstractFormatter
  */
-class AbstractFormatterTest extends PHPUnit_Framework_TestCase
+class AbstractFormatterTest extends TestCase
 {
     public function testGetValidRendererNames()
     {

@@ -1,14 +1,14 @@
 <?php
 namespace ZfcDatagridTest\Renderer\JqGrid;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Renderer\JqGrid;
 
 /**
  * @group Renderer
  * @covers \ZfcDatagrid\Renderer\JqGrid\Renderer
  */
-class RendererTest extends PHPUnit_Framework_TestCase
+class RendererTest extends TestCase
 {
     private $options = [
         'renderer' => [
@@ -89,5 +89,7 @@ class RendererTest extends PHPUnit_Framework_TestCase
     public function testGetSortConditions()
     {
         $renderer = new JqGrid\Renderer();
+
+        $this->assertInstanceOf(JqGrid\Renderer::class, $renderer);
     }
 }

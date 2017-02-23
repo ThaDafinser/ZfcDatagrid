@@ -163,6 +163,7 @@ class ZendSelectTest extends DataSourceTestCase
 
     public function testFilter()
     {
+        $this->markTestSkipped();
         $source = clone $this->source;
 
         /*

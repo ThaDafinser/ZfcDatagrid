@@ -1,14 +1,14 @@
 <?php
 namespace ZfcDatagridTest\Column\Style;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Column\Style\AbstractColor;
 
 /**
  * @group Column
  * @covers \ZfcDatagrid\Column\Style\AbstractColor
  */
-class ColorTest extends PHPUnit_Framework_TestCase
+class ColorTest extends TestCase
 {
     public function testConstruct()
     {

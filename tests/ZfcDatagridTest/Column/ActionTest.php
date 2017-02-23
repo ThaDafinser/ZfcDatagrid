@@ -1,14 +1,14 @@
 <?php
 namespace ZfcDatagridTest\Column;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Column;
 
 /**
  * @group Column
  * @covers \ZfcDatagrid\Column\Action
  */
-class ActionTest extends PHPUnit_Framework_TestCase
+class ActionTest extends TestCase
 {
     public function testConstructDefaultBoth()
     {

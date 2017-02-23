@@ -1,14 +1,14 @@
 <?php
 namespace ZfcDatagridTest\Renderer;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
 /**
  * @group Renderer
  * @covers \ZfcDatagrid\Renderer\AbstractExport
  */
-class AbstractExportTest extends PHPUnit_Framework_TestCase
+class AbstractExportTest extends TestCase
 {
     /**
      *

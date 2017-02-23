@@ -1,14 +1,14 @@
 <?php
 namespace ZfcDatagridTest\Column\Style;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Column\Style\CSSClass;
 
 /**
  * @group Column
  * @covers \ZfcDatagrid\Column\Style\CSSClass
  */
-class CSSClassTest extends PHPUnit_Framework_TestCase
+class CSSClassTest extends TestCase
 {
     public function testConstruct()
     {

@@ -1,7 +1,7 @@
 <?php
 namespace ZfcDatagridTest\DataSource\ZendSelect;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Predicate\Like;
 use Zend\Db\Sql\Predicate\Operator;
@@ -13,7 +13,7 @@ use ZfcDatagrid\DataSource\ZendSelect\Filter as FilterSelect;
  * @group DataSource
  * @covers \ZfcDatagrid\DataSource\ZendSelect\Filter
  */
-class FilterTest extends PHPUnit_Framework_TestCase
+class FilterTest extends TestCase
 {
     /**
      *

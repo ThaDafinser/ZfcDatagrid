@@ -1,14 +1,14 @@
 <?php
 namespace ZfcDatagridTest\Column\DataPopulation;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Column\DataPopulation\Object;
 
 /**
  * @group Column
  * @covers \ZfcDatagrid\Column\DataPopulation\Object
  */
-class ObjectTest extends PHPUnit_Framework_TestCase
+class ObjectTest extends TestCase
 {
     public function testObject()
     {

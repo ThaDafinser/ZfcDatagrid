@@ -1,13 +1,13 @@
 <?php
 namespace ZfcDatagridTest;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Module;
 
 /**
  * @covers \ZfcDatagrid\Module
  */
-class ModuleTest extends PHPUnit_Framework_TestCase
+class ModuleTest extends TestCase
 {
     public function testGetConfig()
     {

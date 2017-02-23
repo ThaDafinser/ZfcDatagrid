@@ -1,14 +1,14 @@
 <?php
 namespace ZfcDatagridTest\Column\Action;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Column\Action\Icon;
 
 /**
  * @group Column
  * @covers \ZfcDatagrid\Column\Action\Icon
  */
-class IconTest extends PHPUnit_Framework_TestCase
+class IconTest extends TestCase
 {
     public function testConstruct()
     {

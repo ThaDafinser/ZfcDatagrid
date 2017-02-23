@@ -1,7 +1,7 @@
 <?php
 namespace ZfcDatagridTest\Renderer\JqGrid\View\Helper;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Column\Style;
 use ZfcDatagrid\Filter;
 use ZfcDatagrid\Renderer\JqGrid\View\Helper;
@@ -10,7 +10,7 @@ use ZfcDatagrid\Renderer\JqGrid\View\Helper;
  * @group Renderer
  * @covers \ZfcDatagrid\Renderer\JqGrid\View\Helper\Columns
  */
-class ColumnsTest extends PHPUnit_Framework_TestCase
+class ColumnsTest extends TestCase
 {
     /** @var \PHPUnit_Framework_MockObject_MockObject|\Zend\View\HelperPluginManager */
     private $sm;

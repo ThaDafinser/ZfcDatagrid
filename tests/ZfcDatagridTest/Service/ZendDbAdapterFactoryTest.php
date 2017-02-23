@@ -1,14 +1,14 @@
 <?php
 namespace ZfcDatagridTest\Service;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\ServiceManager\ServiceManager;
 use ZfcDatagrid\Service\ZendDbAdapterFactory;
 
 /**
  * @covers \ZfcDatagrid\Service\ZendDbAdapterFactory
  */
-class ZendDbAdapterFactoryTest extends PHPUnit_Framework_TestCase
+class ZendDbAdapterFactoryTest extends TestCase
 {
     private $config = [
         'zfcDatagrid_dbAdapter' => [

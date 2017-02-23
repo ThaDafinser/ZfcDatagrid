@@ -1,14 +1,14 @@
 <?php
 namespace ZfcDatagridTest\Library;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Library\ImageResize;
 
 /**
  * @group Library
  * @covers \ZfcDatagrid\Library\ImageResize
  */
-class ImageResizeTest extends PHPUnit_Framework_TestCase
+class ImageResizeTest extends TestCase
 {
     /**
      * Height + width is LESS than max

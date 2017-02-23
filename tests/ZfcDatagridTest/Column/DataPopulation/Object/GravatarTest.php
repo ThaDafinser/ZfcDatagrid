@@ -1,14 +1,14 @@
 <?php
 namespace ZfcDatagridTest\Column\DataPopulation\Object;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Column\DataPopulation\Object\Gravatar;
 
 /**
  * @group Column
  * @covers \ZfcDatagrid\Column\DataPopulation\Object\Gravatar
  */
-class GravatarTest extends PHPUnit_Framework_TestCase
+class GravatarTest extends TestCase
 {
     public function testAll()
     {
