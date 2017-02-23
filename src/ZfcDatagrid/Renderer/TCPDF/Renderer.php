@@ -481,7 +481,7 @@ class Renderer extends AbstractExport
         $size            = $style['size'];
 
         $pdf = $this->getPdf();
-        $pdf->setFont($font . 'I', '', $size);
+        $pdf->SetFont($font . 'I', '', $size);
     }
 
     /**
