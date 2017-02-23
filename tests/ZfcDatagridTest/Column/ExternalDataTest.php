@@ -1,7 +1,7 @@
 <?php
 namespace ZfcDatagridTest\Column;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\DataPopulation;
 
@@ -9,7 +9,7 @@ use ZfcDatagrid\Column\DataPopulation;
  * @group Column
  * @covers \ZfcDatagrid\Column\ExternalData
  */
-class ExternalDataTest extends PHPUnit_Framework_TestCase
+class ExternalDataTest extends TestCase
 {
     public function testConstruct()
     {

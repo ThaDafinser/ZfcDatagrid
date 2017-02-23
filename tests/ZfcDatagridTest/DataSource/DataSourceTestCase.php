@@ -1,10 +1,10 @@
 <?php
 namespace ZfcDatagridTest\DataSource;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Column;
 
-class DataSourceTestCase extends PHPUnit_Framework_TestCase
+class DataSourceTestCase extends TestCase
 {
     /**
      *

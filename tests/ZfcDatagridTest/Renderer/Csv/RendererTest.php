@@ -1,14 +1,14 @@
 <?php
 namespace ZfcDatagridTest\Renderer\Csv;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Renderer\Csv;
 
 /**
  * @group Renderer
  * @covers \ZfcDatagrid\Renderer\Csv\Renderer
  */
-class RendererTest extends PHPUnit_Framework_TestCase
+class RendererTest extends TestCase
 {
     public function testGetName()
     {

@@ -1,7 +1,7 @@
 <?php
 namespace ZfcDatagridTest;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Router\Http\HttpRouterFactory;
 use Zend\Router\Http\Segment;
 use Zend\Router\RoutePluginManagerFactory;
@@ -13,7 +13,7 @@ use ZfcDatagridTest\Util\ServiceManagerFactory;
 /**
  * @covers \ZfcDatagrid\PrepareData
  */
-class PrepareDataTest extends PHPUnit_Framework_TestCase
+class PrepareDataTest extends TestCase
 {
     /**
      *

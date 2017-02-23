@@ -1,7 +1,7 @@
 <?php
 namespace ZfcDatagridTest\DataSource\PhpArray;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\DataSource\PhpArray\Filter as FilterArray;
 use ZfcDatagrid\Filter;
 
@@ -9,7 +9,7 @@ use ZfcDatagrid\Filter;
  * @group DataSource
  * @covers \ZfcDatagrid\DataSource\PhpArray\Filter
  */
-class FilterTest extends PHPUnit_Framework_TestCase
+class FilterTest extends TestCase
 {
     /**
      *

@@ -7,7 +7,7 @@ use ZfcDatagrid\Column\Formatter\GenerateLink;
  * @group Column
  * @covers \ZfcDatagrid\Column\Formatter\GenerateLink
  */
-class GenerateLinkTest extends \PHPUnit_Framework_TestCase
+class GenerateLinkTest extends \PHPUnit\Framework\TestCase
 {
     public function testConstructor()
     {

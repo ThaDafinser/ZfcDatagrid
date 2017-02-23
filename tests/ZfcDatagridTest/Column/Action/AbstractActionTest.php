@@ -1,14 +1,14 @@
 <?php
 namespace ZfcDatagridTest\Column\Action;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Filter;
 
 /**
  * @group Column
  * @covers \ZfcDatagrid\Column\Action\AbstractAction
  */
-class AbstractActionTest extends PHPUnit_Framework_TestCase
+class AbstractActionTest extends TestCase
 {
     /**
      *

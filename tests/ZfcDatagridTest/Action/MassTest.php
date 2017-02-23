@@ -1,14 +1,14 @@
 <?php
 namespace ZfcDatagridTest\Action;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Action\Mass;
 
 /**
  * @group Datagrid
  * @covers \ZfcDatagrid\Action\Mass
  */
-class MassTest extends PHPUnit_Framework_TestCase
+class MassTest extends TestCase
 {
     public function testConstruct()
     {

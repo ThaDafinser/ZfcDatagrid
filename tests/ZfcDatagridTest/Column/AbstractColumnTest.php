@@ -1,7 +1,7 @@
 <?php
 namespace ZfcDatagridTest\Column;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Column\Formatter;
 use ZfcDatagrid\Column\Style;
 use ZfcDatagrid\Column\Type;
@@ -11,7 +11,7 @@ use ZfcDatagrid\Filter;
  * @group Column
  * @covers \ZfcDatagrid\Column\AbstractColumn
  */
-class AbstractColumnTest extends PHPUnit_Framework_TestCase
+class AbstractColumnTest extends TestCase
 {
     public function testGeneral()
     {

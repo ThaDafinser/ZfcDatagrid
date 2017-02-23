@@ -1,7 +1,7 @@
 <?php
 namespace ZfcDatagridTest\Renderer\BootstrapTable\View\Helper;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Style;
 use ZfcDatagrid\Column\Style\AbstractColor;
@@ -12,7 +12,7 @@ use ZfcDatagrid\Renderer\BootstrapTable\View\Helper\TableRow;
  * @group Renderer
  * @covers \ZfcDatagrid\Renderer\BootstrapTable\View\Helper\TableRow
  */
-class TableRowTest extends PHPUnit_Framework_TestCase
+class TableRowTest extends TestCase
 {
     private $rowWithoutId = [
         'myCol' => 'First value',

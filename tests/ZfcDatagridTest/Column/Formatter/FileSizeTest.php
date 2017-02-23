@@ -1,14 +1,14 @@
 <?php
 namespace ZfcDatagridTest\Column\Formatter;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Column\Formatter;
 
 /**
  * @group Column
  * @covers \ZfcDatagrid\Column\Formatter\FileSize
  */
-class FileSizeTest extends PHPUnit_Framework_TestCase
+class FileSizeTest extends TestCase
 {
     public function testGetValidRendererNames()
     {

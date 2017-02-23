@@ -1,7 +1,7 @@
 <?php
 namespace ZfcDatagridTest\Renderer\ZendTable;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ZfcDatagrid\Renderer\ZendTable;
 
@@ -9,7 +9,7 @@ use ZfcDatagrid\Renderer\ZendTable;
  * @group Renderer
  * @covers \ZfcDatagrid\Renderer\ZendTable\Renderer
  */
-class RendererTest extends PHPUnit_Framework_TestCase
+class RendererTest extends TestCase
 {
     private $options = [
         'renderer' => [

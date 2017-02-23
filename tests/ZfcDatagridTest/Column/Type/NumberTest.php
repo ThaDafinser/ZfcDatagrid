@@ -3,7 +3,7 @@ namespace ZfcDatagridTest\Column\Type;
 
 use Locale;
 use NumberFormatter;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Column\Type;
 use ZfcDatagrid\Filter;
 
@@ -11,7 +11,7 @@ use ZfcDatagrid\Filter;
  * @group Column
  * @covers \ZfcDatagrid\Column\Type\Number
  */
-class NumberTest extends PHPUnit_Framework_TestCase
+class NumberTest extends TestCase
 {
     /**
      *

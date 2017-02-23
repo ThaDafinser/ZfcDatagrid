@@ -3,7 +3,7 @@ namespace ZfcDatagridTest\Column\Type;
 
 use IntlDateFormatter;
 use Locale;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Column\Type;
 use ZfcDatagrid\Filter;
 
@@ -11,7 +11,7 @@ use ZfcDatagrid\Filter;
  * @group Column
  * @covers \ZfcDatagrid\Column\Type\DateTime
  */
-class DateTimeTest extends PHPUnit_Framework_TestCase
+class DateTimeTest extends TestCase
 {
     /**
      *

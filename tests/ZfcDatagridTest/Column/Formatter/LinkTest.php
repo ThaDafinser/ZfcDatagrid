@@ -1,7 +1,7 @@
 <?php
 namespace ZfcDatagridTest\Column\Formatter;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Router\Http\HttpRouterFactory;
 use Zend\Router\Http\Segment;
 use Zend\Router\RoutePluginManagerFactory;
@@ -12,7 +12,7 @@ use ZfcDatagridTest\Util\ServiceManagerFactory;
  * @group Column
  * @covers \ZfcDatagrid\Column\Formatter\Link
  */
-class LinkTest extends PHPUnit_Framework_TestCase
+class LinkTest extends TestCase
 {
     public function testGetValidRendererNames()
     {

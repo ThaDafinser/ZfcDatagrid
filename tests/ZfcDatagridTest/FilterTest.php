@@ -1,14 +1,14 @@
 <?php
 namespace ZfcDatagridTest;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Column\Type\Number;
 use ZfcDatagrid\Filter;
 
 /**
  * @covers \ZfcDatagrid\Filter
  */
-class FilterTest extends PHPUnit_Framework_TestCase
+class FilterTest extends TestCase
 {
     /** @var \ZfcDatagrid\Column\AbstractColumn|\PHPUnit_Framework_MockObject_MockObject  */
     private $column;

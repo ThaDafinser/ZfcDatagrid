@@ -1,14 +1,14 @@
 <?php
 namespace ZfcDatagridTest\Column\Type;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Column\Type;
 
 /**
  * @group Column
  * @covers \ZfcDatagrid\Column\Type\PhpArray
  */
-class PhpArrayTest extends PHPUnit_Framework_TestCase
+class PhpArrayTest extends TestCase
 {
     public function testTypeName()
     {

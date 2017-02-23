@@ -1,14 +1,14 @@
 <?php
 namespace ZfcDatagridTest\Renderer\PrintHtml;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Renderer\PrintHtml;
 
 /**
  * @group Renderer
  * @covers \ZfcDatagrid\Renderer\PrintHtml\Renderer
  */
-class RendererTest extends PHPUnit_Framework_TestCase
+class RendererTest extends TestCase
 {
     public function testGetName()
     {

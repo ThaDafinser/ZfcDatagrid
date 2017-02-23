@@ -1,14 +1,14 @@
 <?php
 namespace ZfcDatagridTest\Column\Style;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ZfcDatagrid\Filter;
 
 /**
  * @group Column
  * @covers \ZfcDatagrid\Column\Style\AbstractStyle
  */
-class AbstractStyleTest extends PHPUnit_Framework_TestCase
+class AbstractStyleTest extends TestCase
 {
     /**
      *

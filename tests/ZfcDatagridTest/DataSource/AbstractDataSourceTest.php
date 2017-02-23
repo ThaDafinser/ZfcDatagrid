@@ -1,12 +1,12 @@
 <?php
 namespace ZfcDatagridTest\DataSource;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \ZfcDatagrid\DataSource\AbstractDataSource
  */
-class AbstractDataSourceTest extends PHPUnit_Framework_TestCase
+class AbstractDataSourceTest extends TestCase
 {
     /**
      *
