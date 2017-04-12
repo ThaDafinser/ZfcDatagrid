@@ -64,6 +64,10 @@ class Image extends AbstractFormatter
         $value = $row[$column->getUniqueId()];
         $prefix = $this->getPrefix();
 
+        if ($value == '') {
+            return '';
+        }
+        
         if (is_array($value)) {
             $thumb = $value[0];
 
