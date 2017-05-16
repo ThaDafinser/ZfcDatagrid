@@ -121,7 +121,12 @@ class PhpArray extends AbstractDataSource
                 $numeric = SORT_NUMERIC;
                 $sortArray[] = $numeric;
                 break;
-
+                
+            case Column\Type\PhpString::class:
+                $string = SORT_NATURAL | SORT_FLAG_CASE;
+                $sortArray[] = $string;
+                break;
+                
             default:
                 $regular = SORT_REGULAR;
                 $sortArray[] = $regular;
