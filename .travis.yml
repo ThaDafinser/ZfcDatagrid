@@ -30,6 +30,7 @@ env:
 before_script:
  - composer self-update
  - composer update -o --prefer-source $DEPENDENCIES
+ - composer show
 
 script:
  - vendor/bin/phpunit --coverage-clover ./clover.xml
