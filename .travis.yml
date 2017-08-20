@@ -3,6 +3,11 @@ language: php
 
 sudo: false
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+    - $HOME/.local
+
 php:
   - 5.6
   - 7
