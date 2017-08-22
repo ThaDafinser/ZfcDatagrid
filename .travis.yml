@@ -3,16 +3,24 @@ language: php
 
 sudo: false
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+    - $HOME/.local
+
 php:
   - 5.6
   - 7
   - 7.1
+  - 7.2
   - hhvm
   - nightly
 
 matrix:
   allow_failures:
+  - php: 7.2
   - php: nightly
+  - php: hhvm
 
 env:
   matrix:
@@ -22,6 +30,7 @@ env:
 before_script:
  - composer self-update
  - composer update -o --prefer-source $DEPENDENCIES
+ - composer show
 
 script:
  - vendor/bin/phpunit --coverage-clover ./clover.xml
