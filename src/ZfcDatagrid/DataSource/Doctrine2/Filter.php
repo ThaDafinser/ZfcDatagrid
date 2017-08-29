@@ -121,8 +121,8 @@ class Filter
                     break;
 
                 case DatagridFilter::BETWEEN:
-                    $minParameterName = ':'.str_replace('.', '', $colString.'0');
-                    $maxParameterName = ':'.str_replace('.', '', $colString.'1');
+                    $minParameterName = ':' . str_replace('.', '', $col->getUniqueId() . '0');
+                    $maxParameterName = ':' . str_replace('.', '', $col->getUniqueId() . '1');
 
                     $wheres[] = $expr->between($colString, $minParameterName, $maxParameterName);
 
